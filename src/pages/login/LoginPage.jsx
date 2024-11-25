@@ -4,6 +4,7 @@ import '../../styles/login.scss'
 
 export default function LoginPage() {
     return (
+        <>
         <div className="LoginPage">
             <Login/>
             <LoginFooter/>
@@ -14,6 +15,6 @@ export default function LoginPage() {
                 <LoginFooter />
             </div>
         </section>
-
+        </>
     );
 }
