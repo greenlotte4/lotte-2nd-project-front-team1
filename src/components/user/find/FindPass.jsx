@@ -12,6 +12,7 @@ export default function FindPass() {
     };
     return (
         <div className="findPassBox">
+
             <form accept="">
                 <div>
                     <div class="findHeader">
@@ -23,6 +24,7 @@ export default function FindPass() {
                 <div className="findBtnBox">
                     <Link to="/user/login" className="btnCancle">취소</Link>
                     <button class="blueButton" onClick={handleFind}>찾기</button>
+
                 </div>
             </form>
         </div>

@@ -6,5 +6,6 @@ export default function TermsPage() {
         <section className="loginBody">
             <Terms />
         </section>
+
     );
 }

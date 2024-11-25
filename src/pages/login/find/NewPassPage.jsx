@@ -8,5 +8,6 @@ export default function NewPassPage() {
                 <NewPass />
             </div>
         </section>
+
     );
 }

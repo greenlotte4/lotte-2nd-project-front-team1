@@ -14,6 +14,7 @@
     /* 화면 크기에 맞게 전체 높이 사용 */
 }
 
+
 .mainBox {
     box-shadow: 0 3px 8px #0000001a;
     /* 그림자 효과 추가 */
@@ -755,5 +756,58 @@ textarea {
     .NewPassBtn .btnCancle:hover {
         background-color: #2980b9;
     }
+
+}
+
+.idViewBox {
+    width: 400px;
+    padding: 20px;
+    font-family: Arial, sans-serif;
+    border-radius: 5px;
+    border: 1px solid;
+
+    /* 테이블 스타일 */
+    .idTable {
+        width: 100%;
+        /* 테이블 전체 너비 */
+        border-collapse: collapse;
+    }
+
+    .idColumn {
+        width: 30%;
+        /* 3 비율 */
+        text-align: center;
+        /* 텍스트 중앙 정렬 */
+    }
+
+    .resultColumn {
+        width: 70%;
+        /* 7 비율 */
+        text-align: center;
+        /* 텍스트 중앙 정렬 */
+    }
+
+    /* 버튼 스타일 */
+    .findBtnBox {
+        margin-top: 20px;
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .btnCancle {
+        padding: 6px 15px;
+        background-color: #aaaaaa;
+        color: white;
+        text-decoration: none;
+        border-radius: 5px;
+        font-weight: bold;
+        display: inline-block;
+        transition: background-color 0.3s ease;
+    }
+
+    .btnCancle:hover {
+        background-color: #7e7e7e;
+    }
+
 
 }

@@ -9,5 +9,6 @@ export default function FindPassPage() {
                 <FindPass />
             </div>
         </section>
+
     );
 }

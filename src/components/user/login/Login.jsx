@@ -66,10 +66,12 @@ export default function Login() {
                     </table>
                     <div className="loginDiv">
                         <input type="checkbox" value="기억하기" />기억하기
-                        <div className="userFind">
-                            <Link to="/user/findId" classNameName="findId">아이디찾기 |</Link>
-                            <Link to="/user/findPass" classNameName="findPass">비밀번호찾기 |</Link>
-                            <div classNameName="findPass"><Link to="/user/terms">회원가입 </Link></div>
+
+                        <div class="userFind">
+                            <Link to="/user/findId" className="findId">아이디찾기</Link>
+                            <Link to="/user/findPass" className="findPass">비밀번호찾기</Link>
+                            <div className="findPass"><Link to="/user/terms">회원가입</Link></div>
+
                         </div>
                         <button className="loginBtn blueButton">로그인</button>
                     </div>

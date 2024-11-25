@@ -6,6 +6,7 @@ export default function IdView() {
         <div className=" ">
             <div>
                 <table>
+
                     <tbody>
                         <tr>
                             <td className="idColumn">
@@ -20,6 +21,7 @@ export default function IdView() {
                 <div className="findBtnBox">
                     <Link to="/user/login" className="btnCancle">로그인</Link>
                     <Link to="/user/findPass" className="btnCancle">비밀번호찾기</Link>
+
                 </div>
             </div>
         </div>

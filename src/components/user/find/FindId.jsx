@@ -5,8 +5,10 @@ import EmailFind from "./EmailFind";
 
 export default function FindId() {
     const [method, setMethod] = useState("hpFind");
+
     const [activeButton, setActiveButton] = useState("hpFind");
     const navigate = useNavigate();
+
 
     const findHandle = (methodType) => {
         setMethod(methodType);
@@ -16,6 +18,7 @@ export default function FindId() {
     const handleFind = (e) => {
         e.preventDefault();
         navigate("/user/find/findView", { state: { method: "IdFind", findMethod: method } });
+
     };
     return (
         <div>
