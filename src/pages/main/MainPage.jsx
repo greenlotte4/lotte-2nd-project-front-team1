@@ -3,10 +3,8 @@ import Slider from "../../components/main/Slider";
 import Quick from "../../components/main/Quick";
 import Latest from "../../components/main/Latest";
 import Info from "../../components/main/Info";
-import DefaultLayout from "../../layouts/DefaultLayout";
 export default function MainPage(){
     return (
-      <DefaultLayout>
         <main>
           <Slider />
           <Best />
@@ -14,6 +12,5 @@ export default function MainPage(){
           <Latest />
           <Info />
         </main>
-      </DefaultLayout>
     );
   };
