@@ -8,7 +8,7 @@ import IdViewPage from "../pages/login/find/IdViewPage";
 import NewPassPage from "../pages/login/find/NewPassPage";
 import TermsPage from "../pages/login/TermsPage";
 
-
+import ProjectPage from "../pages/app/project/ProjectPage";
 
 //라우팅 정의
 const router = createBrowserRouter([
@@ -20,6 +20,7 @@ const router = createBrowserRouter([
   { path: "/user/findPass", element: <FindPassPage/> },
   { path: "/user/find/idView", element: <IdViewPage/> },
   { path: "/user/find/newPass", element: <NewPassPage/> },
+  { path: "/project", element: <ProjectPage/>},
 
 
 ]);
