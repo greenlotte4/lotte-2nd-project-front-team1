@@ -5,7 +5,8 @@ export default function IdFind() {
                 <tbody>
                     <span>아이디</span>
                     <tr>
-                        <td class="form-row">
+                        <td className="form-row">
+
                             <input type="text" placeholder="아이디입력" />
                         </td>
                     </tr>
@@ -16,7 +17,8 @@ export default function IdFind() {
                     <span>이메일</span>
                     <tr>
                         <td>
-                            <div class="form-row">
+                            <div className="form-row">
+
                                 <input type="text" placeholder="이메일입력" />
                                 <button class="authBtn">인증</button>
                             </div>
@@ -24,7 +26,8 @@ export default function IdFind() {
                     </tr>
                     <tr>
                         <td>
-                            <div class="form-row">
+                            <div className="form-row">
+
                                 <input type="text" placeholder="인증번호" />
                             </div>
                         </td>

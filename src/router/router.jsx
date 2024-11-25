@@ -3,11 +3,13 @@ import MainPage from "../pages/main/MainPage";
 import LoginPage from "../pages/login/LoginPage";
 import RegisterPage from "../pages/login/RegisterPage";
 import FindIdPage from "../pages/login/find/FindIdPage";
-import MessagePage from "../pages/app/message/messagePage";
 import FindPassPage from "../pages/login/find/FindPassPage";
-import IdViewPage from "../pages/login/find/IdViewPage";
 import NewPassPage from "../pages/login/find/NewPassPage";
 import TermsPage from "../pages/login/TermsPage";
+
+import ProjectPage from "../pages/app/project/ProjectPage";
+import MessagePage from "../pages/app/message/messagePage";
+import IdViewPage from "../pages/login/find/IdViewPage";
 
 import ProjectPage from "../pages/app/project/ProjectPage";
 
@@ -23,6 +25,7 @@ const router = createBrowserRouter([
   { path: "/user/find/idView", element: <IdViewPage /> },
   { path: "/user/find/newPass", element: <NewPassPage /> },
   { path: "/project", element: <ProjectPage /> },
+
 ]);
 
 // 라우터 내보내기

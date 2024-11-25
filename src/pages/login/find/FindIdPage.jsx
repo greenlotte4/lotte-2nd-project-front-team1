@@ -3,8 +3,11 @@ import FindId from "../../../components/user/find/FindId";
 
 export default function FindIdPage() {
     return (
-            <div className="findBox">
-                <FindId/>
+        <section className="loginBody">
+
+            <div className="findBox mainBox">
+                <FindId />
             </div>
+        </section>
     );
 }

@@ -5,17 +5,23 @@ import EmailFind from "./EmailFind";
 
 export default function FindId() {
     const [method, setMethod] = useState("hpFind");
+
+    const [activeButton, setActiveButton] = useState("hpFind");
     const navigate = useNavigate();
+
+
     const findHandle = (methodType) => {
         setMethod(methodType);
+        setActiveButton(methodType); // 클릭된 버튼 상태 업데이트
     }
 
     const handleFind = (e) => {
         e.preventDefault();
-        navigate("/user/find/idView"); // "회원가입" 버튼 클릭 시 "/user/signup"으로 이동
+        navigate("/user/find/findView", { state: { method: "IdFind", findMethod: method } });
+
     };
     return (
-        <div class="findIdBox mainBox">
+        <div>
             <form accept="">
                 <div>
                     <div className="findHeader">
@@ -23,15 +29,20 @@ export default function FindId() {
                         <h3>ID찾기 수단을 선택해주세요</h3>
                     </div>
                     <div className="searchBtn">
-                        <button className="hpFind"
+                        <button className={`hpFind ${activeButton === "hpFind" ? "active" : ""}`}
                             type="button"
                             onClick={() => findHandle("hpFind")}>휴대폰 번호로 찾기</button>
-                        <button className="emailFind"
+                        <button className={`emailFind  ${activeButton === "emailFind" ? "active" : ""}`}
                             type="button"
-                            onClick={() => findHandle("EmailFind")}>개인 이메일로 찾기</button>
+                            onClick={() => findHandle("emailFind")}>개인 이메일로 찾기</button>
                     </div>
-                    {method === "hpFind" && <HpFind />}
-                    {method === "EmailFind" && <EmailFind />}
+                    <div className={`methodContent ${activeButton === "hpFind" ? "active" : ""}`}>
+                        {method === "hpFind" && <HpFind />}
+                    </div>
+
+                    <div className={`methodContent ${activeButton === "emailFind" ? "active" : ""}`}>
+                        {method === "emailFind" && <EmailFind />}
+                    </div>
                 </div>
                 <div className="findBtnBox">
                     <Link to="/user/login" className="btnCancle">취소</Link>

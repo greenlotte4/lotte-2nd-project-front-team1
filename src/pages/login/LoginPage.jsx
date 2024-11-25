@@ -8,5 +8,12 @@ export default function LoginPage() {
             <Login/>
             <LoginFooter/>
         </div>
+        <section className="loginBody">
+            <div className="loginBox mainBox">
+                <Login />
+                <LoginFooter />
+            </div>
+        </section>
+
     );
 }
