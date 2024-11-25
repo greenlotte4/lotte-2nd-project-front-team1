@@ -45,19 +45,17 @@ textarea {
     border-color: #f4f5f4;
     outline: 0;
 }
-
 /* .loginFooter{
     display: flex;
     justify-content: space-between;
 } */
-.t1 {
+.t1{
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
-
-.loginFooter img {
-    width: 35%;
+.loginFooter img{
+    width:  35%;
     height: 35%;
 }
 
@@ -79,9 +77,7 @@ textarea {
 
     }
 
-    table {
-        margin-bottom: 10px;
-    }
+   
 
     /* input 요소 크기 변경 */
     table input[type="text"],
@@ -93,7 +89,6 @@ textarea {
         margin: 5px 0;
         border: 2px solid #ddd;
         border-radius: 5px;
-
     }
 
     table input[type="submit"]:hover {
@@ -190,7 +185,7 @@ textarea {
 
 }
 
-.termsBox {
+.tarmsBox {
     width: 600px;
     padding: 20px;
     display: flex;
@@ -219,8 +214,8 @@ textarea {
         /* 1.05배로 크기를 5% 키움 */
     }
 
-    .termsText1,
-    .termsText2 {
+    .tarmsText1,
+    .tarmsText2 {
         width: auto;
         height: auto;
         gap: 10px;
@@ -231,8 +226,8 @@ textarea {
     }
 
     /* 텍스트와 체크박스 모두 오른쪽 정렬 */
-    .termsText1>div,
-    .termsText2>div {
+    .tarmsText1>div,
+    .tarmsText2>div {
         display: flex;
         justify-content: flex-end;
         /* 오른쪽 끝으로 배치 */
@@ -756,58 +751,5 @@ textarea {
     .NewPassBtn .btnCancle:hover {
         background-color: #2980b9;
     }
-
-}
-
-.idViewBox {
-    width: 400px;
-    padding: 20px;
-    font-family: Arial, sans-serif;
-    border-radius: 5px;
-    border: 1px solid;
-
-    /* 테이블 스타일 */
-    .idTable {
-        width: 100%;
-        /* 테이블 전체 너비 */
-        border-collapse: collapse;
-    }
-
-    .idColumn {
-        width: 30%;
-        /* 3 비율 */
-        text-align: center;
-        /* 텍스트 중앙 정렬 */
-    }
-
-    .resultColumn {
-        width: 70%;
-        /* 7 비율 */
-        text-align: center;
-        /* 텍스트 중앙 정렬 */
-    }
-
-    /* 버튼 스타일 */
-    .findBtnBox {
-        margin-top: 20px;
-        display: flex;
-        justify-content: space-between;
-    }
-
-    .btnCancle {
-        padding: 6px 15px;
-        background-color: #aaaaaa;
-        color: white;
-        text-decoration: none;
-        border-radius: 5px;
-        font-weight: bold;
-        display: inline-block;
-        transition: background-color 0.3s ease;
-    }
-
-    .btnCancle:hover {
-        background-color: #7e7e7e;
-    }
-
 
 }

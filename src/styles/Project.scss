@@ -1,7 +1,7 @@
 /* ============================================================== */
 /* 프로젝트 추가 css */
-
-.main-page {
+.project-container{
+.projectmain-page {
     flex: 1 0 auto;
 }
 
@@ -98,39 +98,6 @@ td {
     /* 활성화된 페이지 표시 */
 }
 
-/* 버튼 컨테이너 스타일 */
-.table-actions {
-    display: flex;
-    gap: 10px;
-    margin-bottom: 20px;
-}
-
-/* 버튼 스타일 */
-.action-btn {
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    background-color: #ccc;
-    color: black;
-    cursor: pointer;
-    transition: background-color 0.3s, color 0.3s;
-}
-
-/* 활성화된 버튼 스타일 */
-.action-btn.active {
-    background-color: white;
-    color: black;
-}
-
-/* 버튼 호버 효과 */
-.action-btn:hover {
-    background-color: #bbb;
-}
-
-/* 설정 페이지 전체 스타일 */
-.setting-content {
-    margin: 20px;
-}
 
 /* 섹션 제목 스타일 */
 .setting-section h3 {
@@ -227,4 +194,40 @@ td {
     /* 호버 시 약간 진한 파란색 */
     transform: scale(1.1);
     /* 살짝 커지는 효과 */
+}
+}
+
+/* 버튼 컨테이너 스타일 */
+.table-actions {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+
+
+    /* 버튼 스타일 */
+    .action-btn {
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        background-color: #ccc;
+        color: black;
+        cursor: pointer;
+        transition: background-color 0.3s, color 0.3s;
+    }
+
+    /* 활성화된 버튼 스타일 */
+    .action-btn.active {
+        background-color: white;
+        color: black;
+    }
+
+    /* 버튼 호버 효과 */
+    .action-btn:hover {
+        background-color: #bbb;
+    }
+
+    /* 설정 페이지 전체 스타일 */
+    .projectmainpage-content {
+        margin: 20px;
+    }
 }

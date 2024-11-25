@@ -1,5 +1,6 @@
 import Project from "../../../components/app/project/project";
 import ProjectLayout from "../../../layouts/app/ProjectLayout";
+
 import '../../../styles/Project.scss';
 import '../../../styles/Header.scss';
 import '../../../styles/Aside.scss';
