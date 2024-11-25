@@ -35,12 +35,12 @@ export default function () {
                         <div class="userFind">
                             <Link to="/user/findId" className="findId">아이디찾기</Link>
                             <Link to="/user/findPass" className="findPass">비밀번호찾기</Link>
+                            <div className="findPass"><Link to="/user/terms">회원가입</Link></div>
                         </div>
                         <button class="loginBtn blueButton">로그인</button>
                     </div>
                 </div>
             </form>
-            <div className="register"><Link to="/user/tarms">새로운 아이디 만들기</Link></div>
         </div>
 
     );
