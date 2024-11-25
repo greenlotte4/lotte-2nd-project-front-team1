@@ -10,15 +10,15 @@ export default function EmailFind() {
                         <span>이메일</span>
                     <tr>
                         <td>
-                            <div class="form-row">
+                            <div className="form-row">
                                 <input type="text" placeholder="이메일입력" />
-                                <button class="authBtn">인증</button>
+                                <button className="authBtn">인증</button>
                             </div>
                         </td>
                     </tr>
                     <tr>
                         <td>
-                            <div class="form-row">
+                            <div className="form-row">
                                 <input type="text" placeholder="인증번호" />
                             </div>
                         </td>

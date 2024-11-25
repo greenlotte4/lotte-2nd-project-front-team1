@@ -1,12 +1,40 @@
-import { Link } from "react-router-dom";
+import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
+import { login } from "../../../slices/userSlice";
 
-export default function () {
+const initState = {
+    uid: "",
+    pass: "",
+}
+
+export default function Login() {
+    const [user, setUser] = useState({ ...initState });
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+
+    const chabgeHandler = (e) => {
+        e.preventDefault();
+        setUser({ ...user, [e.target.name]: e.target.value });
+    };
+
+    const subnitHandler = async (e) => {
+        e.preventDefault();
+
+        const tokens = await postUserLogin(user);
+        if (tokens) {
+            dispatch(login(tokens));
+            navigate("/");
+        } else {
+            alert("로그인실패")
+        }
+    }
     return (
-        <div class="loginBox mainBox">
-            <div class="loginImg">
+        <div className="login">
+            <div className="loginImg">
                 <img src="/images/logo.png" alt="로그인 화면 이미지" />
             </div>
-            <form action="#">
+            <form onSubmit={subnitHandler}>
                 <div>
                     <table>
                         <tr>
@@ -14,30 +42,36 @@ export default function () {
                                 <img src="/images/user_Icon.png" alt="아이디" />
                             </td>
                             <td>
-                                <input type="text" name="uid" placeholder="아이디 입력" />
+                                <input type="text" 
+                                name="uid" 
+                                placeholder="아이디 입력" 
+                                value={user.uid}
+                                onChange={chabgeHandler}/>
                             </td>
                         </tr>
                         <tr>
                             <td>
-                                <img src="/images/avatar_9435200.png" alt="비밀번호" />
+                                <img src="/images/pass.jpg" alt="비밀번호" />
                             </td>
                             <td>
                                 <input
                                     type="password"
                                     name="pass"
                                     placeholder="비밀번호 입력"
+                                    value={user.pass}
+                                    onChange={chabgeHandler}
                                 />
                             </td>
                         </tr>
                     </table>
-                    <div class="loginDiv">
+                    <div className="loginDiv">
                         <input type="checkbox" value="기억하기" />기억하기
-                        <div class="userFind">
-                            <Link to="/user/findId" className="findId">아이디찾기</Link>
-                            <Link to="/user/findPass" className="findPass">비밀번호찾기</Link>
-                            <div className="findPass"><Link to="/user/terms">회원가입</Link></div>
+                        <div className="userFind">
+                            <Link to="/user/findId" classNameName="findId">아이디찾기 |</Link>
+                            <Link to="/user/findPass" classNameName="findPass">비밀번호찾기 |</Link>
+                            <div classNameName="findPass"><Link to="/user/terms">회원가입 </Link></div>
                         </div>
-                        <button class="loginBtn blueButton">로그인</button>
+                        <button className="loginBtn blueButton">로그인</button>
                     </div>
                 </div>
             </form>

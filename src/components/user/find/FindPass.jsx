@@ -1,17 +1,17 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import IdFind from "./IdFind";
 
 export default function FindPass() {
-    const handleSignup = () => {
-        navigate("/user/find/idView"); // "회원가입" 버튼 클릭 시 "/user/signup"으로 이동
+    const [method, setMethod] = useState(""); // method state 추가
+
+    const navigate = useNavigate();
+    const handleFind = (e) => {
+        e.preventDefault();
+        navigate("/user/find/findView", { state: { method: "PassFind", findMethod: method } });
     };
-    const [method, setMethod] = useState("hpFind");
-    const findHandle = (methodType) => {
-        setMethod(methodType);
-    }
     return (
-        <div class="findIdBox mainBox">
+        <div className="findPassBox">
             <form accept="">
                 <div>
                     <div class="findHeader">
@@ -20,9 +20,9 @@ export default function FindPass() {
                     </div>
                     <IdFind/> 
                 </div>
-                <div class="findBtnBox">
+                <div className="findBtnBox">
                     <Link to="/user/login" className="btnCancle">취소</Link>
-                    <button class="blueButton">찾기</button>
+                    <button class="blueButton" onClick={handleFind}>찾기</button>
                 </div>
             </form>
         </div>

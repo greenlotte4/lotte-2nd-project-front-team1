@@ -4,10 +4,11 @@ import '../../styles/login.scss'
 
 export default function LoginPage() {
     return (
-
-        <div className="">
-            <Login/>
-            <LoginFooter/>
-        </div>
+        <section className="loginBody">
+            <div className="loginBox mainBox">
+                <Login />
+                <LoginFooter />
+            </div>
+        </section>
     );
 }

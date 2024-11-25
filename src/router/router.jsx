@@ -5,9 +5,9 @@ import RegisterPage from "../pages/login/RegisterPage";
 import FindIdPage from "../pages/login/find/FindIdPage";
 import ProjectPage from "../pages/app/project/ProjectPage";
 import FindPassPage from "../pages/login/find/FindPassPage";
-import IdViewPage from "../pages/login/find/IdViewPage";
 import NewPassPage from "../pages/login/find/NewPassPage";
 import TermsPage from "../pages/login/TermsPage";
+import FindViewPage from "../pages/login/find/FindViewPage";
 
 
 
@@ -20,7 +20,7 @@ const router = createBrowserRouter([
   { path: "/user/findId", element: <FindIdPage/> },
   { path: "/project", element: <ProjectPage/>},
   { path: "/user/findPass", element: <FindPassPage/> },
-  { path: "/user/find/idView", element: <IdViewPage/> },
+  { path: "/user/find/findView", element: <FindViewPage/> },
   { path: "/user/find/newPass", element: <NewPassPage/> },
 
 

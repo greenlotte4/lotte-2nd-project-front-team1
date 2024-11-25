@@ -3,8 +3,11 @@ import '../../../styles/login.scss'
 
 export default function FindPassPage() {
     return (
-            <div className="findBox">
-                <FindPass/>
+        <section className="loginBody">
+
+            <div className="findBox mainBox">
+                <FindPass />
             </div>
+        </section>
     );
 }

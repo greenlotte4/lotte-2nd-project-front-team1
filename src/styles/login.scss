@@ -1,4 +1,4 @@
-body {
+.loginBody {
     background-color: #fafafa;
     width: 100%;
     height: 100%;
@@ -27,6 +27,7 @@ h3 {
     margin: 5px;
     color: #929292;
 }
+
 
 textarea {
     width: 100%;
@@ -67,9 +68,14 @@ textarea {
     height: 100%;
     margin: 0 auto;
 
+    td {
+        border: none;
+    }
+
     .loginImg {
         text-align: center;
         margin-bottom: 15px;
+
     }
 
     table {
@@ -139,9 +145,6 @@ textarea {
 
     table img {
         width: 40px !important;
-        /* 이미지의 너비를 20px로 설정 */
-        height: auto !important;
-        /* 높이는 자동으로 비율에 맞게 조정 */
     }
 
 
@@ -197,6 +200,10 @@ textarea {
     border-radius: 8px;
     /* 모서리를 둥글게 처리 */
     font-family: Arial, sans-serif;
+
+    td {
+        border: none;
+    }
 
     /* 글꼴 지정 */
     a {
@@ -267,7 +274,11 @@ textarea {
     width: 600px;
     padding: 20px;
     font-family: Arial, sans-serif;
-    /* 글꼴 지정 */
+
+    td {
+        border: none;
+    }
+
 
     /* 테이블 스타일 */
     table {
@@ -316,7 +327,7 @@ textarea {
     }
 
     /* 버튼을 포함하는 input 필드의 스타일 */
-    .input-with-button input[type="text"] {
+    .input-with-button input {
         width: 280px;
         /* 버튼이 있는 입력창은 300px */
         padding: 8px;
@@ -328,8 +339,8 @@ textarea {
     }
 
     /* 버튼을 포함하지 않는 input 필드의 스타일 */
-    .input-without-button input[type="text"] {
-        width: 400px;
+    .input-without-button input {
+        width: 350px;
         /* 버튼이 없는 입력창은 400px */
         padding: 8px;
         margin-top: 5px;
@@ -429,10 +440,14 @@ textarea {
     }
 }
 
-.findIdBox {
+.findBox {
     width: 400px;
     padding: 20px;
     font-family: Arial, sans-serif;
+
+    td {
+        border: none;
+    }
 
     /* 글꼴 지정 */
     a {
@@ -452,33 +467,24 @@ textarea {
     .findHeader {
         display: flex;
         justify-content: center;
-        /* 가로 중앙 정렬 */
         align-items: center;
-        /* 세로 중앙 정렬 */
         flex-direction: column;
-        /* 로고와 텍스트가 세로로 정렬되게 */
         margin-bottom: 50px;
-        /* 아래 여백 */
     }
 
     /* 버튼을 중앙 정렬하고 버튼 사이에 간격 추가 */
     .searchBtn {
         display: flex;
         justify-content: center;
-        /* 가로 중앙 정렬 */
         gap: 10px;
-        /* 버튼 사이에 간격 추가 */
         margin-bottom: 10px;
-        /* 아래 여백 */
     }
 
     span {
         font-size: 13px;
         margin-left: 10px;
         display: inline-block;
-        /* 인풋과 가깝게 배치하기 위해 inline-block 사용 */
         margin-bottom: 0;
-        /* 성/이름과 인풋 간 간격을 없애기 위해 */
     }
 
     a {
@@ -491,25 +497,6 @@ textarea {
     a:hover {
         transform: scale(1.05);
         /* 1.05배로 크기를 5% 키움 */
-    }
-
-    .findIdBox {
-        width: 400px;
-        padding: 20px;
-        font-family: Arial, sans-serif;
-        /* 글꼴 지정 */
-    }
-
-    .findHeader {
-        display: flex;
-        justify-content: center;
-        /* 가로 중앙 정렬 */
-        align-items: center;
-        /* 세로 중앙 정렬 */
-        flex-direction: column;
-        /* 로고와 텍스트가 세로로 정렬되게 */
-        margin-bottom: 50px;
-        /* 아래 여백 */
     }
 
     /* 버튼을 중앙 정렬하고 버튼 사이에 간격 추가 */
@@ -565,7 +552,8 @@ textarea {
     }
 
     /* 버튼 스타일 */
-    button {
+    .hpFind,
+    .emailFind {
         padding: 8px 15px;
         border: 1px solid #ccc;
         background-color: #f0f0f0;
@@ -669,15 +657,19 @@ textarea {
         /* 호버 시 어두운 회색 */
     }
 
+    /* 추가: 버튼 클릭 시 border 추가 */
+    .searchBtn button.active {
+        border: 2px solid #007bff;
+        /* 버튼 클릭 시 파란색 테두리 추가 */
+    }
 
+    
 }
 
 .idViewBox {
     width: 400px;
-    padding: 20px;
+    border-radius: 8px;
     font-family: Arial, sans-serif;
-    border-radius: 5px;
-    border: 1px solid;
 
     /* 테이블 스타일 */
     .idTable {
@@ -691,6 +683,8 @@ textarea {
         /* 3 비율 */
         text-align: center;
         /* 텍스트 중앙 정렬 */
+        border: 1px solid;
+
     }
 
     .resultColumn {
@@ -698,13 +692,16 @@ textarea {
         /* 7 비율 */
         text-align: center;
         /* 텍스트 중앙 정렬 */
+        border: 1px solid;
+        padding: 10px;
+
     }
 
     /* 버튼 스타일 */
     .findBtnBox {
         margin-top: 20px;
         display: flex;
-        justify-content: space-between;
+
     }
 
     .btnCancle {
@@ -722,5 +719,41 @@ textarea {
         background-color: #7e7e7e;
     }
 
+
+}
+
+.passViewBox {
+    width: 400px;
+    border-radius: 8px;
+    font-family: Arial, sans-serif;
+
+    .passViewTop input {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 10px;
+        margin-top: 5px;
+        margin-bottom: 5px;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+
+        box-sizing: border-box;
+
+    }
+
+    .passViewBottom .NewPassBtn {
+        text-align: center;
+    }
+
+    .NewPassBtn .btnCancle {
+        background-color: #3498db;
+        color: white;
+        padding: 10px 20px;
+        text-decoration: none;
+        border-radius: 5px;
+    }
+
+    .NewPassBtn .btnCancle:hover {
+        background-color: #2980b9;
+    }
 
 }
