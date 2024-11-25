@@ -14,12 +14,17 @@ import ProjectPage from "../pages/app/project/ProjectPage";
 //라우팅 정의
 const router = createBrowserRouter(
   { path: "/", element: <MainPage /> },
-  { path: "/user/login", element: <LoginPage /> },
-  { path: "/user/tarms", element: <TarmsPage /> },
-  { path: "/user/register", element: <RegisterPage /> },
-  { path: "/user/findId", element: <FindIdPage /> },
   { path: "/app/message", element: <Message /> },
-]);
+  { path: "/user/login", element: <LoginPage/> },
+  { path: "/user/terms", element: <TermsPage/> },
+  { path: "/user/register", element: <RegisterPage/> },
+  { path: "/user/findId", element: <FindIdPage/> },
+  { path: "/user/findPass", element: <FindPassPage/> },
+  { path: "/user/find/idView", element: <IdViewPage/> },
+  { path: "/user/find/newPass", element: <NewPassPage/> },
+  { path: "/project", element: <ProjectPage/>},
+);
+
 
 // 라우터 내보내기
 export default router;
