@@ -1,13 +1,19 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
-
-export default function EmailFind() {
-  
+export default function IdFind() {
     return (
-        <div className="emailFindBox">
+        <div className="findPassBox">
             <table>
                 <tbody>
-                        <span>이메일</span>
+                    <span>아이디</span>
+                    <tr>
+                        <td class="form-row">
+                            <input type="text" placeholder="아이디입력" />
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <table>
+                <tbody>
+                    <span>이메일</span>
                     <tr>
                         <td>
                             <div class="form-row">

@@ -1,9 +1,9 @@
 import { Link } from "react-router-dom";
 
-export default function () {
+export default function Terms() {
     return (
-        <div class="tarmsBox mainBox">
-            <div class="tarmsText1">
+        <div class="termsBox mainBox">
+            <div class="termsText1">
                 <h3>사이트 이용약관</h3>
                 <textarea name="" id="" readonly>
                     대충 약관 내용
@@ -13,7 +13,7 @@ export default function () {
                     <label for="agree1">동의하기</label>
                 </div>
             </div>
-            <div class="tarmsText2">
+            <div class="termsText2">
                 <h3>개인정보 취급방침</h3>
                 <textarea name="" id="" readonly>
                     대충 약관 내용
