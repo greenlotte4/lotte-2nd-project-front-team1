@@ -1,20 +1,26 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import HpFind from "./hpFind";
 import EmailFind from "./EmailFind";
 
 export default function FindId() {
     const [method, setMethod] = useState("hpFind");
+    const navigate = useNavigate();
     const findHandle = (methodType) => {
         setMethod(methodType);
     }
+
+    const handleFind = (e) => {
+        e.preventDefault();
+        navigate("/user/find/idView"); // "회원가입" 버튼 클릭 시 "/user/signup"으로 이동
+    };
     return (
         <div class="findIdBox mainBox">
             <form accept="">
                 <div>
-                    <div class="findHeader">
-                    <img src="/images/logo.png" alt="로그인 화면 이미지" />
-                    <h3>ID찾기 수단을 선택해주세요</h3>
+                    <div className="findHeader">
+                        <img src="/images/logo.png" alt="로그인 화면 이미지" />
+                        <h3>ID찾기 수단을 선택해주세요</h3>
                     </div>
                     <div className="searchBtn">
                         <button className="hpFind"
@@ -27,10 +33,9 @@ export default function FindId() {
                     {method === "hpFind" && <HpFind />}
                     {method === "EmailFind" && <EmailFind />}
                 </div>
-                <div class="findBtnBox">
+                <div className="findBtnBox">
                     <Link to="/user/login" className="btnCancle">취소</Link>
-                    <button class="blueButton">찾기</button>
-                </div>
+                    <button className="blueButton" onClick={handleFind}>찾기</button>                </div>
             </form>
         </div>
     );
