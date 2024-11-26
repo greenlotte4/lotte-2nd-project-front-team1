@@ -1,4 +1,4 @@
-import Register from "../../components/user/login/register";
+import Register from "../../components/user/login/Register";
 import '../../styles/login.scss'
 
 export default function RegisterPage() {
