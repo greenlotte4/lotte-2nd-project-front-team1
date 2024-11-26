@@ -1,3 +1,4 @@
+
 import React from 'react';
 
 const Footer = () => {
@@ -16,9 +17,8 @@ const Footer = () => {
             <a href="/main/consult.html">지원문의</a>
           </div>
         </div>
-
-        {/* 푸터 하단 */}
         <div className="footer-bottom">
+          {/* prettier-ignore */}
           <p>
             사업자등록번호: 2024-1100-1800 통신판매업신고번호: 2024-부산진구-1118호<br />
             대표이사: 강중원 주소: 부산광역시 부산진구 중앙대로 749(범향빌딩), 그린컴퓨터아카데미 서면2별관<br />
