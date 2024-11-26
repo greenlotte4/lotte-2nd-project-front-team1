@@ -11,8 +11,6 @@ import ProjectPage from "../pages/app/project/ProjectPage";
 import MessagePage from "../pages/app/message/messagePage";
 import IdViewPage from "../pages/login/find/IdViewPage";
 
-import ProjectPage from "../pages/app/project/ProjectPage";
-
 //라우팅 정의
 const router = createBrowserRouter([
   { path: "/", element: <MainPage /> },
