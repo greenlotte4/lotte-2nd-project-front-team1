@@ -14,6 +14,7 @@ import IdViewPage from "../pages/login/find/IdViewPage";
 import CalendarPage from "../pages/app/calendar/CalendarPage";
 import FilePage from "../pages/app/file/FilePage";
 import PagePage from "../pages/app/page/Pagepage";
+import AppHome from "../pages/app/AppHomePage";
 
 //라우팅 정의
 const router = createBrowserRouter([
@@ -26,6 +27,9 @@ const router = createBrowserRouter([
   { path: "/user/findPass", element: <FindPassPage /> },
   { path: "/user/find/idView", element: <IdViewPage /> },
   { path: "/user/find/newPass", element: <NewPassPage /> },
+
+  // App Home
+  { path: "/app/home", element: <AppHome /> },
 
   { path: "/app/message", element: <MessagePage /> },
   { path: "/app/project", element: <ProjectPage /> },

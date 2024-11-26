@@ -1,5 +1,3 @@
-
-
 export default function MessageBox() {
   return (
     <main className="main-content">
