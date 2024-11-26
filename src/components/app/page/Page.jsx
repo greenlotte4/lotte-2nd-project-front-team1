@@ -9,7 +9,7 @@ export default function Page() {
     };
 
     useEffect(() => {
-      
+        
         // Sidebar toggle functionality
         const sidebar = document.querySelector(".sidebar");
         const toggleSidebarBtn = document.getElementById("toggle-sidebar");
