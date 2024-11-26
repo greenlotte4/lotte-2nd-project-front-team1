@@ -1,5 +1,5 @@
-import LoginFooter from "../../components/layout/loginFooter";
-import Login from "../../components/user/login/login";
+import LoginFooter from "../../components/layout/LoginFooter";
+import Login from "../../components/user/login/Login";
 import '../../styles/login.scss'
 
 export default function LoginPage() {
