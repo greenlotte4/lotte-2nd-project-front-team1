@@ -8,6 +8,7 @@ export default function Page() {
         setText(e.target.value);
     };
 
+    
     useEffect(() => {
       
         // Sidebar toggle functionality
