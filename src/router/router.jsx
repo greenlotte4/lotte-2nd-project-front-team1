@@ -11,7 +11,7 @@ import ProjectPage from "../pages/app/project/ProjectPage";
 import MessagePage from "../pages/app/message/messagePage";
 import IdViewPage from "../pages/login/find/IdViewPage";
 
-import CalendarPage from "../pages/app/calendar/calendarPage";
+import CalendarPage from "../pages/app/calendar/CalendarPage";
 import FilePage from "../pages/app/file/FilePage";
 import PagePage from "../pages/app/page/Pagepage";
 import IndexPage from "../pages/main/IndexPage";
