@@ -24,6 +24,15 @@ export default function ProjectSettingPage() {
                     </li>
                 </ul>
             </div>
+            <div className="setting-section">
+                <h3>초대하기</h3>
+                <input
+                  type="email"
+                  placeholder="이메일 입력"
+                  className="input-box"
+                />
+                <button className="action-btn invite-btn">초대하기</button>
+              </div>
         </div>
     );
 }
