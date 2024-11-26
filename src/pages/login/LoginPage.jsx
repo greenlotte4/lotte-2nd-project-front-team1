@@ -13,6 +13,5 @@ export default function LoginPage() {
                     <LoginFooter />
                 </div>
             </section></>
-
     );
 }
