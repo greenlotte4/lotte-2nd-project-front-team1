@@ -14,11 +14,18 @@ import IdViewPage from "../pages/login/find/IdViewPage";
 import CalendarPage from "../pages/app/calendar/calendarPage";
 import FilePage from "../pages/app/file/FilePage";
 import PagePage from "../pages/app/page/Pagepage";
+import FuncPage from "../pages/main/FuncPage";
+import SubscriptionPage from "../pages/main/SubscriptionPage";
+import SupportPage from "../pages/main/SupportPage";
 
 
 //라우팅 정의
 const router = createBrowserRouter([
   { path: "/", element: <MainPage /> },
+
+  { path: "/main/func", element: <FuncPage /> },
+  { path: "/main/subscription", element: <SubscriptionPage /> },
+  { path: "/main/support", element: <SupportPage /> },
   
   { path: "/user/login", element: <LoginPage /> },
   { path: "/user/terms", element: <TermsPage /> },
