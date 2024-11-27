@@ -3,8 +3,11 @@ import '../../../styles/login.scss'
 
 export default function IdViewPage() {
     return (
+        <section className="loginBody">
+
             <div className="findBox">
-                <IdView/>
+                <IdView />
             </div>
+        </section>
     );
 }

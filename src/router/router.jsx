@@ -6,26 +6,38 @@ import FindIdPage from "../pages/login/find/FindIdPage";
 import FindPassPage from "../pages/login/find/FindPassPage";
 import NewPassPage from "../pages/login/find/NewPassPage";
 import TermsPage from "../pages/login/TermsPage";
-
 import ProjectPage from "../pages/app/project/ProjectPage";
-import MessagePage from "../pages/app/message/MessagePage";
-import IdViewPage from "../pages/login/find/IdViewPage";
+import MessagePage from "../pages/app/message/messagePage";
+import FindViewPage from "../pages/login/find/FindViewPage";
 
 import CalendarPage from "../pages/app/calendar/CalendarPage";
 import FilePage from "../pages/app/file/FilePage";
 import PagePage from "../pages/app/page/Pagepage";
 import AppHome from "../pages/app/AppHomePage";
 
+import FuncPage from "../pages/main/FuncPage";
+import SubscriptionPage from "../pages/main/SubscriptionPage";
+import SupportPage from "../pages/main/SupportPage";
+import IndexPage from "../pages/main/IndexPage";
+import IntroPage from "../pages/main/IntroPage";
+
 //라우팅 정의
 const router = createBrowserRouter([
   { path: "/", element: <MainPage /> },
 
+  { path: "/main/func", element: <FuncPage /> },
+  { path: "/main/subscription", element: <SubscriptionPage /> },
+  { path: "/main/support", element: <SupportPage /> },
+  
+  { path: "/main/index", element: <IndexPage /> },
+  { path: "/main/intro", element: <IntroPage /> },
+   
   { path: "/user/login", element: <LoginPage /> },
   { path: "/user/terms", element: <TermsPage /> },
   { path: "/user/register", element: <RegisterPage /> },
   { path: "/user/findId", element: <FindIdPage /> },
   { path: "/user/findPass", element: <FindPassPage /> },
-  { path: "/user/find/idView", element: <IdViewPage /> },
+  { path: "/user/find/findView", element: <FindViewPage /> },
   { path: "/user/find/newPass", element: <NewPassPage /> },
 
   // App Home

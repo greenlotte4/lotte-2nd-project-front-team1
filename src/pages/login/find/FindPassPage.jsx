@@ -4,7 +4,6 @@ import '../../../styles/login.scss'
 export default function FindPassPage() {
     return (
         <section className="loginBody">
-
             <div className="findBox mainBox">
                 <FindPass />
             </div>
