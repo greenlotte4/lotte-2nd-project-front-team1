@@ -1,5 +1,5 @@
 import { useState } from "react";
-import StatusMessage from "./statusMessage";
+import StatusMessage from "./StatusMessage";
 import ContactRow from "./ContactRow";
 import EmailRow from "./EmailRow";
 import { Link, useNavigate } from "react-router-dom";
