@@ -9,7 +9,7 @@
 
   .content-container {
     position: relative;
-    min-width: 1024px;
+    min-width: 700px;
     height: 100%;
     margin: 0 auto;
     width: 100%;
@@ -25,13 +25,13 @@
     display: flex;
     flex-direction: row;
     transition: left 0.3s ease;
-      /* 사이드바 상태에 따른 부드러운 이동 효과 */
+    /* 사이드바 상태에 따른 부드러운 이동 효과 */
   }
-    /* 사이드바가 숨겨졌을 때 적용할 클래스 */
-    .main-content.hidden-sidebar {
-      left: 10px;
-      /* 사이드바가 숨겨졌을 때의 위치 */
-    }
+  /* 사이드바가 숨겨졌을 때 적용할 클래스 */
+  .main-content.hidden-sidebar {
+    left: 10px;
+    /* 사이드바가 숨겨졌을 때의 위치 */
+  }
 }
 // App의 모든 body
 body:has(.Appcontainer) {
