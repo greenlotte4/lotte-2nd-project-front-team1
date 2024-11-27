@@ -185,7 +185,7 @@ textarea {
 
 }
 
-.tarmsBox {
+.termsBox {
     width: 600px;
     padding: 20px;
     display: flex;
@@ -214,8 +214,8 @@ textarea {
         /* 1.05배로 크기를 5% 키움 */
     }
 
-    .tarmsText1,
-    .tarmsText2 {
+    .termsText1,
+    .termsText2 {
         width: auto;
         height: auto;
         gap: 10px;
@@ -226,8 +226,8 @@ textarea {
     }
 
     /* 텍스트와 체크박스 모두 오른쪽 정렬 */
-    .tarmsText1>div,
-    .tarmsText2>div {
+    .termsText1>div,
+    .termsText2>div {
         display: flex;
         justify-content: flex-end;
         /* 오른쪽 끝으로 배치 */
@@ -286,7 +286,23 @@ textarea {
         box-shadow: 0 3px 3px #0000001a;
         border-radius: 10px;
     }
+    table button{
+        border: none;
+        margin: 0;
+        vertical-align: middle; /* 세로 중앙 정렬 */
+        cursor: pointer; /* 마우스 커서를 포인터로 변경 */
 
+    }
+    table button:hover{
+        background-color: #f0f0f0; /* 배경색 변경 */
+        border-radius: 4px;        /* 모서리를 둥글게 */
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* 그림자 추가 */
+
+    }
+    table img{
+        width: auto;
+        height: 30px;
+    }
     td:first-child {
         width: 100px;
         /* 왼쪽 셀의 너비를 100px로 고정 */
@@ -295,6 +311,7 @@ textarea {
         color: #929292;
     }
 
+  
     td {
         padding: 5px;
     }
@@ -353,27 +370,7 @@ textarea {
         height: 20px;
     }
 
-    /* 스타일링 - 버튼 */
-    button[type="button"] {
-        background-color: #f0f0f0;
-        border: 1px solid #ccc;
-        padding: 5px 10px;
-        cursor: pointer;
-        border-radius: 4px;
-        /* 버튼 둥글게 처리 */
-        transition: background-color 0.3s ease;
-        /* 버튼 색 변화에 부드러운 트랜지션 효과 추가 */
-    }
-
-    button[type="button"]:hover {
-        background-color: #e0e0e0;
-        /* 버튼 호버 시 색상 변화 */
-    }
-
-    button[type="button"]:active {
-        transform: scale(0.98);
-        /* 클릭 시 버튼 살짝 작아짐 */
-    }
+ 
 
     /* 추가적인 스타일링 */
     h2 {

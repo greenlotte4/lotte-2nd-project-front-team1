@@ -4,8 +4,7 @@ import { postUser } from "../../../api/user/userAPI";
 
 const initState = {
     uid: "",
-    pass1: "",
-    pass2: "",
+    pass: "",
     name: "",
     email: "",
     hp: "",
@@ -16,20 +15,35 @@ const initState = {
 export default function Register() {
     const navigate = useNavigate();
     const [user, setUser] = useState({ ...initState });
+    const [passwordMatch, setPasswordMatch] = useState(true);
+    const [authCode, setAuthCode] = useState("");
+    const [pass2, setPass2] = useState("");
 
-    const chabgeHandler = (e) => {
-        e.preventDefault();
-        setUser({ ...user, [e.target.name]: e.target.value });
-        // pass1과 pass2 비교
-        if (name === "pass1" || name === "pass2") {
-            if (user.pass1 !== user.pass2) {
-                setError("비밀번호가 일치하지 않습니다.");
+
+    const changeHandler = (e) => {
+        const { name, value } = e.target;
+
+        const updatedUser = { ...user, [name]: value };
+        setUser(updatedUser);
+
+        // pass과 pass2 비교
+        if (name === "pass2") {
+            setPass2(value);
+            // pass과 pass2 비교
+            if (user.pass !== value) {
+                setPasswordMatch(false); // 일치하지 않으면 false
             } else {
-                setError(""); // 일치하면 오류 메시지 제거
+                setPasswordMatch(true);  // 일치하면 true
             }
+        } else {
+            const updatedUser = { ...user, [name]: value };
+            setUser(updatedUser);
         }
-    };
 
+        if (name === "auth") {
+            setAuthCode(value);  // 인증번호 상태 업데이트
+        }
+    }
     const submitHandler = (e) => {
         e.preventDefault();
 
@@ -44,7 +58,7 @@ export default function Register() {
     }
 
     return (
-        <div classNameName="register">
+        <div className="register">
             <form onSubmit={submitHandler}>
                 <h2>사이트 이용정보 입력</h2>
                 <table border="0">
@@ -56,36 +70,48 @@ export default function Register() {
                                     name="uid"
                                     placeholder="아이디 입력"
                                     value={user.uid}
-                                    onChange={chabgeHandler} />
+                                    onChange={changeHandler} />
                                 <button type="button">
-                                    <img src="./images/chk_id.gif" alt="중복확인" />
+                                    <img src="/images/chk_id.gif" alt="중복확인" />
                                 </button>
                                 <span className="uidResult"></span>
                             </td>
                         </tr>
                         <tr>
                             <td>비밀번호</td>
-                            <td className="input-without-button">
-                                <input type="pass"
-                                    name="pass1"
+                            <td className="input-with-button">
+                                <span>특수문자/영문 대소문자 구별없이 8글자 이상</span>
+                                <input type="password"
+                                    name="pass"
                                     placeholder="비밀번호 입력"
-                                    value={user.pass1}
-                                    onChange={chabgeHandler} />
+                                    value={user.pass}
+                                    onChange={changeHandler} />
+                                <span
+                                    style={{
+                                        color: passwordMatch ? "green" : "red",
+                                        fontSize: "12px",
+                                    }}
+                                >
+                                    {passwordMatch
+                                        ? " 일치합니다."
+                                        : " 일치하지 않습니다."}
+                                </span>
                             </td>
-                            <span style={{ color: passwordMatch ? 'green' : 'red' }}>
-                                {passwordMatch ? '비밀번호가 일치합니다.' : '비밀번호가 일치하지 않습니다.'}
-                            </span>
+
                         </tr>
                         <tr>
                             <td>비밀번호확인</td>
-                            <td className="input-without-button">
-                                <input type="pass"
+                            <td className="input-with-button">
+                                <input type="password"
                                     name="pass2"
                                     placeholder="비밀번호 확인"
-                                    value={user.pass2}
-                                    onChange={chabgeHandler}
+                                    value={pass2}
+                                    onChange={changeHandler}
                                 />
                             </td>
+                        </tr>
+                        <tr>
+
                         </tr>
                     </tbody>
                 </table>
@@ -98,7 +124,7 @@ export default function Register() {
                                     name="name"
                                     placeholder="이름 입력"
                                     value={user.name}
-                                    onChange={chabgeHandler} />
+                                    onChange={changeHandler} />
                             </td>
                         </tr>
                         <tr>
@@ -108,18 +134,18 @@ export default function Register() {
                                     name="email"
                                     placeholder="이메일 입력"
                                     value={user.email}
-                                    onChange={chabgeHandler} />
+                                    onChange={changeHandler} />
                                 <button type="button">
-                                    <img src="./images/chk_auth.gif" alt="인증번호 받기" />
+                                    <img src="/images/chk_auth.gif" alt="인증번호 받기" />
                                 </button>
                                 <div className="auth">
                                     <input type="text"
                                         name="auth"
                                         placeholder="인증번호 입력"
-                                        value={user.uid}
-                                        onChange={chabgeHandler} />
+                                        value={authCode}
+                                        onChange={changeHandler} />
                                     <button type="button">
-                                        <img src="./images/chk_confirm.gif" alt="확인" />
+                                        <img src="/images/chk_confirm.gif" alt="확인" />
                                     </button>
                                 </div>
                             </td>
@@ -131,7 +157,7 @@ export default function Register() {
                                     name="hp"
                                     placeholder="전화번호 입력"
                                     value={user.hp}
-                                    onChange={chabgeHandler} />
+                                    onChange={changeHandler} />
                             </td>
                         </tr>
                         <tr>
@@ -143,10 +169,10 @@ export default function Register() {
                                     className="short-input"
                                     placeholder="우편번호"
                                     value={user.zip}
-                                    onChange={chabgeHandler}
+                                    onChange={changeHandler}
                                 />
                                 <button type="button">
-                                    <img src="./images/chk_post.gif" alt="우편번호찾기" />
+                                    <img src="/images/chk_post.gif" alt="우편번호찾기" />
                                 </button>
                                 <input
                                     type="text"
@@ -154,7 +180,7 @@ export default function Register() {
                                     className="long-input"
                                     placeholder="주소 검색"
                                     value={user.addr1}
-                                    onChange={chabgeHandler}
+                                    onChange={changeHandler}
                                 />
                                 <input
                                     type="text"
@@ -162,7 +188,7 @@ export default function Register() {
                                     className="long-input"
                                     placeholder="상세주소 입력"
                                     value={user.addr2}
-                                    onChange={chabgeHandler}
+                                    onChange={changeHandler}
                                 />
                             </td>
                         </tr>
