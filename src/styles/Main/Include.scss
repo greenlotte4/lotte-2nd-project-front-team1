@@ -22,7 +22,6 @@
 body {
   margin: 0;
   font-family: KakaoRegular, sans-serif;
-  color: #fff;
 }
 
 /* 헤더 스타일 */
@@ -39,10 +38,7 @@ body {
   }
 
   .logo img {
-    height: 30px;
-    border: 1px solid #333;
-    border-radius: 6px;
-    padding: 13px 24px;
+    width: 35%;
   }
 
   .nav {
@@ -58,6 +54,7 @@ body {
           color: #333;
           font-weight: bold;
           padding: 8px 10px;
+          font-size: 16px;
 
           &:hover {
             color: #00c473;
@@ -124,7 +121,7 @@ body {
     }
 
     .footer-logo img {
-      height: 40px;
+      width: 70%;
     }
 
     .footer-links {
@@ -132,6 +129,7 @@ body {
         margin-right: 15px;
         color: #ccc;
         text-decoration: none;
+        font-size: 16px;
 
         &:hover {
           color: #1db954;
@@ -140,10 +138,12 @@ body {
     }
 
     .footer-bottom {
-      font-size: 13px;
-      padding-top: 20px;
-      line-height: 3;
-
+      p {
+        font-size: 13px;
+        padding-top: 20px;
+        line-height: 1.5;
+      }
+ 
       a {
         color: #ccc;
         text-decoration: none;

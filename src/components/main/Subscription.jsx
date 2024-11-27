@@ -1,11 +1,13 @@
-import React from 'react';
+import React from "react";
 
 const Subscription = () => {
   return (
     <main className="main-content Subs-content">
       <div className="main-title">
         <div className="sub-title">
-          <h1>우리 팀에 맞는 <span>플랜</span> 선택</h1>
+          <h1>
+            우리 팀에 맞는 <span>플랜</span> 선택
+          </h1>
           <p>스타트업부터 대기업까지 맞춤형 플랜을 제공합니다.</p>
         </div>
       </div>
@@ -16,10 +18,13 @@ const Subscription = () => {
         <div className="plan-card">
           <h2>FREE</h2>
           <p>기본 기능을 무료로 이용하세요.</p>
+          <strong>
+            멤버당 <span> 0원 </span>/월
+          </strong>
           <ul>
             <li>최대 3명의 사용자</li>
             <li>기본 분석 도구</li>
-            <li>5GB 저장 공간</li>
+            <li>1GB 저장 공간</li>
           </ul>
           <button>시작하기</button>
         </div>
@@ -28,10 +33,13 @@ const Subscription = () => {
         <div className="plan-card premium">
           <h2>PREMIUM</h2>
           <p>팀 협업과 고급 기능을 제공합니다.</p>
+          <strong>
+            멤버당 <span> 8,000원 </span>/월
+          </strong>
           <ul>
-            <li>최대 50명의 사용자</li>
+            <li>최대 10명의 사용자</li>
             <li>고급 분석 도구</li>
-            <li>50GB 저장 공간</li>
+            <li>2GB 저장 공간</li>
           </ul>
           <button>지금 업그레이드</button>
         </div>
@@ -40,6 +48,9 @@ const Subscription = () => {
         <div className="plan-card">
           <h2>ENTERPRISE</h2>
           <p>대규모 기업을 위한 맞춤 솔루션.</p>
+          <strong>
+            멤버당 <span> 11,000원 </span>/월
+          </strong>
           <ul>
             <li>무제한 사용자</li>
             <li>맞춤형 지원</li>
@@ -65,13 +76,13 @@ const Subscription = () => {
             <tr>
               <td>사용자 수</td>
               <td>최대 3명</td>
-              <td>최대 50명</td>
+              <td>최대 10명</td>
               <td>무제한</td>
             </tr>
             <tr>
               <td>저장 공간</td>
-              <td>5GB</td>
-              <td>50GB</td>
+              <td>1GB</td>
+              <td>2GB</td>
               <td>무제한</td>
             </tr>
             <tr>
@@ -102,7 +113,10 @@ const Subscription = () => {
 
         <div className="faq-message admin-message">
           <div className="message-bubble">
-            <p>무료 버전은 기본적인 기능을 제공하며, 유료 버전은 추가적인 저장 공간과 고급 분석 기능을 제공합니다.</p>
+            <p>
+              무료 버전은 기본적인 기능을 제공하며, 유료 버전은 추가적인 저장
+              공간과 고급 분석 기능을 제공합니다.
+            </p>
           </div>
         </div>
 
@@ -114,7 +128,10 @@ const Subscription = () => {
 
         <div className="faq-message admin-message">
           <div className="message-bubble">
-            <p>사용 인원의 변동에 따라 유연하게 팀을 관리할 수 있으며, 추가 사용자에 대한 과금은 자동으로 적용됩니다.</p>
+            <p>
+              사용 인원의 변동에 따라 유연하게 팀을 관리할 수 있으며, 추가
+              사용자에 대한 과금은 자동으로 적용됩니다.
+            </p>
           </div>
         </div>
 
@@ -126,7 +143,10 @@ const Subscription = () => {
 
         <div className="faq-message admin-message">
           <div className="message-bubble">
-            <p>교육기관, NGO, 비영리단체 및 사회적 기업에게는 특별 할인이 제공됩니다. 세부 사항은 별도로 문의해 주세요.</p>
+            <p>
+              교육기관, NGO, 비영리단체 및 사회적 기업에게는 특별 할인이
+              제공됩니다. 세부 사항은 별도로 문의해 주세요.
+            </p>
           </div>
         </div>
       </div>
