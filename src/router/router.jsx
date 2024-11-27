@@ -10,11 +10,26 @@ import ProjectPage from "../pages/app/project/ProjectPage";
 import MessagePage from "../pages/app/message/messagePage";
 import FindViewPage from "../pages/login/find/FindViewPage";
 
+import CalendarPage from "../pages/app/calendar/CalendarPage";
+import FilePage from "../pages/app/file/FilePage";
+import PagePage from "../pages/app/page/Pagepage";
+import FuncPage from "../pages/main/FuncPage";
+import SubscriptionPage from "../pages/main/SubscriptionPage";
+import SupportPage from "../pages/main/SupportPage";
+import IndexPage from "../pages/main/IndexPage";
+import IntroPage from "../pages/main/IntroPage";
 
 //라우팅 정의
 const router = createBrowserRouter([
   { path: "/", element: <MainPage /> },
-  { path: "/app/message", element: <MessagePage /> },
+
+  { path: "/main/func", element: <FuncPage /> },
+  { path: "/main/subscription", element: <SubscriptionPage /> },
+  { path: "/main/support", element: <SupportPage /> },
+  
+  { path: "/main/index", element: <IndexPage /> },
+  { path: "/main/intro", element: <IntroPage /> },
+   
   { path: "/user/login", element: <LoginPage /> },
   { path: "/user/terms", element: <TermsPage /> },
   { path: "/user/register", element: <RegisterPage /> },
@@ -22,8 +37,12 @@ const router = createBrowserRouter([
   { path: "/user/findPass", element: <FindPassPage /> },
   { path: "/user/find/findView", element: <FindViewPage /> },
   { path: "/user/find/newPass", element: <NewPassPage /> },
-  { path: "/project", element: <ProjectPage /> },
 
+  { path: "/app/message", element: <MessagePage /> },
+  { path: "/app/project", element: <ProjectPage /> },
+  { path: "/app/calendar", element: <CalendarPage /> },
+  { path: "/app/file", element: <FilePage /> },
+  { path: "/app/page", element: <PagePage /> },
 ]);
 
 // 라우터 내보내기

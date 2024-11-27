@@ -1,0 +1,153 @@
+/* 
+    날짜 : 2024/11/26
+    이름 : 강유정
+    내용 : intro.css 파일생성 
+*/
+
+@font-face {
+  font-family: "KakaoRegular";
+  src: url("/fonts/KakaoRegular.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+/* 공통 스타일 */
+body {
+  font-family: "Arial", sans-serif;
+  margin: 0;
+  padding: 0;
+  line-height: 1.6;
+  background-color: #f9f9f9;
+}
+h2 {
+  margin: 20px 0;
+  text-align: center;
+  color: #494949;
+}
+
+p {
+  color: #686767;
+}
+
+.highlight-green {
+  color: #00c473;
+  font-weight: bold;
+}
+
+/*intro*/
+.intro1 {
+  display: block; /* 이미지를 블록 요소로 처리 */
+  margin: 20px auto; /* 상하 간격 추가 및 중앙 정렬 */
+  max-width: 1200px;
+  height: 550px;
+  border-radius: 5px;
+}
+
+.intro2 {
+  display: block; /* 이미지를 블록 요소로 처리 */
+  margin: 20px auto; /* 상하 간격 추가 및 중앙 정렬 */
+  max-width: 1000px;
+}
+
+/* History Timeline 스타일 */
+.timeline-container {
+  display: flex;
+  max-width: 1000px;
+  margin: 0 auto; /* 중앙 정렬 */
+  padding: 20px;
+}
+.timeline-title {
+  flex: 1;
+  font-size: 24px;
+  font-weight: bold;
+  padding-right: 20px;
+  color: #333;
+  border-right: 2px solid #ddd; /* 분리선 */
+  margin-left: 170px;
+}
+.timeline {
+  position: relative;
+  flex: 2;
+}
+.timeline::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 10px; /* 타임라인 선 위치 */
+  width: 2px;
+  height: 100%;
+}
+.timeline-item {
+  margin-bottom: 40px; /* 각 항목 간격 */
+  padding-left: 30px; /* 텍스트 정렬 */
+  position: relative;
+}
+.timeline-item::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0; /* 초록색 동그라미 위치 */
+  width: 16px;
+  height: 16px;
+  background-color: #00c853;
+  border-radius: 50%;
+  border: 2px solid #fff;
+  transform: translate(-50%, 0); /* 선 중심에 맞춤 */
+  z-index: 2; /* 회색 선 위에 위치 */
+}
+.timeline-item h3 {
+  font-size: 20px;
+  font-weight: bold;
+  color: #00c853;
+  margin: 0;
+}
+.timeline-item p {
+  margin: 5px 0 0;
+  font-size: 16px;
+  color: #555;
+}
+
+/* Management 카드 스타일 */
+.management-container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+.card {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 20px;
+  background-color: #f9f9f9;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+.card img {
+  width: 100%;
+  height: auto;
+  max-width: 100px;
+  margin-bottom: 10px;
+  border-radius: 50px;
+}
+
+.card h3 {
+  margin: 10px 0 5px;
+  font-size: 18px;
+  color: #555;
+}
+.card p {
+  margin: 0;
+  font-size: 14px;
+  color: #555;
+}
+
+/* Naver 지도 스타일 */
+#map {
+  width: 100%;
+  height: 500px;
+}
+.map-info {
+  margin: 20px 0;
+  text-align: center;
+}

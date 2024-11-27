@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import HpFind from "./hpFind";
+import HpFind from "./HpFind";
 import EmailFind from "./EmailFind";
 
 export default function FindId() {

@@ -10,11 +10,10 @@
     <script src="/javascript/app/project/project.js"></script>
     <script src="/javascript/include/aside.js"></script>
 */}
-import React, { useState } from "react";
+import { useState } from "react";
 import MainPage from "./ProjectMainPage";
 import TimelinePage from "./ProjectTimelinePage";
 import SettingPage from "./ProjectSettingPage";
-import ProjectSidebar from "./ProjectSidebar";
 
 export default function Project() {
     const [activePage, setActivePage] = useState("main");
@@ -33,41 +32,38 @@ export default function Project() {
     };
 
     return (
-        <div id="container">
-            <div className="content-container">
-                <ProjectSidebar />
-                <main className="main-content">
-                    {/* 버튼 그룹 */}
-                    <div className="table-actions">
-                        <button
-                            className={`action-btn ${
-                                activePage === "main" ? "active" : ""
-                            }`}
-                            onClick={() => setActivePage("main")}
-                        >
-                            기본 화면
-                        </button>
-                        <button
-                            className={`action-btn ${
-                                activePage === "timeline" ? "active" : ""
-                            }`}
-                            onClick={() => setActivePage("timeline")}
-                        >
-                            타임라인
-                        </button>
-                        <button
-                            className={`action-btn ${
-                                activePage === "settings" ? "active" : ""
-                            }`}
-                            onClick={() => setActivePage("settings")}
-                        >
-                            설정
-                        </button>
-                    </div>
+        <div>
+            {/* 버튼 그룹 */}
+            {/* 동적 페이지 렌더링 */}
+            <div className="project-container">
+                <div className="table-actions">
+                <button
+                    className={`action-btn ${
+                        activePage === "main" ? "active" : ""
+                    }`}
+                    onClick={() => setActivePage("main")}
+                >
+                    기본 화면
+                </button>
+                <button
+                    className={`action-btn ${
+                        activePage === "timeline" ? "active" : ""
+                    }`}
+                    onClick={() => setActivePage("timeline")}
+                >
+                    타임라인
+                </button>
+                <button
+                    className={`action-btn ${
+                        activePage === "settings" ? "active" : ""
+                    }`}
+                    onClick={() => setActivePage("settings")}
+                >
+                    설정
+                </button>
+            </div>
 
-                    {/* 동적 페이지 렌더링 */}
-                    <div className="project-container">{renderPage()}</div>
-                </main>
+                {renderPage()}
             </div>
         </div>
     );
