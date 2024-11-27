@@ -50,5 +50,6 @@ export default function MessageBox() {
         </div>
       </div>
     </main>
+    
   );
 }

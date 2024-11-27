@@ -14,4 +14,5 @@ export default function Message() {
       <MessageBox />
     </AppLayout>
   );
+  
 }
