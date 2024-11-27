@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 
 export default function Terms() {
     return (
-        <div class="termsBox mainBox">
+        <div>
             <div class="termsText1">
                 <h3>사이트 이용약관</h3>
                 <textarea name="" id="" readonly>

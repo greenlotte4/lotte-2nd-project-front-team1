@@ -6,10 +6,9 @@ import FindIdPage from "../pages/login/find/FindIdPage";
 import FindPassPage from "../pages/login/find/FindPassPage";
 import NewPassPage from "../pages/login/find/NewPassPage";
 import TermsPage from "../pages/login/TermsPage";
-
 import ProjectPage from "../pages/app/project/ProjectPage";
 import MessagePage from "../pages/app/message/messagePage";
-import IdViewPage from "../pages/login/find/IdViewPage";
+import FindViewPage from "../pages/login/find/FindViewPage";
 
 
 //라우팅 정의
@@ -21,7 +20,7 @@ const router = createBrowserRouter([
   { path: "/user/register", element: <RegisterPage /> },
   { path: "/user/findId", element: <FindIdPage /> },
   { path: "/user/findPass", element: <FindPassPage /> },
-  { path: "/user/find/idView", element: <IdViewPage /> },
+  { path: "/user/find/findView", element: <FindViewPage /> },
   { path: "/user/find/newPass", element: <NewPassPage /> },
   { path: "/project", element: <ProjectPage /> },
 
