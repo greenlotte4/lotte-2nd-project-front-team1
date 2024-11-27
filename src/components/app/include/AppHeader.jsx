@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 export default function AppHeader({ onToggleSidebar }) {
   return (
@@ -11,32 +12,32 @@ export default function AppHeader({ onToggleSidebar }) {
         >
           <img src="/images/hamburger.png" alt="Toggle Sidebar" />
         </button>
-        <a href="" className="headerTitleName">
+        <Link to="/app/home" className="headerTitleName">
           <img src="/images/logo-2.png" alt="Logo" />
-        </a>
+        </Link>
       </div>
       <div className="headerArticle">
-        <a href="" className="headerIcon">
+        <Link to="/app/page" className="headerIcon">
           <img src="/images/book.png" alt="page" />
-        </a>
-        <a href="" className="headerIcon">
+        </Link>
+        <Link to="/app/calendar" className="headerIcon">
           <img src="/images/calendar.png" alt="calendar" />
-        </a>
-        <a href="" className="headerIcon">
+        </Link>
+        <Link to="/app/message" className="headerIcon">
           <img src="/images/messages.png" alt="message" />
-        </a>
-        <a href="" className="headerIcon">
+        </Link>
+        <Link to="/app/article" className="headerIcon">
           <img src="/images/form.png" alt="article" />
-        </a>
-        <a href="" className="headerIcon">
+        </Link>
+        <Link to="/app/project" className="headerIcon">
           <img src="/images/master-plan.png" alt="project" />
-        </a>
-        <a href="" className="headerIcon">
+        </Link>
+        <Link to="/app/drive" className="headerIcon">
           <img src="/images/folder-open.png" alt="drive" />
-        </a>
-        <a href="" className="headerIcon">
+        </Link>
+        <Link to="/app/setting" className="headerIcon">
           <img src="/images/settings.png" alt="drive" />
-        </a>
+        </Link>
 
         <img src="/images/user_Icon.png" alt="👤" className="profileImg" />
         <p className="ProfileName">billie Joel</p>

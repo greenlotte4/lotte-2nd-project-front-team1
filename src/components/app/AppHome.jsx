@@ -22,7 +22,11 @@ export default function AppHome() {
 
       <div className="main-page">
         <button className="icon-button">
-          <img src="image1.png" alt="페이지 아이콘" className="icon-image" />
+          <img
+            src="/images/book.png"
+            alt="페이지 아이콘"
+            className="icon-image"
+          />
           <div className="button-text">페이지</div>
         </button>
         <button className="icon-button">
@@ -42,11 +46,19 @@ export default function AppHome() {
           <div className="button-text">메신저</div>
         </button>
         <button className="icon-button">
-          <img src="image6.png" alt="켈린더 아이콘" className="icon-image" />
+          <img
+            src="/images/calendar.png"
+            alt="켈린더 아이콘"
+            className="icon-image"
+          />
           <div className="button-text">켈린더</div>
         </button>
         <button className="icon-button">
-          <img src="image7.png" alt="설정 아이콘" className="icon-image" />
+          <img
+            src="/images/settings.png"
+            alt="설정 아이콘"
+            className="icon-image"
+          />
           <div className="button-text">설정</div>
         </button>
       </div>
