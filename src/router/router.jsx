@@ -19,6 +19,7 @@ import SubscriptionPage from "../pages/main/SubscriptionPage";
 import SupportPage from "../pages/main/SupportPage";
 import IndexPage from "../pages/main/IndexPage";
 import IntroPage from "../pages/main/IntroPage";
+import MyPagePage from "../pages/app/myPage/MyPagePage";
 
 //라우팅 정의
 const router = createBrowserRouter([
@@ -38,6 +39,7 @@ const router = createBrowserRouter([
   { path: "/user/findPass", element: <FindPassPage /> },
   { path: "/user/find/findView", element: <FindViewPage /> },
   { path: "/user/find/newPass", element: <NewPassPage /> },
+  { path: "/user/myPage", element: <MyPagePage/> },
 
   // App Home
   { path: "/app/home", element: <AppHome /> },
