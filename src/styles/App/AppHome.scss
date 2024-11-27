@@ -1,0 +1,79 @@
+#AppHomeMain {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+
+  display: flex;
+  flex-direction: column;
+  /* 위아래 정렬 */
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+
+  /* 로고 스타일 */
+  .logo-container {
+    margin-bottom: 30px;
+    /* 버튼과의 간격 */
+    text-align: center;
+  }
+
+  .logo-image {
+    width: 500px;
+    /* 로고 크기 */
+    height: auto;
+  }
+
+  /* 버튼 컨테이너 */
+  .main-page {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr); /* 4열로 버튼 배치 */
+    /* grid-template-columns: repeat(8, 1fr);/* 한줄로 버튼 배치 */
+    gap: 20px;
+    /* 버튼 간격 */
+    text-align: center;
+  }
+
+  /* 버튼 스타일 */
+  .icon-button {
+    width: 120px;
+    height: 120px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: #4caf50;
+    /* 버튼 배경색 */
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    border: none;
+    border-radius: 10px;
+    /* 버튼 모서리 둥글게 */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    /* 그림자 효과 */
+    cursor: pointer;
+    transition: transform 0.2s ease, background-color 0.2s ease;
+  }
+
+  /* 버튼 호버 효과 */
+  .icon-button:hover {
+    background-color: #45a049;
+    transform: translateY(-5px);
+    /* 약간 올라가는 효과 */
+  }
+
+  /* 아이콘 이미지 */
+  .icon-image {
+    width: 50px;
+    height: 50px;
+    margin-bottom: 10px;
+    object-fit: cover;
+  }
+
+  /* 텍스트 */
+  .button-text {
+    font-size: 14px;
+  }
+}

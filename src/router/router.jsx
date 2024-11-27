@@ -7,12 +7,14 @@ import FindPassPage from "../pages/login/find/FindPassPage";
 import NewPassPage from "../pages/login/find/NewPassPage";
 import TermsPage from "../pages/login/TermsPage";
 import ProjectPage from "../pages/app/project/ProjectPage";
-import MessagePage from "../pages/app/message/messagePage";
+import MessagePage from "../pages/app/message/MessagePage";
 import FindViewPage from "../pages/login/find/FindViewPage";
 
 import CalendarPage from "../pages/app/calendar/CalendarPage";
 import FilePage from "../pages/app/file/FilePage";
 import PagePage from "../pages/app/page/Pagepage";
+import AppHome from "../pages/app/AppHomePage";
+
 import FuncPage from "../pages/main/FuncPage";
 import SubscriptionPage from "../pages/main/SubscriptionPage";
 import SupportPage from "../pages/main/SupportPage";
@@ -37,6 +39,9 @@ const router = createBrowserRouter([
   { path: "/user/findPass", element: <FindPassPage /> },
   { path: "/user/find/findView", element: <FindViewPage /> },
   { path: "/user/find/newPass", element: <NewPassPage /> },
+
+  // App Home
+  { path: "/app/home", element: <AppHome /> },
 
   { path: "/app/message", element: <MessagePage /> },
   { path: "/app/project", element: <ProjectPage /> },

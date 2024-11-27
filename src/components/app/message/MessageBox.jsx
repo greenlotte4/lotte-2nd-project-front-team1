@@ -1,5 +1,3 @@
-
-
 export default function MessageBox() {
   return (
     <main className="main-content">
@@ -52,5 +50,6 @@ export default function MessageBox() {
         </div>
       </div>
     </main>
+    
   );
 }
