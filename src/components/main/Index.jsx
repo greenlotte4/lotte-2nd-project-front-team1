@@ -2,7 +2,7 @@ import React from "react";
 
 const Index = () => {
   return (
-    <main>
+    <main className="Index-Content">
       <div className="main1">
         <h1>유연하고 생산적인 협업</h1>
         <h1>HUB FLOW</h1>

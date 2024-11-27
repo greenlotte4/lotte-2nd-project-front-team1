@@ -2,9 +2,9 @@ import React from 'react';
 
 const Func = () => {
   return (
-    <div className="main-content">
+    <div className="main-content Func-content">
       <div className="main-title">
-        <div className="sub-title">
+        <div className="sub-title ">
           <h1>모든 <span>협업</span>이 이루어지는 곳</h1>
           <p>허브플로우에서 새로운 협업문화가 자라납니다.</p>
         </div>
