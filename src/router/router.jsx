@@ -7,7 +7,7 @@ import FindPassPage from "../pages/login/find/FindPassPage";
 import NewPassPage from "../pages/login/find/NewPassPage";
 import TermsPage from "../pages/login/TermsPage";
 import ProjectPage from "../pages/app/project/ProjectPage";
-import MessagePage from "../pages/app/message/messagePage";
+import MessagePage from "../pages/app/message/MessagePage";
 import FindViewPage from "../pages/login/find/FindViewPage";
 
 import CalendarPage from "../pages/app/calendar/CalendarPage";
