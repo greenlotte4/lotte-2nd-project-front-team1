@@ -1,17 +1,17 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 
 const Support = () => {
   // 상태 관리: 각 폼 필드의 값을 저장
   const [formData, setFormData] = useState({
-    name: '',
-    phone: '',
-    company: '',
-    position: '',
-    email: '',
-    industry: '',
-    people: '',
-    inquiry: '',
-    additionalInquiry: '',
+    name: "",
+    phone: "",
+    company: "",
+    position: "",
+    email: "",
+    industry: "",
+    people: "",
+    inquiry: "",
+    additionalInquiry: "",
     agreement: false,
   });
 
@@ -37,11 +37,17 @@ const Support = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     // 폼 데이터 전송 로직 (예: API 호출 등)
-    console.log('폼 제출:', formData);
+    console.log("폼 제출:", formData);
   };
 
   return (
-    <div className="form-container">
+    <div className="form-container Support-content">
+      <div class="main-title">
+        <div class="sub-title">
+          <h1>HUB FLOW <span>문의</span></h1>
+          <p>협업툴 전문 컨설턴트가 빠르게 안내드립니다.</p>
+        </div>
+      </div>
       <div className="feature-block">
         <div className="feature-content">
           <h1>신청자 정보</h1>
@@ -184,12 +190,15 @@ const Support = () => {
                 onChange={handleCheckboxChange}
               />
               <label htmlFor="agreement">
-                [필수] 요청하신 문의 내용에 대한 서비스 제공을 위해 개인정보 처리에 동의합니다.
+                [필수] 요청하신 문의 내용에 대한 서비스 제공을 위해 개인정보
+                처리에 동의합니다.
               </label>
             </div>
 
             {/* 제출 버튼 */}
-            <button type="submit" className="submit-btn">문의하기</button>
+            <button type="submit" className="submit-btn">
+              문의하기
+            </button>
           </form>
         </div>
       </div>

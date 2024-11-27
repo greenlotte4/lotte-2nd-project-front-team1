@@ -1,14 +1,13 @@
-
 import React from 'react';
 
 const Footer = () => {
   return (
-    <footer className="footer">
+    <footer className="footer main-footer">
       <div className="footer-container">
         {/* 푸터 상단 */}
         <div className="footer-top">
           <div className="footer-logo">
-            <img src="#" alt="HubFlow 로고" />
+            <img src="/images/logo.png" alt="HubFlow 로고" />
           </div>
           <div className="footer-links">
             <a href="/main/intro.html">소개</a>

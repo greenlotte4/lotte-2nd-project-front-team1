@@ -1,173 +1,157 @@
 /* 
-    날짜 : 2024/11/22
-    이름 : 박수정
-    내용 : 소개 스타일 생성
-
-    추가내역
-    -------------
-    11.25  강유정 - intro.scss 작성
+날짜 : 2024/11/21
+이름 : 박수정
+내용 : 헤더, 푸터 스타일 생성
 */
 
+/* 공통 스타일 */
 @font-face {
-    font-family: 'KakaoRegular';
-    src: url('../../../public/fonts/KakaoRegular.ttf') format('truetype');
-    font-weight: normal;
-    font-style: normal;
-  }
-  
-  /* 공통 스타일 */
-  body {
-    font-family: 'Arial', sans-serif;
-    margin: 0;
-    padding: 0;
-    line-height: 1.6;
-    background-color: #f9f9f9;
-  }
-  
-  h2 {
-    margin: 20px 0;
-    text-align: center;
-    color: #494949;
-  }
-  
-  p {
-    color: #686767;
-  }
-  
-  .highlight-green {
-    color: #00c473;
-    font-weight: bold;
-  }
-  
-  /* intro */
-  .intro1,
-  .intro2 {
-    display: block; /* 이미지를 블록 요소로 처리 */
-    margin: 20px auto; /* 상하 간격 추가 및 중앙 정렬 */
-  }
-  
-  .intro1 {
-    max-width: 1200px;
-    height: 550px;
-    border-radius: 5px;
-  }
-  
-  .intro2 {
-    max-width: 1000px;
-  }
-  
-  /* History Timeline 스타일 */
-  .timeline-container {
+  font-family: "KakaoRegular";
+  src: url("/fonts/KakaoRegular.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "KakaoRegular", sans-serif;
+}
+
+body {
+  margin: 0;
+  font-family: KakaoRegular, sans-serif;
+  color: #fff;
+}
+
+/* 헤더 스타일 */
+.main-header {
+  background-color: #fff;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  padding: 20px 24px;
+
+  .header-container {
     display: flex;
-    max-width: 1000px;
-    margin: 0 auto; /* 중앙 정렬 */
-    padding: 20px;
-  }
-  
-  .timeline-title {
-    flex: 1;
-    font-size: 24px;
-    font-weight: bold;
-    padding-right: 20px;
-    color: #333;
-    border-right: 2px solid #ddd; /* 분리선 */
-    margin-left: 170px;
-  }
-  
-  .timeline {
-    position: relative;
-    flex: 2;
-  
-    &::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 10px; /* 타임라인 선 위치 */
-      width: 2px;
-      height: 100%;
-    }
-  }
-  
-  .timeline-item {
-    margin-bottom: 40px; /* 각 항목 간격 */
-    padding-left: 30px; /* 텍스트 정렬 */
-    position: relative;
-  
-    &::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0; /* 초록색 동그라미 위치 */
-      width: 16px;
-      height: 16px;
-      background-color: #00c853;
-      border-radius: 50%;
-      border: 2px solid #fff;
-      transform: translate(-50%, 0); /* 선 중심에 맞춤 */
-      z-index: 2; /* 회색 선 위에 위치 */
-    }
-  
-    h3 {
-      font-size: 20px;
-      font-weight: bold;
-      color: #00c853;
-      margin: 0;
-    }
-  
-    p {
-      margin: 5px 0 0;
-      font-size: 16px;
-      color: #555;
-    }
-  }
-  
-  /* Management 카드 스타일 */
-  .management-container {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 20px;
-    padding: 20px;
+    align-items: center;
     max-width: 1200px;
     margin: 0 auto;
   }
-  
-  .card {
+
+  .logo img {
+    height: 30px;
+    border: 1px solid #333;
+    border-radius: 6px;
+    padding: 13px 24px;
+  }
+
+  .nav {
+    ul {
+      display: flex;
+      list-style: none;
+
+      li {
+        margin: 0 15px;
+
+        a {
+          text-decoration: none;
+          color: #333;
+          font-weight: bold;
+          padding: 8px 10px;
+
+          &:hover {
+            color: #00c473;
+          }
+        }
+      }
+    }
+  }
+
+  .buttons {
+    display: flex;
+    gap: 10px;
+    margin-left: auto;
+  }
+
+  .home,
+  .login {
+    padding: 13px 24px;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+  }
+
+  .home {
+    background-color: #fff;
+    color: #00c473;
     border: 1px solid #ddd;
-    border-radius: 8px;
-    padding: 20px;
-    background-color: #f9f9f9;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    text-align: center;
-  
-    img {
+
+    &:hover {
+      background-color: #f9f9f9;
+    }
+  }
+
+  .login {
+    background-color: #00c473;
+    color: #fff;
+    border: none;
+
+    &:hover {
+      background-color: #18a046;
+    }
+  }
+}
+
+/* 푸터 스타일 */
+.main-footer {
+  background-color: #333;
+  padding: 40px 20px;
+  color: #ccc;
+
+  .footer-container {
+    display: flex;
+    flex-direction: column;
+    max-width: 1200px;
+    margin: 0 auto;
+
+    .footer-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
       width: 100%;
-      height: auto;
-      max-width: 100px;
-      margin-bottom: 10px;
-      border-radius: 50px;
+      padding-bottom: 20px;
     }
-  
-    h3 {
-      margin: 10px 0 5px;
-      font-size: 18px;
-      color: #555;
+
+    .footer-logo img {
+      height: 40px;
     }
-  
-    p {
-      margin: 0;
-      font-size: 14px;
-      color: #555;
+
+    .footer-links {
+      a {
+        margin-right: 15px;
+        color: #ccc;
+        text-decoration: none;
+
+        &:hover {
+          color: #1db954;
+        }
+      }
+    }
+
+    .footer-bottom {
+      font-size: 13px;
+      padding-top: 20px;
+      line-height: 3;
+
+      a {
+        color: #ccc;
+        text-decoration: none;
+
+        &:hover {
+          color: #00c473;
+        }
+      }
     }
   }
-  
-  /* Naver 지도 스타일 */
-  #map {
-    width: 100%;
-    height: 500px;
-  }
-  
-  .map-info {
-    margin: 20px 0;
-    text-align: center;
-  }
-  
+}

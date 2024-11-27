@@ -2,7 +2,7 @@ import React from 'react';
 
 const Subscription = () => {
   return (
-    <main className="main-content">
+    <main className="main-content Subs-content">
       <div className="main-title">
         <div className="sub-title">
           <h1>우리 팀에 맞는 <span>플랜</span> 선택</h1>

@@ -2,7 +2,7 @@ import React from "react";
 
 const Intro = () => {
   return (
-    <main className="main-content">
+    <main className="main-content Intro-content">
       <div className="image-container">
         <img src="/images/intro1.png" alt="배경 이미지" className="intro1" />
       </div>
