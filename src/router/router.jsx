@@ -1,5 +1,4 @@
 import { createBrowserRouter } from "react-router-dom";
-import MainPage from "../pages/main/MainPage";
 import LoginPage from "../pages/login/LoginPage";
 import RegisterPage from "../pages/login/RegisterPage";
 import FindIdPage from "../pages/login/find/FindIdPage";
@@ -23,15 +22,15 @@ import IntroPage from "../pages/main/IntroPage";
 
 //라우팅 정의
 const router = createBrowserRouter([
-  { path: "/", element: <MainPage /> },
+  { path: "/", alias: ["/main/index"], element: <IndexPage /> },
 
   { path: "/main/func", element: <FuncPage /> },
   { path: "/main/subscription", element: <SubscriptionPage /> },
   { path: "/main/support", element: <SupportPage /> },
-  
+
   { path: "/main/index", element: <IndexPage /> },
   { path: "/main/intro", element: <IntroPage /> },
-   
+
   { path: "/user/login", element: <LoginPage /> },
   { path: "/user/terms", element: <TermsPage /> },
   { path: "/user/register", element: <RegisterPage /> },
