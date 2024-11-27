@@ -2,18 +2,19 @@ import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { login } from "../../../slices/userSlice";
+import { postUserLogin } from "../../../api/user/userAPI";
 
 const initState = {
     uid: "",
     pass: "",
 }
-
+// 토큰이 아직 아보내져서 나중에 따로 다시 해야함
 export default function Login() {
     const [user, setUser] = useState({ ...initState });
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
-    const chabgeHandler = (e) => {
+    const changeHandler = (e) => {
         e.preventDefault();
         setUser({ ...user, [e.target.name]: e.target.value });
     };
@@ -37,32 +38,34 @@ export default function Login() {
             <form onSubmit={subnitHandler}>
                 <div>
                     <table>
-                        <tr>
-                            <td>
-                                <img src="/images/user_Icon.png" alt="아이디" />
-                            </td>
-                            <td>
-                                <input type="text" 
-                                name="uid" 
-                                placeholder="아이디 입력" 
-                                value={user.uid}
-                                onChange={chabgeHandler}/>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <img src="/images/pass.jpg" alt="비밀번호" />
-                            </td>
-                            <td>
-                                <input
-                                    type="password"
-                                    name="pass"
-                                    placeholder="비밀번호 입력"
-                                    value={user.pass}
-                                    onChange={chabgeHandler}
-                                />
-                            </td>
-                        </tr>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <img src="/images/user_Icon.png" alt="아이디" />
+                                </td>
+                                <td>
+                                    <input type="text"
+                                        name="uid"
+                                        placeholder="아이디 입력"
+                                        value={user.uid}
+                                        onChange={changeHandler} />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <img src="/images/pass.jpg" alt="비밀번호" />
+                                </td>
+                                <td>
+                                    <input
+                                        type="password"
+                                        name="pass"
+                                        placeholder="비밀번호 입력"
+                                        value={user.pass}
+                                        onChange={changeHandler}
+                                    />
+                                </td>
+                            </tr>
+                        </tbody>
                     </table>
                     <div className="loginDiv">
                         <input type="checkbox" value="기억하기" />기억하기

@@ -1,28 +1,22 @@
+  /* 메인 콘텐츠 기존 스타일 */
+  .pagecontent {
+    display: block; /* flex가 아니라 block으로 설정 */
+    flex-grow: 1;
+    padding: 20px;
+    background-color: #ffffff;
+    overflow-y: auto;
+    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.05);
+  
 
-body {
-    margin: 0;
-    padding: 0;
-    font-family: 'Arial', sans-serif;
-    background-color: #f7f7f7;
-    display: flex;
-    height: auto;
-
-
-#container {
-    display: flex;
-    width: 100%;
-    margin: 0 auto;
-}
-
-#sidebar-container {
+  #sidebar-container {
     display: flex;
     flex-direction: column;
     background-color: #f4f4f4;
     transition: background-color 0.3s ease;
-}
+  }
 
-/* 사이드바 */
-.sidebar {
+  /* 사이드바 */
+  .sidebar {
     width: auto;
     background-color: #f4f4f4;
     height: 100vh;
@@ -34,24 +28,24 @@ body {
     transform: translateX(0);
     transition: transform 0.3s ease-in-out;
     z-index: 1000;
-}
+  }
 
-.sidebar-header {
+  .sidebar-header {
     display: flex;
     align-items: center;
     justify-content: space-between; /* 요소 간 간격 조절 */
     padding: 10px;
     background-color: #f4f4f4;
     border-bottom: 1px solid #ddd;
-}
+  }
 
-.sidebar-header h2 {
+  .sidebar-header h2 {
     margin: 0;
     font-size: 15px;
     flex-grow: 1; /* h2가 남은 공간을 차지 */
-}
+  }
 
-.sidebar-toggle-btn {
+  .sidebar-toggle-btn {
     position: absolute; /* 버튼을 절대 위치로 변경 */
     top: 26px; /* 화면 상단에서 26px 위치 */
     left: 130px; /* 사이드바가 닫혔을 때 버튼 위치 */
@@ -61,81 +55,79 @@ body {
     border-radius: 5px;
     padding: 10px;
     cursor: pointer;
-   
-}
+  }
 
-/* 사이드바 숨김 상태 */
-.sidebar.hidden {
-    display: none; /* 사이드바를 숨김 */  
-}
+  /* 사이드바 숨김 상태 */
+  .sidebar.hidden {
+    display: none; /* 사이드바를 숨김 */
+  }
 
-.search-link {
+  .search-link {
     text-decoration: none;
     color: #007bff;
     font-size: 14px;
     cursor: pointer;
-}
+  }
 
-.search-link:hover {
+  .search-link:hover {
     text-decoration: underline;
-}
+  }
 
-.menu ul {
+  .menu ul {
     list-style: none;
     padding: 0;
     margin: 0;
-}
+  }
 
-.menu li {
+  .menu li {
     padding: 10px 0;
     font-size: 16px;
     color: #555;
     cursor: pointer;
     transition: background-color 0.3s;
-}
+  }
 
-.menu li:hover {
+  .menu li:hover {
     background-color: #f0f0f0;
-}
-    /* 기본 스타일 */
-    nav.menu ul {
-            list-style-type: none;
-            padding: 0;
-        }
+  }
+  /* 기본 스타일 */
+  nav.menu ul {
+    list-style-type: none;
+    padding: 0;
+  }
 
-        nav.menu li {
-            cursor: pointer;
-            padding: 8px 12px;
-            background-color: #f0f0f0;
-            margin: 2px 0;
-        }
+  nav.menu li {
+    cursor: pointer;
+    padding: 8px 12px;
+    background-color: #f0f0f0;
+    margin: 2px 0;
+  }
 
-        nav.menu li:hover {
-            background-color: #e0e0e0;
-        }
+  nav.menu li:hover {
+    background-color: #e0e0e0;
+  }
 
+  /* 서브 메뉴 스타일 */
+  nav.menu .submenu li {
+    background-color: #e8e8e8;
+  }
 
-        /* 서브 메뉴 스타일 */
-        nav.menu .submenu li {
-            background-color: #e8e8e8;
-        }
+  /* 더보기 버튼 스타일 */
+  .more-button {
+    padding: 8px 12px;
+    background-color: #dcdcdc;
+    color: #333;
+    cursor: pointer;
+    margin-top: 10px;
+    text-align: center;
+  }
 
-        /* 더보기 버튼 스타일 */
-        .more-button {
-            padding: 8px 12px;
-            background-color: #dcdcdc;
-            color: #333;
-            cursor: pointer;
-            margin-top: 10px;
-            text-align: center;
-        }
+  .more-button:hover {
+    background-color: #b0b0b0;
+  }
 
-        .more-button:hover {
-            background-color: #b0b0b0;
-        }
-
-        .skeleton {
-            position: absolute;
+  .skeleton {
+    position: absolute;
     display: flex;
     flex-direction: column;
     padding: 20px;
@@ -144,193 +136,185 @@ body {
     height: auto;
     animation: fadeIn 0.3s ease-in-out;
     margin: 150px 600px;
-}
+  }
 
-/* 스켈레톤 요소 */
-.skeleton-title,
-.skeleton-text,
-.skeleton-box {
+  /* 스켈레톤 요소 */
+  .skeleton-title,
+  .skeleton-text,
+  .skeleton-box {
     background: rgba(227, 226, 224, 0.5); /* 기본 배경 */
     border-radius: 4px;
     position: relative;
     overflow: hidden;
-}
+  }
 
-/* 애니메이션 효과 */
-.skeleton-title {
+  /* 애니메이션 효과 */
+  .skeleton-title {
     width: 60%;
     height: auto;
-}
+  }
 
-.skeleton-text {
+  .skeleton-text {
     width: 100%;
     height: 15px;
-}
+  }
 
-.skeleton-box {
+  .skeleton-box {
     width: 100%;
     height: auto;
-}
+  }
 
-/* 섬머 효과 추가 */
-.skeleton-title::before,
-.skeleton-text::before,
-.skeleton-box::before {
+  /* 섬머 효과 추가 */
+  .skeleton-title::before,
+  .skeleton-text::before,
+  .skeleton-box::before {
     content: "";
     position: absolute;
     top: 0;
     left: -100%;
     width: 100%;
     height: 100%;
-    background: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.5) 50%, transparent 100%);
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      rgba(255, 255, 255, 0.5) 50%,
+      transparent 100%
+    );
     animation: shimmer 1.5s infinite;
-}
+  }
 
-/* 섬머 애니메이션 */
-@keyframes shimmer {
+  /* 섬머 애니메이션 */
+  @keyframes shimmer {
     0% {
-        transform: translateX(-100%);
+      transform: translateX(-100%);
     }
     100% {
-        transform: translateX(100%);
+      transform: translateX(100%);
     }
-}
+  }
 
-/* 메인 콘텐츠 기존 스타일 */
-.pageMain {
-    display: block; /* flex가 아니라 block으로 설정 */
-    flex-grow: 1;
-    padding: 20px;
+
+  .main-page {
+    margin: 100px 400px;
+    width: auto;
+    height: auto;
+  }
+
+  /* h1 스타일 */
+  .editable {
+    width: 700px;
+    max-width: 700px; /* 최대 너비를 700px로 설정 */
+    min-height: 20px; /* 최소 높이 설정 */
+    resize: none; /* 사용자가 크기 조절을 못하도록 설정 */
+    overflow: hidden; /* 스크롤바를 숨김 */
+    font-size: 40px; /* 폰트 크기 설정 */
+    font-weight: bold;
+    line-height: 1.4; /* 줄 간격 설정 */
+    border: none;
+    outline: none;
+    padding: 0%;
+  }
+  /* .editable의 최소 높이와 기본 높이를 다르게 설정 가능 */
+  .editable:empty {
+    min-height: 30px; /* 최소 높이를 30px로 설정 */
+  }
+  /* placeholder 스타일 */
+  .editable:empty::before {
+    content: attr(data-placeholder); /* data-placeholder 속성의 값 사용 */
+    color: #aaa; /* 연한 회색 텍스트 */
+    pointer-events: none; /* 안내 텍스트 클릭 불가능 */
+  }
+  .sub-title {
+    margin: 16px 30px;
+    border: none; /* 테두리 제거 */
+    outline: none; /* 포커스 시 외곽선 제거 */
+
+    width: 200px; /* 원하는 고정 크기 (너비) */
+    height: 20px;
+    white-space: nowrap; /* 텍스트가 줄 바꿈 없이 한 줄로 유지되도록 설정 */
+    overflow: hidden; /* 넘치는 텍스트 숨기기 */
+    text-overflow: ellipsis; /* 넘치는 텍스트를 "..."로 표시 */
+    padding: 5px; /* 패딩을 추가하여 텍스트와 테두리 사이에 공간을 둡니다 */
+  }
+
+  .editable-area {
+    max-width: 100%;
+    width: 100%;
+    word-break: break-word;
+    caret-color: rgb(55, 53, 47);
+    padding-left: 4px;
+    min-height: 1em;
+    color: rgb(55, 53, 47);
+    outline: none; /* 선택 시 기본 테두리 제거 */
+    position: relative;
+  }
+
+  /* Placeholder 스타일 */
+  .editable-area.placeholder::before {
+    content: attr(data-placeholder); /* placeholder 속성의 값 사용 */
+    color: #aaa; /* 연한 회색 텍스트 */
+    position: absolute;
+    top: 3px;
+    left: 5px;
+    pointer-events: none; /* 클릭 방지 */
+    font-size: 14px;
+  }
+
+  /* 모달 */
+  .modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+  }
+
+  .modal-content {
     background-color: #ffffff;
-    overflow-y: auto;
-    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.05);
+    padding: 20px;
+    border-radius: 8px;
+    width: 300px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    text-align: center;
+  }
 
+  .modal-content h3 {
+    margin-top: 0;
+    font-size: 18px;
+  }
 
-    .main-page {
-        margin: 100px 400px;
-        width: auto;
-        height: auto;
-    }
-    
-    /* h1 스타일 */
-    .editable {
-        width: 700px;
-        max-width: 700px; /* 최대 너비를 700px로 설정 */
-        min-height: 20px; /* 최소 높이 설정 */
-        resize: none; /* 사용자가 크기 조절을 못하도록 설정 */
-        overflow: hidden; /* 스크롤바를 숨김 */
-        font-size: 40px; /* 폰트 크기 설정 */
-        font-weight:bold;
-        line-height: 1.4; /* 줄 간격 설정 */
-        border: none;
-        outline: none;
-        padding: 0%;
-    }
-    /* .editable의 최소 높이와 기본 높이를 다르게 설정 가능 */
-    .editable:empty {
-        min-height: 30px; /* 최소 높이를 30px로 설정 */
-    }
-    /* placeholder 스타일 */
-    .editable:empty::before {
-        content: attr(data-placeholder); /* data-placeholder 속성의 값 사용 */
-        color: #aaa; /* 연한 회색 텍스트 */
-        pointer-events: none; /* 안내 텍스트 클릭 불가능 */
-    }
-    .sub-title{
-        margin: 16px 30px;
-        border: none;        /* 테두리 제거 */
-        outline: none;       /* 포커스 시 외곽선 제거 */
-    
-        width: 200px; /* 원하는 고정 크기 (너비) */
-        height: 20px;
-        white-space: nowrap; /* 텍스트가 줄 바꿈 없이 한 줄로 유지되도록 설정 */
-        overflow: hidden; /* 넘치는 텍스트 숨기기 */
-        text-overflow: ellipsis; /* 넘치는 텍스트를 "..."로 표시 */
-        padding: 5px; /* 패딩을 추가하여 텍스트와 테두리 사이에 공간을 둡니다 */
-    }
-    
-    .editable-area {
-        max-width: 100%;
-        width: 100%;
-        word-break: break-word;
-        caret-color: rgb(55, 53, 47);
-        padding-left: 4px;
-        min-height: 1em;
-        color: rgb(55, 53, 47);
-        outline: none; /* 선택 시 기본 테두리 제거 */
-        position: relative;
-    }
-    
-    /* Placeholder 스타일 */
-    .editable-area.placeholder::before {
-        content: attr(data-placeholder); /* placeholder 속성의 값 사용 */
-        color: #aaa; /* 연한 회색 텍스트 */
-        position: absolute;
-        top: 3px;
-        left: 5px;
-        pointer-events: none; /* 클릭 방지 */
-        font-size: 14px;
-    }
-    
-    /* 모달 */
-    .modal {
-        display: none;
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(0, 0, 0, 0.5);
-        justify-content: center;
-        align-items: center;
-    }
-    
-    .modal-content {
-        background-color: #ffffff;
-        padding: 20px;
-        border-radius: 8px;
-        width: 300px;
-        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-        text-align: center;
-    }
-    
-    .modal-content h3 {
-        margin-top: 0;
-        font-size: 18px;
-    }
-    
-    .modal-search-bar {
-        width: 100%;
-        padding: 10px;
-        margin: 15px -10px;
-        border: 1px solid #ddd;
-        border-radius: 5px;
-        font-size: 14px;
-    }
-    
-    .search-btn {
-        padding: 10px 20px;
-        background-color: #007bff;
-        color: #ffffff;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-    }
-    
-    .search-btn:hover {
-        background-color: #0056b3;
-    }
-    
-    .close {
-        position: absolute;
-        top: 10px;
-        right: 15px;
-        font-size: 20px;
-        cursor: pointer;
-    }
+  .modal-search-bar {
+    width: 100%;
+    padding: 10px;
+    margin: 15px -10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 14px;
+  }
 
+  .search-btn {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: #ffffff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
 
+  .search-btn:hover {
+    background-color: #0056b3;
+  }
 
-}
+  .close {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 20px;
+    cursor: pointer;
+  }
 
-}
+  }

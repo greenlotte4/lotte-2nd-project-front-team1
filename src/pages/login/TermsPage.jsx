@@ -3,8 +3,12 @@ import '../../styles/login.scss'
 
 export default function TermsPage() {
     return (
+
         <section className="loginBody">
-            <Terms />
+            <div class="termsBox mainBox">
+
+                <Terms />
+            </div>
         </section>
 
     );

@@ -200,7 +200,7 @@ editableContainer.addEventListener('keydown', function (event) {
     return (
         <div id="container">
             <PageAside />
-            <main className="main-content pageMain" id="main-container">
+            <main className="main-content pagecontent" id="main-container">
                 <div id="loading-skeleton" className="skeleton">
                     <div className="skeleton-title"></div>
                     <div className="skeleton-text"></div>
