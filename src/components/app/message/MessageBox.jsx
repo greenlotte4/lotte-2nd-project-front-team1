@@ -1,6 +1,5 @@
 export default function MessageBox() {
   return (
-    <main className="main-content">
       <div className="messageDiv">
         <div className="messageInfo">
           <h2>강중원</h2>
@@ -49,7 +48,6 @@ export default function MessageBox() {
           <button>전송</button>
         </div>
       </div>
-    </main>
     
   );
 }
