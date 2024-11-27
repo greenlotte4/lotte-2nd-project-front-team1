@@ -1,65 +1,54 @@
+/* 
+    날짜 : 2024/11/26
+    이름 : 최영진
+    내용 : 홈 로그인 스타일생성
+
+    추가내역
+    -------------
+    11.27 박수정 - 로그인페이지 jsx 및 css 수정
+*/
+
+// 공통
 .loginBody {
-    background-color: #fafafa;
-    width: 100%;
-    height: 100%;
-    margin: 0;
-    padding: 0;
-    font-size: 16px;
-    display: flex;
-    justify-content: center;
-    /* 가로 중앙 정렬 */
-    align-items: center;
-    /* 세로 중앙 정렬 */
-    min-height: 100vh;
-    /* 화면 크기에 맞게 전체 높이 사용 */
-}
+  background-color: #fafafa;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  font-size: 16px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
 
-
-.mainBox {
+  .mainBox {
     box-shadow: 0 3px 8px #0000001a;
-    /* 그림자 효과 추가 */
     background-color: white;
     border-radius: 10px;
-    /* 모서리를 둥글게 처리 */
-}
+  }
 
-h3 {
+  h3 {
     font-size: 15px;
     margin: 5px;
     color: #929292;
-}
+  }
 
-
-textarea {
+  textarea {
     width: 100%;
     height: 200px;
     resize: none;
     box-sizing: border-box;
     text-align: left;
-    /* 왼쪽 정렬 */
     padding-left: 10px;
     border-radius: 8px;
-    /* 모서리를 둥글게 처리 */
     font-size: 13px;
     box-sizing: border-box;
     border-color: #f4f5f4;
     outline: 0;
-}
-/* .loginFooter{
-    display: flex;
-    justify-content: space-between;
-} */
-.t1{
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-.loginFooter img{
-    width:  35%;
-    height: 35%;
-}
+  }
 
-.loginBox {
+  // 로그인
+  .loginBox {
     padding: 15px 15px 60px 15px;
     border-radius: 8px;
     font-family: Arial, sans-serif;
@@ -68,685 +57,605 @@ textarea {
     margin: 0 auto;
 
     td {
-        border: none;
+      border: none;
     }
 
-    .loginImg {
-        text-align: center;
-        margin-bottom: 15px;
-
+    h1 {
+      font-weight: 700;
+      font-size: 32px !important;
+      line-height: 46px;
+      margin: 0 0 12px;
+      line-height: 41.5px;
     }
-
-   
 
     /* input 요소 크기 변경 */
     table input[type="text"],
     table input[type="password"] {
-        width: 300px;
-        /* 너비를 100%로 설정하여 테이블 셀 크기에 맞게 맞춤 */
-        padding: 10px;
-        /* 높이를 padding을 이용해 조정 */
-        margin: 5px 0;
-        border: 2px solid #ddd;
-        border-radius: 5px;
+      width: 300px;
+      padding: 10px;
+      margin: 5px 0;
+      border: 2px solid #ddd;
+      border-radius: 5px;
     }
 
     table input[type="submit"]:hover {
-        background-color: #0056b3;
+      background-color: #0056b3;
     }
 
     .loginBtn {
-        width: 100%;
-        height: 40px;
-        border-radius: 6px;
-        margin-top: 50px;
-
+      width: 100%;
+      height: 40px;
+      border-radius: 6px;
+      margin-top: 50px;
     }
 
     .register {
-        display: flex;
-        /* flexbox 레이아웃 활성화 */
-        justify-content: center;
-        /* 수평 가운데 정렬 */
-        margin-top: 15px;
-        /* 위쪽 여백 */
+      display: flex;
+      justify-content: center;
+      margin-top: 15px;
     }
 
     .register a {
-        font-size: 16px;
-        color: #007bff;
-        text-decoration: none;
-        margin-top: 20px;
+      font-size: 16px;
+      color: #007bff;
+      text-decoration: none;
+      margin-top: 20px;
     }
 
     .userFind {
-        display: flex;
-        /* 가로로 배치 */
-        justify-content: flex-end;
-        /* 오른쪽 정렬 */
-        gap: 10px;
-        /* 링크 간 간격 조정 */
-        margin-top: 10px;
-        /* 위쪽 여백 */
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+      margin-top: 10px;
     }
 
     .loginDiv .userFind a {
-        margin-left: 5px;
-        /* 각 링크 간격 */
+      margin-left: 5px;
     }
 
     .loginDiv {
-        font-size: 13px;
+      font-size: 13px;
     }
 
     table img {
-        width: 40px !important;
+      width: 40px !important;
     }
-
 
     /* 공통 스타일 */
     .btnCancle,
     .blueButton {
-        padding: 6px 15px;
-        color: white;
-        text-decoration: none;
-        /* 링크 밑줄 제거 */
-        border-radius: 5px;
-        font-weight: bold;
-        display: inline-block;
-        transition: background-color 0.3s ease;
-        text-align: center;
-        /* 텍스트 중앙 정렬 */
+      padding: 6px 15px;
+      color: white;
+      text-decoration: none;
+      border-radius: 5px;
+      font-weight: bold;
+      display: inline-block;
+      transition: background-color 0.3s ease;
+      text-align: center;
     }
 
     /* 회원가입 버튼 (blueButton) 스타일 */
     .blueButton {
-        background-color: #007bff;
-        /* 파란색 배경 */
-        border: none;
-        /* 기본 입력 경계선 제거 */
+      background-color: #007bff;
+      border: none;
     }
 
     .blueButton:hover {
-        background-color: #0056b3;
-        /* 호버 시 어두운 파란색 */
+      background-color: #0056b3;
     }
 
     /* 취소 버튼 스타일 */
     .btnCancle {
-        background-color: #aaaaaa;
-        /* 회색 배경 */
+      background-color: #aaaaaa;
     }
 
     .btnCancle:hover {
-        background-color: #7e7e7e;
-        /* 호버 시 어두운 회색 */
+      background-color: #7e7e7e;
     }
+  }
 
-}
-
-.termsBox {
+  // 약관
+  .termsBox {
     width: 600px;
     padding: 20px;
     display: flex;
     flex-direction: column;
-    /* 세로로 정렬 */
     gap: 20px;
-    /* 두 텍스트 영역 사이 간격 */
     border-radius: 8px;
-    /* 모서리를 둥글게 처리 */
     font-family: Arial, sans-serif;
 
     td {
-        border: none;
+      border: none;
     }
 
     /* 글꼴 지정 */
     a {
-        text-decoration: none;
-        color: #000;
-        transition: transform 0.3s ease;
-        /* 변형(크기) 변화에 부드러운 트랜지션 효과 추가 */
+      text-decoration: none;
+      color: #000;
+      transition: transform 0.3s ease;
     }
 
     a:hover {
-        transform: scale(1.05);
-        /* 1.05배로 크기를 5% 키움 */
+      transform: scale(1.05);
     }
 
     .termsText1,
     .termsText2 {
-        width: auto;
-        height: auto;
-        gap: 10px;
-        /* 텍스트와 체크박스 사이의 간격 */
-        border-radius: 8px;
-        /* 모서리를 둥글게 처리 */
-        padding: 3px;
+      width: auto;
+      height: auto;
+      gap: 10px;
+      border-radius: 8px;
+      padding: 3px;
     }
 
     /* 텍스트와 체크박스 모두 오른쪽 정렬 */
-    .termsText1>div,
-    .termsText2>div {
-        display: flex;
-        justify-content: flex-end;
-        /* 오른쪽 끝으로 배치 */
-        align-items: center;
-        margin-right: 10px;
+    .termsText1 > div,
+    .termsText2 > div {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      margin-right: 10px;
     }
 
     .regiBtn {
-        display: flex;
-        justify-content: flex-end;
-        gap: 10px;
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
     }
 
     .btnCancle,
     .btnNext {
-        padding: 6px 15px;
-        background-color: #007bff;
-        color: white;
-        text-decoration: none;
-        border-radius: 5px;
-        font-weight: bold;
-        display: inline-block;
-        transition: background-color 0.3s ease;
+      padding: 6px 15px;
+      background-color: #007bff;
+      color: white;
+      text-decoration: none;
+      border-radius: 5px;
+      font-weight: bold;
+      display: inline-block;
+      transition: background-color 0.3s ease;
     }
 
     .btnNext:hover {
-        background-color: #0056b3;
+      background-color: #0056b3;
     }
 
     .btnCancle {
-        background-color: #aaaaaa;
+      background-color: #aaaaaa;
     }
 
     .btnCancle:hover {
-        background-color: #7e7e7e;
+      background-color: #7e7e7e;
     }
-}
+  }
 
-.registerBox {
+  // 회원가입
+  .registerBox {
     width: 600px;
     padding: 20px;
     font-family: Arial, sans-serif;
 
     td {
-        border: none;
+      border: none;
     }
-
 
     /* 테이블 스타일 */
     table {
-        width: 100%;
-        border: none;
-        border-collapse: separate;
-        margin-bottom: 20px;
-        /* 테이블 간의 간격을 띄우기 위해 margin 추가 */
-        box-shadow: 0 3px 3px #0000001a;
-        border-radius: 10px;
+      width: 100%;
+      border: none;
+      border-collapse: separate;
+      margin-bottom: 20px;
+      box-shadow: 0 3px 3px #0000001a;
+      border-radius: 10px;
     }
-    table button{
-        border: none;
-        margin: 0;
-        vertical-align: middle; /* 세로 중앙 정렬 */
-        cursor: pointer; /* 마우스 커서를 포인터로 변경 */
-
+    table button {
+      border: none;
+      margin: 0;
+      vertical-align: middle;
+      cursor: pointer;
     }
-    table button:hover{
-        background-color: #f0f0f0; /* 배경색 변경 */
-        border-radius: 4px;        /* 모서리를 둥글게 */
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* 그림자 추가 */
-
+    table button:hover {
+      background-color: #f0f0f0;
+      border-radius: 4px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     }
-    table img{
-        width: auto;
-        height: 30px;
+    table img {
+      width: auto;
+      height: 30px;
     }
     td:first-child {
-        width: 100px;
-        /* 왼쪽 셀의 너비를 100px로 고정 */
-        text-align: center;
-        /* 왼쪽 열 텍스트 가운데 정렬 */
-        color: #929292;
+      width: 100px;
+      text-align: center;
+      color: #929292;
     }
 
-  
     td {
-        padding: 5px;
+      padding: 5px;
     }
 
     .short-input {
-        width: 280px;
-        /* 우편번호 필드는 짧게 150px */
-        padding: 8px;
-        margin-top: 5px;
-        margin-bottom: 5px;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-        box-sizing: border-box;
+      width: 280px;
+      padding: 8px;
+      margin-top: 5px;
+      margin-bottom: 5px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      box-sizing: border-box;
     }
 
     /* 긴 주소 입력 필드 스타일 */
     .long-input {
-        width: 400px;
-        /* 주소 검색 및 상세주소는 길게 400px */
-        padding: 8px;
-        margin-top: 5px;
-        margin-bottom: 5px;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-        box-sizing: border-box;
+      width: 400px;
+      padding: 8px;
+      margin-top: 5px;
+      margin-bottom: 5px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      box-sizing: border-box;
     }
 
     /* 버튼을 포함하는 input 필드의 스타일 */
     .input-with-button input {
-        width: 280px;
-        /* 버튼이 있는 입력창은 300px */
-        padding: 8px;
-        margin-top: 5px;
-        margin-bottom: 5px;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-        box-sizing: border-box;
+      width: 280px;
+      padding: 8px;
+      margin-top: 5px;
+      margin-bottom: 5px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      box-sizing: border-box;
     }
 
     /* 버튼을 포함하지 않는 input 필드의 스타일 */
     .input-without-button input {
-        width: 350px;
-        /* 버튼이 없는 입력창은 400px */
-        padding: 8px;
-        margin-top: 5px;
-        margin-bottom: 5px;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-        box-sizing: border-box;
+      width: 350px;
+      padding: 8px;
+      margin-top: 5px;
+      margin-bottom: 5px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      box-sizing: border-box;
     }
 
     /* 짧은 우편번호 입력 필드 스타일 */
 
     /* 버튼 이미지 크기 조정 */
     button img {
-        height: 20px;
+      height: 20px;
     }
-
- 
 
     /* 추가적인 스타일링 */
     h2 {
-        text-align: center;
-        font-size: 24px;
-        margin-bottom: 20px;
+      text-align: center;
+      font-size: 24px;
+      margin-bottom: 20px;
     }
 
     span.uidResult,
     .passResult {
-        font-size: 12px;
-        color: red;
-        margin-top: 5px;
+      font-size: 12px;
+      color: red;
+      margin-top: 5px;
     }
 
     .regiBtn {
-        display: flex;
-        justify-content: flex-end;
-        gap: 10px;
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
     }
-
 
     /* 공통 스타일 */
     .btnCancle,
     .blueButton {
-        padding: 6px 15px;
-        color: white;
-        text-decoration: none;
-        /* 링크 밑줄 제거 */
-        border-radius: 5px;
-        font-weight: bold;
-        display: inline-block;
-        transition: background-color 0.3s ease;
-        text-align: center;
-        /* 텍스트 중앙 정렬 */
+      padding: 6px 15px;
+      color: white;
+      text-decoration: none;
+      border-radius: 5px;
+      font-weight: bold;
+      display: inline-block;
+      transition: background-color 0.3s ease;
+      text-align: center;
     }
 
     /* 회원가입 버튼 (blueButton) 스타일 */
     .blueButton {
-        background-color: #007bff;
-        /* 파란색 배경 */
-        border: none;
-        /* 기본 입력 경계선 제거 */
+      background-color: #007bff;
+      border: none;
     }
 
     .blueButton:hover {
-        background-color: #0056b3;
-        /* 호버 시 어두운 파란색 */
+      background-color: #0056b3;
     }
 
     /* 취소 버튼 스타일 */
     .btnCancle {
-        background-color: #aaaaaa;
-        /* 회색 배경 */
+      background-color: #aaaaaa;
     }
 
     .btnCancle:hover {
-        background-color: #7e7e7e;
-        /* 호버 시 어두운 회색 */
+      background-color: #7e7e7e;
     }
-}
+  }
 
-.findBox {
+  // 아이디찾기
+  .findBox {
     width: 400px;
     padding: 20px;
     font-family: Arial, sans-serif;
 
     td {
-        border: none;
+      border: none;
     }
 
     /* 글꼴 지정 */
     a {
-        text-decoration: none;
-        color: #000;
-        transition: transform 0.3s ease;
-        /* 변형(크기) 변화에 부드러운 트랜지션 효과 추가 */
-
+      text-decoration: none;
+      color: #000;
+      transition: transform 0.3s ease;
     }
 
     a:hover {
-        transform: scale(1.05);
-        /* 1.05배로 크기를 5% 키움 */
+      transform: scale(1.05);
     }
 
-
     .findHeader {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        flex-direction: column;
-        margin-bottom: 50px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      margin-bottom: 50px;
     }
 
     /* 버튼을 중앙 정렬하고 버튼 사이에 간격 추가 */
     .searchBtn {
-        display: flex;
-        justify-content: center;
-        gap: 10px;
-        margin-bottom: 10px;
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 10px;
     }
 
     span {
-        font-size: 13px;
-        margin-left: 10px;
-        display: inline-block;
-        margin-bottom: 0;
+      font-size: 13px;
+      margin-left: 10px;
+      display: inline-block;
+      margin-bottom: 0;
     }
 
     a {
-        text-decoration: none;
-        color: #000;
-        transition: transform 0.3s ease;
-        /* 변형(크기) 변화에 부드러운 트랜지션 효과 추가 */
+      text-decoration: none;
+      color: #000;
+      transition: transform 0.3s ease;
     }
 
     a:hover {
-        transform: scale(1.05);
-        /* 1.05배로 크기를 5% 키움 */
+      transform: scale(1.05);
     }
 
     /* 버튼을 중앙 정렬하고 버튼 사이에 간격 추가 */
     .searchBtn {
-        display: flex;
-        justify-content: center;
-        /* 가로 중앙 정렬 */
-        gap: 10px;
-        /* 버튼 사이에 간격 추가 */
-        margin-bottom: 10px;
-        /* 아래 여백 */
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 10px;
     }
 
     /* 테이블 스타일 */
     table {
-        width: 100%;
-        border-collapse: separate;
-        margin-bottom: 20px;
+      width: 100%;
+      border-collapse: separate;
+      margin-bottom: 20px;
     }
 
     td {
-        padding: 5px 0;
-        /* 성/이름과 입력 필드 간 간격을 좁히기 위한 설정 */
-        border-radius: 8px;
+      padding: 5px 0;
+      border-radius: 8px;
     }
 
     .inputName {
-        border: 1px solid #ccc;
-        background-color: #f9f9f9;
+      border: 1px solid #ccc;
+      background-color: #f9f9f9;
     }
 
     .inputName:hover {
-        border-color: #1e90ff;
-        /* hover 시 테두리 색상 변경 */
+      border-color: #1e90ff;
     }
 
     /* 기본 input 스타일 */
     input[type="text"] {
-        padding: 8px;
-        margin-top: 0;
-        /* 성/이름과의 간격을 좁히기 위해 마진 제거 */
-        margin-bottom: 0;
-        /* 하단 마진 제거 */
-        background-color: #f9f9f9;
-        box-sizing: border-box;
-        border: none;
+      padding: 8px;
+      margin-top: 0;
+      margin-bottom: 0;
+      background-color: #f9f9f9;
+      box-sizing: border-box;
+      border: none;
     }
 
     /* form-row 안의 input에 포커스가 있을 때 */
     input:focus {
-        outline: none;
-        /* 포커스 시 외부선 제거 */
+      outline: none;
     }
 
     /* 버튼 스타일 */
     .hpFind,
     .emailFind {
-        padding: 8px 15px;
-        border: 1px solid #ccc;
-        background-color: #f0f0f0;
-        cursor: pointer;
-        border-radius: 8px;
-        transition: background-color 0.3s ease;
+      padding: 8px 15px;
+      border: 1px solid #ccc;
+      background-color: #f0f0f0;
+      cursor: pointer;
+      border-radius: 8px;
+      transition: background-color 0.3s ease;
     }
 
     button:hover {
-        background-color: #e0e0e0;
+      background-color: #e0e0e0;
     }
 
     button:active {
-        transform: scale(0.98);
+      transform: scale(0.98);
     }
 
     /* form-row를 flexbox로 설정 */
     .form-row {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        padding: 5px;
-        border: 1px solid #ccc;
-        border-radius: 8px;
-        background-color: #f9f9f9;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 5px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      background-color: #f9f9f9;
     }
 
     /* select 스타일 */
     .form-row select {
-        padding: 8px;
-        border: none;
-        font-size: 13px;
-        flex-shrink: 0;
-        background-color: #f9f9f9;
+      padding: 8px;
+      border: none;
+      font-size: 13px;
+      flex-shrink: 0;
+      background-color: #f9f9f9;
     }
 
     /* input 스타일 */
     .form-row input {
-        padding: 8px;
-        border: none;
-        flex-grow: 1;
-        box-sizing: border-box;
-        background-color: #f9f9f9;
+      padding: 8px;
+      border: none;
+      flex-grow: 1;
+      box-sizing: border-box;
+      background-color: #f9f9f9;
     }
 
     /* 인증 버튼 스타일 */
     .authBtn {
-        margin: 5px;
-        padding: 5px 10px;
-        font-size: 10px;
-        border: none;
+      margin: 5px;
+      padding: 5px 10px;
+      font-size: 10px;
+      border: none;
     }
 
     /* 입력 필드를 감싸는 div에 hover 효과 추가 */
     .form-row:hover {
-        border-color: #1e90ff;
-        /* hover 시 테두리 색상 변경 */
+      border-color: #1e90ff;
     }
 
     .findBtnBox {
-        display: flex;
-        justify-content: flex-end;
-        gap: 10px;
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
     }
 
     .btnCancle,
     .blueButton {
-        padding: 6px 15px;
-        color: white;
-        text-decoration: none;
-        /* 링크 밑줄 제거 */
-        border-radius: 5px;
-        font-weight: bold;
-        display: inline-block;
-        transition: background-color 0.3s ease;
-        text-align: center;
-        /* 텍스트 중앙 정렬 */
+      padding: 6px 15px;
+      color: white;
+      text-decoration: none;
+      border-radius: 5px;
+      font-weight: bold;
+      display: inline-block;
+      transition: background-color 0.3s ease;
+      text-align: center;
     }
 
     /* 회원가입 버튼 (blueButton) 스타일 */
     .blueButton {
-        background-color: #007bff;
-        /* 파란색 배경 */
-        border: none;
-        /* 기본 입력 경계선 제거 */
+      background-color: #007bff;
+      border: none;
     }
 
     .blueButton:hover {
-        background-color: #0056b3;
-        /* 호버 시 어두운 파란색 */
+      background-color: #0056b3;
     }
 
     /* 취소 버튼 스타일 */
     .btnCancle {
-        background-color: #aaaaaa;
-        /* 회색 배경 */
+      background-color: #aaaaaa;
     }
 
     .btnCancle:hover {
-        background-color: #7e7e7e;
-        /* 호버 시 어두운 회색 */
+      background-color: #7e7e7e;
     }
 
     /* 추가: 버튼 클릭 시 border 추가 */
     .searchBtn button.active {
-        border: 2px solid #007bff;
-        /* 버튼 클릭 시 파란색 테두리 추가 */
+      border: 2px solid #007bff;
     }
+  }
 
-    
-}
-
-.idViewBox {
+  // 아이디찾기
+  .idViewBox {
     width: 400px;
     border-radius: 8px;
     font-family: Arial, sans-serif;
 
     /* 테이블 스타일 */
     .idTable {
-        width: 100%;
-        /* 테이블 전체 너비 */
-        border-collapse: collapse;
+      width: 100%;
+      border-collapse: collapse;
     }
 
     .idColumn {
-        width: 30%;
-        /* 3 비율 */
-        text-align: center;
-        /* 텍스트 중앙 정렬 */
-        border: 1px solid;
-
+      width: 30%;
+      text-align: center;
+      border: 1px solid;
     }
 
     .resultColumn {
-        width: 70%;
-        /* 7 비율 */
-        text-align: center;
-        /* 텍스트 중앙 정렬 */
-        border: 1px solid;
-        padding: 10px;
-
+      width: 70%;
+      text-align: center;
+      border: 1px solid;
+      padding: 10px;
     }
 
     /* 버튼 스타일 */
     .findBtnBox {
-        margin-top: 20px;
-        display: flex;
-
+      margin-top: 20px;
+      display: flex;
     }
 
     .btnCancle {
-        padding: 6px 15px;
-        background-color: #aaaaaa;
-        color: white;
-        text-decoration: none;
-        border-radius: 5px;
-        font-weight: bold;
-        display: inline-block;
-        transition: background-color 0.3s ease;
+      padding: 6px 15px;
+      background-color: #aaaaaa;
+      color: white;
+      text-decoration: none;
+      border-radius: 5px;
+      font-weight: bold;
+      display: inline-block;
+      transition: background-color 0.3s ease;
     }
 
     .btnCancle:hover {
-        background-color: #7e7e7e;
+      background-color: #7e7e7e;
     }
+  }
 
-
-}
-
-.passViewBox {
+  // 비밀번호찾기
+  .passViewBox {
     width: 400px;
     border-radius: 8px;
     font-family: Arial, sans-serif;
 
     .passViewTop input {
-        width: 100%;
-        padding: 10px;
-        margin-bottom: 10px;
-        margin-top: 5px;
-        margin-bottom: 5px;
-        border: 1px solid #ccc;
-        border-radius: 8px;
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 10px;
+      margin-top: 5px;
+      margin-bottom: 5px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
 
-        box-sizing: border-box;
-
+      box-sizing: border-box;
     }
 
     .passViewBottom .NewPassBtn {
-        text-align: center;
+      text-align: center;
     }
 
     .NewPassBtn .btnCancle {
-        background-color: #3498db;
-        color: white;
-        padding: 10px 20px;
-        text-decoration: none;
-        border-radius: 5px;
+      background-color: #3498db;
+      color: white;
+      padding: 10px 20px;
+      text-decoration: none;
+      border-radius: 5px;
     }
 
     .NewPassBtn .btnCancle:hover {
-        background-color: #2980b9;
+      background-color: #2980b9;
     }
-
+  }
 }
