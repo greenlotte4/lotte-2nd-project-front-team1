@@ -30,19 +30,35 @@ export default function AppHome() {
           <div className="button-text">페이지</div>
         </button>
         <button className="icon-button">
-          <img src="image2.png" alt="게시판 아이콘" className="icon-image" />
+          <img
+            src="/images/form.png"
+            alt="게시판 아이콘"
+            className="icon-image"
+          />
           <div className="button-text">게시판</div>
         </button>
         <button className="icon-button">
-          <img src="image3.png" alt="프로젝트 아이콘" className="icon-image" />
+          <img
+            src="/images/master-plan.png"
+            alt="프로젝트 아이콘"
+            className="icon-image"
+          />
           <div className="button-text">프로젝트</div>
         </button>
         <button className="icon-button">
-          <img src="image4.png" alt="드라이브 아이콘" className="icon-image" />
+          <img
+            src="/images/folder-open.png"
+            alt="드라이브 아이콘"
+            className="icon-image"
+          />
           <div className="button-text">드라이브</div>
         </button>
         <button className="icon-button">
-          <img src="image5.png" alt="메신저 아이콘" className="icon-image" />
+          <img
+            src="/images/messages.png"
+            alt="메신저 아이콘"
+            className="icon-image"
+          />
           <div className="button-text">메신저</div>
         </button>
         <button className="icon-button">

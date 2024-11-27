@@ -32,15 +32,17 @@ export default function AppHeader({ onToggleSidebar }) {
         <Link to="/app/project" className="headerIcon">
           <img src="/images/master-plan.png" alt="project" />
         </Link>
-        <Link to="/app/drive" className="headerIcon">
+        <Link to="/app/file" className="headerIcon">
           <img src="/images/folder-open.png" alt="drive" />
         </Link>
         <Link to="/app/setting" className="headerIcon">
           <img src="/images/settings.png" alt="drive" />
         </Link>
 
-        <img src="/images/user_Icon.png" alt="👤" className="profileImg" />
-        <p className="ProfileName">billie Joel</p>
+        <Link to="" className="ProfileDiv">
+          <img src="/images/user_Icon.png" alt="👤" className="profileImg" />
+          <p className="ProfileName">이순신</p>
+        </Link>
       </div>
     </header>
   );
