@@ -13,13 +13,13 @@ import "../../../styles/Login.scss";
 
 export default function FindViewPage() {
   return (
-    <>
+    <div className="LoginPage">
       <Header />
       <section className="loginBody">
         <div className="findBox mainBox">
           <IdView />
         </div>
       </section>
-    </>
+    </div>
   );
 }
