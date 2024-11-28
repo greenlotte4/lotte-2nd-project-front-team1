@@ -11,7 +11,7 @@ import AdminUser from "../../components/admin/AdminUser";
 import AdminUserAside from "../../components/admin/AdminUserAside";
 import AdminLayout from "../../layouts/admin/AdminLayout";
 import { useSidebar } from "../../hooks/app/useSidebar"; // 커스텀 훅 사용
-
+import "../../styles/admin/AdminUser.scss";
 export default function AdminUserPage() {
   const { isSidebarVisible, toggleSidebar } = useSidebar(); // 사이드바 상태 및 토글 함수 사용
 

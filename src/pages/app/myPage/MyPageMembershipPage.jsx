@@ -11,7 +11,7 @@ import MyPageAside from "../../../components/app/myPage/MyPageAside";
 import MyPageMemberShip from "../../../components/app/myPage/MyPageMemberShip";
 import { useSidebar } from "../../../hooks/app/useSidebar";
 import AppLayout from "../../../layouts/app/AppLayout";
-import "../../../styles/App/myPage/MyPageMemberShip.scss";
+import "../../../styles/app/myPage/MyPageMemberShip.scss";
 export default function MyPageMembershipPage() {
   const { isSidebarVisible, toggleSidebar } = useSidebar(); // 사이드바 상태 및 토글 함수 사용
 

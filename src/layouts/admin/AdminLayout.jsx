@@ -1,14 +1,13 @@
 /*
     날짜 : 2024/11/28
     이름 : 이도영
-    내용 : 관리자
+    내용 : 관리자 레이아웃
 
     추가내역
     -------------
     00.00 이름 - 내용
 */
 import React from "react";
-import AppHeader from "../../components/app/include/AppHeader";
 import "../../styles/App/AppCommon.scss";
 import "../../styles/admin/AdminHeader.scss";
 import AdminHeader from "../../components/admin/include/AdminHeader";
