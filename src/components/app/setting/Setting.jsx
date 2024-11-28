@@ -5,8 +5,8 @@ import CalendarSetting from "./settingView/CalendarSetting";
 import MessageSetting from "./settingView/MessageSetting";
 import ArticleSetting from "./settingView/ArticleSetting";
 import ProjectSetting from "./settingView/ProjectSetting";
-import DriveSetting from "./settingView/driveSetting";
 import PageSetting from "./settingView/PageSetting";
+import DriveSetting from "./settingView/DriveSetting";
 
 export default function Setting({selectedItem}) {
     const renderContent = () => {
