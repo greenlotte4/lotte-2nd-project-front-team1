@@ -1,4 +1,4 @@
-import Setting from "../../../components/app/setting/setting";
+import Setting from "../../../components/app/setting/Setting";
 import SettingAsied from "../../../components/app/setting/SettingAsied";
 import { useSidebar } from "../../../hooks/app/UseSidebar";
 import AppLayout from "../../../layouts/app/AppLayout";
