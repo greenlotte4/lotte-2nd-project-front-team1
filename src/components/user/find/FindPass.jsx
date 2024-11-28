@@ -6,12 +6,10 @@ export default function FindPass() {
   const [method, setMethod] = useState(""); // method state 추가
 
   const navigate = useNavigate();
-  const handleFind = (e) => {
-    e.preventDefault();
-    navigate("/user/find/findView", {
-      state: { setMethod: "PassFind", findMethod: method },
-    });
-  };
+
+  const changePassHandle = () => {
+    navigate("/user/find/findView", { state: { method: "PassFind" } });
+  }
   return (
     <div className="findPassBox">
       <form accept="">
@@ -26,7 +24,7 @@ export default function FindPass() {
           <Link to="/user/login" className="btnCancle">
             취소
           </Link>
-          <button className="blueButton" onClick={handleFind}>
+          <button className="blueButton" onClick={changePassHandle}>
             찾기
           </button>
         </div>

@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 
 export default function PassView() {
+  
   return (
     <div className="passViewBox">
       <div className="passViewTop">
