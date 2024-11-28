@@ -7,10 +7,8 @@
     -------------
     00.00 이름 - 내용
 */
-import React from "react";
-import AppHeader from "../../components/app/include/AppHeader";
-import "../../styles/app/AppCommon.scss";
 import "../../styles/admin/AdminHeader.scss";
+import "../../styles/admin/AdminUser.scss";
 import AdminHeader from "../../components/admin/include/AdminHeader";
 // eslint-disable-next-line react/prop-types
 export default function AdminLayout({ children, onToggleSidebar }) {

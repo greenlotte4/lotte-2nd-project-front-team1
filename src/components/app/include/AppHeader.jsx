@@ -1,7 +1,23 @@
-import React from "react";
+/*
+    날짜 : 2024/11/25
+    이름 : 강중원
+    내용 : 사용자 헤더
+
+    추가내역
+    -------------
+    2024/11/28 이도영 알람,프로필 출력 기능 추가
+*/
+import { useState } from "react";
 import { Link } from "react-router-dom";
+import NotificationButton from "./NotificationButton";
+import ProfileDropdown from "./ProfileDropdown";
 
 export default function AppHeader({ onToggleSidebar }) {
+  const [openDropdown, setOpenDropdown] = useState(null); // "notification" | "profile" | null
+
+  const toggleDropdown = (type) => {
+    setOpenDropdown((prev) => (prev === type ? null : type));
+  };
   return (
     <header className="AppHeader">
       <div className="headerTitle">
@@ -38,11 +54,20 @@ export default function AppHeader({ onToggleSidebar }) {
         <Link to="/app/setting" className="headerIcon">
           <img src="/images/settings.png" alt="drive" />
         </Link>
-
-        <Link to="" className="ProfileDiv">
+        {/* 알림 버튼 */}
+        <NotificationButton
+          isOpen={openDropdown === "notification"}
+          onToggle={() => toggleDropdown("notification")}
+        />
+        {/* 프로필 버튼 */}
+        <div className="ProfileDiv" onClick={() => toggleDropdown("profile")}>
           <img src="/images/user_Icon.png" alt="👤" className="profileImg" />
           <p className="ProfileName">이순신</p>
-        </Link>
+        </div>
+        <ProfileDropdown
+          isOpen={openDropdown === "profile"}
+          onClose={() => setOpenDropdown(null)}
+        />
       </div>
     </header>
   );
