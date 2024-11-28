@@ -17,15 +17,19 @@
     margin: 20px 0;
     text-align: center;
     color: #494949;
+    font-size: 25px;
+    font-weight: bold;
   }
 
   p {
     color: #686767;
+    font-size: 15px;
   }
 
   .highlight-green {
     color: #00c473;
     font-weight: bold;
+    font-size: 25px;
   }
 
   /*intro*/
@@ -33,7 +37,6 @@
     display: block; /* 이미지를 블록 요소로 처리 */
     margin: 20px auto; /* 상하 간격 추가 및 중앙 정렬 */
     max-width: 1200px;
-    height: 550px;
     border-radius: 5px;
   }
 
