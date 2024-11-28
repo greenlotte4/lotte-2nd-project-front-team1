@@ -1,5 +1,4 @@
-div {
-}
+div {}
 
 .userInfoBox {
   width: 100%;
@@ -10,9 +9,11 @@ div {
     font-size: 20px;
     padding: 10px;
   }
+
   input {
     background-color: #f7f7f7;
   }
+
   table {
     padding: 5px;
     width: 800px;
@@ -30,20 +31,25 @@ div {
       display: flex;
       justify-content: space-between;
     }
+
     tr:first-child {
       height: 150px;
+
       td {
         height: 150px;
+
         img {
           width: 120px;
           height: 120px;
           justify-items: center;
         }
+
         button {
           padding: 8px 10px;
         }
       }
     }
+
     .statusM {
       height: 100px;
 
@@ -80,10 +86,16 @@ div {
       margin-left: 5px;
     }
   }
-  .changePass {
+
+  .btnBox {
+    justify-content: flex-end;
+    width: 800px;
+    padding: 10px;
     display: flex;
-    justify-content: flex-end; /* 버튼을 오른쪽으로 정렬 */
-    margin-top: 10px; /* 버튼과 다른 요소들 간의 간격 */
+    justify-content: space-between;
+    
+
+    /* 버튼과 다른 요소들 간의 간격 */
     button {
       padding: 8px 10px;
     }

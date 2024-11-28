@@ -24,6 +24,7 @@ import MyPageMembershipPage from "../pages/app/myPage/MyPageMembershipPage";
 import MyPageInquiryPage from "../pages/app/myPage/MyPageInquiryPage";
 import AdminCSPage from "../pages/admin/AdminCSPage";
 import AdminUserPage from "../pages/admin/AdminUserPage";
+import SettingPage from "../pages/app/setting/SettingPage";
 
 //라우팅 정의
 const router = createBrowserRouter([
@@ -55,6 +56,7 @@ const router = createBrowserRouter([
   { path: "/app/calendar", element: <CalendarPage /> },
   { path: "/app/file", element: <FilePage /> },
   { path: "/app/page", element: <PagePage /> },
+  { path: "/app/setting", element: <SettingPage /> },
 
   //Admin
   { path: "/admin/user", element: <AdminUserPage /> },
