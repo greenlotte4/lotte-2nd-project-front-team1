@@ -6,6 +6,7 @@ export default function ContactRow({ contact, setContact }) {
 
     const handleSave = () => {
         setIsEditing(false);
+        setContact(tempContact);
         console.log("연락처 저장됨:", contact);
     };
 

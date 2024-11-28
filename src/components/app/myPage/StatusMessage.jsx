@@ -1,16 +1,26 @@
 import { useState } from "react";
 
-export default function StatusMessage() {
+export default function StatusMessage({ statusMessage, setStatusMessage }) {
     const [isEditing, setIsEditing] = useState(false);
-    const [statusMessage, setStatusMessage] = useState("오늘 하루도 열심히! 👏");
-    const [cansleMessage, setCansleMessage] = useState("오늘 하루도 열심히! 👏");
+    const [tempMessage, setTempMessage] = useState(statusMessage);
+
     const messageHandleSave = () => {
         setIsEditing(false);
+        setStatusMessage(tempMessage);
         console.log("상태 메시지 저장됨:", statusMessage);
     };
+
     const handleCancel = () => {
         setIsEditing(false);
-        setStatusMessage(cansleMessage);
+        setStatusMessage(statusMessage);
+    }
+
+    const handleEdit = () => {
+        setIsEditing(true);
+        setStatusMessage(statusMessage);
+    }
+    const handleChange = (e) => {
+        setTempMessage(e.target.value);
     }
     return (
 
@@ -21,13 +31,13 @@ export default function StatusMessage() {
 
                     {isEditing ? (
                         <textarea
-                            value={statusMessage}
-                            onChange={(e) => setStatusMessage(e.target.value)}
+                            value={tempMessage}
+                            onChange={handleChange}
                         />
                     ) : (
-                        <textarea readOnly
+                        <textarea
                             value={statusMessage}
-                            onChange={(e) => setStatusMessage(e.target.value)}
+                            onChange={handleChange}
                         />
                     )}
                 </div>
@@ -38,7 +48,7 @@ export default function StatusMessage() {
                         <button onClick={handleCancel} className="cancelButton">취소</button>
                     </div>
                 ) : (
-                    <button onClick={() => setIsEditing(true)} className="setingButton">상태 변경</button>
+                    <button onClick={handleEdit} className="setingButton">상태 변경</button>
                 )}
             </td>
         </tr>

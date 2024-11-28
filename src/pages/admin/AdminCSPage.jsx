@@ -8,7 +8,7 @@
     00.00 이름 - 내용
 */
 import AdminLayout from "../../layouts/admin/AdminLayout";
-import { useSidebar } from "../../hooks/app/useSidebar"; // 커스텀 훅 사용
+import { useSidebar } from "../../hooks/app/UseSidebar"; // 커스텀 훅 사용
 import AdminCSAside from "../../components/admin/AdminCSAside";
 import AdminCS from "../../components/admin/AdminCS";
 import "../../styles/admin/AdminUser.scss";

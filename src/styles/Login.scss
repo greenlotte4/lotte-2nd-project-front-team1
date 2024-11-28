@@ -9,6 +9,12 @@
 */
 
 // 공통
+.LoginPage {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
 .loginBody {
   background-color: #fafafa;
   width: 100%;
@@ -19,7 +25,6 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 100vh;
 
   .mainBox {
     box-shadow: 0 3px 8px #0000001a;
@@ -34,6 +39,7 @@
   }
 
   // 로그인
+
   .loginBox {
     padding: 15px 15px 60px 15px;
     border-radius: 8px;
@@ -127,12 +133,12 @@
 
     /* 회원가입 버튼 (blueButton) 스타일 */
     .blueButton {
-      background-color: #99e7c7;
+      background-color: #00c473;
       border: none;
     }
 
     .blueButton:hover {
-      background-color: #99e7c7;
+      background-color: #18a046;
     }
 
     /* 취소 버튼 스타일 */
@@ -182,7 +188,7 @@
     }
 
     .login-input:focus {
-      border-color: #22c58b;
+      border-color: #18a046;
       outline: none;
     }
 
@@ -196,7 +202,7 @@
 
     .find-password-link {
       text-decoration: none;
-      color: #22c58b;
+      color: #00c473;
       font-weight: 500;
     }
 
@@ -209,7 +215,7 @@
       padding: 12px;
       font-size: 16px;
       color: #fff;
-      background-color: #22c58b;
+      background-color: #00c473;
       border: none;
       border-radius: 4px;
       cursor: pointer;
@@ -217,7 +223,7 @@
     }
 
     .login-button:hover {
-      background-color: #1da978;
+      background-color: #18a046;
     }
 
     .signup-text {
@@ -228,7 +234,7 @@
 
     .signup-link {
       text-decoration: none;
-      color: #22c58b;
+      color: #00c473;
       font-weight: 500;
     }
 
@@ -240,8 +246,8 @@
   // 약관
   .termsBox {
     width: 600px;
-    height: 550px;
-    padding: 20px;
+    height: 620px;
+    padding: 30px;
     display: flex;
     flex-direction: column;
     gap: 20px;
@@ -293,18 +299,20 @@
       justify-content: flex-end;
       align-items: center;
       margin-right: 10px;
+      margin-top: 5px;
     }
 
     .regiBtn {
       display: flex;
       justify-content: flex-end;
+      margin-top: 30px;
       gap: 10px;
     }
 
     .btnCancle,
     .btnNext {
       padding: 6px 15px;
-      background-color: #99e7c7;
+      background-color: #00c473;
       color: white;
       text-decoration: none;
       border-radius: 5px;
@@ -314,7 +322,7 @@
     }
 
     .btnNext:hover {
-      background-color: #0056b3;
+      background-color: #18a046;
     }
 
     .btnCancle {
@@ -329,7 +337,8 @@
   // 회원가입
   .registerBox {
     width: 600px;
-    padding: 20px;
+    height: 620px;
+    padding: 15px;
     font-family: Arial, sans-serif;
 
     td {
@@ -341,15 +350,14 @@
       width: 100%;
       border: none;
       border-collapse: separate;
-      margin-bottom: 20px;
-      box-shadow: 0 3px 3px #0000001a;
-      border-radius: 10px;
     }
     table button {
       border: none;
       margin: 0;
       vertical-align: middle;
       cursor: pointer;
+      background: none;
+      margin-left: 5px;
     }
     table button:hover {
       background-color: #f0f0f0;
@@ -371,7 +379,7 @@
     }
 
     .short-input {
-      width: 280px;
+      width: 350px;
       padding: 8px;
       margin-top: 5px;
       margin-bottom: 5px;
@@ -382,7 +390,7 @@
 
     /* 긴 주소 입력 필드 스타일 */
     .long-input {
-      width: 400px;
+      width: 350px;
       padding: 8px;
       margin-top: 5px;
       margin-bottom: 5px;
@@ -393,7 +401,7 @@
 
     /* 버튼을 포함하는 input 필드의 스타일 */
     .input-with-button input {
-      width: 280px;
+      width: 350px;
       padding: 8px;
       margin-top: 5px;
       margin-bottom: 5px;
@@ -455,12 +463,12 @@
 
     /* 회원가입 버튼 (blueButton) 스타일 */
     .blueButton {
-      background-color: #99e7c7;
+      background-color: #00c473;
       border: none;
     }
 
     .blueButton:hover {
-      background-color: #0056b3;
+      background-color: #18a046;
     }
 
     /* 취소 버튼 스타일 */
@@ -554,7 +562,7 @@
     }
 
     .inputName:hover {
-      border-color: #1e90ff;
+      border-color: #18a046;
     }
 
     /* 기본 input 스타일 */
@@ -630,12 +638,13 @@
 
     /* 입력 필드를 감싸는 div에 hover 효과 추가 */
     .form-row:hover {
-      border-color: #1e90ff;
+      border-color: #18a041;
     }
 
     .findBtnBox {
       display: flex;
       justify-content: flex-end;
+      // width: 90%;
       gap: 10px;
     }
 
@@ -653,12 +662,13 @@
 
     /* 회원가입 버튼 (blueButton) 스타일 */
     .blueButton {
-      background-color: #99e7c7;
+      background-color: #00c473;
       border: none;
+      cursor: pointer;
     }
 
     .blueButton:hover {
-      background-color: #0056b3;
+      background-color: #18a041;
     }
 
     /* 취소 버튼 스타일 */
@@ -678,7 +688,7 @@
 
   // 아이디찾기
   .idViewBox {
-    width: 400px;
+    // width: 400px;
     border-radius: 8px;
     font-family: Arial, sans-serif;
 

@@ -14,13 +14,13 @@ import "../../styles/Login.scss";
 
 export default function LoginPage() {
   return (
-    <>
+    <div className="LoginPage">
       <Header />
       <section className="loginBody">
         <div className="loginBox mainBox">
           <Login />
         </div>
       </section>
-    </>
+    </div>
   );
 }

@@ -9,7 +9,7 @@
 */
 import MyPageAside from "../../../components/app/myPage/MyPageAside";
 import MyPageMemberShip from "../../../components/app/myPage/MyPageMemberShip";
-import { useSidebar } from "../../../hooks/app/useSidebar";
+import { useSidebar } from "../../../hooks/app/UseSidebar";
 import AppLayout from "../../../layouts/app/AppLayout";
 import "../../../styles/app/myPage/MyPageMemberShip.scss";
 export default function MyPageMembershipPage() {

@@ -13,13 +13,13 @@ import Header from "../../../components/main/Header";
 
 export default function FindIdPage() {
   return (
-    <>
+    <div className="LoginPage">
       <Header />
       <section className="loginBody">
         <div className="findBox mainBox">
           <FindId />
         </div>
       </section>
-    </>
+    </div>
   );
 }

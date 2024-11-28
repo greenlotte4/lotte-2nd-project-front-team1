@@ -11,7 +11,7 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
-import { login } from "../../../slices/userSlice";
+import { login } from "../../../slices/UserSlice";
 import { postUserLogin } from "../../../api/user/userAPI";
 
 const initState = {
