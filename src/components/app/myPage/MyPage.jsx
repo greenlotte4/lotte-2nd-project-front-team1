@@ -62,7 +62,7 @@ export default function MyPage() {
                             statusMessage={statusMessage}
                             setStatusMessage={setStatusMessage}
                         />
-                        <tr>
+                        <tr className="btnBox">
                             <td></td>
                             <td><button onClick={changePassHandle}>비밀번호 변경</button></td>
                         </tr>
