@@ -7,7 +7,6 @@
     -------------
     00.00 이름 - 내용
 */
-import React from "react";
 import FullCalendar from "@fullcalendar/react"; // FullCalendar React component
 import dayGridPlugin from "@fullcalendar/daygrid"; // 플러그인
 
@@ -26,5 +25,3 @@ export default function Calendar() {
     </div>
   );
 }
-
-  

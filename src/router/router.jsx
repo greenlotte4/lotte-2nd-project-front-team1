@@ -20,6 +20,10 @@ import SupportPage from "../pages/main/SupportPage";
 import IndexPage from "../pages/main/IndexPage";
 import IntroPage from "../pages/main/IntroPage";
 import MyPagePage from "../pages/app/myPage/MyPagePage";
+import MyPageMembershipPage from "../pages/app/myPage/MyPageMembershipPage";
+import MyPageInquiryPage from "../pages/app/myPage/MyPageInquiryPage";
+import AdminCSPage from "../pages/admin/AdminCSPage";
+import AdminUserPage from "../pages/admin/AdminUserPage";
 
 //라우팅 정의
 const router = createBrowserRouter([
@@ -39,7 +43,9 @@ const router = createBrowserRouter([
   { path: "/user/findPass", element: <FindPassPage /> },
   { path: "/user/find/findView", element: <FindViewPage /> },
   { path: "/user/find/newPass", element: <NewPassPage /> },
-  { path: "/user/myPage", element: <MyPagePage/> },
+  { path: "/user/myPage", element: <MyPagePage /> },
+  { path: "/user/mypage/membership", element: <MyPageMembershipPage /> },
+  { path: "/user/mypage/inquiry", element: <MyPageInquiryPage /> },
 
   // App Home
   { path: "/app/home", element: <AppHome /> },
@@ -49,6 +55,10 @@ const router = createBrowserRouter([
   { path: "/app/calendar", element: <CalendarPage /> },
   { path: "/app/file", element: <FilePage /> },
   { path: "/app/page", element: <PagePage /> },
+
+  //Admin
+  { path: "/admin/user", element: <AdminUserPage /> },
+  { path: "/admin/cs", element: <AdminCSPage /> },
 ]);
 
 // 라우터 내보내기
