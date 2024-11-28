@@ -1,13 +1,4 @@
-/*
-    날짜 : 2024/11/21
-    이름 : 이도영
-    내용 : 프로젝트 html 작성
-
-    추가내역
-    -------------
-    00.00 이름 - 내용
-*/
-export default function CalendarAside() {
+export default function AdminCSAside() {
   return (
     <div id="sidebar-container">
       {/* 사이드바 */}
