@@ -10,8 +10,8 @@
 
 import React from 'react';
 import Func from '../../components/main/Func';
-import '../../styles/Main/Include.scss';
-import '../../styles/Main/Func.scss';
+import '../../styles/main/Include.scss';
+import '../../styles/main/Func.scss';
 import MainLayout from '../../layouts/main/MainLayout';
 
 const FuncPage = () => {

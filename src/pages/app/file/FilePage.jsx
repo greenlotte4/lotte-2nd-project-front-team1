@@ -1,8 +1,8 @@
 import React from 'react';
 import AppLayout from "../../../layouts/app/AppLayout";
-import { useSidebar } from '../../../hooks/app/useSidebar'; // 커스텀 훅 사용
-import '../../../styles/App/file/File.scss';
-import '../../../styles/App/AppAside.scss';
+import { useSidebar } from '../../../hooks/app/UseSidebar'; // 커스텀 훅 사용
+import '../../../styles/app/file/File.scss';
+import '../../../styles/app/AppAside.scss';
 import FileAside from '../../../components/app/file/FileAside';
 import File from '../../../components/app/file/File';
 

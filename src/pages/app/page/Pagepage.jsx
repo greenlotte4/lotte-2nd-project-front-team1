@@ -1,7 +1,7 @@
 import Page from '../../../components/app/page/Page';
 import AppLayout from "../../../layouts/app/AppLayout";
 
-import '../../../styles/App/page/Page.scss';
+import '../../../styles/app/page/Page.scss';
 
 
 export default function PagePage(){
