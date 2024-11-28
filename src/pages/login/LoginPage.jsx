@@ -10,12 +10,12 @@
 
 import Header from "../../components/main/Header";
 import Login from "../../components/user/login/Login";
-import "../../styles/login.scss";
+import "../../styles/Login.scss";
 
 export default function LoginPage() {
   return (
     <>
-    <Header />
+      <Header />
       <section className="loginBody">
         <div className="loginBox mainBox">
           <Login />

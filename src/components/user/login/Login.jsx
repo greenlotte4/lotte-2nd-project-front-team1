@@ -40,12 +40,15 @@ export default function Login() {
       alert("로그인실패");
     }
   };
-  
+
   return (
-    <div className="login">
+    <div className="login-container">
       <form onSubmit={subnitHandler}>
-        <div>
-            <h1>로그인</h1>
+        <div className="loginImg">
+          <div className="findHeader">
+            <img src="/images/logo.png" alt="로그인 화면 이미지" />
+            <h3>로그인으로 더 나은 서비스를 누리세요</h3>
+          </div>
           <table>
             <tbody>
               <tr>
@@ -60,7 +63,7 @@ export default function Login() {
                 </td>
               </tr>
               <tr>
-                <td>
+                <td className="form-row">
                   <input
                     type="password"
                     name="pass"
@@ -73,9 +76,9 @@ export default function Login() {
             </tbody>
           </table>
           <div className="loginDiv">
-            <input type="checkbox" value="기억하기" />
-            로그인 상태유지
-            <div class="userFind">
+            <div className="userFind">
+              <input type="checkbox" value="기억하기" />
+              로그인 상태유지
               <Link to="/user/findId" className="findId">
                 아이디찾기
               </Link>
