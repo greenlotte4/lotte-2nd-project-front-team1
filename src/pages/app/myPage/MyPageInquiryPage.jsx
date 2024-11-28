@@ -9,7 +9,7 @@
 */
 import MyPageAside from "../../../components/app/myPage/MyPageAside";
 import MyPageInquiry from "../../../components/app/myPage/MyPageInquiry";
-import { useSidebar } from "../../../hooks/app/useSidebar";
+import { useSidebar } from "../../../hooks/app/UseSidebar";
 import AppLayout from "../../../layouts/app/AppLayout";
 export default function MyPageInquiryPage() {
   const { isSidebarVisible, toggleSidebar } = useSidebar(); // 사이드바 상태 및 토글 함수 사용
