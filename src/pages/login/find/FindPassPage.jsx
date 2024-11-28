@@ -13,13 +13,13 @@ import "../../../styles/Login.scss";
 
 export default function FindPassPage() {
   return (
-    <>
+    <div className="LoginPage">
       <Header />
       <section className="loginBody">
         <div className="findBox mainBox">
           <FindPass />
         </div>
       </section>
-    </>
+    </div>
   );
 }

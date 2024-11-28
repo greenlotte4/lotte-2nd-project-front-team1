@@ -13,13 +13,13 @@ import "../../styles/Login.scss";
 
 export default function RegisterPage() {
   return (
-    <>
+    <div className="LoginPage">
       <Header />
       <section className="loginBody">
         <div className="registerBox mainBox">
           <Register />
         </div>
       </section>
-    </>
+    </div>
   );
 }

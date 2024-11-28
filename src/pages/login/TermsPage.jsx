@@ -13,13 +13,13 @@ import "../../styles/Login.scss";
 
 export default function TermsPage() {
   return (
-    <>
+    <div className="LoginPage">
       <Header />
       <section className="loginBody">
         <div className="termsBox mainBox">
           <Terms />
         </div>
       </section>
-    </>
+    </div>
   );
 }
