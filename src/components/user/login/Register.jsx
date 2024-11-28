@@ -72,7 +72,7 @@ export default function Register() {
                                     value={user.uid}
                                     onChange={changeHandler} />
                                 <button type="button">
-                                    <img src="/images/chk_id.gif" alt="중복확인" />
+                                    <img src="/images/check.svg" alt="중복확인" />
                                 </button>
                                 <span className="uidResult"></span>
                             </td>
@@ -136,7 +136,7 @@ export default function Register() {
                                     value={user.email}
                                     onChange={changeHandler} />
                                 <button type="button">
-                                    <img src="/images/chk_auth.gif" alt="인증번호 받기" />
+                                    <img src="/images/check.svg" alt="인증번호 받기" />
                                 </button>
                                 <div className="auth">
                                     <input type="text"
@@ -145,7 +145,7 @@ export default function Register() {
                                         value={authCode}
                                         onChange={changeHandler} />
                                     <button type="button">
-                                        <img src="/images/chk_confirm.gif" alt="확인" />
+                                        <img src="/images/check.svg" alt="확인" />
                                     </button>
                                 </div>
                             </td>
@@ -172,7 +172,7 @@ export default function Register() {
                                     onChange={changeHandler}
                                 />
                                 <button type="button">
-                                    <img src="/images/chk_post.gif" alt="우편번호찾기" />
+                                    <img src="/images/search.svg" alt="우편번호찾기" />
                                 </button>
                                 <input
                                     type="text"

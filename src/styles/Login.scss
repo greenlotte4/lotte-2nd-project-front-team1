@@ -40,7 +40,6 @@
 
   // 로그인
 
-
   .loginBox {
     padding: 15px 15px 60px 15px;
     border-radius: 8px;
@@ -247,8 +246,8 @@
   // 약관
   .termsBox {
     width: 600px;
-    height: 600px;
-    padding: 20px;
+    height: 620px;
+    padding: 30px;
     display: flex;
     flex-direction: column;
     gap: 20px;
@@ -338,8 +337,8 @@
   // 회원가입
   .registerBox {
     width: 600px;
-    height: 600px;
-    padding: 20px;
+    height: 620px;
+    padding: 15px;
     font-family: Arial, sans-serif;
 
     td {
@@ -357,6 +356,8 @@
       margin: 0;
       vertical-align: middle;
       cursor: pointer;
+      background: none;
+      margin-left: 5px;
     }
     table button:hover {
       background-color: #f0f0f0;
@@ -378,7 +379,7 @@
     }
 
     .short-input {
-      width: 280px;
+      width: 350px;
       padding: 8px;
       margin-top: 5px;
       margin-bottom: 5px;
@@ -389,7 +390,7 @@
 
     /* 긴 주소 입력 필드 스타일 */
     .long-input {
-      width: 400px;
+      width: 350px;
       padding: 8px;
       margin-top: 5px;
       margin-bottom: 5px;
@@ -400,7 +401,7 @@
 
     /* 버튼을 포함하는 input 필드의 스타일 */
     .input-with-button input {
-      width: 280px;
+      width: 350px;
       padding: 8px;
       margin-top: 5px;
       margin-bottom: 5px;
@@ -637,12 +638,13 @@
 
     /* 입력 필드를 감싸는 div에 hover 효과 추가 */
     .form-row:hover {
-      border-color: #1e90ff;
+      border-color: #18a041;
     }
 
     .findBtnBox {
       display: flex;
       justify-content: flex-end;
+      // width: 90%;
       gap: 10px;
     }
 
@@ -660,13 +662,13 @@
 
     /* 회원가입 버튼 (blueButton) 스타일 */
     .blueButton {
-      background-color: #99e7c7;
+      background-color: #00c473;
       border: none;
       cursor: pointer;
     }
 
     .blueButton:hover {
-      background-color: #0056b3;
+      background-color: #18a041;
     }
 
     /* 취소 버튼 스타일 */
@@ -686,7 +688,7 @@
 
   // 아이디찾기
   .idViewBox {
-    width: 400px;
+    // width: 400px;
     border-radius: 8px;
     font-family: Arial, sans-serif;
 
