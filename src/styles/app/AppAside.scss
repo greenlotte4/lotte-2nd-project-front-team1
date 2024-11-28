@@ -1,5 +1,30 @@
 #sidebar-container {
   transition: background-color 0.3s ease;
+  .aside-slide-in {
+    opacity: 0;
+    transform: translateX(-100%);
+    animation: asideSlideIn 0.3s forwards;
+  }
+
+  @keyframes asideSlideIn {
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  .aside-slide-out {
+    opacity: 1;
+    transform: translateX(0);
+    animation: asideSlideOut 0.3s forwards;
+  }
+
+  @keyframes asideSlideOut {
+    to {
+      opacity: 0;
+      transform: translateX(-100%);
+    }
+  }
 
   /* 사이드바 */
   .sidebar {
@@ -16,7 +41,6 @@
     flex-direction: column;
     overflow: scroll;
     background-color: #f1f8e9;
-    
   }
 
   .sidebar-header {
@@ -27,7 +51,6 @@
     padding: 10px;
     background-color: #f1f8e9;
     border-bottom: 1px solid #ddd;
-    
   }
 
   .sidebar-header h2 {
