@@ -1,82 +1,99 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 export default function UserSetting() {
-    const [name, setName] = useState("김아무개");
-    const [email, setEmail] = useState("123@123.com");
-    const [notification, setNotification] = useState(true);
-    const [theme, setTheme] = useState("light");
 
+    const navigate = useNavigate();
+    const [notifications, setNotifications] = useState(() => {
+        const saved = localStorage.getItem("notifications");
+        return saved ? JSON.parse(saved) : [
+            { id: 1, label: "전체 알림", checked: true },
+            { id: 2, label: "메시지 알림", checked: true },
+            { id: 3, label: "댓글 알림", checked: true },
+            { id: 4, label: "게시판 알림", checked: true },
+            { id: 5, label: "캘린더 알림", checked: true },
+        ];
+    });
 
-    const handleName = (e) => setName(e.target.value);
-    const handleEmail = (e) => setEmail(e.target.value);
-    const handleNotification = (e) => setNotification(e.target.checked);
-    const handleThene = (e) => setTheme(e.target.value);
+    useEffect(() => {
+        console.log("Saving notifications to localStorage", notifications);  // 디버깅용 로그
+        localStorage.setItem("notifications", JSON.stringify(notifications));
+    }, [notifications])
 
-    const handleDelete = () => {
-        if (window.confirm("정말로 계정을 삭제하시겠습니까?")) {
-            alert("계정이 삭제되었습니다.")
-        }
-    }
+    const handleNotificationChange = (id) => {
+        setNotifications(prevNotifications =>
+            prevNotifications.map(notification =>
+                notification.id === id
+                    ? { ...notification, checked: !notification.checked }
+                    : notification
+            )
+        );
+        console.log('Checked state updated');
+    };
+    const [theme, setTheme] = useState(() => {
+        const savedTheme = localStorage.getItem("theme");
+        return savedTheme ? savedTheme : "light";
+    });
+
     const handleSave = () => {
+        localStorage.setItem("theme", theme);
+
+        // 테마 클래스를 <body>에 적용하여 실제 화면에 반영
+        if (theme === "dark") {
+            document.body.classList.add("dark-mode");
+            document.body.classList.remove("light-mode");
+        } else {
+            document.body.classList.add("light-mode");
+            document.body.classList.remove("dark-mode");
+        }
+
         alert("변경사항이 저장되었습니다.");
     };
+
+    const goHandle = () => {
+        navigate("/user/myPage")
+    }
     return (
         <div className="userSetting">
-            {/* 개인 정보 섹션 */}
-            <div className="section">
-                <h4>개인 정보</h4>
-                <label>이름</label>
-                <input
-                    type="text"
-                    value={name}
-                    onChange={handleName}
-                    placeholder="이름을 입력하세요"
-                />
-                <label>이메일</label>
-                <input
-                    type="email"
-                    value={email}
-                    onChange={handleEmail}
-                    placeholder="이메일을 입력하세요"
-                />
-                <button onClick={handleSave}>저장</button>
-            </div>
-
             {/* 알림 설정 섹션 */}
-            <div className="section">
+            <div className="switchSection">
                 <h4>알림 설정</h4>
-                <label className="switch">
-                    <input
-                        type="checkbox"
-                        checked={notification}
-                        onChange={handleNotification}
-                    />
-                    알림 받기
-                </label>
-                <button onClick={handleSave}>저장</button>
+                {notifications.map((notification) => (
+                    <div key={notification.id} className="switch">
+                        <label className="switchLabel">
+                            <span className="notiName">{notification.label}</span>
+                            <input
+                                type="checkbox"
+                                checked={notification.checked}
+                                onChange={() => handleNotificationChange(notification.id)}
+                            />
+                            <span className="sliderBox round"></span>
+                        </label>
+                    </div>
+                ))}
             </div>
 
             {/* 계정 삭제 섹션 */}
-            <div className="section">
-                <h4>계정 삭제</h4>
-                <button onClick={handleDelete}>계정 삭제</button>
+            <div className="userSection">
+                <h4>프로필 편집</h4>
+                <button onClick={goHandle} className="myPage">프로필 편집 이동</button>
             </div>
 
             {/* 기타 사용자 설정 섹션 */}
-            <div className="section">
+            <div className="temaSection">
                 <h4>기타 사용자 설정</h4>
 
                 {/* 테마 설정 */}
                 <div>
-                    <label>테마</label>
-                    <select value={theme} onChange={handleThene}>
+                    <label className="tema">테마</label>
+                    <select value={theme} onChange={(e) => setTheme(e.target.value)}>
                         <option value="light">라이트 모드</option>
                         <option value="dark">다크 모드</option>
                     </select>
                 </div>
 
                 {/* 추가적으로 다른 설정들 넣을 수 있음 */}
-                <button onClick={handleSave}>저장</button>
+                <button onClick={handleSave} className="svaeBtn">저장</button>
             </div>
         </div>
     )

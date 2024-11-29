@@ -1,8 +1,7 @@
 .settingBox {
     padding: 10px;
     width: 100%;
-
-    div {}
+    flex-direction: column;
 
     h3 {
         font-size: 30px;
@@ -11,6 +10,8 @@
     h4 {
         padding-left: 10px;
         margin-bottom: 5px;
+        font-size: 22px;
+        font-weight: bold;
     }
 
     p {
@@ -23,64 +24,97 @@
             width: 1000px;
             padding: 10px;
             box-sizing: border-box;
+        }
+        
+        .switchSection,
+        .userSection,
+        .temaSection {
+            margin-bottom: 10px;
             border: 1px solid;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            h4{
+                font-size: 16px;
+                font-weight: bold;
+            }
+            .switch {
+                width: 100%;
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                box-sizing: border-box;
+                border-bottom: 1px solid;
+            }
+            .notiName {
+                display: inline-block; /* span을 inline-block으로 변경 */
 
+                width: 200px; /* 알림 이름이 일정한 너비를 갖도록 설정 */
+                text-overflow: ellipsis;  /* 긴 텍스트가 잘리면 '...' 표시 */
+                overflow: hidden;
+                white-space: nowrap; /* 텍스트가 줄바꿈 없이 한 줄로 표시되게 */
+            }
+            input {
+                display: none; /* 체크박스 기본 숨김 */
+            }
+
+            .sliderBox {
+
+                margin-left: 100px;
+                position: relative;
+                cursor: pointer;
+                padding: 6.5px 25px;
+                background-color: #ccc;
+                border-radius: 34px;
+                transition: background-color 0.4s;
+
+                &::before {
+                    content: "";
+                    position: absolute;
+                    top: 2.5px;
+                    left: 4px;
+                    width: 20px;
+                    height: 20px;
+                    background-color: white; /* 원의 색상 */
+                    border-radius: 50%;
+                    transition: transform 0.4s, background-color 0.4s; /* 원 색상 변경 */
+                }
+            }
+
+            /* 체크 상태일 때 슬라이더 박스 배경색 변경 */
+            input:checked + .sliderBox {
+                background-color: #4CAF50; /* 초록색으로 변경 */
+            }
+
+            /* 체크 상태일 때 원의 위치 이동 및 색상 변경 */
+            input:checked + .sliderBox::before {
+                transform: translateX(21px); /* 원이 오른쪽으로 이동 */
+                background-color: white; /* 원의 색상 */
+            }
+
+            .myPage,.svaeBtn{
+                width: 100px;
+                padding: 8px 10px;
+            }
+
+            .tema{
+                font-size: 15px;
+                margin-right: 20px;
+            }
+            select{
+                padding: 5px 10px;
+                
+            }
         }
-
-        .switch {
-            position: relative;
-            display: inline-block;
-            width: 60px;
-            height: 34px;
-        }
-
-        .switch input {
-            opacity: 0;
-            width: 0;
-            height: 0;
-        }
-
-        .slider {
-            position: absolute;
-            cursor: pointer;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-color: #ccc;
-            transition: 0.4s;
-            border-radius: 34px;
-        }
-
-        .slider:before {
-            position: absolute;
-            content: "";
-            height: 26px;
-            width: 26px;
-            border-radius: 50%;
-            left: 4px;
-            bottom: 4px;
-            background-color: white;
-            transition: 0.4s;
-        }
-
-        /* 체크박스가 선택된 상태 (오른쪽으로 이동) */
-        input:checked+.slider {
-            background-color: #4CAF50;
-        }
-
-        /* 원이 오른쪽으로 이동 */
-        input:checked+.slider:before {
-            transform: translateX(26px);
-        }
-
-        /* 토글 스위치 라운드 형태 */
-        .slider.round {
-            border-radius: 34px;
-        }
-
-        .slider.round:before {
-            border-radius: 50%;
+        
+    }
+    .PageSetting{
+        div {
+            width: 1000px;
+            padding: 10px;
+            box-sizing: border-box;
+            border: 1px solid;
+            margin-bottom: 10px;
 
         }
     }
