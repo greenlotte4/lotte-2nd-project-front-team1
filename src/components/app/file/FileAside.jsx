@@ -46,49 +46,50 @@ export default function FileAside({ isVisible }) {
           <nav className="menu">
             <ul className="submenu">
               {/* 내 드라이브 */}
-              <li className="menu-item">
-                <span onClick={() => toggleFolder("내 드라이브")}>
-                  ⬇ 내 드라이브
-                </span>
-                {openFolders["내 드라이브"] && (
-                  <ul className="sub-menu">
-                    <li className="menu-item">📄 문서</li>
-                    <li className="menu-item">📂 프로젝트</li>
-                  </ul>
-                )}
+              <li
+                className="menu-item"
+                onClick={() => toggleFolder("내 드라이브")}
+              >
+                내 드라이브
               </li>
+              {openFolders["내 드라이브"] && (
+                <ul className="sub-menu">
+                  <li className="menu-item">📄 문서</li>
+                  <li className="menu-item">📂 프로젝트</li>
+                </ul>
+              )}
 
               {/* 공용 드라이브 */}
-              <li className="menu-item">
-                <span onClick={() => toggleFolder("공용 드라이브")}>
-                  🗂️ 공용 드라이브
-                </span>
-                {openFolders["공용 드라이브"] && (
-                  <ul className="sub-menu">
-                    <li className="menu-item">📂 팀 폴더</li>
-                  </ul>
-                )}
+              <li
+                className="menu-item"
+                onClick={() => toggleFolder("공용 드라이브")}
+              >
+                🗂️ 공용 드라이브
               </li>
+              {openFolders["공용 드라이브"] && (
+                <ul className="sub-menu">
+                  <li className="menu-item">📂 팀 폴더</li>
+                </ul>
+              )}
 
               {/* 최근 사용 경로들 */}
-              <li className="menu-item">
-                <span>⏱️ 최근 사용 경로들</span>
-              </li>
+              <li className="menu-item">⏱️ 최근 사용 경로들</li>
 
               {/* 즐겨찾기 */}
-              <li className="menu-item">
-                <span onClick={() => toggleFolder("즐겨찾기")}>⬇ 즐겨찾기</span>
-                {openFolders["즐겨찾기"] && (
-                  <ul className="sub-menu">
-                    <li className="menu-item">📄 즐겨찾은 파일</li>
-                  </ul>
-                )}
+              <li
+                className="menu-item"
+                onClick={() => toggleFolder("즐겨찾기")}
+              >
+                ⬇ 즐겨찾기
               </li>
+              {openFolders["즐겨찾기"] && (
+                <ul className="sub-menu">
+                  <li className="menu-item">📄 즐겨찾은 파일</li>
+                </ul>
+              )}
 
               {/* 휴지통 */}
-              <li className="menu-item">
-                <span>🗑️ 휴지통</span>
-              </li>
+              <li className="menu-item">🗑️ 휴지통</li>
             </ul>
           </nav>
         </aside>

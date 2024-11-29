@@ -17,23 +17,37 @@ export default function NotificationButton({ isOpen, onToggle }) {
       {/* 알림 드롭다운 */}
       {isOpen && (
         <div className="notificationDropdown">
-          <div className="notificationButtons">
-            <button className="notificationTabButton">전체</button>
-            <button className="notificationTabButton">캘린더</button>
-            <button className="notificationTabButton">메시지</button>
-            <button className="notificationTabButton">초대</button>
-          </div>
+          {/* 읽지 않은 알림 */}
           <div className="unreadNotifications">
             <h4 className="unreadTitle">읽지 않은 알람</h4>
             <ul className="notificationList">
-              <li className="notificationItem">알림 내용 1</li>
-              <li className="notificationItem">알림 내용 2</li>
-              <li className="notificationItem">알림 내용 3</li>
-              <li className="notificationItem">알림 내용 4</li>
-              <li className="notificationItem">알림 내용 5</li>
-              <li className="notificationItem">알림 내용 6</li>
-              <li className="notificationItem">알림 내용 7</li>
-              <li className="notificationItem">알림 내용 8</li>
+              <li className="notificationItem unread">
+                <span className="redDot"></span>알림 내용 1
+              </li>
+              <li className="notificationItem unread">
+                <span className="redDot"></span>알림 내용 2
+              </li>
+              <li className="notificationItem unread">
+                <span className="redDot"></span>알림 내용 3
+              </li>
+              <li className="notificationItem unread">
+                <span className="redDot"></span>알림 내용 3
+              </li>
+              <li className="notificationItem unread">
+                <span className="redDot"></span>알림 내용 3
+              </li>
+              <li className="notificationItem unread">
+                <span className="redDot"></span>알림 내용 3
+              </li>
+            </ul>
+          </div>
+          {/* 읽은 알림 */}
+          <div className="readNotifications">
+            <h4 className="unreadTitle">읽은 알람</h4>
+            <ul className="notificationList">
+              <li className="notificationItem">읽은 알림 내용 1</li>
+              <li className="notificationItem">읽은 알림 내용 2</li>
+              <li className="notificationItem">읽은 알림 내용 3</li>
             </ul>
           </div>
         </div>
