@@ -1,4 +1,11 @@
-import React from "react";
+/*
+   날짜 : 2024/11/25
+   이름 : 이도영
+   내용 : 프로젝트 페이지
+
+   추가내역
+   -------------
+ */
 import Project from "../../../components/app/project/Project";
 import ProjectAside from "../../../components/app/project/ProjectAside";
 import AppLayout from "../../../layouts/app/AppLayout";
@@ -11,7 +18,7 @@ export default function ProjectPage() {
 
   return (
     <AppLayout onToggleSidebar={toggleSidebar}>
-      {isSidebarVisible && <ProjectAside />}
+      <ProjectAside isVisible={isSidebarVisible} />
       <div
         className={`main-content ${isSidebarVisible ? "" : "hidden-sidebar"}`}
       >

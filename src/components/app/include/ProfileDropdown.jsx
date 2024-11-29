@@ -5,10 +5,12 @@
 
     추가내역
     -------------
+    2024/11/29 이도영 경로 추가 , 상태변경 셀렉트박스 추가
 */
 import PropTypes from "prop-types";
+import { Link } from "react-router-dom";
 
-export default function ProfileDropdown({ isOpen, onClose }) {
+export default function ProfileDropdown({ isOpen }) {
   if (!isOpen) return null; // 드롭다운이 닫혀있으면 아무것도 렌더링하지 않음
 
   return (
@@ -22,16 +24,25 @@ export default function ProfileDropdown({ isOpen, onClose }) {
           />
         </div>
         <div className="profileInfo">
-          <p className="profileName">이순신</p>
+          <div className="profileHeader">
+            <p className="profileName">이순신</p>
+            <select className="statusDropdown">
+              <option value="online">온라인</option>
+              <option value="dnd">방해금지</option>
+              <option value="away">자리비움</option>
+            </select>
+          </div>
           <p className="profileDept">관리 부서</p>
           <p className="profileEmail">lee@example.com</p>
         </div>
       </div>
       <div className="profileButtons">
-        <button className="editProfileButton">프로필 편집</button>
-        <button className="logoutButton" onClick={onClose}>
+        <Link to="/user/myPage" className="editProfileButton">
+          프로필 편집
+        </Link>
+        <Link to="/" className="logoutButton">
           로그아웃
-        </button>
+        </Link>
       </div>
     </div>
   );
