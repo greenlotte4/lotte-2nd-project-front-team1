@@ -15,10 +15,18 @@ import ProfileDropdown from "./ProfileDropdown";
 
 export default function AppHeader({ onToggleSidebar, noneAside }) {
   const [openDropdown, setOpenDropdown] = useState(null); // "notification" | "profile" | null
-
+  const [status, setStatus] = useState(null);
   const toggleDropdown = (type) => {
     setOpenDropdown((prev) => (prev === type ? null : type));
   };
+  // 상태별 테두리 색상
+  const borderColor =
+    {
+      online: "green",
+      dnd: "red",
+      away: "yellow",
+    }[status] || "transparent"; // 기본값은 투명
+
   return (
     <header className="AppHeader">
       <div className="headerTitle">

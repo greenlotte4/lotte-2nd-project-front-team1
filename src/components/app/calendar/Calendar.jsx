@@ -9,8 +9,14 @@
 */
 import FullCalendar from "@fullcalendar/react"; // FullCalendar React component
 import dayGridPlugin from "@fullcalendar/daygrid"; // 플러그인
+import Modal from "../../modal/Modal";
+import { useState } from "react";
 
 export default function Calendar() {
+  const [isModalOpen, setModalOpen] = useState(false);
+
+  const openModal = () => setModalOpen(true);
+  const closeModal = () => setModalOpen(false);
   return (
     <div className="calendar-page">
       <FullCalendar
@@ -23,6 +29,14 @@ export default function Calendar() {
         ]}
         height="auto"
       />
+      <h1>통합 모달 예시</h1>
+      <button onClick={openModal} className="open-modal-btn">
+        모달 열기
+      </button>
+      <Modal isOpen={isModalOpen} onClose={closeModal} title="통합 모달">
+        <p>이것은 통합 모달의 내용입니다.</p>
+        <button onClick={() => alert("추가 기능!")}>추가 버튼</button>
+      </Modal>
     </div>
   );
 }

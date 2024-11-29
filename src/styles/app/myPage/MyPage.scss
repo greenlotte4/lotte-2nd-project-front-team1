@@ -1,10 +1,6 @@
-div {}
-
 .userInfoBox {
-  width: 100%;
   align-items: center;
   justify-items: center;
-
   h3 {
     font-size: 20px;
     padding: 10px;
@@ -93,7 +89,6 @@ div {}
     padding: 10px;
     display: flex;
     justify-content: space-between;
-    
 
     /* 버튼과 다른 요소들 간의 간격 */
     button {
