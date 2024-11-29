@@ -353,6 +353,7 @@ export default function MainBoard(){
                      </ul>
                   </div>
               </div>
+              <span className="space"></span>
              
 
           </div>            

@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 /*
     날짜 : 2024/11/29
     이름 : 원기연
@@ -143,9 +145,9 @@ export default function BoardAside(){
               </div>
           </div>
           <div id="worksCommonCopyright" className="board_footer" style={{display: "block"}}>
-              <a href="https://naver.worksmobile.com/" target="_blank" className="copyright">
-                 메인으로 가는 링크로 수정부탁드려요
-              </a>
+              <Link to="https://hubflow.vercel.app/" target="_blank" className="copyright">
+                 메인으로 가기
+              </Link>
           </div>
         </aside>
       </div>
