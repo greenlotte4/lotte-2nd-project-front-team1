@@ -7,6 +7,7 @@
     -------------
 */
 import PropTypes from "prop-types";
+import { Link } from "react-router-dom";
 
 export default function ProfileDropdown({ isOpen, onClose }) {
   if (!isOpen) return null; // 드롭다운이 닫혀있으면 아무것도 렌더링하지 않음
@@ -29,9 +30,9 @@ export default function ProfileDropdown({ isOpen, onClose }) {
       </div>
       <div className="profileButtons">
         <button className="editProfileButton">프로필 편집</button>
-        <button className="logoutButton" onClick={onClose}>
+        <Link to="/" className="logoutButton" onClick={onClose}>
           로그아웃
-        </button>
+        </Link>
       </div>
     </div>
   );

@@ -5,7 +5,7 @@
 
     추가내역
     -------------
-    00.00 이름 - 내용
+    2024.11.29 - 세로 길이 조절
 */
 import FullCalendar from "@fullcalendar/react"; // FullCalendar React component
 import dayGridPlugin from "@fullcalendar/daygrid"; // 플러그인
@@ -21,6 +21,7 @@ export default function Calendar() {
           { title: "Event 1", date: "2024-11-26" },
           { title: "Event 2", date: "2024-11-27" },
         ]}
+        height="auto"
       />
     </div>
   );

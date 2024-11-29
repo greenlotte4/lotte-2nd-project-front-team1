@@ -6,13 +6,14 @@
     추가내역
     -------------
     2024/11/28 이도영 알람,프로필 출력 기능 추가
+    2024.11.19 강중원 noneAside를 통해 어사이드 버튼 비/활성화
 */
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import NotificationButton from "./NotificationButton";
 import ProfileDropdown from "./ProfileDropdown";
 
-export default function AppHeader({ onToggleSidebar }) {
+export default function AppHeader({ onToggleSidebar, noneAside }) {
   const [openDropdown, setOpenDropdown] = useState(null); // "notification" | "profile" | null
 
   const toggleDropdown = (type) => {
@@ -25,6 +26,7 @@ export default function AppHeader({ onToggleSidebar }) {
           className="headerButton"
           id="toggle-sidebar"
           onClick={onToggleSidebar} // 햄버거 버튼 클릭 시 전달된 함수 호출
+          style={{ visibility: noneAside ? "hidden" : "" }}
         >
           <img src="/images/hamburger.png" alt="Toggle Sidebar" />
         </button>
