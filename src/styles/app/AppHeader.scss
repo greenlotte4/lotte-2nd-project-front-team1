@@ -192,6 +192,7 @@
   .logoutButton:hover {
     background-color: #d32f2f;
   }
+  /*==================알람버튼==================*/
   .notificationDot {
     position: absolute;
     top: 0; /* 이미지 상단 */
@@ -208,55 +209,23 @@
 
   .notificationDropdown {
     position: absolute;
-    top: 50px;
+    top: 40px; /* 버튼 바로 아래에서 시작 */
     right: 0;
     width: 350px;
+    max-height: 400px; /* 드롭다운 최대 높이 */
     background-color: white;
     border-radius: 10px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     z-index: 1000;
     padding: 15px;
-  }
-  .profileHeader {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+    overflow-y: auto; /* 내용이 많아지면 스크롤 활성화 */
+    scrollbar-width: thin; /* 스크롤바 두께 */
+    scrollbar-color: #ccc #f9f9f9; /* 스크롤바 색상 */
   }
 
-  .statusDropdown {
-    padding: 5px;
-    font-size: 14px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    background-color: #fff;
-    cursor: pointer;
-  }
-  /* 상단 버튼 */
-  .notificationButtons {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 15px;
-  }
-
-  .notificationTabButton {
-    flex: 1;
-    margin: 0 5px;
-    padding: 10px 15px;
-    font-size: 14px;
-    color: #555;
-    background-color: #f0f0f0;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-
-  .notificationTabButton:hover {
-    background-color: #d4e7c5;
-    color: #333;
-  }
-
-  /* 읽지 않은 알림 */
+  /* 읽지 않은 알림 스타일 */
   .unreadNotifications {
-    margin-top: 10px;
+    margin-bottom: 15px;
   }
 
   .unreadTitle {
@@ -265,20 +234,31 @@
     margin-bottom: 10px;
   }
 
-  .notificationList {
-    max-height: 200px;
-    overflow-y: auto;
-  }
-
   .notificationItem {
-    padding: 10px;
+    padding: 12px;
     margin-bottom: 5px;
-    font-size: 14px;
+    font-size: 15px;
     background-color: #f9f9f9;
     border-radius: 5px;
     cursor: pointer;
+    position: relative; /* 붉은 점 위치를 위해 */
+    display: flex; /* 점과 텍스트를 수평 정렬 */
+    align-items: center;
   }
+
   .notificationItem:hover {
     background-color: #e9ecef;
+  }
+
+  /* 읽지 않은 알림 - 붉은 점 스타일 */
+  .notificationItem.unread .redDot {
+    position: absolute; /* 부모 컨테이너를 기준으로 배치 */
+    top: 5px; /* 상단 여백 */
+    left: 5px; /* 왼쪽 여백 */
+    width: 8px;
+    height: 8px;
+    background-color: #ff4d4f; /* 강렬한 빨간색 */
+    border-radius: 50%; /* 원형 */
+    box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.2); /* 약간의 그림자 */
   }
 }
