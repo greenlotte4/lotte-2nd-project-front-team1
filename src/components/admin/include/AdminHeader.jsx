@@ -1,7 +1,23 @@
-import React from "react";
+/*
+    날짜 : 2024/11/28
+    이름 : 이도영
+    내용 : 관리자 헤더
+
+    추가내역
+    -------------
+    00.00 이름 - 내용
+*/
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import NotificationButton from "../../app/include/NotificationButton";
+import ProfileDropdown from "../../app/include/ProfileDropdown";
 
 export default function AdminHeader({ onToggleSidebar }) {
+  const [openDropdown, setOpenDropdown] = useState(null); // "notification" | "profile" | null
+
+  const toggleDropdown = (type) => {
+    setOpenDropdown((prev) => (prev === type ? null : type));
+  };
   return (
     <header className="AdminHeader">
       <div className="headerTitle">
@@ -17,32 +33,27 @@ export default function AdminHeader({ onToggleSidebar }) {
         </Link>
       </div>
       <div className="headerArticle">
-        <Link to="/app/page" className="headerIcon">
+        <Link to="/admin/user" className="headerIcon">
           <img src="/images/book.png" alt="page" />
         </Link>
-        <Link to="/app/calendar" className="headerIcon">
+        <Link to="/admin/cs" className="headerIcon">
           <img src="/images/calendar.png" alt="calendar" />
         </Link>
-        <Link to="/app/message" className="headerIcon">
-          <img src="/images/messages.png" alt="message" />
-        </Link>
-        <Link to="/app/article" className="headerIcon">
-          <img src="/images/form.png" alt="article" />
-        </Link>
-        <Link to="/app/project" className="headerIcon">
-          <img src="/images/master-plan.png" alt="project" />
-        </Link>
-        <Link to="/app/file" className="headerIcon">
-          <img src="/images/folder-open.png" alt="drive" />
-        </Link>
-        <Link to="/app/setting" className="headerIcon">
-          <img src="/images/settings.png" alt="drive" />
-        </Link>
 
-        <Link to="" className="ProfileDiv">
+        {/* 알림 버튼 */}
+        <NotificationButton
+          isOpen={openDropdown === "notification"}
+          onToggle={() => toggleDropdown("notification")}
+        />
+        {/* 프로필 버튼 */}
+        <div className="ProfileDiv" onClick={() => toggleDropdown("profile")}>
           <img src="/images/user_Icon.png" alt="👤" className="profileImg" />
           <p className="ProfileName">이순신</p>
-        </Link>
+        </div>
+        <ProfileDropdown
+          isOpen={openDropdown === "profile"}
+          onClose={() => setOpenDropdown(null)}
+        />
       </div>
     </header>
   );

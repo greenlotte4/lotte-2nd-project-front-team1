@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import PageAside from "./PageAside";
 
 export default function Page() {
     const [text, setText] = useState("");
@@ -11,30 +10,9 @@ export default function Page() {
     useEffect(() => {
         
         // Sidebar toggle functionality
-        const sidebar = document.querySelector(".sidebar");
-        const toggleSidebarBtn = document.getElementById("toggle-sidebar");
         const mainContent = document.querySelector(".main-content");
 
-        if (toggleSidebarBtn && sidebar && mainContent) {
-            toggleSidebarBtn.textContent = "<<";
-            toggleSidebarBtn.style.backgroundColor = "#f4f4f4";
-
-            toggleSidebarBtn.addEventListener("click", () => {
-                sidebar.classList.toggle("hidden");
-
-                if (sidebar.classList.contains("hidden")) {
-                    toggleSidebarBtn.textContent = ">>"; // closed state
-                    toggleSidebarBtn.style.backgroundColor = "white";
-                    toggleSidebarBtn.style.left = "10px";
-                    mainContent.style.marginLeft = "0";
-                } else {
-                    toggleSidebarBtn.textContent = "<<"; // open state
-                    toggleSidebarBtn.style.backgroundColor = "#f4f4f4";
-                    toggleSidebarBtn.style.left = "130px";
-                    mainContent.style.marginLeft = "-320px";
-                }
-            });
-        }
+       
 
         // Change cursor when mouse enters/leaves main content
         mainContent?.addEventListener('mouseenter', () => {
@@ -198,9 +176,8 @@ editableContainer.addEventListener('keydown', function (event) {
     }, []);
 
     return (
-        <div id="container">
-            <PageAside />
-            <main className="main-content pagecontent" id="main-container">
+      
+            <main className="pagecontent" id="main-container">
                 <div id="loading-skeleton" className="skeleton">
                     <div className="skeleton-title"></div>
                     <div className="skeleton-text"></div>
@@ -216,6 +193,6 @@ editableContainer.addEventListener('keydown', function (event) {
                     </div>
                 </div>
             </main>
-        </div>
+
     );
 }

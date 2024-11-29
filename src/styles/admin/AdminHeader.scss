@@ -67,6 +67,7 @@
     overflow: hidden;
   }
   .headerIcon {
+    position: relative;
     width: 30px;
     height: 30px;
     background-color: #d4e7c5;
@@ -97,5 +98,173 @@
     overflow: hidden;
     height: 15px;
     text-overflow: ellipsis;
+  }
+
+  /*2024/11/28 이도영*/
+  /* 드롭다운 메뉴 스타일 */
+  .ProfileDropdown {
+    position: absolute;
+    top: 46px;
+    right: 10px;
+    width: 400px;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    z-index: 1000;
+  }
+
+  /* 프로필 이미지와 정보 컨테이너 */
+  .profileDetails {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+
+  /* 프로필 이미지 스타일 */
+  .profileImageWrapper {
+    flex-shrink: 0;
+    margin-right: 15px;
+  }
+
+  .ProfileDropdownImg {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background-color: #f0f0f0; /* 기본 배경색 */
+  }
+
+  /* 프로필 정보 스타일 */
+  .profileInfo {
+    flex-grow: 1;
+    text-align: left;
+  }
+
+  .profileName {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: #333;
+  }
+
+  .profileDept {
+    font-size: 14px;
+    color: #777;
+    margin-bottom: 5px;
+  }
+
+  .profileEmail {
+    font-size: 14px;
+    color: #555;
+  }
+
+  /* 하단 버튼 스타일 */
+  .profileButtons {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .editProfileButton,
+  .logoutButton {
+    width: 48%; /* 버튼 너비를 50%로 설정 */
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    font-size: 14px;
+    cursor: pointer;
+  }
+
+  .editProfileButton {
+    background-color: #4caf50;
+    color: white;
+  }
+
+  .editProfileButton:hover {
+    background-color: #45a049;
+  }
+
+  .logoutButton {
+    background-color: #f44336;
+    color: white;
+  }
+
+  .logoutButton:hover {
+    background-color: #d32f2f;
+  }
+  .notificationDot {
+    position: absolute;
+    top: 0; /* 이미지 상단 */
+    right: 0; /* 이미지 오른쪽 */
+    width: 8px;
+    height: 8px;
+    background-color: #ff4d4f; /* 강렬한 빨간색 */
+    border-radius: 50%; /* 원형 */
+    box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.2); /* 약간의 그림자 */
+  }
+  .notificationWrapper {
+    position: relative;
+  }
+
+  .notificationDropdown {
+    position: absolute;
+    top: 50px;
+    right: 0;
+    width: 350px;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    padding: 15px;
+  }
+
+  /* 상단 버튼 */
+  .notificationButtons {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 15px;
+  }
+
+  .notificationTabButton {
+    flex: 1;
+    margin: 0 5px;
+    padding: 10px 15px;
+    font-size: 14px;
+    color: #555;
+    background-color: #f0f0f0;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+
+  .notificationTabButton:hover {
+    background-color: #d4e7c5;
+    color: #333;
+  }
+
+  /* 읽지 않은 알림 */
+  .unreadNotifications {
+    margin-top: 10px;
+  }
+
+  .unreadTitle {
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+
+  .notificationList {
+    max-height: 200px;
+    overflow-y: auto;
+  }
+
+  .notificationItem {
+    padding: 10px;
+    margin-bottom: 5px;
+    font-size: 14px;
+    background-color: #f9f9f9;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  .notificationItem:hover {
+    background-color: #e9ecef;
   }
 }

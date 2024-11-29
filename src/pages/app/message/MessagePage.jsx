@@ -10,7 +10,7 @@ export default function Message() {
 
   return (
     <AppLayout onToggleSidebar={toggleSidebar}>
-      {isSidebarVisible && <MessageAside />}
+      <MessageAside isVisible={isSidebarVisible} />
       <main
         className={`main-content ${isSidebarVisible ? "" : "hidden-sidebar"}`}
       >

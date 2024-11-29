@@ -3,6 +3,8 @@
     width: 100%;
     flex-direction: column;
 
+    div {}
+
     h3 {
         font-size: 30px;
     }
@@ -12,6 +14,7 @@
         margin-bottom: 5px;
         font-size: 22px;
         font-weight: bold;
+
     }
 
     p {
@@ -115,6 +118,64 @@
             box-sizing: border-box;
             border: 1px solid;
             margin-bottom: 10px;
+            border: 1px solid;
+
+        }
+
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 34px;
+        }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: 0.4s;
+            border-radius: 34px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 26px;
+            width: 26px;
+            border-radius: 50%;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: 0.4s;
+        }
+
+        /* 체크박스가 선택된 상태 (오른쪽으로 이동) */
+        input:checked+.slider {
+            background-color: #4CAF50;
+        }
+
+        /* 원이 오른쪽으로 이동 */
+        input:checked+.slider:before {
+            transform: translateX(26px);
+        }
+
+        /* 토글 스위치 라운드 형태 */
+        .slider.round {
+            border-radius: 34px;
+        }
+
+        .slider.round:before {
+            border-radius: 50%;
 
         }
     }

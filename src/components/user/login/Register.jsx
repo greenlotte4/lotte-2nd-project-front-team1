@@ -80,10 +80,9 @@ export default function Register() {
                         <tr>
                             <td>비밀번호</td>
                             <td className="input-with-button">
-                                <span>특수문자/영문 대소문자 구별없이 8글자 이상</span>
                                 <input type="password"
                                     name="pass"
-                                    placeholder="비밀번호 입력"
+                                    placeholder="비밀번호 특수문자/영문 대소문자 구별없이 8글자 이상 입력"
                                     value={user.pass}
                                     onChange={changeHandler} />
                                 <span
@@ -104,7 +103,7 @@ export default function Register() {
                             <td className="input-with-button">
                                 <input type="password"
                                     name="pass2"
-                                    placeholder="비밀번호 확인"
+                                    placeholder="비밀번호 특수문자/영문 대소문자 구별없이 8글자 이상 재입력"
                                     value={pass2}
                                     onChange={changeHandler}
                                 />

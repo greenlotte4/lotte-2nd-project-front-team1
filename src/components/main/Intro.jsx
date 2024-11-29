@@ -39,7 +39,7 @@ const Intro = () => {
       <h2>Management</h2>
       <div className="management-container">
         <div className="card">
-          <img src="/images/ceo1.png" alt="Profile Image" />
+          <img src="/images/ceo1.jpg" alt="Profile Image" />
           <h3>강중원 CEO</h3>
           <p>문제 해결의 핵심은 연결입니다. 우리는 그 연결을 만듭니다.</p>
         </div>
