@@ -100,13 +100,22 @@
   }
 
   .menu li {
-    padding: 10px 0;
+    display: flex; /* 플렉스박스 활성화 */
+    align-items: center; /* 세로 중앙 정렬 */
+    padding: 10px 15px;
     font-size: 16px;
     color: #555;
     cursor: pointer;
+    border-bottom: 1px solid #ddd; /* 구분선 */
     transition: background-color 0.3s;
   }
-
+  .menu ul li {
+    height: 50px;
+    padding: 10px 15px;
+    border-bottom: 2px solid #ddd; /* 구분선 추가 */
+    cursor: pointer;
+    text-align: left;
+  }
   .menu li:hover {
     background-color: #f0f0f0;
   }
@@ -131,15 +140,6 @@
     background-color: #e0e0e0;
   }
 
-  /* 서브 메뉴 스타일 */
-  nav.menu .submenu li {
-    background-color: #e8e8e8;
-    border-radius: 10px;
-    background-color: #f7fcf4;
-    margin: 5px 10px;
-    margin-bottom: 5px;
-  }
-
   /* 더보기 버튼 스타일 */
   .more-button {
     padding: 8px 12px;
@@ -153,4 +153,57 @@
   .more-button:hover {
     background-color: #b0b0b0;
   }
+
+  /* 버튼 스타일 */
+  .addButton {
+    display: block;
+    width: 100%; /* 버튼 너비를 메뉴와 동일하게 */
+    padding: 10px 15px;
+    margin-top: 10px; /* 메뉴와 간격 */
+    background-color: #007bff; /* 버튼 배경색 */
+    color: white; /* 텍스트 색상 */
+    font-size: 16px;
+    font-weight: bold;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+
+  .addButton:hover {
+    background-color: #0056b3; /* 호버 시 버튼 색상 */
+  }
+  .menu-item {
+    justify-content: space-between;
+  }
+  .delete-button {
+    display: none; /* 기본적으로 버튼 숨김 */
+  }
+
+  .menu-item:hover .delete-button {
+    display: flex; /* hover 시 버튼 표시 */
+  }
+
+  .delete-button {
+    background-color: #ecc2c2; /* 기본 배경색: 부드러운 회색 */
+    color: #333; /* 텍스트 색상 */
+    font-size: 14px; /* 글자 크기 */
+    font-weight: bold;
+    border: none;
+    border-radius: 50%; /* 둥근 버튼 */
+    width: 25px;
+    height: 25px;
+    cursor: pointer;
+    align-items: center;
+    justify-content: center;
+    margin-left: 10px; /* 텍스트와 버튼 간격 */
+    transition: background-color 0.3s, display 0.3s ease-in-out;
+  }
+
+  .delete-button:hover {
+    background-color: #aa8b8b; /* 호버 시 색상: 더 짙은 회색 */
+    transform: scale(1.1); /* 호버 시 약간 확대 */
+  }
+
+  //================파일전용 css ===============
 }
