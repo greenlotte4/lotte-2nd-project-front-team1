@@ -44,7 +44,7 @@ export default function AppHeader({ onToggleSidebar, noneAside }) {
         <Link to="/app/message" className="headerIcon">
           <img src="/images/messages.png" alt="message" />
         </Link>
-        <Link to="/app/article" className="headerIcon">
+        <Link to="/app/mainboard" className="headerIcon">
           <img src="/images/form.png" alt="article" />
         </Link>
         <Link to="/app/project" className="headerIcon">
