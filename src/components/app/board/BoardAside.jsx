@@ -13,9 +13,13 @@ export default function BoardAside(){
         <aside className="sidebar">
           <div className="main_pane">
               <div className="core_button">
-                  <button type="button" className="write_button">
-                      <strong>글쓰기</strong>
-                  </button>
+              <button
+                type="button"
+                className="write_button"
+                onClick={() => window.location.href = "http://localhost:5173/app/noticeboard"}
+                >
+                <strong>글쓰기</strong>
+                </button>
               </div>
               <div className="boardtop_menu">
                   <button type="button" className="recent">
@@ -54,9 +58,14 @@ export default function BoardAside(){
                   <ul className="lnb_tree">
                       <li className="board">
                           <div className="board_menu_item">
-                              <button type="button" title="게시판 메인" className="item_txt icon_main">
-                                   게시판 메인
-                               </button>
+                          <button
+                            type="button"
+                            title="게시판 메인"
+                            className="item_txt icon_main"
+                            onClick={() => window.location.href = "http://localhost:5173/app/mainboard"}
+                            >
+                            게시판 메인
+                            </button>
                           </div>
                       </li>
                   </ul>

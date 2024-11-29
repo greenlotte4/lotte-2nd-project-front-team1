@@ -26,6 +26,7 @@ import AdminCSPage from "../pages/admin/AdminCSPage";
 import AdminUserPage from "../pages/admin/AdminUserPage";
 import SettingPage from "../pages/app/setting/SettingPage";
 import MainBoardPage from "../pages/app/board/MainBoardPage"; 
+import NoticeBoardPage from "../pages/app/board/NoticeBoardPage"; 
 
 //라우팅 정의
 const router = createBrowserRouter([
@@ -59,6 +60,7 @@ const router = createBrowserRouter([
   { path: "/app/page", element: <PagePage /> },
   { path: "/app/setting", element: <SettingPage /> },
   { path: "/app/mainboard", element: <MainBoardPage/>},
+  { path: "/app/noticeboard", element: <NoticeBoardPage/>},
 
   //Admin
   { path: "/admin/user", element: <AdminUserPage /> },
