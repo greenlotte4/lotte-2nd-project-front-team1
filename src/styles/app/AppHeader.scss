@@ -172,6 +172,7 @@
     border-radius: 5px;
     font-size: 14px;
     cursor: pointer;
+    text-align: center;
   }
 
   .editProfileButton {
@@ -216,7 +217,20 @@
     z-index: 1000;
     padding: 15px;
   }
+  .profileHeader {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
 
+  .statusDropdown {
+    padding: 5px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #fff;
+    cursor: pointer;
+  }
   /* 상단 버튼 */
   .notificationButtons {
     display: flex;
