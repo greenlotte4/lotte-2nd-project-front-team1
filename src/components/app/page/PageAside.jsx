@@ -2,21 +2,11 @@
 import React, { useState } from 'react';
 
 export default function PageSidebar() {
-    const [isSidebarOpen, setIsSidebarOpen] = useState(true);
-
-    const toggleSidebar = () => {
-        setIsSidebarOpen((prev) => !prev);
-    };
+    const [isSidebarOpen] = useState(true);
 
     return (
         <div id="sidebar-container">
-            <button
-                id="toggle-sidebar"
-                className="sidebar-toggle-btn"
-                onClick={toggleSidebar}
-            >
-                {isSidebarOpen ? '<<' : '>>'}
-            </button>
+          
             <aside className={`sidebar ${isSidebarOpen ? '' : 'hidden'}`}>
                  <div className="sidebar-header">
       
