@@ -1,0 +1,541 @@
+.main_pane{
+    -webkit-box-flex: 0;
+    flex: 0 0 auto;
+  }
+  
+  .core_button{
+    position: relative;
+    display: flex;
+    padding: 16px 10px 0;
+    z-index: 10;
+  }
+  
+  .write_button{
+    background-color: #00C473;
+    border: 0;
+    -webkit-box-flex: 1;
+    flex: 1 1 auto;
+    position: relative;
+    display: block;
+    width: 50%;
+    height: 44px;
+    border-radius: 8px;
+    font-size: 14px;
+    line-height: 44px;
+    color: #ffffff;
+    overflow: hidden;
+  }
+  
+  .write_button button strong{
+    display: block;
+    height: 100%;
+  }
+  
+  .boardtop_menu{
+    position: relative;
+    display: flex;
+    padding: 6px 12px;
+    border-bottom: 1px solid rgba(32, 33, 36, .1);
+  }
+  
+  .boardtop_menu > button {
+    border: 0;
+    background-color: transparent;
+    -webkit-box-flex: 1;
+    flex: 1 1 0%;
+    position: relative;
+    display: block;
+    padding: 32px 0 6px;
+    border-radius: 4px;
+    font-size: 12px;
+    color: #71767a;
+    line-height: 18px;
+    
+  }
+  
+  .boardtop_menu .count{
+    position: absolute;
+    top: 8px;
+    left: 0;
+    right: 0;
+    margin-top: 1px;
+    font-size: 16px;
+    color: #118dff;
+  }
+  
+  button, label{
+    cursor: pointer;
+  }
+  
+  .must::before{
+    content: "";
+    position: absolute;
+    top: 8px;
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+    background-image: linear-gradient(transparent,transparent),url(https://static.worksmobile.net/static/pwe/wm/home/sp_board_9d215a12.svg);
+    background-size: 500px 473px;
+    background-position: -424px -60px;
+    width: 20px;
+    height: 20px;
+  }
+  
+  .important_post::before {
+    content: "";
+    position: absolute;
+    top: 8px;
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+    background-image: linear-gradient(transparent,transparent),url(https://static.worksmobile.net/static/pwe/wm/home/sp_board_9d215a12.svg);
+    background-size: 500px 473px;
+    background-position: -424px -172px;
+    width: 20px;
+    height: 20px;
+  }
+  
+  
+  .mypost::before{
+    content: "";
+    position: absolute;
+    top: 8px;
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+    background-image: linear-gradient(transparent,transparent),url(https://static.worksmobile.net/static/pwe/wm/home/sp_board_9d215a12.svg);
+    background-size: 500px 473px;
+    background-position: -284px -405px;
+    width: 20px;
+    height: 20px;
+  }
+  
+  .board_lnb_search{
+    display: flex;
+    -webkit-box-align: center;
+    align-items: center;
+    -webkit-box-flex: 0;
+    flex: 0 0 auto;
+    padding: 16px 10px 12px;
+  }
+  
+  .board_lnb_search .board_search_bar{
+    position: relative;
+    display: flex;
+    -webkit-box-align: center;
+    align-items: center;
+    -webkit-box-flex: 1;
+    flex: 1 1 auto;
+    padding-right: 10px;
+    min-width: 0;
+    border: 1px solid #f1f3f9;
+    border-radius: 60px;
+    background-color: #f1f3f9;
+  }
+  
+  .blind {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0,0,0,0);
+  }
+  
+  .board_search_input{
+    display: block;
+    -webkit-box-flex: 1;
+    -ms-flex: 1 1 auto;
+    flex: 1 1 auto;
+    min-width: 0;
+    padding: 7px 0 7px 16px;
+    border: 0;
+    border-radius: 0;
+    background-color: transparent;
+    font-size: 13px;
+    color: #202124;
+    line-height: 20px;
+    outline: none;
+  }
+  
+  .board_button_cancel{
+    border: 0;
+    border-radius: 0;
+    background-color: transparent;
+    position: relative;
+    -webkit-box-flex: 0;
+    -ms-flex: 0 0 auto;
+    flex: 0 0 auto;
+    padding: 6px;
+    line-height: 1px;
+  }
+  
+  .board_button_cancel:before {
+    background-image: url(https://static.worksmobile.net/static/pwe/wm/home/sp_board_967af075.png);
+    background-image: -webkit-gradient(linear,left top,left bottom,from(transparent),to(transparent)),url(https://static.worksmobile.net/static/pwe/wm/home/sp_board_9d215a12.svg);
+    background-image: linear-gradient(transparent,transparent),url(https://static.worksmobile.net/static/pwe/wm/home/sp_board_9d215a12.svg);
+    background-size: 500px 473px;
+    background-position: -220px -433px;
+    width: 16px;
+    height: 16px;
+    display: block;
+    content: "";
+  }
+  
+  .board_button_search {
+    border: 0;
+    border-radius: 0;
+    background-color: transparent;
+    position: relative;
+    -webkit-box-flex: 0;
+    -ms-flex: 0 0 auto;
+    flex: 0 0 auto;
+    margin-left: 9px;
+    padding: 6px;
+    line-height: 1px;
+  }
+  
+  .board_button_search:before {
+    background-image: url(https://static.worksmobile.net/static/pwe/wm/home/sp_board_967af075.png);
+    background-image: -webkit-gradient(linear,left top,left bottom,from(transparent),to(transparent)),url(https://static.worksmobile.net/static/pwe/wm/home/sp_board_9d215a12.svg);
+    background-image: linear-gradient(transparent,transparent),url(https://static.worksmobile.net/static/pwe/wm/home/sp_board_9d215a12.svg);
+    background-size: 500px 473px;
+    background-position: -452px -153px;
+    width: 18px;
+    height: 18px;
+    display: block;
+    content: "";
+  }
+  
+  
+  .board_button_search:after {
+    position: absolute;
+    left: -5px;
+    top: 8px;
+    width: 1px;
+    height: 14px;
+    background-color: #d4d8dc;
+    pointer-events: none;
+    content: "";
+  }
+  
+  .board_button_search_close{
+    border: 0;
+    border-radius: 0;
+    background-color: transparent;
+    display: none;
+    -webkit-box-flex: 0;
+    -ms-flex: 0 0 auto;
+    flex: 0 0 auto;
+    margin: 0 6px;
+    padding: 6px;
+    line-height: 1px;
+  }
+  .board_button_search_close::before{
+    background-image: url(https://static.worksmobile.net/static/pwe/wm/home/sp_board_967af075.png);
+    background-image: -webkit-gradient(linear,left top,left bottom,from(transparent),to(transparent)),url(https://static.worksmobile.net/static/pwe/wm/home/sp_board_9d215a12.svg);
+    background-image: linear-gradient(transparent,transparent),url(https://static.worksmobile.net/static/pwe/wm/home/sp_board_9d215a12.svg);
+    background-size: 500px 473px;
+    background-position: -452px -49px;
+    width: 18px;
+    height: 18px;
+    display: block;
+    content: "";
+  }
+  
+  .board_menu_cover{
+    margin-top: -12px;
+  }
+  
+  .board_menu_box{
+    margin: 0 10px;
+    padding: 12px 0 0;
+  }
+  
+  ul{
+    list-style: none;
+  }
+  
+  li{
+    list-style-type: none;
+  }
+  
+  body, button, dd, dl, dt, fieldset, form, h1, h2, h3, h4, h5, h6, html, input, legend, li, menu, ol, p, table, td, textarea, th, ul{
+    margin: 0;
+    padding: 0;
+  }
+  
+  .board_menu_item{
+    position: relative;
+    display: flex;
+    padding: 7px 32px 7px 16px;
+    border-radius: 4px;
+    font-size: 14px;
+    line-height: 20px;
+    cursor: pointer;
+  }
+  
+  .item_txt{
+    border: 0;
+    border-radius: 0;
+    background-color: transparent;
+    position: relative;
+    -webkit-box-flex: 1;
+    -ms-flex: 1 1 auto;
+    flex: 1 1 auto;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    min-width: 0;
+    padding-left: 32px;
+    color: #202124;
+    line-height: 20px;
+    text-decoration: none;
+    text-align: left;
+  }
+  
+  .item_txt .icon_main::before{
+    background-position: -424px -116px;
+  
+  }
+  
+  .item_txt::before{
+    content: "";
+    vertical-align: top;
+    position: absolute;
+    left: 0;
+    top: 0;
+    background-image: url(https://static.worksmobile.net/static/pwe/wm/home/sp_board_967af075.png);
+    background-image: -webkit-gradient(linear,left top,left bottom,from(transparent),to(transparent)),url(https://static.worksmobile.net/static/pwe/wm/home/sp_board_9d215a12.svg);
+    background-image: linear-gradient(transparent,transparent),url(https://static.worksmobile.net/static/pwe/wm/home/sp_board_9d215a12.svg);
+    background-size: 500px 473px;
+    background-position: -228px -405px;
+    width: 20px;
+    height: 20px;
+  }
+  
+  button, input, textarea{
+    outline: none;
+  }
+  
+  .menu_box.separator{
+    margin-top: 12px;
+    border-top: 1px solid #e6e8eb;
+  }
+  
+  .menu_box{
+    margin: 0 10px;
+    padding: 12px 0 0;
+  }
+  
+  .board_head_bar{
+    position: relative;
+    display: flex;
+    -webkit-box-align: center;
+    align-items: center;
+    padding: 0 12px 0 0;
+  }
+  
+  .menu_box .btn_fold{
+    border: 0;
+    background-color: transparent;
+  }
+  
+  .board_head_bar .btn_fold{
+    -webkit-box-flex: 1;
+    flex: 1 1 auto;
+    box-sizing: border-box;
+    position: relative;
+    display: flex;
+    min-width: 0;
+    height: 34px;
+    padding-left: 16px;
+    font-size: 12px;
+    color: #3f4247;
+    line-height: 34px;
+    text-align: left;
+  }
+  
+  .menu_box .btn_fold::before{
+    content: "";
+    display: inline-block;
+    background-image: linear-gradient(transparent,transparent),url(https://static.worksmobile.net/static/pwe/wm/home/sp_board_9d215a12.svg);
+    background-size: 500px 473px;
+    background-position: -268px -457px;
+    width: 8px;
+    height: 8px;
+  }
+  
+  .board_head_bar .text{
+    -webkit-box-flex: 0;
+    flex: 0 1 auto;
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  
+  .menu_box .lnb_favorite_empty:before {
+    background-image: url(https://static.worksmobile.net/static/pwe/wm/home/sp_board_967af075.png);
+    background-image: -webkit-gradient(linear,left top,left bottom,from(transparent),to(transparent)),url(https://static.worksmobile.net/static/pwe/wm/home/sp_board_9d215a12.svg);
+    background-image: linear-gradient(transparent,transparent),url(https://static.worksmobile.net/static/pwe/wm/home/sp_board_9d215a12.svg);
+    background-size: 500px 473px;
+    background-position: -348px -310px;
+    width: 28px;
+    height: 28px;
+    display: block;
+    margin: 0 auto 0;
+    content: "";
+  }
+  
+  .menu_box .lnb_favorite_empty .message {
+    padding: 8px 16px;
+    font-size: 12px;
+    color: #95999c;
+    line-height: 19px;
+    word-break: keep-all;
+    word-wrap: break-word;
+    text-align: center;
+  }
+  
+  .board_head_bar .btn_manage{
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    display: inline-block;
+    height: 24px;
+    border-radius: 8px;
+    background: #fff;
+    font-size: 12px;
+    color: #3f4247;
+    line-height: 17px;
+    padding: 3px 11px 2px;
+    vertical-align: top;
+    white-space: nowrap;
+    text-decoration: none;
+    border: 1px solid #e6e8eb;
+    min-width: 45px;
+    border-radius: 4px;
+  }
+  
+  .board_head_bar .lnb_tree{
+    margin-top: 2px;
+  }
+  
+  .menu_box .lnb_tree .groups{
+    margin-top: 0;
+  }
+  
+  .menu_box .groups{
+    padding-top: 12px;
+  }
+  
+  .menu_box .groups .board_head_bar .btn_fold {
+    font-size: 14px;
+    font-weight: 700;
+  }
+  
+  .menu_box .menu_item{
+    position: relative;
+    display: flex;
+    padding: 7px 32px 7px 16px;
+    border-radius: 4px;
+    font-size: 14px;
+    line-height: 20px;
+    cursor: pointer;
+  }
+  
+  .menu_box .menu_item .item_txt{
+    border: 0;
+    border-radius: 0;
+    background-color: transparent;
+    position: relative;
+    -webkit-box-flex: 1;
+    -ms-flex: 1 1 auto;
+    flex: 1 1 auto;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    min-width: 0;
+    padding-left: 32px;
+    color: #202124;
+    line-height: 20px;
+    text-decoration: none;
+    text-align: left;
+  }
+  
+  .menu_box .menu_item .item_txt::before{
+    content: "";
+      vertical-align: top;
+      position: absolute;
+      left: 0;
+      top: 0;
+  }
+  
+  .menu_box .menu_item .text {
+    -webkit-box-flex: 0;
+    -ms-flex: 0 1 auto;
+    flex: 0 1 auto;
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  
+  .menu_box .input_fav {
+    position: absolute;
+    clip: rect(0,0,0,0);
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+  }
+  
+  .menu_box .ico_fav {
+    font-size: 0;
+    line-height: 0;
+    vertical-align: top;
+  }
+  
+  .menu_box .side_btn {
+    display: none;
+    position: absolute;
+    right: 5px;
+    top: 50%;
+    margin-top: -15px;
+    padding: 5px;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    overflow: hidden;
+    line-height: 0;
+    border: 0;
+    background-color: transparent;
+  }
+  
+  .mbox_trash .item_txt::before {
+    background-image: url(https://static.worksmobile.net/static/pwe/wm/home/sp_board_967af075.png);
+    background-image: -webkit-gradient(linear,left top,left bottom,from(transparent),to(transparent)),url(https://static.worksmobile.net/static/pwe/wm/home/sp_board_9d215a12.svg);
+    background-image: linear-gradient(transparent,transparent),url(https://static.worksmobile.net/static/pwe/wm/home/sp_board_9d215a12.svg);
+    background-size: 500px 473px;
+    background-position: -368px -405px;
+    width: 20px;
+    height: 20px;
+  }
+  
+  .board_footer{
+    -webkit-box-flex: 0;
+    -ms-flex: 0 0 auto;
+    flex: 0 0 auto;
+    position: relative;
+    padding: 50px 16px 22px;
+  }
+  
+  .board_footer .copyright{
+    font-size: 12px;
+    font-weight: 700;
+    color: #95999c;
+    line-height: 18px;
+  }
+  
+  .board_menu_cover{
+    flex: 1 1 auto;
+  }
