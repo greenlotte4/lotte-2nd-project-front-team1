@@ -16,7 +16,7 @@ export default function BoardAside(){
               <button
                 type="button"
                 className="write_button"
-                onClick={() => window.location.href = "http://localhost:5173/app/noticeboard"}
+                onClick={() => window.location.href = "https://hubflow.vercel.app/app/noticeboard"}
                 >
                 <strong>글쓰기</strong>
                 </button>
@@ -62,7 +62,7 @@ export default function BoardAside(){
                             type="button"
                             title="게시판 메인"
                             className="item_txt icon_main"
-                            onClick={() => window.location.href = "http://localhost:5173/app/mainboard"}
+                            onClick={() => window.location.href = "https://hubflow.vercel.app/app/mainboard"}
                             >
                             게시판 메인
                             </button>
