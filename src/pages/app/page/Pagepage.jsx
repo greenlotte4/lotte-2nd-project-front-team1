@@ -8,7 +8,7 @@ import "../../../styles/app/page/Page.scss";
 export default function PagePage() {
   const { isSidebarVisible, toggleSidebar } = useSidebar(); // 사이드바 상태 및 토글 함수 사용
   return (
-    <AppLayout onToggleSidebar={toggleSidebar}>
+    <AppLayout onToggleSidebar={toggleSidebar} thisPage="page">
       <PageAside isVisible={isSidebarVisible} />
       <div
         className={`main-content pagecontent ${
@@ -20,5 +20,4 @@ export default function PagePage() {
       </div>
     </AppLayout>
   );
-
 }
