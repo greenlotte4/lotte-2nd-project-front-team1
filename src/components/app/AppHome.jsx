@@ -66,7 +66,7 @@ export default function AppHome() {
           />
           <div className="button-text">메신저</div>
         </Link>
-        <Link to="/app/article" className="icon-button">
+        <Link to="/app/mainboard" className="icon-button">
           <img
             src="/images/form.png"
             alt="게시판 아이콘"

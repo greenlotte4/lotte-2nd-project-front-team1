@@ -1,6 +1,5 @@
 export default function MainBoard(){
     return(
-    <main className="main-content">
         <div className="boardContentDiv" id="boardContentDiv">
           <div className="g_search">
               <h2 className="blind">홈 서비스 통합 검색</h2>
@@ -360,6 +359,5 @@ export default function MainBoard(){
   
           </div>
 
-      </main>
       );
 }
