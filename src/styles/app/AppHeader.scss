@@ -23,10 +23,20 @@
     border-radius: 10px;
     display: inline-block;
     box-sizing: border-box;
-    background-color: #d4e7c5;
+    background-color: #ffffff00;
     border: none;
     margin-right: 20px;
     text-align: center;
+  }
+
+  .currentIcon {
+    background-color: #d4e7c5;
+  }
+
+  .hamburgerButtonIcon {
+    width: 30px;
+    height: 30px;
+    margin: 5px;
   }
 
   .headerButton:hover {
@@ -67,23 +77,31 @@
     overflow: hidden;
   }
   .headerIcon {
+    width: 40px;
+    height: 40px;
     position: relative;
-    width: 30px;
-    height: 30px;
-    background-color: #d4e7c5;
     border-radius: 5px;
-    margin-right: 5px;
+    margin-right: 10px;
     transition: transform 0.2s;
+    padding: 5px;
   }
 
   .headerIcon:hover {
     transform: scale(1.2);
   }
 
-  .headerIcon > img {
-    width: 20px;
-    height: 20px;
-    margin: 5px;
+  .headerSelected {
+    background-color: #d4e7c5;
+  }
+
+  .header_icons {
+    width: 30px;
+    height: 30px;
+  }
+
+  .headerSettings {
+    display: flex;
+    border-left: 1px dashed #d4e7c5;
   }
 
   .profileImg {
@@ -98,6 +116,10 @@
     overflow: hidden;
     height: 15px;
     text-overflow: ellipsis;
+  }
+
+  .headerProfile:hover {
+    cursor: pointer;
   }
 
   /*2024/11/28 이도영*/
@@ -202,16 +224,12 @@
     background-color: #d32f2f;
   }
   /*==================알람버튼==================*/
-  .notificationDot {
-    position: absolute;
-    top: 0; /* 이미지 상단 */
-    right: 0; /* 이미지 오른쪽 */
-    width: 8px;
-    height: 8px;
-    background-color: #ff4d4f; /* 강렬한 빨간색 */
-    border-radius: 50%; /* 원형 */
-    box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.2); /* 약간의 그림자 */
+  .notificationIcon {
+    width: 20px;
+    height: 20px;
+    margin: 5px;
   }
+
   .notificationWrapper {
     position: relative;
   }

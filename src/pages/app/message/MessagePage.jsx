@@ -9,7 +9,7 @@ export default function Message() {
   const { isSidebarVisible, toggleSidebar } = useSidebar(); // 사이드바 상태 및 토글 함수 사용
 
   return (
-    <AppLayout onToggleSidebar={toggleSidebar}>
+    <AppLayout onToggleSidebar={toggleSidebar} thisPage="message">
       <MessageAside isVisible={isSidebarVisible} />
       <main
         className={`main-content ${isSidebarVisible ? "" : "hidden-sidebar"}`}

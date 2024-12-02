@@ -1,5 +1,13 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import DescriptionOutlinedIcon from "@mui/icons-material/DescriptionOutlined";
+import CalendarMonthOutlinedIcon from "@mui/icons-material/CalendarMonthOutlined";
+import ChatBubbleOutlineOutlinedIcon from "@mui/icons-material/ChatBubbleOutlineOutlined";
+import AssignmentOutlinedIcon from "@mui/icons-material/AssignmentOutlined";
+import DnsOutlinedIcon from "@mui/icons-material/DnsOutlined";
+import AccountTreeOutlinedIcon from "@mui/icons-material/AccountTreeOutlined";
+
+import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
 
 {
   /* 
@@ -42,31 +50,21 @@ export default function AppHome() {
 
       <div className="main-page">
         <Link to="/app/page" className="icon-button">
-          <img
-            src="/images/book.png"
-            alt="페이지 아이콘"
-            className="icon-image"
-          />
+          <DescriptionOutlinedIcon className="icon-image" />
           <div className="button-text">페이지</div>
         </Link>
 
         <Link to="/app/calendar" className="icon-button">
-          <img
-            src="/images/calendar.png"
-            alt="켈린더 아이콘"
-            className="icon-image"
-          />
+          <CalendarMonthOutlinedIcon className="icon-image" />
           <div className="button-text">캘린더</div>
         </Link>
         <Link to="/app/message" className="icon-button">
-          <img
-            src="/images/messages.png"
-            alt="메신저 아이콘"
-            className="icon-image"
-          />
+          <ChatBubbleOutlineOutlinedIcon className="icon-image" />
           <div className="button-text">메신저</div>
         </Link>
+        
         <Link to="/app/mainboard" className="icon-button">
+         <AssignmentOutlinedIcon className="icon-image" />
           <img
             src="/images/form.png"
             alt="게시판 아이콘"
@@ -75,28 +73,16 @@ export default function AppHome() {
           <div className="button-text">게시판</div>
         </Link>
         <Link to="/app/project" className="icon-button">
-          <img
-            src="/images/master-plan.png"
-            alt="프로젝트 아이콘"
-            className="icon-image"
-          />
+          <AccountTreeOutlinedIcon className="icon-image" />
           <div className="button-text">프로젝트</div>
         </Link>
         <Link to="/app/file" className="icon-button">
-          <img
-            src="/images/folder-open.png"
-            alt="드라이브 아이콘"
-            className="icon-image"
-          />
+          <DnsOutlinedIcon className="icon-image" />
           <div className="button-text">드라이브</div>
         </Link>
 
         <Link to="/app/setting" className="icon-button">
-          <img
-            src="/images/settings.png"
-            alt="설정 아이콘"
-            className="icon-image"
-          />
+          <SettingsOutlinedIcon className="icon-image" />
           <div className="button-text">설정</div>
         </Link>
         <button className="plus-button">

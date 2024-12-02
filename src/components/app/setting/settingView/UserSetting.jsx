@@ -1,82 +1,77 @@
 import { useState } from "react";
+import ContactRow from "../../myPage/ContactRow";
+import StatusMessage from "../../myPage/StatusMessage";
+import EmailRow from "../../myPage/EmailRow";
+import { useNavigate } from "react-router-dom";
 
 export default function UserSetting() {
-    const [name, setName] = useState("김아무개");
-    const [email, setEmail] = useState("123@123.com");
-    const [notification, setNotification] = useState(true);
-    const [theme, setTheme] = useState("light");
 
+    const [isEditing, setIsEditing] = useState({ contact: false, email: false });
+    const [contact, setContact] = useState("010-1234-5678");
+    const [email, setEmail] = useState("example@example.com");
 
-    const handleName = (e) => setName(e.target.value);
-    const handleEmail = (e) => setEmail(e.target.value);
-    const handleNotification = (e) => setNotification(e.target.checked);
-    const handleThene = (e) => setTheme(e.target.value);
+    const [statusMessage, setStatusMessage] = useState("오늘 하루도 열심히! 👏");
+    const navigate = useNavigate();
 
-    const handleDelete = () => {
-        if (window.confirm("정말로 계정을 삭제하시겠습니까?")) {
-            alert("계정이 삭제되었습니다.")
-        }
+    const changePassHandle = () => {
+        navigate("/user/find/findView", { state: { method: "PassFind" } });
     }
-    const handleSave = () => {
-        alert("변경사항이 저장되었습니다.");
-    };
+
     return (
         <div className="userSetting">
             {/* 개인 정보 섹션 */}
-            <div className="section">
-                <h4>개인 정보</h4>
-                <label>이름</label>
-                <input
-                    type="text"
-                    value={name}
-                    onChange={handleName}
-                    placeholder="이름을 입력하세요"
-                />
-                <label>이메일</label>
-                <input
-                    type="email"
-                    value={email}
-                    onChange={handleEmail}
-                    placeholder="이메일을 입력하세요"
-                />
-                <button onClick={handleSave}>저장</button>
-            </div>
+            <div>
+                <table className="userInfoTable">
+                    <tbody>
 
-            {/* 알림 설정 섹션 */}
-            <div className="section">
-                <h4>알림 설정</h4>
-                <label className="switch">
-                    <input
-                        type="checkbox"
-                        checked={notification}
-                        onChange={handleNotification}
-                    />
-                    알림 받기
-                </label>
-                <button onClick={handleSave}>저장</button>
-            </div>
+                        <tr>
+                            <td>이름</td>
+                            <td>김아무개</td>
+                        </tr>
+                        <tr>
+                            <td>직급</td>
+                            <td>사원</td>
+                        </tr>
+                        <tr>
+                            <td>부서(팀)</td>
+                            <td>백엔드</td>
+                        </tr>
+                        <tr>
+                            <td>등급/결제일</td>
+                            <td>일반/2024-11-11</td>
+                        </tr>
+                        {/* 연락처 컴포넌트 */}
+                        <ContactRow contact={contact} setContact={setContact} />
 
-            {/* 계정 삭제 섹션 */}
-            <div className="section">
-                <h4>계정 삭제</h4>
-                <button onClick={handleDelete}>계정 삭제</button>
-            </div>
+                        {/* 이메일 컴포넌트 */}
+                        <EmailRow email={email} setEmail={setEmail} />
+                        <tr>
+                            <td>가입 날짜</td>
+                            <td>2024-01-01</td>
+                        </tr>
+                        <tr>
+                            <td>최근 로그인</td>
+                            <td>2024-11-27</td>
+                        </tr>
+                        <StatusMessage
+                            statusMessage={statusMessage}
+                            setStatusMessage={setStatusMessage}
+                        />
 
-            {/* 기타 사용자 설정 섹션 */}
-            <div className="section">
-                <h4>기타 사용자 설정</h4>
+                    </tbody>
 
-                {/* 테마 설정 */}
-                <div>
-                    <label>테마</label>
-                    <select value={theme} onChange={handleThene}>
-                        <option value="light">라이트 모드</option>
-                        <option value="dark">다크 모드</option>
-                    </select>
+                </table>
+                <div className="btnBox">
+                    <button onClick={changePassHandle}>비밀번호 변경</button>
+                    <button onClick={changePassHandle}>회원 탈퇴</button>
                 </div>
-
-                {/* 추가적으로 다른 설정들 넣을 수 있음 */}
-                <button onClick={handleSave}>저장</button>
+            </div>
+            <div className="imgBox">
+                <div className="userImg">
+                    <h3>프로필사진</h3>
+                    <img src="/images/다운로드.jfif" alt="프로필사진" />
+                    <button>프로필변경</button>
+                </div>
             </div>
         </div>
     )
