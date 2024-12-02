@@ -4,8 +4,8 @@
 
 /* 이도영 - 화면에 맞게 추가*/
 .adminuser-content {
-  width: 100%;
-  height: 100%;
+  justify-content: center;
+  width: 1000px;
   .main-page {
     flex: 1 0 auto;
   }
