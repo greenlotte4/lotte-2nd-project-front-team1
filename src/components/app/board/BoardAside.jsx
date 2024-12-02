@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
 /*
@@ -9,10 +10,27 @@ import { Link } from "react-router-dom";
     -------------
     00.00 이름 - 내용
 */
-export default function BoardAside() {
+
+const BoardAside = ({ isVisible}) => {
+  const [isAnimating, setIsAnimating] = useState(false);
+
+  useEffect(() => {
+    if(isVisible){
+      setIsAnimating(true);
+    }else{
+      const timer = setTimeout(() => setIsAnimating(false), 500);
+      return () => clearTimeout(timer);
+        
+    }
+  }, [isVisible]);
+
   return (
+    isAnimating &&(
     <div id="sidebar-container">
-      <aside className="sidebar">
+      <aside className={
+        isVisible ? "aside-slide-in sidebar" : "aside-slide-out sidebar"
+      }>
+
         <div className="main_pane">
           <div className="core_button">
             <button
@@ -239,7 +257,7 @@ export default function BoardAside() {
           style={{ display: "block" }}
         >
           <Link
-            to="https://hubflow.vercel.app/"
+            to="/app/home"
             target="_blank"
             className="copyright"
           >
@@ -248,5 +266,8 @@ export default function BoardAside() {
         </div>
       </aside>
     </div>
+    )
   );
-}
+};
+
+export default BoardAside;
