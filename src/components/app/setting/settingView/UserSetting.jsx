@@ -27,14 +27,6 @@ export default function UserSetting() {
               <td>이순신</td>
             </tr>
             <tr>
-              <td>직급</td>
-              <td>사원</td>
-            </tr>
-            <tr>
-              <td>부서(팀)</td>
-              <td>백엔드개발 1팀</td>
-            </tr>
-            <tr>
               <td>등급/결제일</td>
               <td>일반 / 2024-11-11</td>
             </tr>
