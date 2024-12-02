@@ -1,17 +1,113 @@
 .calendar-page {
-  flex: 1 0 auto;
-  width: 100%;
-
+  justify-content: center;
+  width: 1000px;
+  padding: 10px 20px;
   .menu > ul > li {
     border-radius: 10px;
     margin: 0 10px;
     margin-bottom: 5px;
     background-color: #d4e7c5;
   }
+  .calendarstyle {
+  }
   .fc-day-sun a {
     color: red;
   }
   .fc-day-sat a {
     color: blue;
+  }
+  //
+  /* 검색 섹션 */
+  .search-section {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    background-color: #f9f9f9;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+  }
+
+  .search-section input {
+    width: 300px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 14px;
+  }
+
+  .search-section button {
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+
+  .search-section button:nth-child(2) {
+    background-color: #007bff;
+    color: white;
+  }
+
+  .search-section button:nth-child(2):hover {
+    background-color: #0056b3;
+  }
+
+  .search-section button:nth-child(3) {
+    background-color: #ff4757;
+    color: white;
+  }
+
+  .search-section button:nth-child(3):hover {
+    background-color: #e84141;
+  }
+
+  /* 검색 결과 리스트 */
+  .search-results {
+    background-color: white;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding-bottom: 20px;
+  }
+
+  .search-results h3 {
+    font-size: 16px;
+    margin-bottom: 10px;
+    color: #333;
+  }
+
+  .search-results ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .search-results li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 0;
+    border-bottom: 1px solid #eee;
+  }
+
+  .search-results li:last-child {
+    border-bottom: none;
+  }
+
+  .search-results button {
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 5px 10px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+
+  .search-results button:hover {
+    background-color: #218838;
   }
 }
