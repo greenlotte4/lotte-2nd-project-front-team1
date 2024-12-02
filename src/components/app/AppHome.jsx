@@ -65,11 +65,6 @@ export default function AppHome() {
         
         <Link to="/app/mainboard" className="icon-button">
          <AssignmentOutlinedIcon className="icon-image" />
-          <img
-            src="/images/form.png"
-            alt="게시판 아이콘"
-            className="icon-image"
-          />
           <div className="button-text">게시판</div>
         </Link>
         <Link to="/app/project" className="icon-button">
