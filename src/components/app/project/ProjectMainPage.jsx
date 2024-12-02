@@ -7,6 +7,10 @@
    -------------
    
  */
+
+import AddIcon from "@mui/icons-material/Add";
+import { Fab } from "@mui/material";
+
 export default function ProjectMainPage() {
   return (
     <div className="projectmainpage-page">
@@ -40,9 +44,9 @@ export default function ProjectMainPage() {
               </p>
               <p>그룹</p>
             </div>
-            <button className="action-button">
-              <span className="add-icon">+</span>
-            </button>
+            <Fab color="primary" aria-label="add">
+              <AddIcon />
+            </Fab>
           </td>
         </tr>
       </table>
@@ -76,15 +80,15 @@ export default function ProjectMainPage() {
               </p>
               <p>그룹</p>
             </div>
-            <button className="action-button">
-              <span className="add-icon">+</span>
-            </button>
+            <Fab color="primary" aria-label="add">
+              <AddIcon />
+            </Fab>
           </td>
         </tr>
       </table>
-      <button className="action-button">
-        <span className="add-icon">+</span>
-      </button>
+      <Fab color="primary" aria-label="add">
+        <AddIcon />
+      </Fab>
     </div>
   );
 }

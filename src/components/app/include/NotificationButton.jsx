@@ -6,13 +6,29 @@
     추가내역
     -------------
 */
+
+import NotificationsNoneOutlinedIcon from "@mui/icons-material/NotificationsNoneOutlined";
+import Badge from "@mui/material/Badge";
+import { styled } from "@mui/material/styles";
+
+const StyledBadge = styled(Badge)(({ theme }) => ({
+  "& .MuiBadge-badge": {
+    right: 0,
+    top: 5,
+    padding: "0 4px",
+    backgroundColor: "#D8232A",
+    color: "white",
+  },
+}));
+
 export default function NotificationButton({ isOpen, onToggle }) {
   return (
     <div className="notificationWrapper">
       {/* 알림 버튼 */}
       <div className="headerIcon" onClick={onToggle}>
-        <img src="/images/bell.png" alt="Notifications" />
-        <span className="notificationDot"></span>
+        <StyledBadge badgeContent={4}>
+          <NotificationsNoneOutlinedIcon className="header_icons" />
+        </StyledBadge>
       </div>
       {/* 알림 드롭다운 */}
       {isOpen && (
