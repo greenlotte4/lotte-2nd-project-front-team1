@@ -63,6 +63,7 @@ const router = createBrowserRouter([
 
   { path: "/app/message", element: <MessagePage /> },
   { path: "/app/project", element: <ProjectPage /> },
+  { path: "/app/project/:id", element: <ProjectPage /> },
   { path: "/app/calendar", element: <CalendarPage /> },
   { path: "/app/file", element: <FilePage /> },
   { path: "/app/page", element: <PagePage /> },
