@@ -1,89 +1,46 @@
+import { useEffect, useState } from "react";
+
 export default function PageSetting() {
+    const [selectedPage, setSelectedPage] = useState('page1');
+    const [theme, setTheme] = useState('light');
+
+    // 페이지가 처음 렌더링 될 때 로컬 스토리지에서 테마 값을 가져오기
+    useEffect(() => {
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme) {
+            setTheme(savedTheme);
+        }
+    }, []);
+
+    // 테마가 변경될 때마다 로컬 스토리지에 저장하고, body에 클래스명을 적용
+    useEffect(() => {
+        localStorage.setItem('theme', theme);
+        document.body.className = theme;
+    }, [theme]);
+
+    // 테마 전환 함수
+    const toggleTheme = () => {
+        setTheme((prevTheme) => prevTheme === 'light' ? 'dark' : 'light');
+    };
+
     return (
-        <div className="PageSetting">
+        <div className="pageSetting">
             {/* 배경 설정 */}
-            <div className="background-settings">
+            <div className="backgroundSettings">
                 <h4>배경 설정</h4>
-                <div className="background-options">
-                    <table className="background-image-table">
-                        <thead>
-                            <tr>
-                                <th>배경 이미지</th>
-                                <th>선택</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>이미지 1</td>
-                                <td><input type="radio" name="background" value="image1" /></td>
-                            </tr>
-                            <tr>
-                                <td>이미지 2</td>
-                                <td><input type="radio" name="background" value="image2" /></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    <div className="color-selector">
-                        <label>배경 색상:</label>
-                        <input type="color" name="backgroundColor" />
-                    </div>
+                <div className="PageBackground">
+                    <span>배경 색상:</span>
+                    <input type="color" name="backgroundColor" />
+                    <button>적용</button>
                 </div>
             </div>
 
-            {/* 편집 권한 설정 */}
-            <div className="permission-settings">
-                <h4>편집 권한 설정</h4>
-                <table className="permissions-table">
-                    <thead>
-                        <tr>
-                            <th>사용자</th>
-                            <th>권한 설정</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>사용자 1</td>
-                            <td>
-                                <select>
-                                    <option value="edit">편집</option>
-                                    <option value="view">보기</option>
-                                </select>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>사용자 2</td>
-                            <td>
-                                <select>
-                                    <option value="edit">편집</option>
-                                    <option value="view">보기</option>
-                                </select>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-
-            {/* 페이지 숨기기/공개 설정 */}
-            <div className="visibility-settings">
-                <h4>페이지 숨기기/공개 설정</h4>
-                <table className="visibility-table">
-                    <thead>
-                        <tr>
-                            <th>페이지</th>
-                            <th>상태</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>페이지 1</td>
-                            <td><input type="checkbox" name="visibility1" checked /></td>
-                        </tr>
-                        <tr>
-                            <td>페이지 2</td>
-                            <td><input type="checkbox" name="visibility2" /></td>
-                        </tr>
-                    </tbody>
-                </table>
+            {/* 테마 설정 */}
+            <div className="temaSettings">
+                <h4>테마 설정</h4>
+                <button onClick={toggleTheme} className="temaBtn">
+                    {theme === 'light' ? '블랙 모드로 변경' : '화이트 모드로 변경'}
+                </button>
             </div>
         </div>
     );
