@@ -7,6 +7,9 @@
    -------------
    
  */
+
+import Timeline from "react-calendar-timeline";
+
 export default function ProjectTimelinePage() {
   return (
     <div className="timeline-page">

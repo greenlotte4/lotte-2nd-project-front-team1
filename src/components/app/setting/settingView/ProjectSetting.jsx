@@ -1,29 +1,40 @@
-export default function ProjectSetting() {
-    return (
-        <div className="userSetting">
-            <table border={1}>
-                <tr>
-                    <td>내용1</td>
-                    <td>내용1</td>
-                </tr>
-                <tr>
-                    <td>내용1</td>
-                    <td>내용1</td>
-                </tr>
-                <tr>
-                    <td>내용1</td>
-                    <td>내용1</td>
-                </tr>
-                <tr>
-                    <td>내용1</td>
-                    <td>내용1</td>
-                </tr>
-                <tr>
-                    <td>내용1</td>
-                    <td>내용1</td>
-                </tr>
-            </table>
+import { useState } from "react";
 
+export default function ProjectSetting() {
+    const [projectNotifications, setProjectNotifications] = useState(() => {
+        const saved = localStorage.getItem("projectNotifications");
+        return saved ? JSON.parse(saved) : [
+            { id: 1, label: "프로젝트", checked: true },
+        ];
+    });
+    const handleNotificationChange = (id) => {
+        setProjectNotifications(prevNotifications =>
+            prevNotifications.map(notification =>
+                notification.id === id
+                    ? { ...notification, checked: !notification.checked }
+                    : notification
+            )
+        );
+        console.log('Checked state updated');
+    };
+    return (
+        <div className="projectSetting">
+            <div className="switchSection">
+                <h4>프로젝트 알림</h4>
+                {projectNotifications.map((notification) => (
+                    <div key={notification.id} className="switch">
+                        <label className="switchLabel">
+                            <span className="notiName">{notification.label}</span>
+                            <input
+                                type="checkbox"
+                                checked={notification.checked}
+                                onChange={() => handleNotificationChange(notification.id)}
+                            />
+                            <span className="sliderBox round"></span>
+                        </label>
+                    </div>
+                ))}
+            </div>
         </div>
     )
 }

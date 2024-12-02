@@ -17,7 +17,7 @@ export default function ProjectPage() {
   const { isSidebarVisible, toggleSidebar } = useSidebar(); // 사이드바 상태 및 토글 함수 사용
 
   return (
-    <AppLayout onToggleSidebar={toggleSidebar}>
+    <AppLayout onToggleSidebar={toggleSidebar} thisPage="project">
       <ProjectAside isVisible={isSidebarVisible} />
       <div
         className={`main-content ${isSidebarVisible ? "" : "hidden-sidebar"}`}

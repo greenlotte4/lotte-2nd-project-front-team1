@@ -1,4 +1,3 @@
-import React from "react";
 import PropTypes from "prop-types";
 import "../../styles/app/modal/Modal.scss"; // 스타일은 아래 참고
 
