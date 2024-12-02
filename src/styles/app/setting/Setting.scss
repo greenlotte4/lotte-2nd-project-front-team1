@@ -3,8 +3,6 @@
     width: 100%;
     flex-direction: column;
 
-    div {}
-
     h3 {
         font-size: 30px;
     }
@@ -14,7 +12,6 @@
         margin-bottom: 5px;
         font-size: 22px;
         font-weight: bold;
-
     }
 
     p {
@@ -22,161 +19,324 @@
         border-bottom: 1px solid;
     }
 
-    .userSetting {
-        div {
-            width: 1000px;
-            padding: 10px;
-            box-sizing: border-box;
+    .switch {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        box-sizing: border-box;
+        border-bottom: 1px solid;
+    }
+
+    .notiName {
+        display: inline-block;
+        width: 200px;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+    }
+ 
+    input {
+        display: none;
+        /* 체크박스 기본 숨김 */
+    }
+
+    .sliderBox {
+
+        margin-left: 100px;
+        position: relative;
+        cursor: pointer;
+        padding: 6.5px 25px;
+        background-color: #ccc;
+        border-radius: 34px;
+        transition: background-color 0.4s;
+
+        &::before {
+            content: "";
+            position: absolute;
+            top: 2.5px;
+            left: 4px;
+            width: 20px;
+            height: 20px;
+            background-color: white;
+            /* 원의 색상 */
+            border-radius: 50%;
+            transition: transform 0.4s, background-color 0.4s;
+            /* 원 색상 변경 */
         }
-        
-        .switchSection,
-        .userSection,
-        .temaSection {
-            margin-bottom: 10px;
-            border: 1px solid;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            h4{
-                font-size: 16px;
-                font-weight: bold;
-            }
-            .switch {
-                width: 100%;
-                display: flex;
-                align-items: center;
-                gap: 10px;
-                box-sizing: border-box;
-                border-bottom: 1px solid;
-            }
-            .notiName {
-                display: inline-block; /* span을 inline-block으로 변경 */
+    }
 
-                width: 200px; /* 알림 이름이 일정한 너비를 갖도록 설정 */
-                text-overflow: ellipsis;  /* 긴 텍스트가 잘리면 '...' 표시 */
-                overflow: hidden;
-                white-space: nowrap; /* 텍스트가 줄바꿈 없이 한 줄로 표시되게 */
-            }
+    /* 체크 상태일 때 슬라이더 박스 배경색 변경 */
+    input:checked+.sliderBox {
+        background-color: #4CAF50;
+        /* 초록색으로 변경 */
+    }
+
+    /* 체크 상태일 때 원의 위치 이동 및 색상 변경 */
+    input:checked+.sliderBox::before {
+        transform: translateX(21px);
+        /* 원이 오른쪽으로 이동 */
+        background-color: white;
+        /* 원의 색상 */
+    }
+
+    .myPage,
+    .svaeBtn {
+        width: 100px;
+        padding: 8px 10px;
+    }
+
+    .tema {
+        font-size: 15px;
+        margin-right: 20px;
+    }
+
+    select {
+        padding: 5px 10px;
+
+    }
+
+    .userSetting {
+        display: flex;
+        padding: 10px;
+        width: 100%;
+
+        table {
+            padding: 5px;
+            width: 800px;
+            border-spacing: 0px;
+
             input {
-                display: none; /* 체크박스 기본 숨김 */
+                display: block;
             }
 
-            .sliderBox {
+            td {
+                padding: 10px;
+                height: 50px;
+                border-bottom: 1px solid;
+                font-size: 16px;
+                align-items: center;
+            }
 
-                margin-left: 100px;
-                position: relative;
-                cursor: pointer;
-                padding: 6.5px 25px;
-                background-color: #ccc;
-                border-radius: 34px;
-                transition: background-color 0.4s;
+            td:last-child {
+                display: flex;
+                justify-content: space-between;
+            }
 
-                &::before {
-                    content: "";
-                    position: absolute;
-                    top: 2.5px;
-                    left: 4px;
-                    width: 20px;
-                    height: 20px;
-                    background-color: white; /* 원의 색상 */
-                    border-radius: 50%;
-                    transition: transform 0.4s, background-color 0.4s; /* 원 색상 변경 */
+
+
+            .statusM {
+                height: 100px;
+
+                td {
+                    height: 100px;
                 }
             }
 
-            /* 체크 상태일 때 슬라이더 박스 배경색 변경 */
-            input:checked + .sliderBox {
-                background-color: #4CAF50; /* 초록색으로 변경 */
+            .buttonGroup {
+                display: flex;
+                /* 버튼 간의 간격을 일정하게 유지 */
             }
 
-            /* 체크 상태일 때 원의 위치 이동 및 색상 변경 */
-            input:checked + .sliderBox::before {
-                transform: translateX(21px); /* 원이 오른쪽으로 이동 */
-                background-color: white; /* 원의 색상 */
+            textarea {
+                font-size: 16px;
+                border: none;
+                resize: none;
+                box-sizing: border-box;
+                background-color: #f7f7f7;
             }
 
-            .myPage,.svaeBtn{
-                width: 100px;
+            .saveButton,
+            .setingButton {
+                padding: 8px 10px;
+                background-color: blue;
+                color: white;
+                margin-left: 10px;
+            }
+
+            .cancelButton {
+                padding: 8px 10px;
+                background-color: blue;
+                color: white;
+                margin-left: 5px;
+
+            }
+
+        }
+
+        .btnBox {
+            width: 100%;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+
+            button {
+                padding: 8px 10px;
+                background-color: red;
+                color: white;
+            }
+        }
+
+        .changePass {
+            display: flex;
+            justify-content: flex-end;
+            /* 버튼을 오른쪽으로 정렬 */
+            margin-top: 10px;
+
+            /* 버튼과 다른 요소들 간의 간격 */
+            button {
                 padding: 8px 10px;
             }
+        }
 
-            .tema{
-                font-size: 15px;
-                margin-right: 20px;
+        .btnBox td {
+            display: flex;
+            justify-content: flex-end;
+
+        }
+
+        .imgBox {
+            justify-items: center;
+            width: 50%;
+            display: flex;
+            /* Flexbox 컨테이너로 설정 */
+            justify-content: center;
+            /* 가운데 정렬 */
+            align-items: center;
+            /* 세로 가운데 정렬 */
+            flex-direction: column;
+            /* 세로 방향으로 배치 */
+
+            .userImg {
+                display: flex;
+                /* Flexbox 사용 */
+                flex-direction: column;
+                /* 세로로 배치 */
+                align-items: center;
+                /* 이미지와 버튼을 가로로 가운데 정렬 */
+                justify-content: center;
+                /* 세로로 가운데 정렬 */
+                gap: 30px;
+                /* 이미지와 버튼 사이 간격 설정 */
             }
-            select{
-                padding: 5px 10px;
-                
+
+            img {
+                width: 200px;
+                height: 200px;
+                border-radius: 50%;
+                /* 원 모양으로 만드는 속성 */
+                object-fit: cover;
+            }
+
+            button {
+                padding: 12px 15px;
+                border-radius: 10px;
+
             }
         }
-        
+
     }
-    .PageSetting{
+
+    .pageSetting {
         div {
-            width: 1000px;
+            width: 100%;
             padding: 10px;
             box-sizing: border-box;
-            border: 1px solid;
             margin-bottom: 10px;
             border: 1px solid;
-
+        }
+        input{
+            display: block;
+        }
+        h4 {
+            font-size: 16px;
+            font-weight: bold;
         }
 
-        .switch {
-            position: relative;
-            display: inline-block;
-            width: 60px;
-            height: 34px;
+        .backgroundSettings,
+        .temaSettings {
+            border: 1px solid;
+
+            .PageBackground{
+                display: flex;
+                align-items: center;
+                gap: 10px;
+
+                button{
+                    padding: 6px 10px;
+                }
+            }
+            
+            span {
+                font-size: 15px;
+                width: 150px;
+                display: inline-block;
+
+            }
+
+            select {
+                padding: 6px 10px;
+                margin-left: 10px;
+            }
+            .temaBtn{
+                padding: 6px 10px;
+            }
         }
 
-        .switch input {
-            opacity: 0;
-            width: 0;
-            height: 0;
+    }
+
+    .calendarSetting {
+        div {
+            width: 100%;
+            padding: 10px;
+            box-sizing: border-box;
+            margin-bottom: 10px;
+            border: 1px solid;
         }
 
-        .slider {
-            position: absolute;
-            cursor: pointer;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-color: #ccc;
-            transition: 0.4s;
-            border-radius: 34px;
+        h4 {
+            font-size: 16px;
+            font-weight: bold;
         }
+    }
 
-        .slider:before {
-            position: absolute;
-            content: "";
-            height: 26px;
-            width: 26px;
-            border-radius: 50%;
-            left: 4px;
-            bottom: 4px;
-            background-color: white;
-            transition: 0.4s;
+    .messageSetting {
+        div {
+            width: 100%;
+            padding: 10px;
+            box-sizing: border-box;
+            margin-bottom: 10px;
+            border: 1px solid;
         }
+    }
 
-        /* 체크박스가 선택된 상태 (오른쪽으로 이동) */
-        input:checked+.slider {
-            background-color: #4CAF50;
+    .articleSetting {
+        div {
+            width: 100%;
+            padding: 10px;
+            box-sizing: border-box;
+            margin-bottom: 10px;
+            border: 1px solid;
         }
+    }
 
-        /* 원이 오른쪽으로 이동 */
-        input:checked+.slider:before {
-            transform: translateX(26px);
+    .projectSetting {
+        div {
+            width: 100%;
+            padding: 10px;
+            box-sizing: border-box;
+            margin-bottom: 10px;
+            border: 1px solid;
         }
+    }
 
-        /* 토글 스위치 라운드 형태 */
-        .slider.round {
-            border-radius: 34px;
-        }
-
-        .slider.round:before {
-            border-radius: 50%;
-
+    .driveSetting {
+        div {
+            width: 100%;
+            padding: 10px;
+            box-sizing: border-box;
+            margin-bottom: 10px;
+            border: 1px solid;
         }
     }
 }
