@@ -5,36 +5,64 @@
 
     추가내역
     -------------
-    00.00 이름 - 내용
+    12.02 박수정 - 드라이브 레이아웃 수정
 */
 export default function File() {
   return (
     <div className="file-content">
+      {/* 상단 정보 영역 */}
+      <div className="storage-info">
+        <h2>
+          <span className="total-usage">2MB </span>
+          <span className="current-usage">/ 1GB 사용 중</span>
+        </h2>
+        <div className="storage-bar">
+          <div className="drive-usage"></div>
+          <div className="chat-usage"></div>
+        </div>
+        <div className="usage-legend">
+          <span className="legend-item">
+            <span className="drive-dot"></span> File
+          </span>
+          <span className="legend-item">
+            <span className="chat-dot"></span> Chat
+          </span>
+        </div>
+      </div>
+
       <div>
         <table className="filetop">
           <tr>
             <td>
               <h2>경로 이름</h2>
             </td>
-            <td className="input-group">
-              <input type="text" placeholder="이름 입력" />
-              <button className="search-button">검색</button>
-            </td>
           </tr>
           <tr>
             <td>
               <button value="새로만들기" name="새로만들기">
-                새로만들기
+                새폴더
+              </button>
+              <button value="upload" name="file-upload">
+                업로드
+              </button>
+              <button value="download" name="file-download">
+                다운로드
+              </button>
+              <button value="rename" name="file-rename">
+                이름변경
+              </button>
+              <button value="delete" name="file-delete">
+                삭제
               </button>
             </td>
-            <td>
-              <button value="=" name="=">
-                =
-              </button>
+            <td className="input-group">
+              <input type="text" placeholder="드라이브에서 검색" />
+              <button className="search-button">검색</button>
             </td>
           </tr>
         </table>
       </div>
+      {/* 파일 영역 */}
       {/* <!-- 아래 영역 시작 --> */}
       <div className="file-area">
         {/* <!-- 왼쪽 영역: 파일 리스트 --> */}
@@ -42,7 +70,7 @@ export default function File() {
           <table className="file-table">
             <thead>
               <tr>
-                <th>종류</th>
+                <th></th>
                 <th>이름</th>
                 <th>크기</th>
                 <th>수정한 날짜</th>
@@ -52,7 +80,9 @@ export default function File() {
             </thead>
             <tbody>
               <tr>
-                <td>📄</td>
+                <td>
+                  <input type="checkbox" />
+                </td>
                 <td>파일1</td>
                 <td>2MB</td>
                 <td>2024-11-21</td>
@@ -62,7 +92,9 @@ export default function File() {
                 </td>
               </tr>
               <tr>
-                <td>📁</td>
+                <td>
+                  <input type="checkbox" />
+                </td>
                 <td>폴더1</td>
                 <td>-</td>
                 <td>2024-11-20</td>
@@ -73,22 +105,6 @@ export default function File() {
               </tr>
             </tbody>
           </table>
-          <div className="trash-container">
-            <button className="trash-button" title="휴지통">
-              🗑️
-            </button>
-          </div>
-        </div>
-
-        {/* <!-- 오른쪽 영역: 상세 정보 --> */}
-        <div className="file-details">
-          <h3>상세 정보</h3>
-          <div className="detail-content">
-            <p>선택한 항목의 상세 정보를 보여줍니다.</p>
-            <img src="https://via.placeholder.com/150" alt="상세 이미지" />
-            <p>크기: 2MB</p>
-            <p>경로: /경로/파일1</p>
-          </div>
         </div>
       </div>
     </div>
