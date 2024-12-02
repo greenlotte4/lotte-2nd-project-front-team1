@@ -20,24 +20,36 @@ export default function BoardAside() {
               className="write_button"
               onClick={() =>
                 (window.location.href =
-                  "https://hubflow.vercel.app/app/noticeboard")
+                  "/app/noticeboard")
               }
             >
               <strong>글쓰기</strong>
             </button>
           </div>
           <div className="boardtop_menu">
-            <button type="button" className="recent">
+            <button type="button" className="recent"  onClick={() =>
+                (window.location.href =
+                  "/app/recentboard")
+              }>
               <strong className="count">0</strong>
               <span>최신글</span>
             </button>
-            <button type="button" className="must">
+            <button type="button" className="must" onClick={() =>
+                (window.location.href =
+                  "/app/mustreadboard")
+              }>
               <span>필독</span>
             </button>
-            <button type="button" className="important_post">
+            <button type="button" className="important_post"  onClick={() =>
+                (window.location.href =
+                  "/app/importantboard")
+              }>
               <span>중요</span>
             </button>
-            <button type="button" className="mypost">
+            <button type="button" className="mypost" onClick={() =>
+                (window.location.href =
+                  "/app/mypostboard")
+              }>
               <span>내 게시물</span>
             </button>
           </div>
@@ -85,7 +97,7 @@ export default function BoardAside() {
                     className="item_txt icon_main"
                     onClick={() =>
                       (window.location.href =
-                        "https://hubflow.vercel.app/app/mainboard")
+                        "/app/mainboard")
                     }
                   >
                     게시판 메인
@@ -138,6 +150,10 @@ export default function BoardAside() {
                         type="button"
                         title="공지사항"
                         className="item_txt"
+                        onClick={() =>
+                          (window.location.href =
+                            " /app/announcementboard")
+                        }
                       >
                         <span className="text">공지사항</span>
                       </button>

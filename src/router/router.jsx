@@ -27,6 +27,14 @@ import AdminUserPage from "../pages/admin/AdminUserPage";
 import SettingPage from "../pages/app/setting/SettingPage";
 import MainBoardPage from "../pages/app/board/MainBoardPage"; 
 import NoticeBoardPage from "../pages/app/board/NoticeBoardPage"; 
+import EditPostBoardPage from "../pages/app/board/EditPostBoardPage";
+import BasketBoardPage from "../pages/app/board/BasketBoardPage";
+import RecentBoardPage from "../pages/app/board/RecentBoardPage";
+import MustReadBoardPage from "../pages/app/board/MustReadBoardPage";
+import ImportantBoardPage from "../pages/app/board/ImportantBoardPage";
+import MyPostBoardPage from "../pages/app/board/MyPostBoardPage";
+import AnnouncementBoardPage from "../pages/app/board/AnnouncementBoardPage";
+import ViewBoardPage from "../pages/app/board/ViewBoardPage";
 
 //라우팅 정의
 const router = createBrowserRouter([
@@ -61,6 +69,14 @@ const router = createBrowserRouter([
   { path: "/app/setting", element: <SettingPage /> },
   { path: "/app/mainboard", element: <MainBoardPage/>},
   { path: "/app/noticeboard", element: <NoticeBoardPage/>},
+  { path: "/app/editpostboard", element: <EditPostBoardPage/>},
+  { path: "/app/basketboard", element: <BasketBoardPage/>},
+  { path: "/app/recentboard", element: <RecentBoardPage/>},
+  { path: "/app/mustreadboard", element: <MustReadBoardPage/>},
+  { path: "/app/importantboard", element: <ImportantBoardPage/>},
+  { path: "/app/mypostboard", element: <MyPostBoardPage/>},
+  { path: "/app/announcementboard", element: <AnnouncementBoardPage/>},
+  { path: "/app/viewboard", element: <ViewBoardPage/>},
 
   //Admin
   { path: "/admin/user", element: <AdminUserPage /> },

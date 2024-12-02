@@ -62,8 +62,14 @@ export default function AppHome() {
           <ChatBubbleOutlineOutlinedIcon className="icon-image" />
           <div className="button-text">메신저</div>
         </Link>
-        <Link to="/app/article" className="icon-button">
-          <AssignmentOutlinedIcon className="icon-image" />
+        
+        <Link to="/app/mainboard" className="icon-button">
+         <AssignmentOutlinedIcon className="icon-image" />
+          <img
+            src="/images/form.png"
+            alt="게시판 아이콘"
+            className="icon-image"
+          />
           <div className="button-text">게시판</div>
         </Link>
         <Link to="/app/project" className="icon-button">

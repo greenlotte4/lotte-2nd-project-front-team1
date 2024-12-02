@@ -1,9 +1,8 @@
 #boardContentDiv.boardContentDiv {
-    width: 1000px;
-    max-width: 1000px;
-  
+  width: 1000px;
+  margin-left: 500px;
 
-#boardContentDiv{
+#boardContentDiv {
   width: auto;
   min-width: 773px;
   max-width: 999px;
@@ -16,12 +15,8 @@
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
 }
-.space {
-  display: block;
-  height: 80px;
-}
 
-.g_search{
+.g_search {
   padding-top: 20px;
 }
 
@@ -68,20 +63,7 @@
   content: "";
 }
 
-button, label{
-  cursor: pointer;
-}
-
-.blind {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  margin: -1px;
-  overflow: hidden;
-  clip: rect(0,0,0,0);
-}
-
-.g_search .inp_box input[type=text] {
+.g_search .inp_box input[type="text"] {
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
   vertical-align: top;
@@ -117,8 +99,16 @@ button, label{
 
 .g_search .btn_search::before {
   background-image: url(https://static.worksmobile.net/static/pwe/wm/home/sp_board_967af075.png);
-  background-image: -webkit-gradient(linear,left top,left bottom,from(transparent),to(transparent)),url(https://static.worksmobile.net/static/pwe/wm/home/sp_board_9d215a12.svg);
-  background-image: linear-gradient(transparent,transparent),url(https://static.worksmobile.net/static/pwe/wm/home/sp_board_9d215a12.svg);
+  background-image: -webkit-gradient(
+      linear,
+      left top,
+      left bottom,
+      from(transparent),
+      to(transparent)
+    ),
+    url(https://static.worksmobile.net/static/pwe/wm/home/sp_board_9d215a12.svg);
+  background-image: linear-gradient(transparent, transparent),
+    url(https://static.worksmobile.net/static/pwe/wm/home/sp_board_9d215a12.svg);
   background-size: 500px 473px;
   background-position: -452px -153px;
   width: 18px;
@@ -146,8 +136,16 @@ button, label{
 
 .g_search button.board_detail:after {
   background-image: url(https://static.worksmobile.net/static/pwe/wm/home/sp_board_967af075.png);
-  background-image: -webkit-gradient(linear,left top,left bottom,from(transparent),to(transparent)),url(https://static.worksmobile.net/static/pwe/wm/home/sp_board_9d215a12.svg);
-  background-image: linear-gradient(transparent,transparent),url(https://static.worksmobile.net/static/pwe/wm/home/sp_board_9d215a12.svg);
+  background-image: -webkit-gradient(
+      linear,
+      left top,
+      left bottom,
+      from(transparent),
+      to(transparent)
+    ),
+    url(https://static.worksmobile.net/static/pwe/wm/home/sp_board_9d215a12.svg);
+  background-image: linear-gradient(transparent, transparent),
+    url(https://static.worksmobile.net/static/pwe/wm/home/sp_board_9d215a12.svg);
   background-size: 500px 473px;
   background-position: -204px -457px;
   width: 8px;
@@ -177,7 +175,7 @@ button, label{
   font-size: 14px;
   color: #202124;
   line-height: 20px;
-} 
+}
 
 .g_search .ly_autocomplete {
   -webkit-box-sizing: border-box;
@@ -242,7 +240,8 @@ button, label{
   line-height: 32px;
 }
 
-.g_search .srch_detail, .boardContentDiv  .g_search .srch_detail {
+.g_search .srch_detail,
+.boardContentDiv .g_search .srch_detail {
   max-width: none;
 }
 
@@ -286,7 +285,6 @@ button, label{
   width: 49px;
 }
 
-
 .g_search .srch_detail .fm_keyword .select_box.board {
   width: 160px;
   -webkit-box-flex: 1;
@@ -308,25 +306,10 @@ button, label{
   font-weight: 400;
 }
 
-
 .g_search .srch_detail .fm_keyword .select_box .selected:before {
   right: 12px;
-} 
-
-.select_box .selected:before {
-  background-image: url(https://static.worksmobile.net/static/pwe/wm/home/sp_board_967af075.png);
-  background-image: -webkit-gradient(linear,left top,left bottom,from(transparent),to(transparent)),url(https://static.worksmobile.net/static/pwe/wm/home/sp_board_9d215a12.svg);
-  background-image: linear-gradient(transparent,transparent),url(https://static.worksmobile.net/static/pwe/wm/home/sp_board_9d215a12.svg);
-  background-size: 500px 473px;
-  background-position: -204px -457px;
-  width: 8px;
-  height: 8px;
-  position: absolute;
-  top: 50%;
-  right: 8px;
-  margin-top: -4px;
-  content: "";
 }
+
 
 .g_search .srch_detail .fm_keyword .select_box.board .option_box {
   max-height: none;
@@ -341,38 +324,41 @@ button, label{
   overflow: auto;
 }
 
-.select_box.board .option_box ul li, .select_box.chk_move .option_box ul li {
-  position: relative;
-}
 
-.select_box .option_box ul li {
-  border-bottom: 0;
-  padding: 0;
-}
-
-li {
-  list-style-type: none;
-}
-
-.select_box.board .option_box ul li button, .select_box.chk_move .option_box ul li button {
+.select_box.board .option_box ul li button,
+.select_box.chk_move .option_box ul li button {
   height: 32px;
 }
 
-.select_box.board .option_box ul li a:after, .select_box.board .option_box ul li button:after, .select_box.board .option_box ul li input[type=radio]+label:after, .select_box.chk_move .option_box ul li a:after, .select_box.chk_move .option_box ul li button:after, .select_box.chk_move .option_box ul li input[type=radio]+label:after {
+.select_box.board .option_box ul li a:after,
+.select_box.board .option_box ul li button:after,
+.select_box.board .option_box ul li input[type="radio"] + label:after,
+.select_box.chk_move .option_box ul li a:after,
+.select_box.chk_move .option_box ul li button:after,
+.select_box.chk_move .option_box ul li input[type="radio"] + label:after {
   content: "";
   position: absolute;
   top: 6px;
   left: 11px;
   background-image: url(https://static.worksmobile.net/static/pwe/wm/home/sp_board_967af075.png);
-  background-image: -webkit-gradient(linear,left top,left bottom,from(transparent),to(transparent)),url(https://static.worksmobile.net/static/pwe/wm/home/sp_board_9d215a12.svg);
-  background-image: linear-gradient(transparent,transparent),url(https://static.worksmobile.net/static/pwe/wm/home/sp_board_9d215a12.svg);
+  background-image: -webkit-gradient(
+      linear,
+      left top,
+      left bottom,
+      from(transparent),
+      to(transparent)
+    ),
+    url(https://static.worksmobile.net/static/pwe/wm/home/sp_board_9d215a12.svg);
+  background-image: linear-gradient(transparent, transparent),
+    url(https://static.worksmobile.net/static/pwe/wm/home/sp_board_9d215a12.svg);
   background-size: 500px 473px;
   background-position: -228px -405px;
   width: 20px;
   height: 20px;
 }
 
-.select_box.board .option_box, .select_box.chk_move .option_box {
+.select_box.board .option_box,
+.select_box.chk_move .option_box {
   position: absolute;
   top: 100%;
   left: 0;
@@ -383,13 +369,18 @@ li {
   border-radius: 8px;
   border: 1px solid #e6e8eb;
   background-color: #fff;
-  -webkit-box-shadow: 0 4px 10px 0 rgba(32,33,36,.1);
-  box-shadow: 0 4px 10px 0 rgba(32,33,36,.1);
+  -webkit-box-shadow: 0 4px 10px 0 rgba(32, 33, 36, 0.1);
+  box-shadow: 0 4px 10px 0 rgba(32, 33, 36, 0.1);
   text-align: left;
   z-index: 200;
 }
 
-.select_box.board .option_box ul li a, .select_box.board .option_box ul li button, .select_box.board .option_box ul li input[type=radio]+label, .select_box.chk_move .option_box ul li a, .select_box.chk_move .option_box ul li button, .select_box.chk_move .option_box ul li input[type=radio]+label {
+.select_box.board .option_box ul li a,
+.select_box.board .option_box ul li button,
+.select_box.board .option_box ul li input[type="radio"] + label,
+.select_box.chk_move .option_box ul li a,
+.select_box.chk_move .option_box ul li button,
+.select_box.chk_move .option_box ul li input[type="radio"] + label {
   display: block;
   position: relative;
   padding-left: 44px;
@@ -398,19 +389,9 @@ li {
   white-space: nowrap;
 }
 
-.lw_btn, .select_box .option_box ul li button {
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
-}
 
-.select_box .option_box ul li button {
-  border: 0;
-  border-radius: 0;
-  background-color: transparent;
-  width: 100%;
-}
-
-.select_box.board .option_box ul li.line, .select_box.chk_move .option_box ul li.line {
+.select_box.board .option_box ul li.line,
+.select_box.chk_move .option_box ul li.line {
   display: block;
   height: 1px;
   margin: 8px 0;
@@ -419,16 +400,9 @@ li {
   line-height: 0;
 }
 
-.select_box.board .option_box ul li, .select_box.chk_move .option_box ul li {
-  position: relative;
-}
 
-.select_box .option_box ul li {
-  border-bottom: 0;
-  padding: 0;
-}
-
-.select_box.board .option_box ul li span, .select_box.chk_move .option_box ul li span {
+.select_box.board .option_box ul li span,
+.select_box.chk_move .option_box ul li span {
   display: block;
   font-weight: 700;
   overflow: hidden;
@@ -436,43 +410,23 @@ li {
   white-space: nowrap;
 }
 
-.select_box.board .option_box ul li, .select_box.chk_move .option_box ul li {
+.select_box.board .option_box ul li,
+.select_box.chk_move .option_box ul li {
   position: relative;
 }
 
-.select_box.board .option_box ul li.depth a, .select_box.board .option_box ul li.depth button, .select_box.board .option_box ul li.depth span, .select_box.chk_move .option_box ul li.depth a, .select_box.chk_move .option_box ul li.depth button, .select_box.chk_move .option_box ul li.depth span {
+.select_box.board .option_box ul li.depth a,
+.select_box.board .option_box ul li.depth button,
+.select_box.board .option_box ul li.depth span,
+.select_box.chk_move .option_box ul li.depth a,
+.select_box.chk_move .option_box ul li.depth button,
+.select_box.chk_move .option_box ul li.depth span {
   padding-left: 44px;
 }
 
-.select_box.board .option_box ul li button, .select_box.chk_move .option_box ul li button {
-    height: 32px;
-}
-
-.select_box .option_box ul li a, .select_box .option_box ul li button, .select_box .option_box ul li span {
-  display: block;
-  padding: 0 12px;
-  line-height: 32px;
-  color: #202124;
-  text-align: left;
-  font-size: 14px;
-  white-space: nowrap;
-}
-
-.select_box .selected {
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
-  height: 36px;
-  padding: 0 20px 0 8px;
-  border: 0;
-  border-radius: 8px;
-  background-color: #fff;
-  font-size: 14px;
-  color: #3f4247;
-  line-height: 36px;
-  vertical-align: top;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+.select_box.board .option_box ul li button,
+.select_box.chk_move .option_box ul li button {
+  height: 32px;
 }
 
 
@@ -495,11 +449,6 @@ li {
   width: 37px;
 }
 
-.g_search .srch_detail .fm_keyword .box_col2 .dash, .g_search .srch_detail .fm_keyword .box_col2 .selected, .g_search .srch_detail .fm_keyword .box_col2 .tit {
-  -webkit-box-flex: 0;
-  -ms-flex: 0 0 auto;
-  flex: 0 0 auto;
-}
 
 .g_search .srch_detail .fm_keyword .tit {
   display: inline-block;
@@ -512,11 +461,6 @@ li {
 
 .g_search .srch_detail .fm_keyword .select_box {
   width: 104px;
-}
-
-.select_box, .select_box .selected {
-  position: relative;
-  display: inline-block;
 }
 
 .select_box.show .option_box {
@@ -537,32 +481,39 @@ li {
   border: 1px solid #e6e8eb;
   border-radius: 8px;
   background-color: #fff;
-  -webkit-box-shadow: 0 4px 10px 0 rgba(32,33,36,.1);
-  box-shadow: 0 4px 10px 0 rgba(32,33,36,.1);
+  -webkit-box-shadow: 0 4px 10px 0 rgba(32, 33, 36, 0.1);
+  box-shadow: 0 4px 10px 0 rgba(32, 33, 36, 0.1);
   overflow: auto;
   overflow-x: hidden;
   z-index: 30;
 }
 
-
 .select_box .option_box ul {
   padding: 8px 0;
 }
 
-menu, ol, ul {
-  list-style: none;
-}
 
 .select_box .option_box ul li {
   border-bottom: 0;
   padding: 0;
 }
 
-.select_box .option_box ul li a.sel, .select_box .option_box ul li a:hover, .select_box .option_box ul li button.sel, .select_box .option_box ul li button:hover {
-  background-color: rgba(32,33,36,.05);
+.select_box .option_box ul li a.sel,
+.select_box .option_box ul li a:hover,
+.select_box .option_box ul li button.sel,
+.select_box .option_box ul li button:hover {
+  background-color: rgba(32, 33, 36, 0.05);
 }
 
-.lw_btn, .select_box .option_box ul li button {
+
+
+.select_box .option_box ul li a,
+.select_box .option_box ul li button {
+  text-decoration: none;
+}
+
+.lw_btn,
+.select_box .option_box ul li button {
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
 }
@@ -574,37 +525,14 @@ menu, ol, ul {
   width: 100%;
 }
 
-.select_box .option_box ul li a, .select_box .option_box ul li button {
-  text-decoration: none;
-}
-
-.select_box .option_box ul li a, .select_box .option_box ul li button, .select_box .option_box ul li span {
-  display: block;
-  padding: 0 12px;
-  line-height: 32px;
-  color: #202124;
-  text-align: left;
-  font-size: 14px;
-  white-space: nowrap;
-}
-
-.lw_btn, .select_box .option_box ul li button {
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
-}
-
+.select_box .option_box ul li a,
 .select_box .option_box ul li button {
-  border: 0;
-  border-radius: 0;
-  background-color: transparent;
-  width: 100%;
-}
-
-.select_box .option_box ul li a, .select_box .option_box ul li button {
   text-decoration: none;
 }
 
-.select_box .option_box ul li a, .select_box .option_box ul li button, .select_box .option_box ul li span {
+.select_box .option_box ul li a,
+.select_box .option_box ul li button,
+.select_box .option_box ul li span {
   display: block;
   padding: 0 12px;
   line-height: 32px;
@@ -614,34 +542,13 @@ menu, ol, ul {
   white-space: nowrap;
 }
 
-.g_search .srch_detail .fm_keyword input[type=text].cont {
+.g_search .srch_detail .fm_keyword input[type="text"].cont {
   width: 212px;
 }
 
-.g_search .srch_detail .fm_keyword .box_col2 input[type=text] {
-  -webkit-box-flex: 1;
-  -ms-flex: 1;
-  flex: 1;
-  min-width: 0;
-}
 
-.g_search .srch_detail .fm_keyword .select_box+label+input {
+.g_search .srch_detail .fm_keyword .select_box + label + input {
   margin-left: 4px;
-}
-
-.g_search .srch_detail .fm_keyword input[type=text] {
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
-  width: 100%;
-  padding: 5px 11px;
-  border: 1px solid #e6e8eb;
-  border-radius: 8px;
-  background-color: #fff;
-  font-size: 12px;
-  color: #202124;
-  line-height: 20px;
-  outline: none;
-  font-size: 14px;
 }
 
 .g_search .srch_detail .fm_keyword .break {
@@ -649,7 +556,9 @@ menu, ol, ul {
   height: 8px;
 }
 
-.g_search .srch_detail .fm_keyword .box_col1 .dash, .g_search .srch_detail .fm_keyword .box_col1 .selected, .g_search .srch_detail .fm_keyword .box_col1 .tit {
+.g_search .srch_detail .fm_keyword .box_col1 .dash,
+.g_search .srch_detail .fm_keyword .box_col1 .selected,
+.g_search .srch_detail .fm_keyword .box_col1 .tit {
   -webkit-box-flex: 0;
   -ms-flex: 0 0 auto;
   flex: 0 0 auto;
@@ -662,29 +571,14 @@ menu, ol, ul {
   flex: 1 1 auto;
 }
 
-.g_search .srch_detail .fm_keyword .has_ly input[type=text] {
+.g_search .srch_detail .fm_keyword .has_ly input[type="text"] {
   width: 100%;
 }
-.g_search .srch_detail .fm_keyword .box_col1 input[type=text] {
+.g_search .srch_detail .fm_keyword .box_col1 input[type="text"] {
   -webkit-box-flex: 1;
   -ms-flex: 1;
   flex: 1;
   min-width: 0;
-}
-
-.g_search .srch_detail .fm_keyword input[type=text] {
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
-  width: 100%;
-  padding: 5px 11px;
-  border: 1px solid #e6e8eb;
-  border-radius: 8px;
-  background-color: #fff;
-  font-size: 12px;
-  color: #202124;
-  line-height: 20px;
-  outline: none;
-  font-size: 14px;
 }
 
 .g_search .ly_slct_member {
@@ -702,7 +596,7 @@ menu, ol, ul {
   z-index: 150;
 }
 
-.g_search .ly_slct_member>ul {
+.g_search .ly_slct_member > ul {
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
   max-height: 334px;
@@ -710,34 +604,15 @@ menu, ol, ul {
   overflow: auto;
 }
 
-.g_search .srch_detail .fm_keyword input[type=text].date {
+.g_search .srch_detail .fm_keyword input[type="text"].date {
   width: 112px;
   color: #3f4247;
 }
 
-.g_search .srch_detail .fm_keyword .box_col2 input[type=text] {
-  -webkit-box-flex: 1;
-  -ms-flex: 1;
-  flex: 1;
-  min-width: 0;
-}
 
-.g_search .srch_detail .fm_keyword input[type=text] {
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
-  width: 100%;
-  padding: 5px 11px;
-  border: 1px solid #e6e8eb;
-  border-radius: 8px;
-  background-color: #fff;
-  font-size: 12px;
-  color: #202124;
-  line-height: 20px;
-  outline: none;
-  font-size: 14px;
-}
-
-.g_search .srch_detail .fm_keyword .box_col2 .dash, .g_search .srch_detail .fm_keyword .box_col2 .selected, .g_search .srch_detail .fm_keyword .box_col2 .tit {
+.g_search .srch_detail .fm_keyword .box_col2 .dash,
+.g_search .srch_detail .fm_keyword .box_col2 .selected,
+.g_search .srch_detail .fm_keyword .box_col2 .tit {
   -webkit-box-flex: 0;
   -ms-flex: 0 0 auto;
   flex: 0 0 auto;
@@ -752,19 +627,19 @@ menu, ol, ul {
   vertical-align: top;
 }
 
-.g_search .srch_detail .fm_keyword input[type=text].date {
+.g_search .srch_detail .fm_keyword input[type="text"].date {
   width: 112px;
   color: #3f4247;
 }
 
-.g_search .srch_detail .fm_keyword .box_col2 input[type=text] {
+.g_search .srch_detail .fm_keyword .box_col2 input[type="text"] {
   -webkit-box-flex: 1;
   -ms-flex: 1;
   flex: 1;
   min-width: 0;
 }
 
-.g_search .srch_detail .fm_keyword input[type=text] {
+.g_search .srch_detail .fm_keyword input[type="text"] {
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
   width: 100%;
@@ -779,7 +654,8 @@ menu, ol, ul {
   font-size: 14px;
 }
 
-.cont_max .g_search .srch_detail .fm, .boardContentDiv .g_search .srch_detail .fm {
+.cont_max .g_search .srch_detail .fm,
+.boardContentDiv .g_search .srch_detail .fm {
   display: inline-block;
   width: auto;
   margin-top: 0;
@@ -796,7 +672,8 @@ menu, ol, ul {
   margin-top: 8px;
 }
 
-.cont_max .g_search .srch_detail .fm p, .boardContentDiv .g_search .srch_detail .fm p {
+.cont_max .g_search .srch_detail .fm p,
+.boardContentDiv .g_search .srch_detail .fm p {
   padding-right: 0;
 }
 
@@ -809,36 +686,19 @@ menu, ol, ul {
   box-sizing: border-box;
 }
 
-.g_search .srch_detail .fm input[type=checkbox] {
-  position: absolute;
-  clip: rect(0,0,0,0);
-  width: 1px;
-  height: 1px;
-  margin: -1px;
-  overflow: hidden;
-}   
 
-.g_search .srch_detail .fm input[type=checkbox]+label {
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
-  position: relative;
-  min-height: 20px;
-  display: inline-block;
-  padding-left: 22px;
-  font-size: 14px;
-  color: #202124;
-  line-height: 20px;
-  vertical-align: top;
-} 
-
-button, label {
-  cursor: pointer;
-} 
-
-.g_search .srch_detail .fm input[type=checkbox]+label:before {
+.g_search .srch_detail .fm input[type="checkbox"] + label:before {
   background-image: url(https://static.worksmobile.net/static/pwe/wm/home/sp_board_967af075.png);
-  background-image: -webkit-gradient(linear,left top,left bottom,from(transparent),to(transparent)),url(https://static.worksmobile.net/static/pwe/wm/home/sp_board_9d215a12.svg);
-  background-image: linear-gradient(transparent,transparent),url(https://static.worksmobile.net/static/pwe/wm/home/sp_board_9d215a12.svg);
+  background-image: -webkit-gradient(
+      linear,
+      left top,
+      left bottom,
+      from(transparent),
+      to(transparent)
+    ),
+    url(https://static.worksmobile.net/static/pwe/wm/home/sp_board_9d215a12.svg);
+  background-image: linear-gradient(transparent, transparent),
+    url(https://static.worksmobile.net/static/pwe/wm/home/sp_board_9d215a12.svg);
   background-size: 500px 473px;
   background-position: -320px -254px;
   width: 16px;
@@ -849,16 +709,16 @@ button, label {
   content: "";
 }
 
-.g_search .srch_detail .fm input[type=checkbox] {
+.g_search .srch_detail .fm input[type="checkbox"] {
   position: absolute;
-  clip: rect(0,0,0,0);
+  clip: rect(0, 0, 0, 0);
   width: 1px;
   height: 1px;
   margin: -1px;
   overflow: hidden;
 }
 
-.g_search .srch_detail .fm input[type=checkbox]+label {
+.g_search .srch_detail .fm input[type="checkbox"] + label {
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
   position: relative;
@@ -904,7 +764,7 @@ button, label {
 .date-picker-container {
   display: flex;
   align-items: center;
-  font-family: 'Arial', sans-serif;
+  font-family: "Arial", sans-serif;
 }
 
 .date-picker-input {
@@ -972,7 +832,7 @@ button, label {
   font-weight: 700;
 }
 
-.board_write .task_area .btn_task_wrap+.btn_task_wrap {
+.board_write .task_area .btn_task_wrap + .btn_task_wrap {
   margin-left: 8px;
 }
 
@@ -993,24 +853,18 @@ button, label {
   border: 1px solid #e6e8eb;
 }
 
-.board_write .task_area .btn_write_fold {
-  border: 0;
-  border-radius: 0;
-  background-color: transparent;
-  -webkit-box-flex: 0;
-  -ms-flex: 0 0 auto;
-  flex: 0 0 auto;
-  margin-left: auto;
-  padding: 8px;
-  font-size: 14px;
-  color: #71767a;
-  line-height: 20px;
-}
-
 .board_write .task_area .btn_write_fold:after {
   background-image: url(https://static.worksmobile.net/static/pwe/wm/home/sp_board_967af075.png);
-  background-image: -webkit-gradient(linear,left top,left bottom,from(transparent),to(transparent)),url(https://static.worksmobile.net/static/pwe/wm/home/sp_board_9d215a12.svg);
-  background-image: linear-gradient(transparent,transparent),url(https://static.worksmobile.net/static/pwe/wm/home/sp_board_9d215a12.svg);
+  background-image: -webkit-gradient(
+      linear,
+      left top,
+      left bottom,
+      from(transparent),
+      to(transparent)
+    ),
+    url(https://static.worksmobile.net/static/pwe/wm/home/sp_board_9d215a12.svg);
+  background-image: linear-gradient(transparent, transparent),
+    url(https://static.worksmobile.net/static/pwe/wm/home/sp_board_9d215a12.svg);
   background-size: 500px 473px;
   background-position: -268px -433px;
   width: 16px;
@@ -1051,15 +905,6 @@ button, label {
 .board_write .option li {
   position: relative;
   padding: 0 0 8px 138px;
-}
-
-.board_write .option h3.tx {
-  position: absolute;
-  top: 6px;
-  left: 0;
-  font-size: 14px;
-  line-height: 20px;
-  color: #202124;
 }
 
 .board_write .option li.opt_bd .btn_board_select {
@@ -1120,8 +965,16 @@ button, label {
   margin-top: -4px;
   right: 6px;
   background-image: url(https://static.worksmobile.net/static/pwe/wm/home/sp_board_967af075.png);
-  background-image: -webkit-gradient(linear,left top,left bottom,from(transparent),to(transparent)),url(https://static.worksmobile.net/static/pwe/wm/home/sp_board_9d215a12.svg);
-  background-image: linear-gradient(transparent,transparent),url(https://static.worksmobile.net/static/pwe/wm/home/sp_board_9d215a12.svg);
+  background-image: -webkit-gradient(
+      linear,
+      left top,
+      left bottom,
+      from(transparent),
+      to(transparent)
+    ),
+    url(https://static.worksmobile.net/static/pwe/wm/home/sp_board_9d215a12.svg);
+  background-image: linear-gradient(transparent, transparent),
+    url(https://static.worksmobile.net/static/pwe/wm/home/sp_board_9d215a12.svg);
   background-size: 500px 473px;
   background-position: -236px -457px;
   width: 8px;
@@ -1143,7 +996,7 @@ button, label {
   margin: 0;
 }
 
-.board_write .option li.opt_sbj .wrap_sbj input[type=text] {
+.board_write .option li.opt_sbj .wrap_sbj input[type="text"] {
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
   width: 100%;
@@ -1168,10 +1021,6 @@ button, label {
   line-height: 15px;
 }
 
-address, em {
-  font-style: normal;
-}
-
 .board_write .option li.opt_file .btn_fold_attach {
   position: absolute;
   left: 109px;
@@ -1188,10 +1037,19 @@ address, em {
   background-position: -236px -457px;
 }
 
-.board_write .option li.opt_file .btn_fold_attach.close:before, .board_write .option li.opt_file .btn_fold_attach:before {
+.board_write .option li.opt_file .btn_fold_attach.close:before,
+.board_write .option li.opt_file .btn_fold_attach:before {
   background-image: url(https://static.worksmobile.net/static/pwe/wm/home/sp_board_967af075.png);
-  background-image: -webkit-gradient(linear,left top,left bottom,from(transparent),to(transparent)),url(https://static.worksmobile.net/static/pwe/wm/home/sp_board_9d215a12.svg);
-  background-image: linear-gradient(transparent,transparent),url(https://static.worksmobile.net/static/pwe/wm/home/sp_board_9d215a12.svg);
+  background-image: -webkit-gradient(
+      linear,
+      left top,
+      left bottom,
+      from(transparent),
+      to(transparent)
+    ),
+    url(https://static.worksmobile.net/static/pwe/wm/home/sp_board_9d215a12.svg);
+  background-image: linear-gradient(transparent, transparent),
+    url(https://static.worksmobile.net/static/pwe/wm/home/sp_board_9d215a12.svg);
   background-size: 500px 473px;
   width: 8px;
   height: 8px;
@@ -1203,26 +1061,9 @@ address, em {
   background-position: -284px -457px;
 }
 
-.lw_file_attach_write .file_infor .btn_attach {
-  float: left;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
-  display: inline-block;
-  height: 32px;
-  border-radius: 8px;
-  background: #fff;
-  font-size: 12px;
-  color: #3f4247;
-  line-height: 17px;
-  padding: 7px 11px 6px;
-  vertical-align: top;
-  white-space: nowrap;
-  text-decoration: none;
-  border: 1px solid #e6e8eb;
-  font-size: 14px;
-}
 
-.lw_file_attach_write .file_infor .btn_attach+.btn_all_del, .lw_file_attach_write .file_infor .btn_attach+.btn_attach {
+.lw_file_attach_write .file_infor .btn_attach + .btn_all_del,
+.lw_file_attach_write .file_infor .btn_attach + .btn_attach {
   margin-left: 6px;
 }
 
@@ -1264,27 +1105,6 @@ address, em {
 
 /* cateboard */
 
-.cont_head {
-  position: relative;
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -ms-flex-wrap: wrap;
-  flex-wrap: wrap;
-  padding: 36px 0 20px;
-}
-
-.cont_head .info_area {
-  -webkit-box-flex: 0;
-  -ms-flex: 0 0 auto;
-  flex: 0 0 auto;
-  width: 100%;
-}
-
-.cont_head .board_title {
-  font-size: 0;
-}
-
 .cont_head .board_title .text {
   font-size: 18px;
   line-height: 22px;
@@ -1301,8 +1121,16 @@ address, em {
 
 .cont_head .board_title .toggle_favorite:before {
   background-image: url(https://static.worksmobile.net/static/pwe/wm/home/sp_board_967af075.png);
-  background-image: -webkit-gradient(linear,left top,left bottom,from(transparent),to(transparent)),url(https://static.worksmobile.net/static/pwe/wm/home/sp_board_9d215a12.svg);
-  background-image: linear-gradient(transparent,transparent),url(https://static.worksmobile.net/static/pwe/wm/home/sp_board_9d215a12.svg);
+  background-image: -webkit-gradient(
+      linear,
+      left top,
+      left bottom,
+      from(transparent),
+      to(transparent)
+    ),
+    url(https://static.worksmobile.net/static/pwe/wm/home/sp_board_9d215a12.svg);
+  background-image: linear-gradient(transparent, transparent),
+    url(https://static.worksmobile.net/static/pwe/wm/home/sp_board_9d215a12.svg);
   background-size: 500px 473px;
   background-position: -358px -373px;
   width: 20px;
@@ -1311,29 +1139,14 @@ address, em {
   content: "";
 }
 
-.cont_head .task_area {
-  -webkit-box-flex: 0;
-  -ms-flex: 0 0 auto;
-  flex: 0 0 auto;
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  width: 100%;
-  padding-top: 16px;
-}
 
 .cont_head .btn_box {
   padding-top: 0;
 }
 
-.btn_box {
-  display: inline-block;
-  vertical-align: top;
-  padding-top: 8px;
-  font-size: 0;
-}
 
-.btn_box .chk_board, .btn_box button {
+.btn_box .chk_board,
+.btn_box button {
   vertical-align: top;
 }
 
@@ -1350,16 +1163,16 @@ address, em {
   background-color: #fff;
 }
 
-.btn_box .chk_board input[type=checkbox] {
+.btn_box .chk_board input[type="checkbox"] {
   position: absolute;
-  clip: rect(0,0,0,0);
+  clip: rect(0, 0, 0, 0);
   width: 1px;
   height: 1px;
   margin: -1px;
   overflow: hidden;
 }
 
-.btn_box .chk_board input[type=checkbox]+label {
+.btn_box .chk_board input[type="checkbox"] + label {
   width: 100%;
   height: 100%;
   padding-left: 16px;
@@ -1367,7 +1180,7 @@ address, em {
   line-height: 0;
 }
 
-.btn_box .chk_board input[type=checkbox]+label {
+.btn_box .chk_board input[type="checkbox"] + label {
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
   position: relative;
@@ -1379,17 +1192,25 @@ address, em {
   vertical-align: top;
 }
 
-.btn_box .chk_board input[type=checkbox]+label:before {
+.btn_box .chk_board input[type="checkbox"] + label:before {
   top: 50%;
   left: 50%;
-  -webkit-transform: translate(-50%,-50%);
-  transform: translate(-50%,-50%);
+  -webkit-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
 }
 
-.btn_box .chk_board input[type=checkbox]+label:before {
+.btn_box .chk_board input[type="checkbox"] + label:before {
   background-image: url(https://static.worksmobile.net/static/pwe/wm/home/sp_board_967af075.png);
-  background-image: -webkit-gradient(linear,left top,left bottom,from(transparent),to(transparent)),url(https://static.worksmobile.net/static/pwe/wm/home/sp_board_9d215a12.svg);
-  background-image: linear-gradient(transparent,transparent),url(https://static.worksmobile.net/static/pwe/wm/home/sp_board_9d215a12.svg);
+  background-image: -webkit-gradient(
+      linear,
+      left top,
+      left bottom,
+      from(transparent),
+      to(transparent)
+    ),
+    url(https://static.worksmobile.net/static/pwe/wm/home/sp_board_9d215a12.svg);
+  background-image: linear-gradient(transparent, transparent),
+    url(https://static.worksmobile.net/static/pwe/wm/home/sp_board_9d215a12.svg);
   background-size: 500px 473px;
   background-position: -320px -254px;
   width: 16px;
@@ -1399,16 +1220,13 @@ address, em {
   content: "";
 }
 
-a, a:link, button, input, textarea {
-  outline: none;
-}
-
-.btn_box button.disabled, .btn_box button:disabled {
+.btn_box button.disabled,
+.btn_box button:disabled {
   cursor: default;
-  opacity: .4;
+  opacity: 0.4;
 }
 
-.btn_box .chk_board+button {
+.btn_box .chk_board + button {
   margin: 0 4px;
 }
 
@@ -1430,7 +1248,8 @@ a, a:link, button, input, textarea {
   word-break: normal;
 }
 
-.cont_head.edit_type .btn_box .chk_del, .cont_head.edit_type .btn_box .chk_move {
+.cont_head.edit_type .btn_box .chk_del,
+.cont_head.edit_type .btn_box .chk_move {
   display: inline-block;
 }
 
@@ -1440,10 +1259,19 @@ a, a:link, button, input, textarea {
   margin: 0 4px;
 }
 
-.btn_box .chk_move button em.bu, .btn_box .chk_move button em.selected {
+.btn_box .chk_move button em.bu,
+.btn_box .chk_move button em.selected {
   background-image: url(https://static.worksmobile.net/static/pwe/wm/home/sp_board_967af075.png);
-  background-image: -webkit-gradient(linear,left top,left bottom,from(transparent),to(transparent)),url(https://static.worksmobile.net/static/pwe/wm/home/sp_board_9d215a12.svg);
-  background-image: linear-gradient(transparent,transparent),url(https://static.worksmobile.net/static/pwe/wm/home/sp_board_9d215a12.svg);
+  background-image: -webkit-gradient(
+      linear,
+      left top,
+      left bottom,
+      from(transparent),
+      to(transparent)
+    ),
+    url(https://static.worksmobile.net/static/pwe/wm/home/sp_board_9d215a12.svg);
+  background-image: linear-gradient(transparent, transparent),
+    url(https://static.worksmobile.net/static/pwe/wm/home/sp_board_9d215a12.svg);
   background-size: 500px 473px;
   width: 8px;
   height: 8px;
@@ -1462,27 +1290,7 @@ a, a:link, button, input, textarea {
   overflow: hidden;
 }
 
-.cont_head .h_util {
-  margin: 0 -8px 0 auto;
-}
 
-.h_util, .h_util .notification {
-  -webkit-box-flex: 0;
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-}
-
-.h_util {
-  -ms-flex: 0 0 auto;
-  flex: 0 0 auto;
-  -ms-flex-item-align: end;
-  align-self: flex-end;
-  height: 36px;
-  margin-right: -8px;
-  padding-left: 28px;
-  line-height: 36px;
-}
 
 .h_util .notification {
   -ms-flex: 0 0 auto;
@@ -1492,18 +1300,6 @@ a, a:link, button, input, textarea {
   align-items: center;
 }
 
-.h_util, .h_util .notification {
-  -webkit-box-flex: 0;
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-}
-
-.h_util .notification .button_switch, .h_util .notification .title, .h_util .select_box {
-  -webkit-box-flex: 0;
-  -ms-flex: 0 0 auto;
-  flex: 0 0 auto;
-}
 
 .h_util .notification .title {
   display: block;
@@ -1514,12 +1310,7 @@ a, a:link, button, input, textarea {
 }
 
 
-
-.button_switch[aria-checked=true] {
-  background-color: #118dff;
-}
-
-.button_switch[aria-checked=true]:before {
+.button_switch[aria-checked="true"]:before {
   -webkit-transform: translateX(14px);
   transform: translateX(14px);
 }
@@ -1553,7 +1344,7 @@ a, a:link, button, input, textarea {
   content: "";
 }
 
-.h_util .select_box+.select_box {
+.h_util .select_box + .select_box {
   margin-left: 8px;
 }
 
@@ -1561,7 +1352,9 @@ a, a:link, button, input, textarea {
   position: relative;
 }
 
-.h_util .notification .button_switch, .h_util .notification .title, .h_util .select_box {
+.h_util .notification .button_switch,
+.h_util .notification .title,
+.h_util .select_box {
   -webkit-box-flex: 0;
   -ms-flex: 0 0 auto;
   flex: 0 0 auto;
@@ -1573,8 +1366,16 @@ a, a:link, button, input, textarea {
 
 .select_box .selected:before {
   background-image: url(https://static.worksmobile.net/static/pwe/wm/home/sp_board_967af075.png);
-  background-image: -webkit-gradient(linear,left top,left bottom,from(transparent),to(transparent)),url(https://static.worksmobile.net/static/pwe/wm/home/sp_board_9d215a12.svg);
-  background-image: linear-gradient(transparent,transparent),url(https://static.worksmobile.net/static/pwe/wm/home/sp_board_9d215a12.svg);
+  background-image: -webkit-gradient(
+      linear,
+      left top,
+      left bottom,
+      from(transparent),
+      to(transparent)
+    ),
+    url(https://static.worksmobile.net/static/pwe/wm/home/sp_board_9d215a12.svg);
+  background-image: linear-gradient(transparent, transparent),
+    url(https://static.worksmobile.net/static/pwe/wm/home/sp_board_9d215a12.svg);
   background-size: 500px 473px;
   background-position: -204px -457px;
   width: 8px;
@@ -1585,7 +1386,6 @@ a, a:link, button, input, textarea {
   margin-top: -4px;
   content: "";
 }
-
 
 .select_box .selected {
   -webkit-box-sizing: border-box;
@@ -1604,20 +1404,13 @@ a, a:link, button, input, textarea {
   white-space: nowrap;
 }
 
-.select_box, .select_box .selected {
+.select_box,
+.select_box .selected {
   position: relative;
   display: inline-block;
 }
 
-.board_list {
-  border-top: 1px solid #e6e8eb;
-  padding: 0 0 70px;
-}
 
-.board_list .list.default li {
-  position: relative;
-  padding: 12px 0 12px 44px;
-}
 
 .board_list .list.default li .chk {
   position: absolute;
@@ -1625,22 +1418,22 @@ a, a:link, button, input, textarea {
   left: 10px;
 }
 
-.board_list .list .chk input[type=checkbox] {
+.board_list .list .chk input[type="checkbox"] {
   position: absolute;
-  clip: rect(0,0,0,0);
+  clip: rect(0, 0, 0, 0);
   width: 1px;
   height: 1px;
   margin: -1px;
   overflow: hidden;
 }
 
-.board_list .list .chk input[type=checkbox]+label {
+.board_list .list .chk input[type="checkbox"] + label {
   padding-left: 16px;
   font-size: 0;
   line-height: 0;
 }
 
-.board_list .list .chk input[type=checkbox]+label {
+.board_list .list .chk input[type="checkbox"] + label {
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
   position: relative;
@@ -1651,12 +1444,20 @@ a, a:link, button, input, textarea {
   color: #202124;
   line-height: 20px;
   vertical-align: top;
-} 
+}
 
-.board_list .list .chk input[type=checkbox]+label:before {
+.board_list .list .chk input[type="checkbox"] + label:before {
   background-image: url(https://static.worksmobile.net/static/pwe/wm/home/sp_board_967af075.png);
-  background-image: -webkit-gradient(linear,left top,left bottom,from(transparent),to(transparent)),url(https://static.worksmobile.net/static/pwe/wm/home/sp_board_9d215a12.svg);
-  background-image: linear-gradient(transparent,transparent),url(https://static.worksmobile.net/static/pwe/wm/home/sp_board_9d215a12.svg);
+  background-image: -webkit-gradient(
+      linear,
+      left top,
+      left bottom,
+      from(transparent),
+      to(transparent)
+    ),
+    url(https://static.worksmobile.net/static/pwe/wm/home/sp_board_9d215a12.svg);
+  background-image: linear-gradient(transparent, transparent),
+    url(https://static.worksmobile.net/static/pwe/wm/home/sp_board_9d215a12.svg);
   background-size: 500px 473px;
   background-position: -320px -254px;
   width: 16px;
@@ -1667,44 +1468,45 @@ a, a:link, button, input, textarea {
   content: "";
 }
 
-.board_list .list .chk input[type=checkbox]+label {
+.board_list .list .chk input[type="checkbox"] + label {
   padding-left: 16px;
   font-size: 0;
   line-height: 0;
 }
 
-.board_list .list .sbj_box {
-  position: relative;
-}
 
-.board_list .list.default .sbj {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  padding-right: 124px;
-}
 
 .board_list .list .sbj {
   position: relative;
 }
 
-.board_list .list.default .sbj .ic_announcement, .board_list .list.default .sbj .ic_file, .board_list .list.default .sbj .ic_noti, .board_list .list.default .sbj .ic_standby, .board_list .list.default .sbj .ic_write {
+.board_list .list.default .sbj .ic_announcement,
+.board_list .list.default .sbj .ic_file,
+.board_list .list.default .sbj .ic_noti,
+.board_list .list.default .sbj .ic_standby,
+.board_list .list.default .sbj .ic_write {
   -webkit-box-flex: 0;
   -ms-flex: 0 0 auto;
   flex: 0 0 auto;
   display: inline-block;
 }
 
-.board_list .list .ic_announcement, .board_list .list .ic_noti, .board_list .list .ic_standby, .board_list .list .ic_write {
+.board_list .list .ic_announcement,
+.board_list .list .ic_noti,
+.board_list .list .ic_standby,
+.board_list .list .ic_write {
   margin-right: 8px;
 }
 
 .ic_noti {
-  border: 1px solid rgba(255,74,85,.5);
+  border: 1px solid rgba(255, 74, 85, 0.5);
   color: #ff4a55;
 }
 
-.ic_announcement, .ic_noti, .ic_standby, .ic_write {
+.ic_announcement,
+.ic_noti,
+.ic_standby,
+.ic_write {
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
   display: inline-block;
@@ -1716,90 +1518,28 @@ a, a:link, button, input, textarea {
   vertical-align: top;
 }
 
-address, em {
-  font-style: normal;
-}
-
-.board_list .list.default .sbj a {
-  -webkit-box-flex: 0;
-  -ms-flex: 0 1 auto;
-  flex: 0 1 auto;
-  display: inline-block;
-  max-width: 100%;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.board_list .list .read .cont, .board_list .list .read .sbj>a {
-  color: #71767a;
-}
-
-.board_list .list .sbj a {
-  color: #202124;
-  font-weight: 700;
-  line-height: 18px;
-}
-
-.board_list .list.default .infor {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  padding: 7px 124px 0 0;
-}
-
-.board_list .list .infor {
-  font-size: 12px;
-  line-height: 15px;
-  color: #71767a;
-  word-break: break-all;
-  white-space: normal;
-}
-
-.board_list .list.default .infor .user {
-  -webkit-box-flex: 0;
-  -ms-flex: 0 1 auto;
-  flex: 0 1 auto;
-  display: block;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.board_list .list .infor .user {
-  display: inline-block;
-  font-size: 12px;
-  font-weight: 400;
-  line-height: 15px;
-  color: #71767a;
-  vertical-align: top;
-  border: 0;
-  border-radius: 0;
-  background-color: transparent;
-}
-
-.board_list .list.default .infor .comments, .board_list .list.default .infor .read_chk {
+.board_list .list.default .infor .comments,
+.board_list .list.default .infor .read_chk {
   -webkit-box-flex: 0;
   -ms-flex: 0 0 auto;
   flex: 0 0 auto;
   display: block;
 }
 
-.board_list .list .infor .comments, .board_list .list .infor .date, .board_list .list .infor .reaction, .board_list .list .infor .read_chk {
-  position: relative;
-  display: inline-block;
-  padding-left: 10px;
-  vertical-align: top;
-}
-
-.board_list .list .infor .comments strong, .board_list .list .infor .date strong, .board_list .list .infor .reaction strong, .board_list .list .infor .read_chk strong {
+.board_list .list .infor .comments strong,
+.board_list .list .infor .date strong,
+.board_list .list .infor .reaction strong,
+.board_list .list .infor .read_chk strong {
   display: inline-block;
   padding-left: 4px;
   font-weight: 400;
   vertical-align: top;
 }
 
-.board_list .list .infor .comments:after, .board_list .list .infor .date:after, .board_list .list .infor .reaction:after, .board_list .list .infor .read_chk:after {
+.board_list .list .infor .comments:after,
+.board_list .list .infor .date:after,
+.board_list .list .infor .reaction:after,
+.board_list .list .infor .read_chk:after {
   position: absolute;
   top: 50%;
   left: 4px;
@@ -1810,24 +1550,6 @@ address, em {
   -webkit-transform: translateY(-50%);
   transform: translateY(-50%);
   content: "";
-}
-
-.board_list .list.default p.date {
-  position: absolute;
-  top: 50%;
-  margin-top: -8px;
-  right: 0;
-  width: 96px;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
-  text-align: right;
-  line-height: 16px;
-}
-
-.board_list .list .date {
-  color: #71767a;
-  font-size: 12px;
-  line-height: 15px;
 }
 
 .board_list .bt_more {
@@ -1853,7 +1575,7 @@ address, em {
   border: 0;
   color: #fff;
   font-weight: 700;
-} 
+}
 
 /* 필독 */
 
@@ -1870,21 +1592,6 @@ address, em {
   white-space: normal;
 }
 
-.cont_head.notice_type .task_area {
-  width: auto;
-}
-
-.cont_head .task_area {
-  -webkit-box-flex: 0;
-  -ms-flex: 0 0 auto;
-  flex: 0 0 auto;
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  width: 100%;
-  padding-top: 16px;
-}
-
 .cont_head.notice_type .h_util {
   -ms-flex-item-align: end;
   align-self: flex-end;
@@ -1894,7 +1601,8 @@ address, em {
   margin: 0 -8px 0 auto;
 }
 
-.h_util, .h_util .notification {
+.h_util,
+.h_util .notification {
   -webkit-box-flex: 0;
   display: -webkit-box;
   display: -ms-flexbox;
@@ -1949,21 +1657,26 @@ address, em {
   padding-left: 0;
 }
 
-
 .board_list .list.notice_type .alert {
   padding-bottom: 6px;
 }
 
-.board_list .list .ic_announcement, .board_list .list .ic_noti, .board_list .list .ic_standby, .board_list .list .ic_write {
+.board_list .list .ic_announcement,
+.board_list .list .ic_noti,
+.board_list .list .ic_standby,
+.board_list .list .ic_write {
   margin-right: 8px;
 }
 
 .ic_noti {
-  border: 1px solid rgba(255,74,85,.5);
+  border: 1px solid rgba(255, 74, 85, 0.5);
   color: #ff4a55;
 }
 
-.ic_announcement, .ic_noti, .ic_standby, .ic_write {
+.ic_announcement,
+.ic_noti,
+.ic_standby,
+.ic_write {
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
   display: inline-block;
@@ -1975,9 +1688,6 @@ address, em {
   vertical-align: top;
 }
 
-address, em {
-  font-style: normal;
-}
 
 .board_list .list.notice_type .alert span {
   display: inline-block;
@@ -1985,10 +1695,6 @@ address, em {
   font-size: 12px;
   color: #ff4a55;
   vertical-align: middle;
-}
-
-.board_list .list.notice_type .infor, .board_list .list.notice_type .sbj, .board_list .list.notice_type .status {
-  padding-right: 264px;
 }
 
 .board_list .list.default .sbj {
@@ -2009,72 +1715,18 @@ address, em {
   white-space: nowrap;
 }
 
-.board_list .list .read .cont, .board_list .list .read .sbj>a {
-  color: #71767a;
-}
-
-.board_list .list .sbj a {
-  color: #202124;
-  font-weight: 700;
-  line-height: 18px;
-}
-
-.board_list .list.notice_type .infor, .board_list .list.notice_type .sbj, .board_list .list.notice_type .status {
-  padding-right: 264px;
-}
-
-.board_list .list.default .infor {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  padding: 7px 124px 0 0;
-}
-
-.board_list .list .infor {
-  font-size: 12px;
-  line-height: 15px;
-  color: #71767a;
-  word-break: break-all;
-  white-space: normal;
-}
-
-.board_list .list.default .infor .user {
-  -webkit-box-flex: 0;
-  -ms-flex: 0 1 auto;
-  flex: 0 1 auto;
-  display: block;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.board_list .list .infor .user {
-  display: inline-block;
-  font-size: 12px;
-  font-weight: 400;
-  line-height: 15px;
-  color: #71767a;
-  vertical-align: top;
-  border: 0;
-  border-radius: 0;
-  background-color: transparent;
-}
-
-.board_list .list.default .infor .comments, .board_list .list.default .infor .read_chk {
+.board_list .list.default .infor .comments,
+.board_list .list.default .infor .read_chk {
   -webkit-box-flex: 0;
   -ms-flex: 0 0 auto;
   flex: 0 0 auto;
   display: block;
 }
 
-.board_list .list .infor .comments, .board_list .list .infor .date, .board_list .list .infor .reaction, .board_list .list .infor .read_chk {
-  position: relative;
-  display: inline-block;
-  padding-left: 10px;
-  vertical-align: top;
-}
-
-.board_list .list .infor .comments:after, .board_list .list .infor .date:after, .board_list .list .infor .reaction:after, .board_list .list .infor .read_chk:after {
+.board_list .list .infor .comments:after,
+.board_list .list .infor .date:after,
+.board_list .list .infor .reaction:after,
+.board_list .list .infor .read_chk:after {
   position: absolute;
   top: 50%;
   left: 4px;
@@ -2087,37 +1739,6 @@ address, em {
   content: "";
 }
 
-.board_list .list.important_type .board_name_box, .board_list .list.mypost_type .board_name_box, .board_list .list.newest_type .board_name_box, .board_list .list.notice_type .board_name_box {
-  position: absolute;
-  top: 50%;
-  right: 96px;
-  -webkit-box-pack: end;
-  -ms-flex-pack: end;
-  justify-content: flex-end;
-  width: 140px;
-  margin-top: -8px;
-}
-
-.board_list .list .board_name_box {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  font-size: 12px;
-  color: #71767a;
-  line-height: 16px;
-}
-
-.board_list .list .board_name_box .board_name_text {
-  display: block;
-  -webkit-box-flex: 0;
-  -ms-flex: 0 1 auto;
-  flex: 0 1 auto;
-  min-width: 0;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
 .board_list .list .board_name_box .icon_board {
   -webkit-box-flex: 0;
   -ms-flex: 0 0 auto;
@@ -2126,8 +1747,16 @@ address, em {
 
 .board_list .list .board_name_box .icon_board:before {
   background-image: url(https://static.worksmobile.net/static/pwe/wm/home/sp_board_967af075.png);
-  background-image: -webkit-gradient(linear,left top,left bottom,from(transparent),to(transparent)),url(https://static.worksmobile.net/static/pwe/wm/home/sp_board_9d215a12.svg);
-  background-image: linear-gradient(transparent,transparent),url(https://static.worksmobile.net/static/pwe/wm/home/sp_board_9d215a12.svg);
+  background-image: -webkit-gradient(
+      linear,
+      left top,
+      left bottom,
+      from(transparent),
+      to(transparent)
+    ),
+    url(https://static.worksmobile.net/static/pwe/wm/home/sp_board_9d215a12.svg);
+  background-image: linear-gradient(transparent, transparent),
+    url(https://static.worksmobile.net/static/pwe/wm/home/sp_board_9d215a12.svg);
   background-size: 500px 473px;
   background-position: -124px -457px;
   width: 12px;
@@ -2154,7 +1783,10 @@ address, em {
   right: 128px;
 }
 
-.board_list .list.important_type .board_name_box, .board_list .list.mypost_type .board_name_box, .board_list .list.newest_type .board_name_box, .board_list .list.notice_type .board_name_box {
+.board_list .list.important_type .board_name_box,
+.board_list .list.mypost_type .board_name_box,
+.board_list .list.newest_type .board_name_box,
+.board_list .list.notice_type .board_name_box {
   position: absolute;
   top: 50%;
   right: 125px;
@@ -2163,15 +1795,6 @@ address, em {
   justify-content: flex-end;
   width: 140px;
   margin-top: -8px;
-}
-
-.board_list .list .board_name_box {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  font-size: 12px;
-  color: #71767a;
-  line-height: 16px;
 }
 
 .board_list .list.mypost_type p.date {
@@ -2195,11 +1818,6 @@ address, em {
   min-height: 350px;
   border-top: 0;
 }
-.board_list {
-  border-top: 1px solid #e6e8eb;
-  padding: 0 0 70px;
-}
-
 .board_list.tb_board .list table {
   width: 100%;
   table-layout: fixed;
@@ -2214,11 +1832,13 @@ address, em {
   width: 96px;
 }
 
-.board_list.tb_board .col_date_del, .board_list.tb_board .col_date_reg {
+.board_list.tb_board .col_date_del,
+.board_list.tb_board .col_date_reg {
   width: 120px;
 }
 
-.board_list.tb_board .col_attach, .board_list.tb_board .col_name {
+.board_list.tb_board .col_attach,
+.board_list.tb_board .col_name {
   width: 96px;
 }
 
@@ -2230,7 +1850,8 @@ address, em {
   color: #3f4247;
 }
 
-.board_list.tb_board .list table td, .board_list.tb_board .list table th {
+.board_list.tb_board .list table td,
+.board_list.tb_board .list table th {
   border: 0;
   font-weight: 400;
   text-align: center;
@@ -2266,10 +1887,19 @@ address, em {
   display: inline-block;
 }
 
-.board_list.tb_board .list table thead .sort em.down, .board_list.tb_board .list table thead .sort em.up {
+.board_list.tb_board .list table thead .sort em.down,
+.board_list.tb_board .list table thead .sort em.up {
   background-image: url(https://static.worksmobile.net/static/pwe/wm/home/sp_board_967af075.png);
-  background-image: -webkit-gradient(linear,left top,left bottom,from(transparent),to(transparent)),url(https://static.worksmobile.net/static/pwe/wm/home/sp_board_9d215a12.svg);
-  background-image: linear-gradient(transparent,transparent),url(https://static.worksmobile.net/static/pwe/wm/home/sp_board_9d215a12.svg);
+  background-image: -webkit-gradient(
+      linear,
+      left top,
+      left bottom,
+      from(transparent),
+      to(transparent)
+    ),
+    url(https://static.worksmobile.net/static/pwe/wm/home/sp_board_9d215a12.svg);
+  background-image: linear-gradient(transparent, transparent),
+    url(https://static.worksmobile.net/static/pwe/wm/home/sp_board_9d215a12.svg);
   background-size: 500px 473px;
   width: 12px;
   height: 12px;
@@ -2305,16 +1935,16 @@ address, em {
   border-bottom: 1px solid #f1f3f9;
 }
 
-.board_list .list .chk input[type=checkbox] {
+.board_list .list .chk input[type="checkbox"] {
   position: absolute;
-  clip: rect(0,0,0,0);
+  clip: rect(0, 0, 0, 0);
   width: 1px;
   height: 1px;
   margin: -1px;
   overflow: hidden;
 }
 
-.board_list .list .chk input[type=checkbox]+label {
+.board_list .list .chk input[type="checkbox"] + label {
   padding-left: 16px;
   font-size: 0;
   line-height: 0;
@@ -2329,9 +1959,6 @@ address, em {
   border-bottom: 1px solid #f1f3f9;
 }
 
-.board_list .list .sbj_box {
-  position: relative;
-}
 
 .board_list.tb_board .list table tbody .bd_infor .sbj {
   display: -webkit-box;
@@ -2350,10 +1977,6 @@ address, em {
   white-space: nowrap;
 }
 
-.board_list .list .read .cont, .board_list .list .read .sbj>a {
-  color: #71767a;
-}
-
 .board_list .list .sbj a {
   color: #202124;
   font-weight: 700;
@@ -2365,14 +1988,6 @@ address, em {
   display: -ms-flexbox;
   display: flex;
   padding: 8px 0 0;
-} 
-
-.board_list .list .infor {
-  font-size: 12px;
-  line-height: 15px;
-  color: #71767a;
-  word-break: break-all;
-  white-space: normal;
 }
 
 .board_list.tb_board .list table tbody .bd_infor .user {
@@ -2385,33 +2000,20 @@ address, em {
   white-space: nowrap;
 }
 
-.board_list .list .infor .user {
-  display: inline-block;
-  font-size: 12px;
-  font-weight: 400;
-  line-height: 15px;
-  color: #71767a;
-  vertical-align: top;
-  border: 0;
-  border-radius: 0;
-  background-color: transparent;
-}
 
-.board_list.tb_board .list table tbody .bd_infor .comments, .board_list.tb_board .list table tbody .bd_infor .read_chk {
+.board_list.tb_board .list table tbody .bd_infor .comments,
+.board_list.tb_board .list table tbody .bd_infor .read_chk {
   -webkit-box-flex: 0;
   -ms-flex: 0 0 auto;
   flex: 0 0 auto;
   display: block;
 }
 
-.board_list .list .infor .comments, .board_list .list .infor .date, .board_list .list .infor .reaction, .board_list .list .infor .read_chk {
-  position: relative;
-  display: inline-block;
-  padding-left: 10px;
-  vertical-align: top;
-}
 
-.board_list .list .infor .comments strong, .board_list .list .infor .date strong, .board_list .list .infor .reaction strong, .board_list .list .infor .read_chk strong {
+.board_list .list .infor .comments strong,
+.board_list .list .infor .date strong,
+.board_list .list .infor .reaction strong,
+.board_list .list .infor .read_chk strong {
   display: inline-block;
   padding-left: 4px;
   font-weight: 400;
@@ -2432,15 +2034,6 @@ address, em {
   justify-content: center;
 }
 
-.board_list .list .board_name_box {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  font-size: 12px;
-  color: #71767a;
-  line-height: 16px;
-}
-
 .board_list .list .board_name_box .board_name_text {
   display: block;
   -webkit-box-flex: 0;
@@ -2459,7 +2052,7 @@ address, em {
   font-size: 12px;
   color: #71767a;
   line-height: 16px;
-}   
+}
 
 .board_list.tb_board .list table tbody td.name {
   font-size: 12px;
@@ -2471,8 +2064,16 @@ address, em {
 
 .board_list.tb_board .list table tbody td.name em.ic_master {
   background-image: url(https://static.worksmobile.net/static/pwe/wm/home/sp_board_967af075.png);
-  background-image: -webkit-gradient(linear,left top,left bottom,from(transparent),to(transparent)),url(https://static.worksmobile.net/static/pwe/wm/home/sp_board_9d215a12.svg);
-  background-image: linear-gradient(transparent,transparent),url(https://static.worksmobile.net/static/pwe/wm/home/sp_board_9d215a12.svg);
+  background-image: -webkit-gradient(
+      linear,
+      left top,
+      left bottom,
+      from(transparent),
+      to(transparent)
+    ),
+    url(https://static.worksmobile.net/static/pwe/wm/home/sp_board_9d215a12.svg);
+  background-image: linear-gradient(transparent, transparent),
+    url(https://static.worksmobile.net/static/pwe/wm/home/sp_board_9d215a12.svg);
   background-size: 500px 473px;
   background-position: -480px -382px;
   width: 12px;
@@ -2487,7 +2088,8 @@ address, em {
   vertical-align: top;
 }
 
-.board_list.tb_board .list table tbody td.attach, .board_list.tb_board .list table tbody td.comment {
+.board_list.tb_board .list table tbody td.attach,
+.board_list.tb_board .list table tbody td.comment {
   font-size: 12px;
   color: #71767a;
 }
@@ -2499,7 +2101,7 @@ address, em {
 
 /* 메인 */
 
-.g_search~.main_box {
+.g_search ~ .main_box {
   margin-top: 20px;
 }
 
@@ -2507,18 +2109,6 @@ address, em {
   position: relative;
 }
 
-.home_box h2.tit {
-  font-size: 18px;
-  line-height: 21px;
-  padding: 16px 80px 16px 0;
-}
-
-.home_box .tit {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  color: #202124;
-}
 
 .home_box .more {
   position: absolute;
@@ -2537,18 +2127,31 @@ address, em {
   vertical-align: top;
 }
 
-a, a:link, button, input, textarea {
+a,
+a:link,
+button,
+input,
+textarea {
   outline: none;
 }
 
-a, a:link {
+a,
+a:link {
   text-decoration: none;
 }
 
 .home_box .more a:after {
   background-image: url(https://static.worksmobile.net/static/pwe/wm/home/sp_board_967af075.png);
-  background-image: -webkit-gradient(linear,left top,left bottom,from(transparent),to(transparent)),url(https://static.worksmobile.net/static/pwe/wm/home/sp_board_9d215a12.svg);
-  background-image: linear-gradient(transparent,transparent),url(https://static.worksmobile.net/static/pwe/wm/home/sp_board_9d215a12.svg);
+  background-image: -webkit-gradient(
+      linear,
+      left top,
+      left bottom,
+      from(transparent),
+      to(transparent)
+    ),
+    url(https://static.worksmobile.net/static/pwe/wm/home/sp_board_9d215a12.svg);
+  background-image: linear-gradient(transparent, transparent),
+    url(https://static.worksmobile.net/static/pwe/wm/home/sp_board_9d215a12.svg);
   background-size: 500px 473px;
   background-position: -236px -457px;
   width: 8px;
@@ -2566,11 +2169,13 @@ a, a:link {
   padding: 36px 40px 24px;
 }
 
-#content .home_box.notice .board_list .list.default, #content .home_box.notice .board_list .list.preview {
+#content .home_box.notice .board_list .list.default,
+#content .home_box.notice .board_list .list.preview {
   margin-left: 0;
 }
 
-#content .home_box.notice .board_list .list.default li, #content .home_box.notice .board_list .list.preview li {
+#content .home_box.notice .board_list .list.default li,
+#content .home_box.notice .board_list .list.preview li {
   width: 100%;
   float: none;
   margin: 0;
@@ -2582,7 +2187,8 @@ a, a:link {
   padding: 0;
 }
 
-#content.cont_max .home_box .board_list .list.default:after, #content.cont_max .home_box .board_list .list.preview:after {
+#content.cont_max .home_box .board_list .list.default:after,
+#content.cont_max .home_box .board_list .list.preview:after {
   display: block;
   clear: both;
   content: "";
@@ -2595,7 +2201,8 @@ a, a:link {
   margin: 0 24px 0 0;
 }
 
-.board_list .list.preview .photo, .board_list .list.preview .thumb {
+.board_list .list.preview .photo,
+.board_list .list.preview .thumb {
   position: relative;
   text-align: center;
   vertical-align: middle;
@@ -2609,16 +2216,12 @@ a, a:link {
   color: #71767a;
 }
 
-.board_list .list .sbj_box {
-  position: relative;
-}
 
 .board_list .list.preview .sbj {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
 }
-
 
 .board_list .list.preview .sbj a {
   -webkit-box-flex: 0;
@@ -2631,7 +2234,8 @@ a, a:link {
   white-space: nowrap;
 }
 
-.board_list .list .read .cont, .board_list .list .read .sbj>a {
+.board_list .list .read .cont,
+.board_list .list .read .sbj > a {
   color: #71767a;
 }
 
@@ -2660,14 +2264,6 @@ a, a:link {
   display: flex;
 }
 
-.board_list .list .infor {
-  font-size: 12px;
-  line-height: 15px;
-  color: #71767a;
-  word-break: break-all;
-  white-space: normal;
-}
-
 .board_list .list.preview .infor .user {
   -webkit-box-flex: 0;
   -ms-flex: 0 1 auto;
@@ -2678,25 +2274,10 @@ a, a:link {
   white-space: nowrap;
 }
 
-.board_list .list .infor .user {
-  display: inline-block;
-  font-size: 12px;
-  font-weight: 400;
-  line-height: 15px;
-  color: #71767a;
-  vertical-align: top;
-  border: 0;
-  border-radius: 0;
-  background-color: transparent;
-}
-
-.board_list .list .date {
-  color: #71767a;
-  font-size: 12px;
-  line-height: 15px;
-}
-
-.board_list .list .infor .comments:after, .board_list .list .infor .date:after, .board_list .list .infor .reaction:after, .board_list .list .infor .read_chk:after {
+.board_list .list .infor .comments:after,
+.board_list .list .infor .date:after,
+.board_list .list .infor .reaction:after,
+.board_list .list .infor .read_chk:after {
   position: absolute;
   top: 50%;
   left: 4px;
@@ -2707,12 +2288,6 @@ a, a:link {
   -webkit-transform: translateY(-50%);
   transform: translateY(-50%);
   content: "";
-}
-
-.board_list .list .date {
-  color: #71767a;
-  font-size: 12px;
-  line-height: 15px;
 }
 
 .home_box h2.tit {
@@ -2728,40 +2303,38 @@ a, a:link {
   color: #202124;
 }
 
-.banner_box~.home_box.notice, .home_box.introduce~.home_box.notice, .home_box~.home_box {
+.banner_box ~ .home_box.notice,
+.home_box.introduce ~ .home_box.notice,
+.home_box ~ .home_box {
   margin-top: 48px;
 }
 
-#content.cont_max .home_box .board_list .list.default, #content.cont_max .home_box .board_list .list.preview {
+#content.cont_max .home_box .board_list .list.default,
+#content.cont_max .home_box .board_list .list.preview {
   margin-left: -40px;
 }
 
-#content.cont_max .home_box .board_list .list.default li, #content.cont_max .home_box .board_list .list.preview li {
+#content.cont_max .home_box .board_list .list.default li,
+#content.cont_max .home_box .board_list .list.preview li {
   width: 600px;
   float: left;
   margin-left: 40px;
 }
 
 
-.home_box .board_list {
-  padding: 0;
-  border-top: 1px solid #e6e8eb;
-}
-
-.board_list {
-  border-top: 1px solid #e6e8eb;
-  padding: 0 0 70px;
-}
-
-#content.cont_max .home_box .board_list .list.default, #content.cont_max .home_box .board_list .list.preview {
+#content.cont_max .home_box .board_list .list.default,
+#content.cont_max .home_box .board_list .list.preview {
   margin-left: -40px;
 }
 
-menu, ol, ul {
+menu,
+ol,
+ul {
   list-style: none;
 }
 
-#content.cont_max .home_box .board_list .list.default li, #content.cont_max .home_box .board_list .list.preview li {
+#content.cont_max .home_box .board_list .list.default li,
+#content.cont_max .home_box .board_list .list.preview li {
   width: 600px;
   float: left;
   margin-left: 40px;
@@ -2771,11 +2344,16 @@ menu, ol, ul {
   padding-bottom: 11px;
 }
 
-.home_box .board_list .list.default li, .home_box .board_list .list.preview li {
+.home_box .board_list .list.default li,
+.home_box .board_list .list.preview li {
   padding-left: 0;
 }
 
 .board_list .list.default li {
+  position: relative;
+  padding: 12px 0 12px 0;
+}
+.board_list .list.edit_type li {
   position: relative;
   padding: 12px 0 12px 44px;
 }
@@ -2784,7 +2362,8 @@ menu, ol, ul {
   position: relative;
 }
 
-.home_box .list.default.recent li .infor, .home_box.notice .list.default li .infor {
+.home_box .list.default.recent li .infor,
+.home_box.notice .list.default li .infor {
   max-width: 340px;
 }
 
@@ -2803,15 +2382,9 @@ menu, ol, ul {
   padding: 7px 124px 0 0;
 }
 
-.board_list .list .infor {
-  font-size: 12px;
-  line-height: 15px;
-  color: #71767a;
-  word-break: break-all;
-  white-space: normal;
-}
 
-.home_box .list.default.recent li .bd_name, .home_box.notice .list.default li .bd_name {
+.home_box .list.default.recent li .bd_name,
+.home_box.notice .list.default li .bd_name {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -2830,17 +2403,17 @@ menu, ol, ul {
   white-space: normal;
 }
 
-.home_box .list.default.recent li .bd_name+.user, .home_box.notice .list.default li .bd_name+.user {
+.home_box .list.default.recent li .bd_name + .user,
+.home_box.notice .list.default li .bd_name + .user {
   position: relative;
   padding-left: 10px;
 }
 
-.home_box .list.default.recent li .user, .home_box.notice .list.default li .user {
+.home_box .list.default.recent li .user,
+.home_box.notice .list.default li .user {
   max-width: 124px;
   display: none;
-} 
-
-
+}
 
 .board_list .list.default .infor .user {
   -webkit-box-flex: 0;
@@ -2871,7 +2444,10 @@ menu, ol, ul {
   display: block;
 }
 
-.board_list .list .infor .comments, .board_list .list .infor .date, .board_list .list .infor .reaction, .board_list .list .infor .read_chk {
+.board_list .list .infor .comments,
+.board_list .list .infor .date,
+.board_list .list .infor .reaction,
+.board_list .list .infor .read_chk {
   position: relative;
   display: inline-block;
   padding-left: 10px;
@@ -2884,7 +2460,10 @@ menu, ol, ul {
   line-height: 15px;
 }
 
-.board_list .list .infor .comments:after, .board_list .list .infor .date:after, .board_list .list .infor .reaction:after, .board_list .list .infor .read_chk:after {
+.board_list .list .infor .comments:after,
+.board_list .list .infor .date:after,
+.board_list .list .infor .reaction:after,
+.board_list .list .infor .read_chk:after {
   position: absolute;
   top: 50%;
   left: 4px;
@@ -2896,9 +2475,1312 @@ menu, ol, ul {
   transform: translateY(-50%);
   content: "";
 }
-#content.cont_max .home_box .board_list .list.default, #content.cont_max .home_box .board_list .list.preview {
+#content.cont_max .home_box .board_list .list.default,
+#content.cont_max .home_box .board_list .list.preview {
   margin-left: -40px;
 }
 
+/* 글보기 */
+.board_view {
+  position: relative;
+  padding-bottom: 49px;
+}
 
+.board_view h2.tit {
+  padding: 38px 0 0;
+  font-size: 12px;
+  color: #71767a;
+  line-height: 15px;
+  font-weight: 400;
+}
+
+.board_view .btn_area {
+  position: absolute;
+  top: 25px;
+  right: 0;
+  padding: 0;
+  text-align: right;
+}
+
+.board_view .btn_area .wrap_btn button:first-child {
+  border-top-left-radius: 8px;
+  border-bottom-left-radius: 8px;
+}
+
+.board_view .btn_area .wrap_btn button {
+  float: left;
+  border-radius: 0;
+}
+
+.board_view .btn_area button {
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  display: inline-block;
+  height: 36px;
+  border-radius: 8px;
+  background: #fff;
+  font-size: 14px;
+  color: #3f4247;
+  line-height: 21px;
+  padding: 7px 12px 6px;
+  vertical-align: top;
+  white-space: nowrap;
+  text-decoration: none;
+  border: 1px solid #e6e8eb;
+}
+
+.board_view .btn_area .wrap_btn button.next,
+.board_view .btn_area .wrap_btn button.prev {
+  position: relative;
+  width: 36px;
+  border-left: 0;
+}
+
+.board_view .btn_area .wrap_btn button.next:before,
+.board_view .btn_area .wrap_btn button.prev:before {
+  background-image: url(https://static.worksmobile.net/static/pwe/wm/home/sp_board_967af075.png);
+  background-image: -webkit-gradient(
+      linear,
+      left top,
+      left bottom,
+      from(transparent),
+      to(transparent)
+    ),
+    url(https://static.worksmobile.net/static/pwe/wm/home/sp_board_9d215a12.svg);
+  background-image: linear-gradient(transparent, transparent),
+    url(https://static.worksmobile.net/static/pwe/wm/home/sp_board_9d215a12.svg);
+  background-size: 500px 473px;
+  width: 8px;
+  height: 8px;
+  position: absolute;
+  top: 50%;
+  right: 8px;
+  margin-top: -4px;
+  content: "";
+}
+
+.board_view .btn_area .wrap_btn button.prev:before {
+  background-position: -316px -457px;
+}
+
+.board_view .btn_area .wrap_btn button.next:before,
+.board_view .btn_area .wrap_btn button.prev:before {
+  right: auto;
+  left: 50%;
+  margin-left: -4px;
+}
+.board_view .btn_area .wrap_btn button i {
+  position: absolute;
+  clip: rect(0, 0, 0, 0);
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+}
+
+.board_view .btn_area .wrap_btn button:last-child {
+  border-top-right-radius: 8px;
+  border-bottom-right-radius: 8px;
+}
+
+.board_view .btn_area .wrap_btn button.next:before {
+  background-position: -204px -457px;
+}
+
+.board_view .btn_area .wrap_btn button.next:before,
+.board_view .btn_area .wrap_btn button.prev:before {
+  background-image: url(https://static.worksmobile.net/static/pwe/wm/home/sp_board_967af075.png);
+  background-image: -webkit-gradient(
+      linear,
+      left top,
+      left bottom,
+      from(transparent),
+      to(transparent)
+    ),
+    url(https://static.worksmobile.net/static/pwe/wm/home/sp_board_9d215a12.svg);
+  background-image: linear-gradient(transparent, transparent),
+    url(https://static.worksmobile.net/static/pwe/wm/home/sp_board_9d215a12.svg);
+  background-size: 500px 473px;
+  width: 8px;
+  height: 8px;
+  position: absolute;
+  top: 50%;
+  right: 8px;
+  margin-top: -4px;
+  content: "";
+}
+
+.board_view .btn_area .wrap_btn button i {
+  position: absolute;
+  clip: rect(0, 0, 0, 0);
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+}
+
+.board_view .btn_area .wrap_btn:after {
+  display: block;
+  clear: both;
+  content: "";
+}
+
+.board_view .subject {
+  position: relative;
+  border-top: 1px solid #e6e8eb;
+  margin: 16px 0 0;
+  padding: 18px 0 13px;
+}
+
+.board_view .subject .txt_cover {
+  position: relative;
+  padding-right: 32px;
+}
+
+.board_view .subject .check_cover {
+  position: absolute;
+  top: -1px;
+  right: -5px;
+}
+.board_view .subject .check_cover .important_post_check {
+  position: absolute;
+  clip: rect(0, 0, 0, 0);
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+}
+
+.board_view .subject .check_cover .important_post_check + label {
+  display: block;
+  padding: 5px;
+}
+
+.board_view .subject .check_cover .important_post_check + label:before {
+  background-image: url(https://static.worksmobile.net/static/pwe/wm/home/sp_board_967af075.png);
+  background-image: -webkit-gradient(
+      linear,
+      left top,
+      left bottom,
+      from(transparent),
+      to(transparent)
+    ),
+    url(https://static.worksmobile.net/static/pwe/wm/home/sp_board_9d215a12.svg);
+  background-image: linear-gradient(transparent, transparent),
+    url(https://static.worksmobile.net/static/pwe/wm/home/sp_board_9d215a12.svg);
+  background-size: 500px 473px;
+  background-position: -424px -200px;
+  width: 20px;
+  height: 20px;
+  display: block;
+  content: "";
+}
+
+.board_view .infor {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  position: relative;
+  z-index: 2;
+  padding: 0 0 16px 0;
+  border-bottom: 1px solid #e6e8eb;
+}
+
+.board_view .infor .infor_inner {
+  -webkit-box-flex: 1;
+  -ms-flex: 1 1 auto;
+  flex: 1 1 auto;
+  display: block;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.board_view .infor span.name {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  padding-top: 2px;
+  margin-bottom: 4px;
+  font-size: 14px;
+  color: #202124;
+  line-height: 17px;
+}
+
+.board_view .infor span.name button {
+  border: 0;
+  border-radius: 0;
+  background-color: transparent;
+  color: inherit;
+  text-align: left;
+  line-height: 17px;
+}
+
+.board_view .infor span.name button,
+.board_view .infor span.name strong {
+  -webkit-box-flex: 0;
+  -ms-flex: 0 1 auto;
+  flex: 0 1 auto;
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.board_view .infor span.name span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  -webkit-box-flex: 0;
+  -ms-flex: 0 0 auto;
+  flex: 0 0 auto;
+  display: block;
+  max-width: 148px;
+  padding-left: 8px;
+  font-size: 12px;
+  color: #71767a;
+}
+
+.board_view .infor span.name span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  -webkit-box-flex: 0;
+  -ms-flex: 0 0 auto;
+  flex: 0 0 auto;
+  display: block;
+  max-width: 148px;
+  padding-left: 8px;
+  font-size: 12px;
+  color: #71767a;
+}
+
+.board_view .infor span.date,
+.board_view .infor span.date em {
+  display: inline-block;
+  vertical-align: top;
+}
+
+.board_view .infor span.date {
+  font-size: 12px;
+  line-height: 17px;
+  color: #71767a;
+}
+
+address,
+em {
+  font-style: normal;
+}
+
+.board_view .infor span.read {
+  position: relative;
+  padding-left: 10px;
+  line-height: 17px;
+  vertical-align: top;
+}
+
+.board_view .infor span.read:before {
+  position: absolute;
+  top: 50%;
+  left: 4px;
+  width: 2px;
+  height: 2px;
+  background-color: #d4d8dc;
+  -webkit-transform: translateY(-50%);
+  transform: translateY(-50%);
+  content: "";
+}
+
+.board_view .infor span.read button {
+  border: 0;
+  border-radius: 0;
+  background-color: transparent;
+  text-align: left;
+  color: #118dff;
+  font-size: 12px;
+  line-height: 17px;
+  vertical-align: top;
+}
+
+.board_view .infor span.edit {
+  display: block;
+  margin-top: 10px;
+  font-size: 12px;
+  color: #71767a;
+  line-height: 15px;
+}
+
+.board_view .infor .btn {
+  -webkit-box-flex: 0;
+  -ms-flex: 0 0 auto;
+  flex: 0 0 auto;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: end;
+  -ms-flex-align: end;
+  align-items: flex-end;
+  padding-left: 24px;
+}
+
+.board_view .infor .btn .btn_wrap {
+  -webkit-box-flex: 0;
+  -ms-flex: 0 0 auto;
+  flex: 0 0 auto;
+  position: relative;
+  display: inline-block;
+  vertical-align: top;
+}
+
+.board_view .infor .btn button {
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  display: inline-block;
+  height: 36px;
+  border-radius: 8px;
+  background: #fff;
+  font-size: 14px;
+  color: #3f4247;
+  line-height: 21px;
+  padding: 8px 9px 7px;
+  vertical-align: top;
+  white-space: nowrap;
+  text-decoration: none;
+  border: 0;
+  -webkit-box-flex: 0;
+  -ms-flex: 0 0 auto;
+  flex: 0 0 auto;
+  position: relative;
+  padding-right: 20px;
+}
+
+.board_view .infor .btn button em.ico:before {
+  background-image: url(https://static.worksmobile.net/static/pwe/wm/home/sp_board_967af075.png);
+  background-image: -webkit-gradient(
+      linear,
+      left top,
+      left bottom,
+      from(transparent),
+      to(transparent)
+    ),
+    url(https://static.worksmobile.net/static/pwe/wm/home/sp_board_9d215a12.svg);
+  background-image: linear-gradient(transparent, transparent),
+    url(https://static.worksmobile.net/static/pwe/wm/home/sp_board_9d215a12.svg);
+  background-size: 500px 473px;
+  background-position: -204px -457px;
+  width: 8px;
+  height: 8px;
+  position: absolute;
+  top: 50%;
+  right: 8px;
+  margin-top: -4px;
+  content: "";
+}
+
+.board_view .infor .btn button.bt_ai_summary,
+.board_view .infor .btn button.bt_translate,
+.board_view .infor .btn button.print {
+  padding-right: 8px;
+}
+
+.board_view .infor .btn .btn_wrap + button {
+  margin-left: 4px;
+}
+
+.board_view .infor .btn button + button {
+  margin-left: 8px;
+}
+.board_view .cont {
+  position: relative;
+  z-index: 1;
+  margin: 0;
+  padding-top: 32px;
+  overflow: auto;
+  font-size: 14px;
+  line-height: 1.57;
+  color: #202124;
+  white-space: normal;
+  word-break: normal;
+  word-wrap: break-word;
+}
+
+.board_view .cont {
+  position: relative;
+  z-index: 1;
+  margin: 0;
+  padding-top: 32px;
+  overflow: auto;
+  font-size: 14px;
+  line-height: 1.57;
+  color: #202124;
+  white-space: normal;
+  word-break: normal;
+  word-wrap: break-word;
+}
+
+.board_view .btn_box {
+  display: block;
+  padding: 40px 0 0;
+  text-align: right;
+}
+
+.btn_box {
+  display: inline-block;
+  vertical-align: top;
+  padding-top: 8px;
+  font-size: 0;
+}
+
+.board_view .btn_box button {
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  display: inline-block;
+  height: 40px;
+  border-radius: 8px;
+  background: #fff;
+  font-size: 14px;
+  color: #3f4247;
+  line-height: 21px;
+  padding: 9px 16px 8px;
+  vertical-align: top;
+  white-space: nowrap;
+  text-decoration: none;
+  border: 1px solid #e6e8eb;
+}
+
+.board_view .btn_box button + button {
+  margin-left: 8px;
+}
+
+.board_view .btn_box + .comments {
+  clear: both;
+}
+
+.reaction_box,
+.reaction_box .reaction_item {
+  -webkit-box-flex: 0;
+  -ms-flex: 0 0 auto;
+  flex: 0 0 auto;
+}
+
+.reaction_box {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.reaction_box .reaction_item {
+  position: relative;
+  min-width: 86px;
+}
+
+.reaction_box .btn_reaction_item {
+  padding: 14px 8px;
+}
+
+.reaction_box .btn_reaction_item,
+.reaction_box .btn_reply_item {
+  border: 0;
+  border-radius: 0;
+  background-color: transparent;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  display: -webkit-inline-box;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.reaction_box .reaction_item .btn_reaction_item:before {
+  background-image: url(https://static.worksmobile.net/static/pwe/wm/home/sp_board_967af075.png);
+  background-image: -webkit-gradient(
+      linear,
+      left top,
+      left bottom,
+      from(transparent),
+      to(transparent)
+    ),
+    url(https://static.worksmobile.net/static/pwe/wm/home/sp_board_9d215a12.svg);
+  background-image: linear-gradient(transparent, transparent),
+    url(https://static.worksmobile.net/static/pwe/wm/home/sp_board_9d215a12.svg);
+  background-size: 500px 473px;
+  background-position: -68px -373px;
+  width: 24px;
+  height: 24px;
+  display: block;
+  content: "";
+}
+
+.board_view .infor span {
+  display: inline-block;
+  vertical-align: top;
+}
+
+.reaction_box .text {
+  -webkit-box-flex: 0;
+  -ms-flex: 0 0 auto;
+  flex: 0 0 auto;
+  display: inline-block;
+  font-size: 14px;
+  color: #202124;
+  margin-left: 8px;
+}
+
+.reaction_box .reaction_item + .reaction_item {
+  margin-left: 16px;
+}
+
+.reaction_box .reaction_item {
+  position: relative;
+  min-width: 86px;
+}
+
+.reaction_box .btn_reply_item:before {
+  background-image: url(https://static.worksmobile.net/static/pwe/wm/home/sp_board_967af075.png);
+  background-image: -webkit-gradient(
+      linear,
+      left top,
+      left bottom,
+      from(transparent),
+      to(transparent)
+    ),
+    url(https://static.worksmobile.net/static/pwe/wm/home/sp_board_9d215a12.svg);
+  background-image: linear-gradient(transparent, transparent),
+    url(https://static.worksmobile.net/static/pwe/wm/home/sp_board_9d215a12.svg);
+  background-size: 500px 473px;
+  background-position: -36px -373px;
+  width: 24px;
+  height: 24px;
+  display: block;
+  content: "";
+}
+
+.reaction_box .btn_reply_item {
+  padding: 14px 8px;
+}
+
+.board_view .infor span {
+  display: inline-block;
+  vertical-align: top;
+}
+
+.reaction_box .reaction_item.has_reaction .text,
+.reaction_box .reaction_item.has_reply .text {
+  font-weight: 700;
+}
+
+.reaction_box .text {
+  -webkit-box-flex: 0;
+  -ms-flex: 0 0 auto;
+  flex: 0 0 auto;
+  display: inline-block;
+  font-size: 14px;
+  color: #202124;
+  margin-left: 8px;
+}
+
+.board_view .comments .infor .option {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-flex: 0;
+  -ms-flex: 0 0 auto;
+  flex: 0 0 auto;
+  -ms-flex-item-align: center;
+  align-self: center;
+  margin-left: auto;
+  margin-right: -8px;
+}
+
+.board_view .comments .infor .notification {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-flex: 0;
+  -ms-flex: 0 0 auto;
+  flex: 0 0 auto;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.board_view .comments .infor .notification .button_switch,
+.board_view .comments .infor .notification .title {
+  -webkit-box-flex: 0;
+  -ms-flex: 0 0 auto;
+  flex: 0 0 auto;
+}
+
+.board_view .comments .infor .notification .title {
+  display: block;
+  margin-right: 6px;
+  font-size: 14px;
+  font-weight: 400;
+  color: #3f4247;
+}
+
+.board_view .comments .infor .notification .button_switch,
+.board_view .comments .infor .notification .title {
+  -webkit-box-flex: 0;
+  -ms-flex: 0 0 auto;
+  flex: 0 0 auto;
+}
+
+.button_switch[aria-checked="true"] {
+  background-color: #118dff;
+}
+
+.button_switch[aria-checked="true"]:before {
+  -webkit-transform: translateX(14px);
+  transform: translateX(14px);
+}
+
+.button_switch:before {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background-color: #fff;
+  content: "";
+}
+
+.board_view .infor span {
+  display: inline-block;
+  vertical-align: top;
+}
+
+.board_view .comments .infor .notification:after {
+  display: inline-block;
+  width: 2px;
+  height: 2px;
+  margin: 0 8px 0 16px;
+  border-radius: 50%;
+  background-color: #d4d8dc;
+  content: "";
+}
+
+.board_view .comments .infor .sort {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.board_view .comments .infor .sort li {
+  -webkit-box-flex: 0;
+  -ms-flex: 0 0 auto;
+  flex: 0 0 auto;
+}
+
+.board_view .comments .infor .sort .selected button {
+  font-weight: 700;
+  color: #118dff;
+}
+
+.board_view .comments .infor .sort button {
+  border: 0;
+  border-radius: 0;
+  background-color: transparent;
+  padding: 9px 8px 10px;
+  font-size: 14px;
+  line-height: 17px;
+  color: #71767a;
+  text-decoration: none;
+}
+
+.board_view .comments .infor .sort .selected button:before {
+  content: "";
+  display: inline-block;
+  margin: 1px 4px 0 0;
+  vertical-align: top;
+  background-image: url(https://static.worksmobile.net/static/pwe/wm/home/sp_board_967af075.png);
+  background-image: -webkit-gradient(
+      linear,
+      left top,
+      left bottom,
+      from(transparent),
+      to(transparent)
+    ),
+    url(https://static.worksmobile.net/static/pwe/wm/home/sp_board_9d215a12.svg);
+  background-image: linear-gradient(transparent, transparent),
+    url(https://static.worksmobile.net/static/pwe/wm/home/sp_board_9d215a12.svg);
+  background-size: 500px 473px;
+  background-position: -480px -52px;
+  width: 16px;
+  height: 16px;
+}
+
+.board_view .comments .infor .sort li + li {
+  margin-left: 8px;
+}
+
+.board_view .comments .infor .sort li {
+  -webkit-box-flex: 0;
+  -ms-flex: 0 0 auto;
+  flex: 0 0 auto;
+}
+
+.board_view .comments .infor .sort button {
+  border: 0;
+  border-radius: 0;
+  background-color: transparent;
+  padding: 9px 8px 10px;
+  font-size: 14px;
+  line-height: 17px;
+  color: #71767a;
+  text-decoration: none;
+}
+
+.board_view .infor:after {
+  display: block;
+  clear: both;
+  content: "";
+}
+
+.board_view .comments .infor {
+  z-index: auto;
+  padding: 60px 0 0;
+  border: 0;
+}
+
+.board_view .comments .list_area {
+  padding: 0;
+  background-color: #f7f7f7;
+}
+
+.board_view .comments .list_area .list_box .cmt_box {
+  margin: 0 0 0 56px;
+}
+
+.board_view .comments .list_area .list_box .cmt_box .user {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+.board_view .comments .list_area .list_box .cmt_box .user .name {
+  -webkit-box-flex: 0;
+  -ms-flex: 0 1 auto;
+  flex: 0 1 auto;
+  display: block;
+  font-size: 14px;
+  color: #202124;
+  font-weight: 400;
+  line-height: 17px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.board_view .comments .list_area .list_box .cmt_box .user .date {
+  -webkit-box-flex: 0;
+  -ms-flex: 0 0 auto;
+  flex: 0 0 auto;
+  display: block;
+  padding-left: 8px;
+  color: #71767a;
+  font-size: 12px;
+  line-height: 17px;
+}
+
+.board_view .comments .list_area .list_box .cmt_box .user .cmt_task {
+  position: relative;
+  -webkit-box-flex: 0;
+  -ms-flex: 0 0 auto;
+  flex: 0 0 auto;
+  margin-left: auto;
+  padding: 0 14px 0 16px;
+  line-height: 1px;
+}
+
+.board_view .comments .list_area .list_box .cmt_box .user .cmt_task .btn_more {
+  border: 0;
+  border-radius: 0;
+  background-color: transparent;
+  padding: 8px;
+  margin: -8px;
+  border-radius: 50%;
+}
+
+.board_view
+  .comments
+  .list_area
+  .list_box
+  .cmt_box
+  .user
+  .cmt_task
+  .btn_more:before {
+  background-image: url(https://static.worksmobile.net/static/pwe/wm/home/sp_board_967af075.png);
+  background-image: -webkit-gradient(
+      linear,
+      left top,
+      left bottom,
+      from(transparent),
+      to(transparent)
+    ),
+    url(https://static.worksmobile.net/static/pwe/wm/home/sp_board_9d215a12.svg);
+  background-image: linear-gradient(transparent, transparent),
+    url(https://static.worksmobile.net/static/pwe/wm/home/sp_board_9d215a12.svg);
+  background-size: 500px 473px;
+  background-position: -292px -433px;
+  width: 16px;
+  height: 16px;
+  display: block;
+  content: "";
+}
+
+.board_view .comments .list_area .list_box .cmt_box .cmt_area {
+  padding: 8px 16px 0 0;
+  font-size: 14px;
+  color: #202124;
+  line-height: 22px;
+  word-break: keep-all;
+  word-wrap: break-word;
+  word-break: break-word;
+}
+
+.board_view .comments .list_area .list_box .cmt_box .cmt_area {
+  padding: 8px 16px 0 0;
+  font-size: 14px;
+  color: #202124;
+  line-height: 22px;
+  word-break: keep-all;
+  word-wrap: break-word;
+  word-break: break-word;
+}
+
+.board_view .comments .list_area .list_box .cmt_box .task_area {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  margin-top: 8px;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.board_view .comments .list_area .list_box .cmt_box .task_area .btn_reply {
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  display: inline-block;
+  height: 32px;
+  border-radius: 8px;
+  background: #fff;
+  font-size: 12px;
+  color: #3f4247;
+  line-height: 17px;
+  padding: 7px 8px 6px;
+  vertical-align: top;
+  white-space: nowrap;
+  text-decoration: none;
+  border: 1px solid #e6e8eb;
+  -webkit-box-flex: 0;
+  -ms-flex: 0 0 auto;
+  flex: 0 0 auto;
+}
+
+.board_view .comments .list_area .writer_option_box + .register_box {
+  margin-top: 10px;
+}
+
+.board_view .comments .list_area .register_box {
+  position: relative;
+  margin: 20px 0 0;
+}
+
+.board_view .comments .list_area .register_box .inp_box {
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  position: relative;
+  border: 1px solid #e6e8eb;
+  border-radius: 8px 8px 0 0;
+  background-color: #fff;
+  overflow: hidden;
+}
+
+.board_view .comments .list_area .register_box .textbox {
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  position: relative;
+  padding: 0 15px;
+  max-height: 360px;
+  overflow-y: auto;
+  word-break: keep-all;
+  word-wrap: break-word;
+  word-break: break-word;
+}
+
+.board_view .comments .list_area .register_box .textbox .comment_input {
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  min-height: 102px;
+  padding: 10px 0;
+  font-size: 14px;
+  color: #202124;
+  line-height: 22px;
+  overflow: hidden;
+  z-index: 10;
+  word-wrap: break-word;
+  word-break: break-word;
+  vertical-align: top;
+}
+
+.board_view
+  .comments
+  .list_area
+  .register_box
+  .textbox
+  .comment_input:empty:before {
+  content: attr(data-placeholder);
+  color: #ccc;
+  display: block;
+}
+
+.board_view .comments .list_area .register_box .textbox .comment_label {
+  position: absolute;
+  top: 11px;
+  left: 15px;
+  font-size: 14px;
+  color: #95999c;
+  line-height: 22px;
+  cursor: text;
+}
+
+.board_view .comments .list_area .writer_option_box + .register_box {
+  margin-top: 10px;
+}
+
+.board_view .comments .list_area .register_box {
+  position: relative;
+  margin: 20px 0 0;
+}
+
+.board_view .comments .list_area .list_box {
+  border-top: 1px solid #e6e8eb;
+  border-bottom: 1px solid #f1f3f9;
+}
+.board_view .comments .list_area .list_box li {
+  position: relative;
+  padding: 16px 0;
+}
+
+.board_view .comments .list_area .register_box .btn_box {
+  position: relative;
+  display: block;
+  height: 39px;
+  text-align: left;
+  padding: 8px 0 0 15px;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  border: 1px solid #e6e8eb;
+  border-top: 0;
+  border-radius: 0 0 8px 8px;
+  background-color: #fff;
+}
+
+.board_view .comments .list_area .register_box .attach_btns .btn_attach_image {
+  background-image: url(https://static.worksmobile.net/static/pwe/wm/home/sp_board_967af075.png);
+  background-image: -webkit-gradient(
+      linear,
+      left top,
+      left bottom,
+      from(transparent),
+      to(transparent)
+    ),
+    url(https://static.worksmobile.net/static/pwe/wm/home/sp_board_9d215a12.svg);
+  background-image: linear-gradient(transparent, transparent),
+    url(https://static.worksmobile.net/static/pwe/wm/home/sp_board_9d215a12.svg);
+  background-size: 500px 473px;
+  background-position: -274px -373px;
+  width: 20px;
+  height: 20px;
+  display: inline-block;
+  overflow: hidden;
+  position: relative;
+  cursor: pointer;
+}
+
+.board_view .comments .list_area .register_box .attach_btns {
+  display: inline-block;
+  position: relative;
+}
+
+.board_view
+  .comments
+  .list_area
+  .register_box
+  .attach_btns
+  .btn_attach_image
+  input {
+  position: absolute;
+  opacity: 0;
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+}
+
+.board_view .comments .list_area .register_box .attach_btns .btn_attach_sticker,
+.board_view
+  .comments
+  .list_area
+  .register_box
+  .attach_btns
+  .btn_attach_sticker:hover {
+  background-image: url(https://static.worksmobile.net/static/pwe/wm/home/sp_board_967af075.png);
+  background-image: -webkit-gradient(
+      linear,
+      left top,
+      left bottom,
+      from(transparent),
+      to(transparent)
+    ),
+    url(https://static.worksmobile.net/static/pwe/wm/home/sp_board_9d215a12.svg);
+  background-image: linear-gradient(transparent, transparent),
+    url(https://static.worksmobile.net/static/pwe/wm/home/sp_board_9d215a12.svg);
+  background-size: 500px 473px;
+  width: 20px;
+  height: 20px;
+}
+
+.board_view
+  .comments
+  .list_area
+  .register_box
+  .attach_btns
+  .btn_attach_sticker {
+  border: 0;
+  border-radius: 0;
+  background-color: transparent;
+  background-position: -452px -4px;
+  padding: 0;
+  margin-left: 12px;
+  display: inline-block;
+  vertical-align: top;
+}
+
+.board_view .comments .list_area .register_box .register_btns {
+  position: absolute;
+  bottom: -1px;
+  right: -1px;
+  height: 40px;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  font-size: 0;
+}
+
+.board_view .comments .list_area .register_box .register_btns button.point {
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  height: 40px;
+  border-radius: 8px;
+  background: #fff;
+  font-size: 14px;
+  color: #3f4247;
+  line-height: 21px;
+  padding: 10px 24px 9px;
+  white-space: nowrap;
+  text-decoration: none;
+  background: #118dff;
+  border: 0;
+  color: #fff;
+  font-weight: 700;
+  border-radius: 0 0 8px 0;
+  display: inline-block;
+  vertical-align: top;
+}
+
+.board_view .btn_area.btm_type {
+  position: static;
+  padding: 60px 0 0;
+  text-align: right;
+}
+
+.board_view .btn_area.btm_type .wrap_btn {
+  display: inline-block;
+  vertical-align: top;
+}
+
+.board_view .btn_area .wrap_btn button:first-child {
+  border-top-left-radius: 8px;
+  border-bottom-left-radius: 8px;
+}
+
+.board_view .btn_area .wrap_btn button {
+  float: left;
+  border-radius: 0;
+}
+
+.board_view .btn_area button {
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  display: inline-block;
+  height: 36px;
+  border-radius: 8px;
+  background: #fff;
+  font-size: 14px;
+  color: #3f4247;
+  line-height: 21px;
+  padding: 7px 12px 6px;
+  vertical-align: top;
+  white-space: nowrap;
+  text-decoration: none;
+  border: 1px solid #e6e8eb;
+}
+
+.board_view .btn_area .wrap_btn button.next,
+.board_view .btn_area .wrap_btn button.prev {
+  position: relative;
+  width: 36px;
+  border-left: 0;
+}
+
+.board_view .btn_area .wrap_btn button {
+  float: left;
+  border-radius: 0;
+}
+
+.board_view .btn_area .wrap_btn button.next:before,
+.board_view .btn_area .wrap_btn button.prev:before {
+  background-image: url(https://static.worksmobile.net/static/pwe/wm/home/sp_board_967af075.png);
+  background-image: -webkit-gradient(
+      linear,
+      left top,
+      left bottom,
+      from(transparent),
+      to(transparent)
+    ),
+    url(https://static.worksmobile.net/static/pwe/wm/home/sp_board_9d215a12.svg);
+  background-image: linear-gradient(transparent, transparent),
+    url(https://static.worksmobile.net/static/pwe/wm/home/sp_board_9d215a12.svg);
+  background-size: 500px 473px;
+  width: 8px;
+  height: 8px;
+  position: absolute;
+  top: 50%;
+  right: 8px;
+  margin-top: -4px;
+  content: "";
+}
+
+.board_view .btn_area .wrap_btn button.prev:before {
+  background-position: -316px -457px;
+}
+
+.board_view .btn_area .wrap_btn button.next:before,
+.board_view .btn_area .wrap_btn button.prev:before {
+  right: auto;
+  left: 50%;
+  margin-left: -4px;
+}
+
+.board_view .btn_area .wrap_btn button i {
+  position: absolute;
+  clip: rect(0, 0, 0, 0);
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+}
+
+.board_view .btn_area .wrap_btn button.next,
+.board_view .btn_area .wrap_btn button.prev {
+  position: relative;
+  width: 36px;
+  border-left: 0;
+}
+
+.board_view .btn_area .wrap_btn button:last-child {
+  border-top-right-radius: 8px;
+  border-bottom-right-radius: 8px;
+}
+
+.board_view .btn_area .wrap_btn button {
+  float: left;
+  border-radius: 0;
+}
+
+.board_view .btn_area .wrap_btn button.next:before,
+.board_view .btn_area .wrap_btn button.prev:before {
+  background-image: url(https://static.worksmobile.net/static/pwe/wm/home/sp_board_967af075.png);
+  background-image: -webkit-gradient(
+      linear,
+      left top,
+      left bottom,
+      from(transparent),
+      to(transparent)
+    ),
+    url(https://static.worksmobile.net/static/pwe/wm/home/sp_board_9d215a12.svg);
+  background-image: linear-gradient(transparent, transparent),
+    url(https://static.worksmobile.net/static/pwe/wm/home/sp_board_9d215a12.svg);
+  background-size: 500px 473px;
+  width: 8px;
+  height: 8px;
+  position: absolute;
+  top: 50%;
+  right: 8px;
+  margin-top: -4px;
+  content: "";
+}
+
+.board_view .btn_area .wrap_btn button.next:before {
+  background-position: -204px -457px;
+}
+
+.board_view .btn_area .wrap_btn:after {
+  display: block;
+  clear: both;
+  content: "";
+}
+
+.board_view .btn_area.btm_type .wrap_btn + .go_top {
+  margin-left: 4px;
+}
+
+.board_view .btn_area button {
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  display: inline-block;
+  height: 36px;
+  border-radius: 8px;
+  background: #fff;
+  font-size: 14px;
+  color: #3f4247;
+  line-height: 21px;
+  padding: 7px 12px 6px;
+  vertical-align: top;
+  white-space: nowrap;
+  text-decoration: none;
+  border: 1px solid #e6e8eb;
+}
+.board_list .comments.selected a:before, .board_list .comments a:before {
+  background-image: url(https://static.worksmobile.net/static/pwe/wm/home/sp_board_967af075.png);
+  background-image: -webkit-gradient(linear,left top,left bottom,from(transparent),to(transparent)),url(https://static.worksmobile.net/static/pwe/wm/home/sp_board_9d215a12.svg);
+  background-image: linear-gradient(transparent,transparent),url(https://static.worksmobile.net/static/pwe/wm/home/sp_board_9d215a12.svg);
+  background-size: 500px 473px;
+  width: 16px;
+  height: 16px;
+  
+ 
+}
+.board_list .comments a:before {
+  position: absolute;
+  left: 0;
+  top: 0;
+  content: "";
+  background-position: -100px -433px;
+}
+.ko_KR.ua_win .board_list .list .infor .comments a:before {
+  margin-top: 1px;
+}
+
+.board_list .comments a {
+  display: inline-block;
+  position: relative;
+  padding-left: 20px;
+  color: #71767a;
+}
 }
