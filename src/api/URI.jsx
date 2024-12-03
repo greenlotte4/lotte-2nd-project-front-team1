@@ -1,3 +1,13 @@
+/*
+
+    날짜 : 2024/11/25
+    이름 : 최영진
+    내용 : api 설계
+
+    추가내역
+    -------------
+    2924-12-03 최영진 check, email 추가
+*/
 const SERVER_HOST = "http://localhost:8080";
 
 // user
