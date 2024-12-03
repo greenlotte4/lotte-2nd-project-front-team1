@@ -8,6 +8,7 @@ import ContextMenu from "./ContextMenu";
 */
 export default function MessageBox() {
 
+
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
   const [editingMessage, setEditingMessage] = useState(null);  // 편집 상태
@@ -114,6 +115,7 @@ export default function MessageBox() {
   const inputEditHandle = (event) => {
     setEditingMessage({ ...editingMessage, text: event.target.value });
   };
+
   return (
     <div className="messageDiv">
       <div className="messageInfo">

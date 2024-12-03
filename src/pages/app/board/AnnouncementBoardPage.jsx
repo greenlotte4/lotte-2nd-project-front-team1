@@ -1,12 +1,12 @@
 import BoardAside from "../../../components/app/board/BoardAside";
-import MainBoard from "../../../components/app/board/MainBoard";
+import AnnouncementBoard from "../../../components/app/board/AnnouncementBoard";
 import { useSidebar } from "../../../hooks/app/UseSidebar";
 import AppLayout from "../../../layouts/app/AppLayout";
 
 import "../../../styles/app/board/Board.scss";
 import "../../../styles/app/board/BoardAside.scss";
 
-export default function MainBoardPage() {
+export default function EditPostBoardPage() {
     const { isSidebarVisible, toggleSidebar } = useSidebar(); // 사이드바 상태 및 토글 함수 사용
   
     return (
@@ -15,8 +15,9 @@ export default function MainBoardPage() {
         <main
           className={`main-content ${isSidebarVisible ? "" : "hidden-sidebar"}`}
         >
-          <MainBoard />
+          <AnnouncementBoard />
         </main>
       </AppLayout>
     );
   }
+  

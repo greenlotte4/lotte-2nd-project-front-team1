@@ -13,28 +13,25 @@
 import { useState } from "react";
 import MainPage from "./ProjectMainPage";
 import TimelinePage from "./ProjectTimelinePage";
-import SettingPage from "./ProjectSettingPage";
+import { useParams } from "react-router-dom";
 
 export default function Project() {
+  const { projectId } = useParams();
   const [activePage, setActivePage] = useState("main");
 
   const renderPage = () => {
     switch (activePage) {
       case "main":
-        return <MainPage />;
+        return <MainPage projectId={projectId} />; 
       case "timeline":
-        return <TimelinePage />;
-      case "settings":
-        return <SettingPage />;
+        return <TimelinePage projectId={projectId} />; 
       default:
-        return <MainPage />;
+        return <MainPage projectId={projectId} />;
     }
   };
 
   return (
     <div>
-      {/* 버튼 그룹 */}
-      {/* 동적 페이지 렌더링 */}
       <div className="project-container">
         <div className="table-actions">
           <button
@@ -44,23 +41,12 @@ export default function Project() {
             기본 화면
           </button>
           <button
-            className={`action-btn ${
-              activePage === "timeline" ? "active" : ""
-            }`}
+            className={`action-btn ${activePage === "timeline" ? "active" : ""}`}
             onClick={() => setActivePage("timeline")}
           >
             타임라인
           </button>
-          <button
-            className={`action-btn ${
-              activePage === "settings" ? "active" : ""
-            }`}
-            onClick={() => setActivePage("settings")}
-          >
-            설정
-          </button>
         </div>
-
         {renderPage()}
       </div>
     </div>

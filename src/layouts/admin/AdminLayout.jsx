@@ -15,8 +15,8 @@ export default function AdminLayout({ children, onToggleSidebar }) {
   return (
     <div id="container" className="Appcontainer">
       {/* AppHeader에 사이드바 토글 함수를 prop으로 전달 */}
-      <AdminHeader onToggleSidebar={onToggleSidebar} />
-      <div className="content-container">{children}</div>
+      <AdminHeader onToggleSidebar={onToggleSidebar} noneAside={true} />
+      <div className="admincontent-container">{children}</div>
     </div>
   );
 }
