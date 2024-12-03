@@ -17,6 +17,7 @@ export const USER_CHECK = `${SERVER_HOST}/user/`
 
 export const USER_EMAIL = `${SERVER_HOST}/api`
 // article
+export const BOARD_ARTICLE_WRITE_URI = `${SERVER_HOST}/article/write`;
 
 // product
 
