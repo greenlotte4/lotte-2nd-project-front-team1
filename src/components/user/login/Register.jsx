@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { postUser } from "../../../api/user/userAPI";
+import { authEmail, checkUserId, postUser, sandEmail } from "../../../api/user/userAPI";
 
 const initState = {
-    uid: "",
+    userId: "",
     pass: "",
     name: "",
     email: "",
@@ -13,19 +13,45 @@ const initState = {
     addr2: null,
 }
 export default function Register() {
+
     const navigate = useNavigate();
     const [user, setUser] = useState({ ...initState });
     const [passwordMatch, setPasswordMatch] = useState(true);
     const [authCode, setAuthCode] = useState("");
     const [pass2, setPass2] = useState("");
+    const [userId, setUserId] = useState(null);
 
 
+    const checkUserIdHandler = async () => {
+        const response = await checkUserId(user.userId);
+        if (!response.data.isAvailable) {
+            setUserId(false); // 중복
+            alert("이미 사용중인 아이디입니다")
+        } else {
+            setUserId(true) // 사용가능
+            alert("사용가능 한 아이디입니다")
+        }
+    }
+    const sandEmailHandler = async () => {
+        const response = await sandEmail(user.email)
+        if (response.status === 200) {
+            alert("인증번호가 발송되었습니다.")
+        } else {
+            alert("인증 번호 발송중 문제 발생.")
+        }
+    }
+    const authEmailHandler = async () => {
+        const response = await authEmail(user.email, authCode)
+        if (response.status === 200) {
+            alert("인증이 완료 되었습니다.")
+        } else {
+            alert("인증 번호가 다릅니다.")
+        }
+    }
     const changeHandler = (e) => {
         const { name, value } = e.target;
-
         const updatedUser = { ...user, [name]: value };
         setUser(updatedUser);
-
         // pass과 pass2 비교
         if (name === "pass2") {
             setPass2(value);
@@ -46,7 +72,7 @@ export default function Register() {
     }
     const submitHandler = (e) => {
         e.preventDefault();
-
+        
         const savedUser = postUser(user);
 
         if (savedUser) {
@@ -67,11 +93,11 @@ export default function Register() {
                             <td>아이디</td>
                             <td className="input-with-button">
                                 <input type="text"
-                                    name="uid"
+                                    name="userId"
                                     placeholder="아이디 입력"
-                                    value={user.uid}
+                                    value={user.userId}
                                     onChange={changeHandler} />
-                                <button type="button">
+                                <button type="button" onClick={checkUserIdHandler}>
                                     <img src="/images/check.svg" alt="중복확인" />
                                 </button>
                                 <span className="uidResult"></span>
@@ -134,7 +160,7 @@ export default function Register() {
                                     placeholder="이메일 입력"
                                     value={user.email}
                                     onChange={changeHandler} />
-                                <button type="button">
+                                <button type="button" onClick={sandEmailHandler}>
                                     <img src="/images/check.svg" alt="인증번호 받기" />
                                 </button>
                                 <div className="auth">
@@ -143,7 +169,7 @@ export default function Register() {
                                         placeholder="인증번호 입력"
                                         value={authCode}
                                         onChange={changeHandler} />
-                                    <button type="button">
+                                    <button type="button" onClick={authEmailHandler}>
                                         <img src="/images/check.svg" alt="확인" />
                                     </button>
                                 </div>

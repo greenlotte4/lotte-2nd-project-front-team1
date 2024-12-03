@@ -7,6 +7,7 @@
     -------------
     11.29 강중원 - 화면에 맞게 css 추가
     12.02 박수정 - 드라이브 css 수정
+    12.03 박수정 - 드래그 앤 드롭 UX 개선
 */
 
 /* 테이블 스타일 */
@@ -53,15 +54,17 @@
     align-items: center;
     gap: 10px;
   }
-  
+
   .input-group input {
+    width: 250px;
     flex: 1;
     padding: 8px;
     border: 1px solid #ccc;
     border-radius: 8px;
     font-size: 14px;
+    margin-right: 10px;
   }
-  
+
   .input-group .search-button {
     padding: 8px 16px;
     font-size: 14px;
@@ -71,7 +74,7 @@
     border-radius: 8px;
     cursor: pointer;
   }
-  
+
   .input-group .search-button:hover {
     background-color: #3367d6;
   }
@@ -108,6 +111,7 @@
   .file-table td {
     padding: 10px;
     border-bottom: 1px solid #ddd;
+    height: 50px;
   }
 
   .file-table th {
@@ -252,5 +256,105 @@
   .file-table thead th {
     background-color: #f9f9f9;
     font-weight: bold;
+  }
+
+  // 드래그 앱 드롭 영역과 용량 표시
+  .drag-drop-zone {
+    border: 2px dashed #ccc;
+    padding: 40px;
+    text-align: center;
+    margin: 20px 0;
+    border-radius: 8px;
+    transition: background-color 0.3s ease;
+  }
+
+  .drag-drop-zone.dragging {
+    background-color: #f0f8ff;
+  }
+
+  .storage-bar {
+    position: relative;
+    height: 10px;
+    background-color: #e0e0e0;
+    border-radius: 5px;
+    margin-top: 10px;
+    overflow: hidden;
+  }
+
+  .storage-progress {
+    height: 100%;
+    background-color: #007bff;
+    transition: width 0.3s ease;
+  }
+
+  // 새폴더 모달창 스타일
+  /* 모달 배경 스타일 */
+  .modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+  }
+
+  /* 모달 콘텐츠 스타일 */
+  .modal-content {
+    background-color: #ffffff;
+    border-radius: 8px;
+    padding: 20px;
+    width: 300px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+  }
+
+  /* 제목 스타일 */
+  .modal-content h3 {
+    font-size: 18px;
+    margin-bottom: 10px;
+  }
+
+  /* 입력 필드 스타일 */
+  .modal-content input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 14px;
+    box-sizing: border-box;
+  }
+
+  /* 버튼 스타일 */
+  .modal-content button {
+    background-color: #007aff;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 10px;
+    width: 100%;
+    font-size: 16px;
+    cursor: pointer;
+    margin-top: 5px;
+    transition: background-color 0.3s;
+  }
+
+  /* 버튼 호버 효과 */
+  .modal-content button:hover {
+    background-color: #005bb5;
+  }
+
+  .modal-content button:last-child {
+    background-color: #f2f2f2;
+    color: #007aff;
+  }
+
+  /* 취소 버튼 호버 효과 */
+  .modal-content button:last-child:hover {
+    background-color: #e0e0e0;
   }
 }
