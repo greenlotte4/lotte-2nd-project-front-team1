@@ -15,7 +15,7 @@ import { login } from "../../../slices/UserSlice";
 import { postUserLogin } from "../../../api/user/userAPI";
 
 const initState = {
-  uid: "",
+  userId: "",
   pass: "",
 };
 // 토큰이 아직 아보내져서 나중에 따로 다시 해야함
@@ -55,9 +55,9 @@ export default function Login() {
                 <td>
                   <input
                     type="text"
-                    name="uid"
+                    name="userId"
                     placeholder="아이디 입력"
-                    value={user.uid}
+                    value={user.userId}
                     onChange={changeHandler}
                   />
                 </td>
