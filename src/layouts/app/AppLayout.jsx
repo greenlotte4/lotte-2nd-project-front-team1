@@ -13,11 +13,20 @@ import "../../styles/app/AppHeader.scss";
 }
 
 // eslint-disable-next-line react/prop-types
-export default function AppLayout({ children, onToggleSidebar, noneAside }) {
+export default function AppLayout({
+  children,
+  onToggleSidebar,
+  noneAside,
+  thisPage,
+}) {
   return (
     <div id="container" className="Appcontainer">
       {/* AppHeader에 사이드바 토글 함수를 prop으로 전달 */}
-      <AppHeader onToggleSidebar={onToggleSidebar} noneAside={noneAside} />
+      <AppHeader
+        onToggleSidebar={onToggleSidebar}
+        noneAside={noneAside}
+        thisPage={thisPage}
+      />
       <div className="content-container">{children}</div>
     </div>
   );

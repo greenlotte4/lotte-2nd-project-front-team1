@@ -1,153 +1,360 @@
-/* ============================================================== */
-/* 프로젝트 추가 css */
+/* 
+    날짜 : 2024/11/21
+    이름 : 이도영
+    내용 : 프로젝트 css 생성
+
+    추가내역
+    -------------
+    11.29 강중원 - 화면에 맞게 css 추가
+    12.02 박수정 - 드라이브 css 수정
+    12.03 박수정 - 드래그 앤 드롭 UX 개선
+*/
+
 /* 테이블 스타일 */
-
-/* 강중원 - 화면에 맞게 추가*/
-.file-content{
-    width: 100%;
-    height: 100%;
-.main-page {
+.file-content {
+  width: 100%;
+  height: 100%;
+  .main-page {
     flex: 1 0 auto;
-}
+  }
 
-.filetop {
+  .filetop {
     width: 100%;
     border-collapse: collapse;
-    /* 테두리 겹침 제거 */
-}
+  }
 
-/* 셀 안의 내용을 양끝 정렬 */
-.filetop tr td {
-    width: 50%;
-    /* 각 셀이 테이블의 절반씩 차지 */
-    text-align: center;
-    /* 가운데 정렬 */
-}
-
-.filetop tr td:first-child {
+  /* 셀 안의 내용을 양끝 정렬 */
+  .filetop tr td:first-child {
     text-align: left;
-    /* 첫 번째 셀은 왼쪽 정렬 */
-}
+  }
 
-.filetop tr td:last-child {
-    text-align: right;
-    /* 마지막 셀은 오른쪽 정렬 */
-}
-
-/* 버튼 기본 스타일 */
-button {
+  /* 버튼 스타일 */
+  button {
     padding: 5px 10px;
     font-size: 14px;
     cursor: pointer;
-}
+    margin-right: 5px;
+    border: 1px solid #444746;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+    color: #444746;
+    transition: all 0.3s ease;
+  }
 
-/* 입력창 스타일 */
-input {
-    width: 100%;
-    max-width: 200px;
-    padding: 5px;
-}
+  /* 버튼 호버 시 스타일 */
+  button:hover {
+    background-color: #e6e6e6;
+    border-color: #444746;
+    color: #333;
+  }
 
-/* 파일 영역 */
-.file-area {
+  /* 입력창 스타일 */
+  .input-group .search-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .input-group input {
+    width: 250px;
+    flex: 1;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 14px;
+    margin-right: 10px;
+  }
+
+  .input-group .search-button {
+    padding: 8px 16px;
+    font-size: 14px;
+    color: #fff;
+    background-color: #4285f4;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+  }
+
+  .input-group .search-button:hover {
+    background-color: #3367d6;
+  }
+
+  td.input-group {
+    float: right;
+  }
+
+  /* 파일 영역 */
+  .file-area {
     display: flex;
     border-top: 1px solid #ccc;
     margin-top: 20px;
     padding-top: 20px;
     gap: 20px;
-}
+  }
 
-/* 왼쪽 파일 리스트 */
-.file-list {
+  /* 왼쪽 파일 리스트 */
+  .file-list {
     position: relative;
     flex: 2;
     border-right: 1px solid #ccc;
     padding-right: 20px;
-}
+  }
 
-/* 파일 리스트 테이블 스타일 */
-.file-table {
+  /* 파일 리스트 테이블 스타일 */
+  .file-table {
     width: 100%;
     border-collapse: collapse;
     text-align: left;
-}
+  }
 
-.file-table th,
-.file-table td {
+  .file-table th,
+  .file-table td {
     padding: 10px;
     border-bottom: 1px solid #ddd;
-}
+    height: 50px;
+  }
 
-.file-table th {
+  .file-table th {
     background-color: #f5f5f5;
     font-weight: bold;
-}
+  }
 
-/* 오른쪽 상세 정보 */
-.file-details {
+  /* 오른쪽 상세 정보 */
+  .file-details {
     flex: 1;
     padding-left: 20px;
-}
+  }
 
-.file-details h3 {
+  .file-details h3 {
     margin-bottom: 20px;
-}
+  }
 
-.detail-content img {
+  .detail-content img {
     display: block;
     margin-bottom: 10px;
-}
+  }
 
-/* 작업 버튼 */
-.action-cell {
+  /* 작업 버튼 */
+  .action-cell {
     text-align: center;
-}
+  }
 
-.action-button {
+  .action-button {
     background: none;
     border: none;
     font-size: 18px;
     cursor: pointer;
-}
+  }
 
-/* 휴지통 버튼 */
-.trash-container {
-    position: absolute;
-    /* file-list를 기준으로 위치를 절대적으로 고정 */
-    bottom: 10px;
-    /* file-list 하단에서 10px 떨어짐 */
-    right: 20px;
-    /* file-list 오른쪽에서 20px 떨어짐 */
-    width: 100%;
-    /* 전체 너비를 사용하여 중앙 정렬 가능 */
-    text-align: right;
-    /* 오른쪽 정렬 */
-}
-
-.trash-button {
-    background: none;
-    border: none;
-    font-size: 24px;
-    color: #d9201f;
-    cursor: pointer;
-}
-
-.trash-button:hover {
-    color: #a11418;
-    /* 호버 시 색상 변경 */
-}
-
-/* 오른쪽 상세 정보 */
-.file-details {
+  /* 오른쪽 상세 정보 */
+  .file-details {
     flex: 1;
     padding-left: 20px;
-}
+  }
 
-.file-details h3 {
+  .file-details h3 {
     margin-bottom: 20px;
-}
+  }
 
-.detail-content img {
+  .detail-content img {
     display: block;
     margin-bottom: 10px;
-}}
+  }
+
+  /* 용량 상세 정보 */
+  .storage-info {
+    width: 80%;
+    max-width: 600px;
+    margin: 0 auto;
+    text-align: center;
+    padding: 50px;
+    box-sizing: border-box;
+  }
+
+  .storage-info h2 {
+    margin: 0;
+    color: #333;
+  }
+
+  .storage-info .current-usage {
+    font-size: 16px; /* 기존 15GB 크기로 설정 */
+    font-weight: normal;
+    color: #555;
+  }
+
+  .storage-info .total-usage {
+    font-size: 20px; /* 기존 73.1MB 크기로 설정 */
+    font-weight: bold;
+    color: #333;
+  }
+
+  .storage-bar {
+    width: 100%;
+    height: 8px;
+    background-color: #eee;
+    border-radius: 4px;
+    margin: 10px 0;
+    position: relative;
+    display: flex;
+  }
+
+  .drive-usage {
+    width: 10%;
+    height: 100%;
+    background-color: #4285f4;
+    border-radius: 4px 0 0 4px;
+  }
+
+  .chat-usage {
+    width: 2%;
+    height: 100%;
+    background-color: #ea4335;
+    border-radius: 0 4px 4px 0;
+    left: 70%;
+  }
+
+  .usage-legend {
+    display: flex;
+    justify-content: flex-start;
+    gap: 10px;
+  }
+
+  .legend-item {
+    font-size: 14px;
+    color: #666;
+  }
+
+  .drive-dot,
+  .chat-dot {
+    width: 10px;
+    height: 10px;
+    display: inline-block;
+    border-radius: 50%;
+  }
+
+  .drive-dot {
+    background-color: #4285f4;
+  }
+
+  .chat-dot {
+    background-color: #ea4335;
+  }
+
+  /* 파일 테이블 스타일 */
+  .file-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  .file-table th,
+  .file-table td {
+    border-bottom: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+  }
+
+  .file-table thead th {
+    background-color: #f9f9f9;
+    font-weight: bold;
+  }
+
+  // 드래그 앱 드롭 영역과 용량 표시
+  .drag-drop-zone {
+    border: 2px dashed #ccc;
+    padding: 40px;
+    text-align: center;
+    margin: 20px 0;
+    border-radius: 8px;
+    transition: background-color 0.3s ease;
+  }
+
+  .drag-drop-zone.dragging {
+    background-color: #f0f8ff;
+  }
+
+  .storage-bar {
+    position: relative;
+    height: 10px;
+    background-color: #e0e0e0;
+    border-radius: 5px;
+    margin-top: 10px;
+    overflow: hidden;
+  }
+
+  .storage-progress {
+    height: 100%;
+    background-color: #007bff;
+    transition: width 0.3s ease;
+  }
+
+  // 새폴더 모달창 스타일
+  /* 모달 배경 스타일 */
+  .modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+  }
+
+  /* 모달 콘텐츠 스타일 */
+  .modal-content {
+    background-color: #ffffff;
+    border-radius: 8px;
+    padding: 20px;
+    width: 300px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+  }
+
+  /* 제목 스타일 */
+  .modal-content h3 {
+    font-size: 18px;
+    margin-bottom: 10px;
+  }
+
+  /* 입력 필드 스타일 */
+  .modal-content input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 14px;
+    box-sizing: border-box;
+  }
+
+  /* 버튼 스타일 */
+  .modal-content button {
+    background-color: #007aff;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 10px;
+    width: 100%;
+    font-size: 16px;
+    cursor: pointer;
+    margin-top: 5px;
+    transition: background-color 0.3s;
+  }
+
+  /* 버튼 호버 효과 */
+  .modal-content button:hover {
+    background-color: #005bb5;
+  }
+
+  .modal-content button:last-child {
+    background-color: #f2f2f2;
+    color: #007aff;
+  }
+
+  /* 취소 버튼 호버 효과 */
+  .modal-content button:last-child:hover {
+    background-color: #e0e0e0;
+  }
+}

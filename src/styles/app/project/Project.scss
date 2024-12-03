@@ -1,233 +1,332 @@
 /* ============================================================== */
 /* 프로젝트 추가 css */
 .project-container{
-.projectmain-page {
-    flex: 1 0 auto;
-}
-
-.task-table {
-    float: left;
-    /* 첫 번째 테이블 왼쪽 정렬 */
-    margin-right: 20px;
-    /* 간격 추가 */
-    width: 300px;
-    border-collapse: collapse;
-    text-align: center;
-}
-
-th,
-td {
-    border: 1px solid #ccc;
-    padding: 10px;
-}
-
-/* 작업 셀 스타일 */
-.task-cell {
-    padding: 10px;
-    text-align: right;
-    justify-content: space-between;
-}
-
-/* 작업 그룹 스타일 */
-.task-group {
-    border: 1px solid #ddd;
-    /* 외곽선 */
-    border-radius: 5px;
-    padding: 10px;
-    text-align: left;
-    /* 왼쪽 정렬 */
-    margin-bottom: 10px;
-    /* 버튼과 간격 */
-}
-
-/* 텍스트 스타일 */
-.task-group p {
-    margin: 5px 0;
-    position: relative;
-    /* 프로필 이미지를 오른쪽에 배치하기 위해 상대 위치 지정 */
-}
-
-/* 프로필 이미지 컨테이너 */
-.profile-image {
-    position: absolute;
-    right: 0;
-    /* 오른쪽 끝에 정렬 */
-    top: 50%;
-    /* 수직 가운데 정렬 */
-    transform: translateY(-50%);
-}
-
-/* 이미지 스타일 */
-.profile-image img {
-    width: 30px;
-    /* 이미지 크기 */
-    height: 30px;
-    border-radius: 50%;
-    /* 동그랗게 만들기 */
-    border: 2px solid #ddd;
-    /* 테두리 추가 */
-    object-fit: cover;
-    /* 이미지 비율 유지 */
-}
-
-/* 버튼 스타일 */
-.action-button {
-    width: 40px;
-    height: 40px;
-    border: none;
-    border-radius: 50%;
-    background-color: #ccc;
-    cursor: pointer;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.add-icon {
-    font-size: 20px;
-    font-weight: bold;
-    color: white;
-}
-
-/* 기본 페이지 스타일 */
-.page {
-    display: none;
-    /* 기본적으로 숨김 */
-}
-
-.page.active {
-    display: block;
-    /* 활성화된 페이지 표시 */
-}
-
-
-/* 섹션 제목 스타일 */
-.setting-section h3 {
-    margin-top: 20px;
-    margin-bottom: 10px;
-    font-size: 18px;
-    font-weight: bold;
-}
-
-/* 입력 박스 스타일 */
-.input-box {
-    width: 300px;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    margin-right: 10px;
-}
-
-/* 버튼 스타일 */
-.edit-btn,
-.invite-btn {
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    background-color: #007bff;
-    color: white;
-    font-size: 14px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-}
-
-.edit-btn:hover,
-.invite-btn:hover {
-    background-color: #0056b3;
-}
-
-/* 사용자 리스트 스타일 */
-.user-list {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-}
-
-.user-item {
-    display: flex;
-    align-items: center;
-    margin-bottom: 10px;
-}
-
-.user-name {
-    font-size: 14px;
-    font-weight: bold;
-}
-
-.role-select {
-    padding: 5px 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    background-color: white;
-    font-size: 14px;
-}
-
-/* 오른쪽 하단 고정 버튼 */
-.floating-action-btn {
-    position: fixed;
-    /* 화면에 고정 */
-    bottom: 20px;
-    /* 화면 하단에서 20px 위 */
-    right: 20px;
-    /* 화면 오른쪽에서 20px 왼쪽 */
-    width: 60px;
-    height: 60px;
-    border: none;
-    border-radius: 50%;
-    /* 동그란 버튼 */
-    background-color: #007bff;
-    /* 파란색 */
-    color: white;
-    /* 버튼 아이콘 색상 */
-    font-size: 24px;
-    /* 아이콘 크기 */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
-    /* 그림자 효과 */
-    cursor: pointer;
-    transition: background-color 0.3s, transform 0.2s;
-}
-
-/* 버튼 호버 효과 */
-.floating-action-btn:hover {
-    background-color: #0056b3;
-    /* 호버 시 약간 진한 파란색 */
-    transform: scale(1.1);
-    /* 살짝 커지는 효과 */
-}
-}
-
-/* 버튼 컨테이너 스타일 */
-.table-actions {
-    display: flex;
-    gap: 10px;
-    margin-bottom: 20px;
-
-
+    .projectmain-page {
+        flex: 1 0 auto;
+    }
+    
+    .task-table {
+        float: left;
+        /* 첫 번째 테이블 왼쪽 정렬 */
+        margin-right: 20px;
+        /* 간격 추가 */
+        width: 300px;
+        border-collapse: collapse;
+        text-align: center;
+    }
+    
+    th,
+    td {
+        border: 1px solid #ccc;
+        padding: 10px;
+    }
+    
+    /* 작업 셀 스타일 */
+    .task-cell {
+        padding: 10px;
+        text-align: right;
+        justify-content: space-between;
+    }
+    
+    /* 작업 그룹 스타일 */
+    .task-group {
+        border: 1px solid #ddd;
+        /* 외곽선 */
+        border-radius: 5px;
+        padding: 10px;
+        text-align: left;
+        /* 왼쪽 정렬 */
+        margin-bottom: 10px;
+        /* 버튼과 간격 */
+    }
+    
+    /* 텍스트 스타일 */
+    .task-group p {
+        margin: 5px 0;
+        position: relative;
+        /* 프로필 이미지를 오른쪽에 배치하기 위해 상대 위치 지정 */
+    }
+    
+    /* 프로필 이미지 컨테이너 */
+    .profile-image {
+        position: absolute;
+        right: 0;
+        /* 오른쪽 끝에 정렬 */
+        top: 50%;
+        /* 수직 가운데 정렬 */
+        transform: translateY(-50%);
+    }
+    
+    /* 이미지 스타일 */
+    .profile-image img {
+        width: 30px;
+        /* 이미지 크기 */
+        height: 30px;
+        border-radius: 50%;
+        /* 동그랗게 만들기 */
+        border: 2px solid #ddd;
+        /* 테두리 추가 */
+        object-fit: cover;
+        /* 이미지 비율 유지 */
+    }
+    
     /* 버튼 스타일 */
-    .action-btn {
+    .action-button {
+        width: 40px;
+        height: 40px;
+        border: none;
+        border-radius: 50%;
+        background-color: #ccc;
+        cursor: pointer;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+    
+    .add-icon {
+        font-size: 20px;
+        font-weight: bold;
+        color: white;
+    }
+    
+    /* 기본 페이지 스타일 */
+    .page {
+        display: none;
+        /* 기본적으로 숨김 */
+    }
+    
+    .page.active {
+        display: block;
+        /* 활성화된 페이지 표시 */
+    }
+    
+    
+    /* 섹션 제목 스타일 */
+    .setting-section h3 {
+        margin-top: 20px;
+        margin-bottom: 10px;
+        font-size: 18px;
+        font-weight: bold;
+    }
+    
+    /* 입력 박스 스타일 */
+    .input-box {
+        width: 300px;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        margin-right: 10px;
+    }
+    
+    /* 버튼 스타일 */
+    .edit-btn,
+    .invite-btn {
         padding: 10px 20px;
         border: none;
         border-radius: 5px;
-        background-color: #ccc;
-        color: black;
+        background-color: #007bff;
+        color: white;
+        font-size: 14px;
         cursor: pointer;
-        transition: background-color 0.3s, color 0.3s;
+        transition: background-color 0.3s;
     }
-
-    /* 활성화된 버튼 스타일 */
-    .action-btn.active {
+    
+    .edit-btn:hover,
+    .invite-btn:hover {
+        background-color: #0056b3;
+    }
+    
+    /* 사용자 리스트 스타일 */
+    .user-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+    
+    .user-item {
+        display: flex;
+        align-items: center;
+        margin-bottom: 10px;
+    }
+    
+    .user-name {
+        font-size: 14px;
+        font-weight: bold;
+    }
+    
+    .role-select {
+        padding: 5px 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
         background-color: white;
-        color: black;
+        font-size: 14px;
     }
-
+    
+    /* 오른쪽 하단 고정 버튼 */
+    .floating-action-btn {
+        position: fixed;
+        /* 화면에 고정 */
+        bottom: 20px;
+        /* 화면 하단에서 20px 위 */
+        right: 20px;
+        /* 화면 오른쪽에서 20px 왼쪽 */
+        width: 60px;
+        height: 60px;
+        border: none;
+        border-radius: 50%;
+        /* 동그란 버튼 */
+        background-color: #007bff;
+        /* 파란색 */
+        color: white;
+        /* 버튼 아이콘 색상 */
+        font-size: 24px;
+        /* 아이콘 크기 */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+        /* 그림자 효과 */
+        cursor: pointer;
+        transition: background-color 0.3s, transform 0.2s;
+    }
+    
     /* 버튼 호버 효과 */
-    .action-btn:hover {
-        background-color: #bbb;
+    .floating-action-btn:hover {
+        background-color: #0056b3;
+        /* 호버 시 약간 진한 파란색 */
+        transform: scale(1.1);
+        /* 살짝 커지는 효과 */
     }
-
-    /* 설정 페이지 전체 스타일 */
-    .projectmainpage-content {
-        margin: 20px;
     }
-}
+    
+    /* 버튼 컨테이너 스타일 */
+    .table-actions {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 20px;
+    
+    
+        /* 버튼 스타일 */
+        .action-btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            background-color: #ccc;
+            color: black;
+            cursor: pointer;
+            transition: background-color 0.3s, color 0.3s;
+        }
+    
+        /* 활성화된 버튼 스타일 */
+        .action-btn.active {
+            background-color: white;
+            color: black;
+        }
+    
+        /* 버튼 호버 효과 */
+        .action-btn:hover {
+            background-color: #bbb;
+        }
+    
+        /* 설정 페이지 전체 스타일 */
+        .projectmainpage-content {
+            margin: 20px;
+        }
+    }
+    
+    .modal-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 1000;
+      }
+      
+      .modal-content {
+        background: #fff;
+        padding: 20px;
+        border-radius: 8px;
+        width: 500px;
+        max-width: 90%;
+      }
+      
+      .modal-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      
+      .modal-close {
+        background: none;
+        border: none;
+        font-size: 20px;
+        cursor: pointer;
+      }
+      
+      .modal-body {
+        margin-top: 20px;
+      }
+      
+      .add-project-form label {
+        display: block;
+        margin-bottom: 8px;
+      }
+      
+      .add-project-form input {
+        width: 70%;
+        padding: 8px;
+        margin-bottom: 12px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+      }
+      
+      .add-project-form button {
+        height: 33px;
+        padding: 10px 15px;
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+      
+      .add-project-form button:hover {
+        background-color: #0056b3;
+      }
+      
+    
+      //수정부분
+      .update-project-form label {
+        display: block;
+        margin-bottom: 8px;
+      }
+      
+      .update-project-form input {
+        width: 70%;
+        padding: 8px;
+        margin-bottom: 12px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+      }
+      
+      .update-project-form button {
+        height: 33px;
+        padding: 10px 15px;
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+      
+      .update-project-form button:hover {
+        background-color: #0056b3;
+      }
+      
+      .menu-item.selected {
+        background-color: #00254d;
+        font-weight: bold;
+      }

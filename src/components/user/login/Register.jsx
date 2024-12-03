@@ -13,6 +13,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { authEmail, checkUserId, postUser, sandEmail } from "../../../api/user/userAPI";
 import DaumPostModal from './DaumPostModal'; // DaumPostModal 컴포넌트 임포트
 
+
 const initState = {
     userId: "",
     pass: "",
@@ -30,6 +31,7 @@ export default function Register() {
     const [passwordMatch, setPasswordMatch] = useState(true);
     const [authCode, setAuthCode] = useState("");
     const [pass2, setPass2] = useState("");
+
     const [userId, setUserId] = useState(false);
     const [emailAutn, setEmailAuth] = useState(false)
     const [modalState, setModalState] = useState(false);
@@ -46,6 +48,8 @@ export default function Register() {
 
     // 모달 상태 토글 함수
     const toggleModal = () => {
+    const [userId, setUserId] = useState(null);
+
 
         setModalState(prevState => !prevState);
     };
@@ -67,6 +71,7 @@ export default function Register() {
             alert("인증번호가 발송되었습니다.")
         } else {
             setEmailAuth(false);
+
             alert("인증 번호 발송중 문제 발생.")
         }
     }
@@ -103,7 +108,7 @@ export default function Register() {
 
     const submitHandler = (e) => {
         e.preventDefault();
-
+        
         const savedUser = postUser(user);
 
         if (savedUser) {

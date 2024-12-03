@@ -1,198 +1,92 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef} from "react";
+import EditorJS from "@editorjs/editorjs";
+import Header from "@editorjs/header";
+import Paragraph from "@editorjs/paragraph";
+import DragDrop from "editorjs-drag-drop"; // DragDrop 플러그인
+import Image from "@editorjs/image"; // Image 툴
 
 export default function Page() {
-    const [text, setText] = useState("");
+  const editorRef = useRef(null); // Editor.js 인스턴스 저장
+  const [title, setTitle] = useState("");
+  const [isEditorInitialized, setIsEditorInitialized] = useState(false); // 에디터 초기화 상태
 
-    const handleChange = (e) => {
-        setText(e.target.value);
-    };
-
-    useEffect(() => {
-        
-        // Sidebar toggle functionality
-        const mainContent = document.querySelector(".main-content");
-
-       
-
-        // Change cursor when mouse enters/leaves main content
-        mainContent?.addEventListener('mouseenter', () => {
-            mainContent.style.cursor = 'text';
-        });
-
-        mainContent?.addEventListener('mouseleave', () => {
-            mainContent.style.cursor = 'default';
-        });
-
-        // Editable area resize on input
-        const editableTitle = document.querySelector("#editable-title");
-        if (editableTitle) {
-            editableTitle.style.height = "60px"; // Set initial height
-
-            editableTitle.addEventListener('input', function () {
-                this.style.height = "60px"; // Reset height
-                this.style.height = `${this.scrollHeight}px`; // Adjust based on content
-            });
-        }
-
-        const inputField = document.querySelector('.sub-title');
-        if (inputField && editableTitle) {
-            inputField.addEventListener('input', function () {
-                editableTitle.value = inputField.value;
-                editableTitle.style.height = 'auto'; // Reset height
-                editableTitle.style.height = "60px";
-            });
-
-            editableTitle.addEventListener('input', function () {
-                inputField.value = editableTitle.value;
-            });
-        }
-
-        // Placeholder for editable-area
-        const container = document.body;
-        function updatePlaceholder(currentDiv) {
-            document.querySelectorAll('.editable-area').forEach((div) => {
-                if (div === currentDiv) {
-                    if (div.innerText.trim() === '') {
-                        div.classList.add('placeholder');
-                    } else {
-                        div.classList.remove('placeholder');
-                    }
-                } else {
-                    div.classList.remove('placeholder');
-                }
-            });
-        }
-
-        // Initial placeholder check
-        document.querySelectorAll('.editable-area').forEach((div) => {
-            div.classList.remove('placeholder');
-        });
-
-        container.addEventListener('focus', function (event) {
-            const target = event.target;
-            if (target.classList.contains('editable-area')) {
-                updatePlaceholder(target);
-            }
-        }, true);
-
-        container.addEventListener('blur', function (event) {
-            const target = event.target;
-            if (target.classList.contains('editable-area')) {
-                if (target.innerText.trim() === '') {
-                    target.classList.add('placeholder');
-                }
-            }
-        }, true);
-
-        container.addEventListener('input', function (event) {
-            const target = event.target;
-            if (target.classList.contains('editable-area')) {
-                updatePlaceholder(target);
-            }
-        });
-
-        // Create editable areas dynamically
-        const mainContainer = document.getElementById('main-container');
-        const editableContainer = document.getElementById('editable-container');
-
-        mainContainer?.addEventListener('click', function (event) {
-            const clickedElement = event.target;
-            if (clickedElement.tagName === 'INPUT' || clickedElement.tagName === 'TEXTAREA') return;
-
-            if (clickedElement.classList.contains('editable-area')) {
-                clickedElement.focus();
-                return;
-            }
-
-            const editableAreas = editableContainer.querySelectorAll('.editable-area');
-            const lastEditableArea = editableAreas[editableAreas.length - 1];
-
-            if (lastEditableArea && lastEditableArea.innerText.trim() !== '') {
-                createEditableArea(editableContainer);
-            } else if (!lastEditableArea) {
-                createEditableArea(editableContainer);
-            } else {
-                lastEditableArea.focus();
-            }
-        });
-
-        // Create a new editable area
-        function createEditableArea(parent, nextSibling = null) {
-            const newDiv = document.createElement('div');
-            newDiv.classList.add('notranslate', 'editable-area');
-            newDiv.setAttribute('contenteditable', 'true');
-            newDiv.setAttribute('spellcheck', 'true');
-            newDiv.setAttribute('data-placeholder', '글을 입력하세요');
-            newDiv.setAttribute('data-content-editable-leaf', 'true');
-            parent.insertBefore(newDiv, nextSibling);
-            newDiv.focus();
-        }
-
-       // Handle Enter and Backspace key events for editable areas
-editableContainer.addEventListener('keydown', function (event) {
-    const target = event.target;
-
-    if (target.classList.contains('editable-area') && event.key === 'Enter') {
-        event.preventDefault();
-        createEditableArea(target.parentNode, target.nextSibling);
+  const initializeEditor = () => {
+    if (!isEditorInitialized) {
+      editorRef.current = new EditorJS({
+        holder: "editorjs",
+        placeholder: "글을 작성하거나 AI를 사용하려면 '스페이스' 키를, 명령어를 사용하려면 '/' 키를 누르세요.",
+        autofocus: true,
+        tools: {
+          header: Header,
+          paragraph: Paragraph,
+          image: Image, // 이미지 툴 추가
+        },
+        // DragDrop 플러그인 추가
+        onReady: () => {
+          new DragDrop(editorRef.current); // DragDrop 초기화
+          setIsEditorInitialized(true); // 에디터 초기화 상태 변경
+        },
+      });
     }
+  };
 
-    if (target.classList.contains('editable-area') && event.key === 'Backspace') {
-        if (target.innerText.trim() === '') {
-            event.preventDefault();
-            const previousDiv = target.previousElementSibling;
-            target.remove();
+  const handleTitleChange = (e) => {
+    setTitle(e.target.value);
+  };
 
-            // After removing the div, move the focus to the previous div (if it exists)
-            if (previousDiv && previousDiv.classList.contains('editable-area')) {
-                previousDiv.focus();
-                // Move the cursor to the end of the previous div
-                const range = document.createRange();
-                const selection = window.getSelection();
-                range.selectNodeContents(previousDiv);
-                range.collapse(false); // Collapse to the end of the div
-                selection.removeAllRanges();
-                selection.addRange(range);
-            } else {
-                // If there is no previous div, focus on the container itself
-                editableContainer.focus();
-            }
-        }
-    }
-});
-        // Skeleton loader display
-        const skeleton = document.getElementById("loading-skeleton");
-        const mainPage = document.querySelector(".main-page");
-
-        if (skeleton && mainPage) {
-            skeleton.style.display = "flex";
-            mainPage.style.display = "none";
-
-            setTimeout(() => {
-                skeleton.style.display = "none";
-                mainPage.style.display = "block";
-            }, 2000); // 2-second delay to simulate loading
-        }
-    }, []);
-
-    return (
-      
-            <main className="pagecontent" id="main-container">
-                <div id="loading-skeleton" className="skeleton">
-                    <div className="skeleton-title"></div>
-                    <div className="skeleton-text"></div>
-                    <div className="skeleton-box"></div>
-                </div>
-                <input type="text" value={text} className="sub-title" onChange={handleChange} placeholder="새 페이지" />
-                <div className="main-page">
-                    <textarea id="editable-title" className="editable" placeholder="새 페이지"></textarea>
-                    <div
-                        id="editable-container"
-                        style={{ width: 'auto', maxWidth: '700px', height: 'auto' }}
-                    >
-                    </div>
-                </div>
-            </main>
-
-    );
+  return (
+    <div style={styles.container}>
+      <input
+        type="text"
+        value={title}
+        onChange={handleTitleChange}
+        style={styles.titleInput}
+        placeholder="새페이지"
+      />
+      <div
+        id="editorjs"
+        style={styles.editor}
+        onClick={initializeEditor} // 에디터 클릭 시 초기화
+      ></div>
+    </div>
+  );
 }
+
+const styles = {
+  container: {
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "flex-start", // 상단 정렬로 변경
+    alignItems: "center",
+    height: "100vh",
+    padding: "20px",
+    fontFamily: "'Noto Sans KR', sans-serif",
+    margin: "0 auto",
+    position: "relative", // 컨테이너에 상대적 위치 설정
+  },
+  titleInput: {
+    fontSize: "2.5rem",
+    fontWeight: "bold",
+    color: "#4a4a4a",
+    marginBottom: "10px",
+    border: "none",
+    outline: "none",
+    background: "transparent",
+    width: "100%", // 제목이 화면 크기에 맞게 확장됨
+    maxWidth: "700px",
+    zIndex: "100", // 다른 요소들보다 위에 표시
+    whiteSpace: "nowrap", // 텍스트가 한 줄로 유지
+    overflow: "hidden", // 넘치는 부분을 숨김
+    textOverflow: "ellipsis", // 텍스트가 넘칠 경우 생략 부호(...) 표시
+    top: "10px", // 제목을 더 위로 이동
+  },
+  editor: {
+    width: "700px",
+    minHeight: "700px",
+    padding: "15px",
+    borderRadius: "8px",
+    backgroundColor: "#fff",
+    marginTop: "10px", // 에디터를 더 위로 이동
+    marginRight: "50px",
+  },
+};

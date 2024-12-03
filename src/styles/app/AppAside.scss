@@ -1,5 +1,7 @@
 #sidebar-container {
   transition: background-color 0.3s ease;
+
+  /* 슬라이드 애니메이션 */
   .aside-slide-in {
     opacity: 0;
     transform: translateX(-100%);
@@ -26,7 +28,7 @@
     }
   }
 
-  /* 사이드바 */
+  /* 사이드바 기본 스타일 */
   .sidebar {
     width: 320px;
     display: flex;
@@ -36,174 +38,116 @@
     bottom: 0;
     box-sizing: border-box;
     max-width: 480px;
-    -webkit-box-orient: vertical;
-    -webkit-box-direction: normal;
     flex-direction: column;
     overflow: scroll;
     background-color: #f1f8e9;
+
+    /* 헤더 */
+    .sidebar-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px;
+      background-color: #f1f8e9;
+      border-bottom: 1px solid #ddd;
+
+      h2 {
+        margin: 0;
+        font-size: 15px;
+        flex-grow: 1;
+      }
+    }
+
+    /* 메뉴 스타일 */
+    nav.menu {
+      ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+      }
+
+      li {
+        display: flex;
+        align-items: center;
+        padding: 10px 15px;
+        font-size: 16px;
+        color: #555;
+        border-bottom: 1px solid #ddd;
+        transition: background-color 0.3s;
+
+        &:hover {
+          background-color: #f0f0f0;
+        }
+
+        &.menu-item {
+          justify-content: space-between;
+
+          .delete-button {
+            display: none;
+
+            &:hover {
+              background-color: #aa8b8b;
+              transform: scale(1.1);
+            }
+          }
+
+          &:hover .delete-button {
+            display: flex;
+          }
+        }
+      }
+
+      ul.sub-menu {
+        margin-left: 20px;
+
+        li {
+          height: 50px;
+          padding: 10px 15px;
+          margin-bottom: 5px;
+          border-bottom: 2px solid #ddd;
+          cursor: pointer;
+          background-color: #f7fcf4;
+          border-radius: 10px;
+
+          &:hover {
+            background-color: #e0e0e0;
+          }
+        }
+      }
+    }
+
+    /* 추가 버튼 */
+    .addButton {
+      display: block;
+      width: 100%;
+      padding: 10px 15px;
+      margin-top: 10px;
+      background-color: #007bff;
+      color: white;
+      font-size: 16px;
+      font-weight: bold;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+
+      &:hover {
+        background-color: #0056b3;
+      }
+    }
   }
 
-  .sidebar-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    /* 요소 간 간격 조절 */
-    padding: 10px;
-    background-color: #f1f8e9;
-    border-bottom: 1px solid #ddd;
-  }
-
-  .sidebar-header h2 {
-    margin: 0;
-    font-size: 15px;
-    flex-grow: 1;
-    /* h2가 남은 공간을 차지 */
-  }
-
-  .sidebar-toggle-btn {
-    position: absolute;
-    /* 버튼을 절대 위치로 변경 */
-    top: 26px;
-    /* 화면 상단에서 26px 위치 */
-    left: 130px;
-    /* 사이드바가 닫혔을 때 버튼 위치 */
-    z-index: 1100;
-    /* 사이드바보다 앞에 보이도록 */
-    background: #f4f4f4;
-    border: none;
-    border-radius: 5px;
-    padding: 10px;
-    cursor: pointer;
-  }
-
-  /* 사이드바 숨김 상태 */
-  .sidebar.hidden {
-    display: none;
-    /* 사이드바를 숨김 */
-  }
-
-  .search-link {
-    text-decoration: none;
-    color: #007bff;
-    font-size: 14px;
-    cursor: pointer;
-  }
-
-  .search-link:hover {
-    text-decoration: underline;
-  }
-
-  .menu ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-  }
-
-  .menu li {
-    display: flex; /* 플렉스박스 활성화 */
-    align-items: center; /* 세로 중앙 정렬 */
-    padding: 10px 15px;
-    font-size: 16px;
-    color: #555;
-    cursor: pointer;
-    border-bottom: 1px solid #ddd; /* 구분선 */
-    transition: background-color 0.3s;
-  }
-  .menu ul li {
-    height: 50px;
-    padding: 10px 15px;
-    border-bottom: 2px solid #ddd; /* 구분선 추가 */
-    cursor: pointer;
-    text-align: left;
-  }
-  .menu li:hover {
-    background-color: #f0f0f0;
-  }
-
-  /* 기본 스타일 */
-  nav.menu ul {
-    list-style-type: none;
-    padding: 0;
-  }
-
-  nav.menu li {
-    cursor: pointer;
-    padding: 8px 12px;
-    background-color: #f7fcf4;
-    margin: 5px 10px;
-    margin-bottom: 5px;
-
-    border-radius: 10px;
-  }
-
-  nav.menu li:hover {
-    background-color: #e0e0e0;
-  }
-
-  /* 더보기 버튼 스타일 */
+  /* 더보기 버튼 */
   .more-button {
     padding: 8px 12px;
     background-color: #dcdcdc;
     color: #333;
-    cursor: pointer;
     margin-top: 10px;
     text-align: center;
-  }
-
-  .more-button:hover {
-    background-color: #b0b0b0;
-  }
-
-  /* 버튼 스타일 */
-  .addButton {
-    display: block;
-    width: 100%; /* 버튼 너비를 메뉴와 동일하게 */
-    padding: 10px 15px;
-    margin-top: 10px; /* 메뉴와 간격 */
-    background-color: #007bff; /* 버튼 배경색 */
-    color: white; /* 텍스트 색상 */
-    font-size: 16px;
-    font-weight: bold;
-    border: none;
-    border-radius: 5px;
     cursor: pointer;
-    transition: background-color 0.3s;
-  }
 
-  .addButton:hover {
-    background-color: #0056b3; /* 호버 시 버튼 색상 */
+    &:hover {
+      background-color: #b0b0b0;
+    }
   }
-  .menu-item {
-    justify-content: space-between;
-  }
-  .delete-button {
-    display: none; /* 기본적으로 버튼 숨김 */
-  }
-
-  .menu-item:hover .delete-button {
-    display: flex; /* hover 시 버튼 표시 */
-  }
-
-  .delete-button {
-    background-color: #ecc2c2; /* 기본 배경색: 부드러운 회색 */
-    color: #333; /* 텍스트 색상 */
-    font-size: 14px; /* 글자 크기 */
-    font-weight: bold;
-    border: none;
-    border-radius: 50%; /* 둥근 버튼 */
-    width: 25px;
-    height: 25px;
-    cursor: pointer;
-    align-items: center;
-    justify-content: center;
-    margin-left: 10px; /* 텍스트와 버튼 간격 */
-    transition: background-color 0.3s, display 0.3s ease-in-out;
-  }
-
-  .delete-button:hover {
-    background-color: #aa8b8b; /* 호버 시 색상: 더 짙은 회색 */
-    transform: scale(1.1); /* 호버 시 약간 확대 */
-  }
-
-  //================파일전용 css ===============
 }

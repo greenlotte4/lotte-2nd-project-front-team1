@@ -12,7 +12,7 @@ import { Link } from "react-router-dom";
 import NotificationButton from "../../app/include/NotificationButton";
 import ProfileDropdown from "../../app/include/ProfileDropdown";
 
-export default function AdminHeader({ onToggleSidebar }) {
+export default function AdminHeader({ onToggleSidebar, noneAside }) {
   const [openDropdown, setOpenDropdown] = useState(null); // "notification" | "profile" | null
 
   const toggleDropdown = (type) => {
@@ -25,6 +25,7 @@ export default function AdminHeader({ onToggleSidebar }) {
           className="headerButton"
           id="toggle-sidebar"
           onClick={onToggleSidebar} // 햄버거 버튼 클릭 시 전달된 함수 호출
+          style={{ visibility: noneAside ? "hidden" : "" }}
         >
           <img src="/images/hamburger.png" alt="Toggle Sidebar" />
         </button>

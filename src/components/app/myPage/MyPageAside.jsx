@@ -17,9 +17,17 @@ export default function MyPageAside() {
           <h2>닉네임</h2>
         </div>
         <nav className="menu">
-          <Link to="/user/myPage">나의정보</Link>
-          <Link to="/user/mypage/membership">구매하기</Link>
-          <Link to="/user/mypage/inquiry">문의내역</Link>
+          <ul className="submenu">
+            <li>
+              <Link to="/user/myPage">나의정보</Link>
+            </li>
+            <li>
+              <Link to="/user/mypage/membership">구매하기</Link>
+            </li>
+            <li>
+              <Link to="/user/mypage/inquiry">문의내역</Link>
+            </li>
+          </ul>
         </nav>
       </aside>
     </div>

@@ -1,6 +1,5 @@
 export default function MainBoard(){
     return(
-        <main className="main-content">
         <div className="boardContentDiv" id="boardContentDiv">
           <div className="g_search">
               <h2 className="blind">홈 서비스 통합 검색</h2>
@@ -26,7 +25,7 @@ export default function MainBoard(){
                           <li style={{display: "none"}}>
                               <span className="empty">검색어 저장 기능이 꺼져있습니다.</span>
                           </li> 
-                          <li style="">
+                          <li>
                               <span className="empty">최근 검색어가 없습니다.</span>
                           </li>
                       </ul> 
@@ -53,7 +52,7 @@ export default function MainBoard(){
                                   <strong>전체 게시판</strong>
                               </button>
                               <div className="option_box" style={{zindex: "200"}}>
-                                  <ul style="">
+                                  <ul >
                                       <li className="">
                                           <button type="button">
                                            전체 게시판
@@ -208,7 +207,7 @@ export default function MainBoard(){
                           등록
                         </button>
                       </div>
-                      <div className="btn_task_wrap" style="">
+                      <div className="btn_task_wrap" >
                           <button type="button" className="btn_task">
                           임시저장
                         </button>
@@ -229,7 +228,7 @@ export default function MainBoard(){
                           게시판 선택
                       </button>
                       <span className="bd_name">
-                          <span className="cate" style="">그린컴퓨터아카데미</span>
+                          <span className="cate" >그린컴퓨터아카데미</span>
                           <strong>공지사항</strong>
                       </span>
                       </li>
@@ -259,8 +258,6 @@ export default function MainBoard(){
               </div>
 
           </div>           
-  
           </div>
-      </main>
       );
-}
+} 	

@@ -6,7 +6,7 @@ import AppLayout from "../../../layouts/app/AppLayout";
 import "../../../styles/app/board/Board.scss";
 import "../../../styles/app/board/BoardAside.scss";
 
-export default function Message() {
+export default function MainBoardPage() {
     const { isSidebarVisible, toggleSidebar } = useSidebar(); // 사이드바 상태 및 토글 함수 사용
   
     return (
@@ -20,4 +20,3 @@ export default function Message() {
       </AppLayout>
     );
   }
-  
