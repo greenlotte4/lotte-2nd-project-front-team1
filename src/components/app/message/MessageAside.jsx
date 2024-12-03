@@ -1,3 +1,4 @@
+import { Avatar, AvatarGroup } from "@mui/material";
 import { useEffect, useState } from "react";
 
 const MessageAside = ({ isVisible }) => {
@@ -11,8 +12,7 @@ const MessageAside = ({ isVisible }) => {
       return () => clearTimeout(timer);
     }
   }, [isVisible]);
- 
-  
+
   return (
     isAnimating && (
       <div id="sidebar-container">
@@ -37,28 +37,79 @@ const MessageAside = ({ isVisible }) => {
                   대화방
                 </button>
                 <a href="">
-                  <li>대화방1</li>
+                  <li className="chatRoom curruntChatRoom">
+                    <div className="chatRoomName">업무용 대화방</div>
+                    <AvatarGroup spacing="midium" max={4}>
+                      <Avatar
+                        alt="Remy Sharp"
+                        src="/static/images/avatar/1.jpg"
+                        sx={{ width: 24, height: 24 }}
+                      />
+                      <Avatar
+                        alt="Cindy Baker"
+                        src="/static/images/avatar/3.jpg"
+                        sx={{ width: 24, height: 24 }}
+                      />
+                      <Avatar
+                        alt="Cindy Baker"
+                        src="/static/images/avatar/3.jpg"
+                        sx={{ width: 24, height: 24 }}
+                      />
+                      <Avatar
+                        alt="Cindy Baker"
+                        src="/static/images/avatar/3.jpg"
+                        sx={{ width: 24, height: 24 }}
+                      />
+                    </AvatarGroup>
+                  </li>
                 </a>
                 <a href="">
-                  <li>대화방2</li>
+                  <li className="chatRoom">
+                    <div className="chatRoomName">거래처 업무방</div>
+                    <AvatarGroup spacing="midium" max={4}>
+                      <Avatar
+                        alt="Remy Sharp"
+                        src="/static/images/avatar/1.jpg"
+                        sx={{ width: 24, height: 24 }}
+                      />
+                      <Avatar
+                        alt="Travis Howard"
+                        src="/static/images/avatar/2.jpg"
+                        sx={{ width: 24, height: 24 }}
+                      />
+                      <Avatar
+                        alt="Cindy Baker"
+                        src="/static/images/avatar/3.jpg"
+                        sx={{ width: 24, height: 24 }}
+                      />
+                    </AvatarGroup>
+                  </li>
                 </a>
                 <a href="">
-                  <li>대화방3</li>
-                </a>
-                <a href="">
-                  <li>대화방4</li>
-                </a>
-                <a href="">
-                  <li>대화방5</li>
+                  <li className="chatRoom">
+                    <div className="chatRoomName">계모임</div>
+                    <AvatarGroup spacing="midium" max={4}>
+                      <Avatar
+                        alt="Remy Sharp"
+                        src="/static/images/avatar/1.jpg"
+                        sx={{ width: 24, height: 24 }}
+                      />
+                      <Avatar
+                        alt="Travis Howard"
+                        src="/static/images/avatar/2.jpg"
+                        sx={{ width: 24, height: 24 }}
+                      />
+                    </AvatarGroup>
+                  </li>
                 </a>
               </ul>
               <ul>
                 <button type="button" className="chatListButton">
                   메시지
                 </button>
-                <li>이순신</li>
-                <li>홍길동</li>
-                <li>강감찬</li>
+                <li className="chatRoom">이순신</li>
+                <li className="chatRoom">홍길동</li>
+                <li className="chatRoom">강감찬</li>
               </ul>
             </div>
           </nav>
