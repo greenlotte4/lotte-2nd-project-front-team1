@@ -11,7 +11,8 @@ const MessageAside = ({ isVisible }) => {
       return () => clearTimeout(timer);
     }
   }, [isVisible]);
-
+ 
+  
   return (
     isAnimating && (
       <div id="sidebar-container">

@@ -1,4 +1,5 @@
 export default function MessageBox() {
+  
   return (
       <div className="messageDiv">
         <div className="messageInfo">
