@@ -1,4 +1,41 @@
-export default function MainBoard(){
+import React, { useEffect, useState } from 'react';
+import { Editor } from '@tinymce/tinymce-react';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+import { postBoardArticleWrite } from "../../../api/board/boardAPI"; // URI 상수 import
+
+const NoticeBoard = () => {
+    const [article, setArticle] = useState({
+        title: '',
+        content: '', // TinyMCE의 내용을 여기에 저장할 것
+        board: '공지사항', // 게시판 선택
+        writer: '작성자ID', // 로그인 상태에서 작성자 ID를 가져와야 함
+    });
+
+    const navigate = useNavigate();
+
+    const handleEditorChange = (content, editor) => {
+        setArticle({ ...article, content }); // TinyMCE의 내용을 상태에 저장
+    };
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+    
+        try {
+            const result = await postBoardArticleWrite(article);
+            console.log("result: " + result);
+    
+            if(result) {
+                alert("글 작성 완료");
+                navigate("/app/mainboard");
+            }
+        } catch (error) {
+            console.error("게시글 등록에 실패했습니다.", error);
+            alert("게시글 등록에 실패했습니다.");
+        }
+    };
+    
+
     return(
         <div className="boardContentDiv" id="boardContentDiv">
           <div className="g_search">
@@ -201,9 +238,10 @@ export default function MainBoard(){
           <div id="articleEditor">
               <div className="board_write">
                   <h2 className="blind">글쓰기</h2>
+                  <form onSubmit={handleSubmit}>
                   <div className="task_area">
                       <div className="btn_task_wrap">
-                          <button type="button" className="btn_task tx_point">
+                          <button type="submit" className="btn_task tx_point">
                           등록
                         </button>
                       </div>
@@ -218,7 +256,15 @@ export default function MainBoard(){
                       <li className="opt_sbj">
                           <h3 className="tx">제목</h3>
                           <span className="wrap_sbj">
-                              <input type="text" maxLength="200" placeholder="제목을 입력하세요" className="subject"/> 
+                          <input 
+                            type="text" 
+                            maxLength="200" 
+                            placeholder="제목을 입력하세요" 
+                            className="subject" 
+                            name="title"
+                            value={article.title}
+                            onChange={(e) => setArticle({ ...article, title: e.target.value })}
+                        />
                               <em className="cnt_txt">0/200</em>
                           </span>
                       </li>
@@ -252,12 +298,42 @@ export default function MainBoard(){
                           </div>
                       </li>
                   </ul>
-                  <div className="workseditor-editor" style={{overflow: "auto", height: "405px"}}>
-                      <textarea data-container="TEXT" style={{display: "block" ,border: "none" ,outline: "none" ,resize: "none" ,width: "calc(100% - 30px)" , height: "369px" , padding: "20px 15px 16px"}}></textarea>
+                  <div className="workseditor-editor" style={{overflow: "auto", height: "auto"}}>
+                  <Editor
+                    apiKey='io6vv69eg9rs7jdt6rxcxtuwf127qkmot1d5e2ttm4khz10i'
+                    initialValue={article.content}
+                    init={{
+                        height: 500,
+                        plugins: [
+                        // Core editing features
+                        'anchor', 'autolink', 'charmap', 'codesample', 'emoticons', 'image', 'link', 'lists', 'media', 'searchreplace', 'table', 'visualblocks', 'wordcount',
+                        // Your account includes a free trial of TinyMCE premium features
+                        // Try the most popular premium features until Dec 17, 2024:
+                        'checklist', 'mediaembed', 'casechange', 'export', 'formatpainter', 'pageembed', 'a11ychecker', 'tinymcespellchecker', 'permanentpen', 'powerpaste', 'advtable', 'advcode', 'editimage', 'advtemplate', 'ai', 'mentions', 'tinycomments', 'tableofcontents', 'footnotes', 'mergetags', 'autocorrect', 'typography', 'inlinecss', 'markdown',
+                        // Early access to document converters
+                        'importword', 'exportword', 'exportpdf'
+                        ],
+                        toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table mergetags | addcomment showcomments | spellcheckdialog a11ycheck typography | align lineheight | checklist numlist bullist indent outdent | emoticons charmap | removeformat',
+                        tinycomments_mode: 'embedded',
+                        tinycomments_author: 'Author name',
+                        mergetags_list: [
+                        { value: 'First.Name', title: 'First Name' },
+                        { value: 'Email', title: 'Email' },
+                        ],
+                        ai_request: (request, respondWith) => respondWith.string(() => Promise.reject('See docs to implement AI Assistant')),
+                    }}
+                    onEditorChange={handleEditorChange}
+                 
+                    />
                   </div>
+                  </form>
               </div>
+              
 
-          </div>           
+          </div>  
+                   
           </div>
       );
 } 	
+
+export default NoticeBoard;

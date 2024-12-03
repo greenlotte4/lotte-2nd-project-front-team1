@@ -5,5 +5,6 @@ export const USER_URI = `${SERVER_HOST}/user`;
 export const USER_LOGIN_URI = `${SERVER_HOST}/user/login`;
 
 // article
+export const BOARD_ARTICLE_WRITE_URI = `${SERVER_HOST}/article/write`;
 
 // product
