@@ -1,6 +1,18 @@
+/*
+
+    날짜 : 2024/11/25
+    이름 : 최영진
+    내용 : 회원가입 
+
+    추가내역
+    2024-12-03 최영진 유효성 추가, 우편검색
+
+*/
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { authEmail, checkUserId, postUser, sandEmail } from "../../../api/user/userAPI";
+import DaumPostModal from './DaumPostModal'; // DaumPostModal 컴포넌트 임포트
+
 
 const initState = {
     userId: "",
@@ -19,8 +31,28 @@ export default function Register() {
     const [passwordMatch, setPasswordMatch] = useState(true);
     const [authCode, setAuthCode] = useState("");
     const [pass2, setPass2] = useState("");
+
+    const [userId, setUserId] = useState(false);
+    const [emailAutn, setEmailAuth] = useState(false)
+    const [modalState, setModalState] = useState(false);
+
+    const onAddressSelect = (data) => {
+        setUser({
+            ...user,
+            zip: data.zonecode,
+            addr1: data.address,
+            addr2: ''
+        });
+        toggleModal();
+    }
+
+    // 모달 상태 토글 함수
+    const toggleModal = () => {
     const [userId, setUserId] = useState(null);
 
+
+        setModalState(prevState => !prevState);
+    };
 
     const checkUserIdHandler = async () => {
         const response = await checkUserId(user.userId);
@@ -35,8 +67,11 @@ export default function Register() {
     const sandEmailHandler = async () => {
         const response = await sandEmail(user.email)
         if (response.status === 200) {
+            setEmailAuth(true);
             alert("인증번호가 발송되었습니다.")
         } else {
+            setEmailAuth(false);
+
             alert("인증 번호 발송중 문제 발생.")
         }
     }
@@ -70,6 +105,7 @@ export default function Register() {
             setAuthCode(value);  // 인증번호 상태 업데이트
         }
     }
+
     const submitHandler = (e) => {
         e.preventDefault();
         
@@ -196,7 +232,7 @@ export default function Register() {
                                     value={user.zip}
                                     onChange={changeHandler}
                                 />
-                                <button type="button">
+                                <button type="button" onClick={toggleModal}>
                                     <img src="/images/search.svg" alt="우편번호찾기" />
                                 </button>
                                 <input
@@ -223,9 +259,11 @@ export default function Register() {
                     <Link to="/user/login" className="btnCancle">
                         취소
                     </Link>
-                    <input type="submit" value="회원가입" className="blueButton" />
+                    <input type="submit" value="회원가입" className="blueButton" disabled={!emailAutn || !passwordMatch || !userId} />
                 </div>
             </form>
+            {/* 모달을 modalState가 true일 때만 보이도록 렌더링 */}
+            {modalState && <DaumPostModal toggleModal={toggleModal} onAddressSelect={onAddressSelect} />}
         </div>
     );
 }
