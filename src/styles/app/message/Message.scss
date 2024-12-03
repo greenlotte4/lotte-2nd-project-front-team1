@@ -21,6 +21,7 @@
     font-size: 14px;
     color: #888;
   }
+
   .chatBox {
     flex: 1 0 auto;
   }
@@ -60,10 +61,19 @@
   .chatContent {
     margin: 0;
     display: inline-block;
-  }
+    /* 기존 스타일 유지 */
+    position: relative;
+    /* 텍스트와 버튼을 같은 라인에 배치 */
+    width: 700px;
 
-  .chatContent > p {
+
+  }
+  .text_box{
+    width: 90%;
+  }
+  .chatContent>p {
     margin: 0;
+    width: 60%;
   }
 
   .message_time {
@@ -77,11 +87,16 @@
     margin-top: 20px;
   }
 
+  .input_box {
+    width: 100%;
+  }
+
   .message_input-bar input {
     flex: 1;
     padding: 10px;
     border: 1px solid #ddd;
     border-radius: 4px;
+    width: 940px;
     font-size: 14px;
   }
 
@@ -99,5 +114,48 @@
   .message_input-bar button:hover {
     background: #0056b3;
   }
+
+
+.menuBtn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  position: absolute; /* 버튼을 텍스트의 오른쪽 끝에 고정 */
+  right: 10px; /* 텍스트 영역 오른쪽 여백 */
+  top: 50%; /* 세로 중앙 정렬 */
+  transform: translateY(-50%); /* 정확히 세로 중앙 */
+
+}
+  .contextMenu {
+    position: absolute;
+    background: white;
+    border: 1px solid #ccc;
+    padding: 10px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+    z-index: 1000;
+  }
+
+  .contextMenu div {
+    padding: 5px 10px;
+    cursor: pointer;
+  }
+
+  .contextMenu div:hover {
+    background-color: #f0f0f0;
+  }
+  .contextMenu {
+    position: absolute;
+    top: var(--menu-top, 0px);
+    left: var(--menu-left, 0px);
+    background-color: #fff;
+    border: 1px solid #ddd;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    display: none;
+  }
   
+  .contextMenu.visible {
+    display: block;
+  }
 }
