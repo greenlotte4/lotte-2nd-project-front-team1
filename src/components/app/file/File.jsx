@@ -8,8 +8,6 @@ export default function File() {
   const [isDragging, setIsDragging] = useState(false); // 드래그 상태
   const [selectedFiles, setSelectedFiles] = useState([]); // 선택된 파일 상태
   const [searchQuery, setSearchQuery] = useState(""); // 검색어 상태
-  const [showCreateFolderModal, setShowCreateFolderModal] = useState(false); // 새 폴더 생성 모달 상태
-  const [newFolderName, setNewFolderName] = useState(""); // 새 폴더 이름 상태
 
   // 로컬 스토리지에서 드라이브 데이터 불러오기
   useEffect(() => {
@@ -154,16 +152,17 @@ export default function File() {
     file.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
-  // 새폴더 생성
-  const handleCreateFolder = () => {
-    if (!newFolderName) {
+  // 새폴더 만들기 처리
+  const handleCreateFolder = (folderName) => {
+    if (!folderName) {
       alert("폴더 이름을 입력해주세요.");
       return;
     }
 
+    // 폴더 생성 시 알림 표시
     const newFolder = {
       id: Date.now(),
-      name: newFolderName,
+      name: folderName,
       size: "0MB", // 기본 크기 설정
       modified: new Date().toISOString().split("T")[0],
       created: new Date().toISOString().split("T")[0],
@@ -172,8 +171,33 @@ export default function File() {
     };
 
     setDriveData((prevData) => [...prevData, newFolder]);
-    setNewFolderName(""); // 새 폴더 이름 초기화
-    setShowCreateFolderModal(false); // 모달 닫기
+
+    // 폴더 생성 성공 알림
+    alert(`새 폴더 '${folderName}'가 생성되었습니다.`);
+  };
+
+  // 파일 이름 변경 처리 함수
+  const renameFile = () => {
+    if (selectedFiles.length === 0) {
+      alert("파일을 선택해주세요.");
+      return;
+    }
+
+    const newName = prompt("새로운 파일 이름을 입력하세요:");
+
+    if (!newName) {
+      alert("파일 이름을 입력하지 않았습니다.");
+      return;
+    }
+
+    // 선택된 파일들의 이름을 변경
+    const updatedFiles = driveData.map((file) =>
+      selectedFiles.includes(file.id)
+        ? { ...file, name: newName } // 선택된 파일의 이름 변경
+        : file
+    );
+
+    setDriveData(updatedFiles);
   };
 
   return (
@@ -206,7 +230,12 @@ export default function File() {
                 <button
                   value="create"
                   name="create-folder"
-                  onClick={() => setShowCreateFolderModal(true)}
+                  onClick={() => {
+                    const folderName = prompt("새 폴더 이름을 입력하세요.");
+                    if (folderName) {
+                      handleCreateFolder(folderName);
+                    }
+                  }}
                 >
                   새폴더
                 </button>
@@ -217,7 +246,7 @@ export default function File() {
                 >
                   다운로드
                 </button>
-                <button value="rename" name="file-rename">
+                <button value="rename" name="file-rename" onClick={renameFile}>
                   이름변경
                 </button>
                 <button
@@ -240,24 +269,6 @@ export default function File() {
           </tbody>
         </table>
       </div>
-
-      {/* 새 폴더 만들기 모달 */}
-      {showCreateFolderModal && (
-        <div className="modal">
-          <div className="modal-content">
-            <h3>새 폴더 이름을 입력하세요</h3>
-            <input
-              type="text"
-              value={newFolderName}
-              onChange={(e) => setNewFolderName(e.target.value)} // 폴더 이름 입력 필드
-            />
-            <button onClick={handleCreateFolder}>폴더 만들기</button>
-            <button onClick={() => setShowCreateFolderModal(false)}>
-              취소
-            </button>
-          </div>
-        </div>
-      )}
 
       {/* 드래그 앤 드롭 */}
       <div
@@ -325,7 +336,9 @@ export default function File() {
               ))
             ) : (
               <tr>
-                <td colSpan="5">검색 결과가 없습니다.</td>
+                <td colSpan="5" className="no-results">
+                  검색 결과가 없습니다.
+                </td>
               </tr>
             )}
           </tbody>
