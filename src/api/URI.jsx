@@ -9,3 +9,7 @@ export const USER_EMAIL = `${SERVER_HOST}/api`
 // article
 
 // product
+
+// setting
+//사용자 정보 설정화면 출력 2024/12/03 이도영
+export const SETTING_USER_INFO = `${SERVER_HOST}/setting/user`;
