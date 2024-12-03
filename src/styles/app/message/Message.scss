@@ -25,6 +25,9 @@
   .chatBox {
     flex: 1 0 auto;
   }
+  .chatBlockByDay {
+    margin-bottom: 20px;
+  }
 
   .message_date {
     font-size: 14px;
@@ -50,6 +53,7 @@
     border-radius: 10px;
     box-shadow: 0 3px 8px #0000001a;
     padding: 10px;
+    display: flex;
   }
 
   .chatProfile {
@@ -65,21 +69,25 @@
     position: relative;
     /* 텍스트와 버튼을 같은 라인에 배치 */
     width: 700px;
-
-
   }
-  .text_box{
+  .text_box {
     width: 90%;
   }
-  .chatContent>p {
+  .chatContent > p {
     margin: 0;
     width: 60%;
+  }
+
+  .message_sender {
+    display: inline-block;
+    margin-right: 5px;
   }
 
   .message_time {
     font-size: 14px;
     color: #888;
     margin-bottom: 5px;
+    display: inline-block;
   }
 
   .message_input-bar {
@@ -87,20 +95,35 @@
     margin-top: 20px;
   }
 
-  .input_box {
+  .input_container {
     width: 100%;
+    position: relative;
+    display: flex;
+  }
+  .input_tools {
+    width: 100%;
+    background-color: #f1f8e9;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
   }
 
-  .message_input-bar input {
+  .input_box {
+    flex: 1 0 auto;
+    border: 1px solid #ddd;
+    background-color: white;
+    border-radius: 10px;
+  }
+
+  .chattingInput {
     flex: 1;
     padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    width: 940px;
+    border: none;
+    background-color: inherit;
+    width: 100%;
     font-size: 14px;
   }
 
-  .message_input-bar button {
+  .sendButton {
     padding: 10px 20px;
     margin-left: 10px;
     border: none;
@@ -111,22 +134,20 @@
     font-size: 14px;
   }
 
-  .message_input-bar button:hover {
+  .sendButton:hover {
     background: #0056b3;
   }
 
-
-.menuBtn {
-  background: none;
-  border: none;
-  cursor: pointer;
-  font-size: 16px;
-  position: absolute; /* 버튼을 텍스트의 오른쪽 끝에 고정 */
-  right: 10px; /* 텍스트 영역 오른쪽 여백 */
-  top: 50%; /* 세로 중앙 정렬 */
-  transform: translateY(-50%); /* 정확히 세로 중앙 */
-
-}
+  .menuBtn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    position: absolute; /* 버튼을 텍스트의 오른쪽 끝에 고정 */
+    right: 10px; /* 텍스트 영역 오른쪽 여백 */
+    top: 50%; /* 세로 중앙 정렬 */
+    transform: translateY(-50%); /* 정확히 세로 중앙 */
+  }
   .contextMenu {
     position: absolute;
     background: white;
@@ -154,7 +175,7 @@
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
     display: none;
   }
-  
+
   .contextMenu.visible {
     display: block;
   }
