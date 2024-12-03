@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { postUser } from "../../../api/user/userAPI";
 
 const initState = {
-    uid: "",
+    userId: "",
     pass: "",
     name: "",
     email: "",
@@ -67,9 +67,9 @@ export default function Register() {
                             <td>아이디</td>
                             <td className="input-with-button">
                                 <input type="text"
-                                    name="uid"
+                                    name="userId"
                                     placeholder="아이디 입력"
-                                    value={user.uid}
+                                    value={user.userId}
                                     onChange={changeHandler} />
                                 <button type="button">
                                     <img src="/images/check.svg" alt="중복확인" />
