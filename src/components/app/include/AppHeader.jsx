@@ -6,7 +6,8 @@
     추가내역
     -------------
     2024/11/28 이도영 알람,프로필 출력 기능 추가
-    2024.11.19 강중원 noneAside를 통해 어사이드 버튼 비/활성화
+    2024/11/19 강중원 noneAside를 통해 어사이드 버튼 비/활성화
+    2024/12/03 이도영 로그인 정보 출력
 */
 import { useState } from "react";
 import { Link } from "react-router-dom";
@@ -21,13 +22,13 @@ import DnsOutlinedIcon from "@mui/icons-material/DnsOutlined";
 import AccountTreeOutlinedIcon from "@mui/icons-material/AccountTreeOutlined";
 import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
 import MenuIcon from "@mui/icons-material/Menu";
-import { green, pink } from "@mui/material/colors";
-import AccountProfile from "./AppHeaderProfile";
 import { Tooltip } from "@mui/material";
+import { useSelector } from "react-redux";
 
 export default function AppHeader({ onToggleSidebar, noneAside, thisPage }) {
   const [openDropdown, setOpenDropdown] = useState(null); // "notification" | "profile" | null
   const [status, setStatus] = useState(null);
+  const user = useSelector((state) => state.userSlice);
   const toggleDropdown = (type) => {
     setOpenDropdown((prev) => (prev === type ? null : type));
   };
@@ -135,7 +136,9 @@ export default function AppHeader({ onToggleSidebar, noneAside, thisPage }) {
           {/* 프로필 버튼 */}
           <div className="ProfileDiv" onClick={() => toggleDropdown("profile")}>
             <img src="/images/user_Icon.png" alt="👤" className="profileImg" />
-            <p className="ProfileName">이순신</p>
+            <p className="ProfileName">
+              {user.username || "알 수 없는 사용자"}
+            </p>
           </div>
           <ProfileDropdown
             isOpen={openDropdown === "profile"}

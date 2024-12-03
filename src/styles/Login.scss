@@ -293,8 +293,8 @@
     }
 
     /* 텍스트와 체크박스 모두 오른쪽 정렬 */
-    .termsText1 > div,
-    .termsText2 > div {
+    .termsText1>div,
+    .termsText2>div {
       display: flex;
       justify-content: flex-end;
       align-items: center;
@@ -351,6 +351,7 @@
       border: none;
       border-collapse: separate;
     }
+
     table button {
       border: none;
       margin: 0;
@@ -364,6 +365,7 @@
       width: auto;
       height: 30px;
     }
+
     td:first-child {
       width: 100px;
       text-align: center;
@@ -475,6 +477,41 @@
     .btnCancle:hover {
       background-color: #7e7e7e;
     }
+
+    /* 기본 모달 스타일 */
+    .modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: rgba(0, 0, 0, 0.5);
+      /* 반투명 배경 */
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+
+    .modal-content {
+      background-color: white;
+      padding: 20px;
+      border-radius: 10px;
+      width: 500px;
+      max-height: 80%;
+      overflow-y: auto;
+    }
+
+    .close-btn {
+      background-color: #f44336;
+      color: white;
+      padding: 10px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+
   }
 
   // 아이디찾기

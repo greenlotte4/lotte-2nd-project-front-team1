@@ -5,7 +5,8 @@
 
     추가내역
     -------------
-    11.27 박수정 - 로그인페이지 jsx 및 css 수정
+    2024/11/27 박수정 - 로그인페이지 jsx 및 css 수정
+    2024/12/03 이도영 - 로그인 기능 추가
 */
 
 import { useState } from "react";
@@ -35,9 +36,9 @@ export default function Login() {
     const tokens = await postUserLogin(user);
     if (tokens) {
       dispatch(login(tokens));
-      navigate("/");
+      navigate("/app/home");
     } else {
-      alert("로그인실패");
+      alert("아이디 또는 비밀번호가 잘못되었습니다.");
     }
   };
 

@@ -7,12 +7,14 @@
     -------------
     11.29 강중원 - 화면에 맞게 css 추가
     12.02 박수정 - 드라이브 css 수정
+    12.03 박수정 - 드래그 앤 드롭 UX 개선
 */
 
 /* 테이블 스타일 */
 .file-content {
   width: 100%;
   height: 100%;
+
   .main-page {
     flex: 1 0 auto;
   }
@@ -29,21 +31,21 @@
 
   /* 버튼 스타일 */
   button {
-    padding: 5px 10px;
+    padding: 8px 16px;
     font-size: 14px;
     cursor: pointer;
-    margin-right: 5px;
-    border: 1px solid #444746;
-    border-radius: 8px;
+    margin-right: 8px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
     background-color: #f9f9f9;
-    color: #444746;
+    color: #444;
     transition: all 0.3s ease;
   }
 
   /* 버튼 호버 시 스타일 */
   button:hover {
-    background-color: #e6e6e6;
-    border-color: #444746;
+    background-color: #f0f0f0;
+    border-color: #888;
     color: #333;
   }
 
@@ -53,25 +55,34 @@
     align-items: center;
     gap: 10px;
   }
-  
+
   .input-group input {
+    width: 250px;
     flex: 1;
     padding: 8px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
     font-size: 14px;
+    margin-right: 10px;
+    transition: border-color 0.3s ease;
   }
-  
+
+  .input-group input:focus {
+    border-color: #4285f4;
+    outline: none;
+  }
+
   .input-group .search-button {
     padding: 8px 16px;
     font-size: 14px;
-    color: #fff;
+    color: white;
     background-color: #4285f4;
     border: none;
-    border-radius: 8px;
+    border-radius: 6px;
     cursor: pointer;
+    transition: background-color 0.3s ease;
   }
-  
+
   .input-group .search-button:hover {
     background-color: #3367d6;
   }
@@ -83,7 +94,7 @@
   /* 파일 영역 */
   .file-area {
     display: flex;
-    border-top: 1px solid #ccc;
+    border-top: 1px solid #eee;
     margin-top: 20px;
     padding-top: 20px;
     gap: 20px;
@@ -93,7 +104,7 @@
   .file-list {
     position: relative;
     flex: 2;
-    border-right: 1px solid #ccc;
+    border-right: 1px solid #eee;
     padding-right: 20px;
   }
 
@@ -106,12 +117,18 @@
 
   .file-table th,
   .file-table td {
-    padding: 10px;
+    padding: 12px;
     border-bottom: 1px solid #ddd;
+    height: 50px;
+    font-size: 14px;
   }
 
-  .file-table th {
-    background-color: #f5f5f5;
+  .no-results {
+    text-align: left;
+  }
+
+  .drag-drop-zone .file-table th {
+    background-color: #f9f9f9;
     font-weight: bold;
   }
 
@@ -123,11 +140,16 @@
 
   .file-details h3 {
     margin-bottom: 20px;
+    font-size: 20px;
+    font-weight: bold;
+    color: #333;
   }
 
   .detail-content img {
     display: block;
-    margin-bottom: 10px;
+    margin-bottom: 15px;
+    width: 100%;
+    border-radius: 8px;
   }
 
   /* 작업 버튼 */
@@ -140,21 +162,12 @@
     border: none;
     font-size: 18px;
     cursor: pointer;
+    color: #007bff;
+    transition: color 0.3s ease;
   }
 
-  /* 오른쪽 상세 정보 */
-  .file-details {
-    flex: 1;
-    padding-left: 20px;
-  }
-
-  .file-details h3 {
-    margin-bottom: 20px;
-  }
-
-  .detail-content img {
-    display: block;
-    margin-bottom: 10px;
+  .action-button:hover {
+    color: #0056b3;
   }
 
   /* 용량 상세 정보 */
@@ -163,8 +176,10 @@
     max-width: 600px;
     margin: 0 auto;
     text-align: center;
-    padding: 50px;
+    padding: 40px;
     box-sizing: border-box;
+    background-color: #f9f9f9;
+    border-radius: 10px;
   }
 
   .storage-info h2 {
@@ -173,39 +188,36 @@
   }
 
   .storage-info .current-usage {
-    font-size: 16px; /* 기존 15GB 크기로 설정 */
-    font-weight: normal;
+    font-size: 16px;
     color: #555;
   }
 
   .storage-info .total-usage {
-    font-size: 20px; /* 기존 73.1MB 크기로 설정 */
+    font-size: 24px;
     font-weight: bold;
     color: #333;
   }
 
   .storage-bar {
     width: 100%;
-    height: 8px;
-    background-color: #eee;
-    border-radius: 4px;
-    margin: 10px 0;
+    height: 10px;
+    background-color: #e0e0e0;
+    border-radius: 5px;
+    margin-top: 15px;
     position: relative;
-    display: flex;
   }
 
   .drive-usage {
-    width: 10%;
     height: 100%;
     background-color: #4285f4;
-    border-radius: 4px 0 0 4px;
+    border-radius: 5px 0 0 5px;
   }
 
   .chat-usage {
-    width: 2%;
+    width: 15%;
     height: 100%;
     background-color: #ea4335;
-    border-radius: 0 4px 4px 0;
+    border-radius: 0 5px 5px 0;
     left: 70%;
   }
 
@@ -213,6 +225,7 @@
     display: flex;
     justify-content: flex-start;
     gap: 10px;
+    margin-top: 10px;
   }
 
   .legend-item {
@@ -222,8 +235,8 @@
 
   .drive-dot,
   .chat-dot {
-    width: 10px;
-    height: 10px;
+    width: 12px;
+    height: 12px;
     display: inline-block;
     border-radius: 50%;
   }
@@ -236,21 +249,27 @@
     background-color: #ea4335;
   }
 
-  /* 파일 테이블 스타일 */
-  .file-table {
-    width: 100%;
-    border-collapse: collapse;
+  /* 드래그 앤 드롭 영역 */
+  .drag-drop-zone {
+    align-content: center;
+    height: 200px;
+    border: 2px dashed #ccc;
+    padding: 40px;
+    text-align: center;
+    margin: 20px 0;
+    border-radius: 8px;
+    transition:
+      background-color 0.3s ease,
+      border-color 0.3s ease,
+      box-shadow 0.3s ease;
+
+    &:hover {
+      border-color: #007bff;
+      background-color: #f4faff;
+    }
   }
 
-  .file-table th,
-  .file-table td {
-    border-bottom: 1px solid #ddd;
-    padding: 8px;
-    text-align: left;
-  }
-
-  .file-table thead th {
-    background-color: #f9f9f9;
-    font-weight: bold;
+  .drag-drop-zone.dragging {
+    background-color: #f0f8ff;
   }
 }

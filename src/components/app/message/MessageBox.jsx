@@ -1,28 +1,39 @@
-import { useEffect, useState } from "react";
-import ContextMenu from "./ContextMenu";
+import { useState } from "react";
+import EmojiPicker from "emoji-picker-react";
+import {
+  Avatar,
+  IconButton,
+  Menu,
+  MenuItem,
+  ToggleButton,
+  ToggleButtonGroup,
+} from "@mui/material";
 
-/* 
-  2024-12-2
-  최영진: 화면구현(스크립트)
+import FormatBoldIcon from "@mui/icons-material/FormatBold";
+import FormatItalicIcon from "@mui/icons-material/FormatItalic";
+import FormatUnderlinedIcon from "@mui/icons-material/FormatUnderlined";
+import FormatColorFillIcon from "@mui/icons-material/FormatColorFill";
+import FormatAlignLeftIcon from "@mui/icons-material/FormatAlignLeft";
+import FormatAlignCenterIcon from "@mui/icons-material/FormatAlignCenter";
+import FormatAlignRightIcon from "@mui/icons-material/FormatAlignRight";
+import FormatAlignJustifyIcon from "@mui/icons-material/FormatAlignJustify";
+import EmojiEmotionsOutlinedIcon from "@mui/icons-material/EmojiEmotionsOutlined";
 
-*/
 export default function MessageBox() {
-
-
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
-  const [editingMessage, setEditingMessage] = useState(null);  // 편집 상태
-  const [contextMenu, setContextMenu] = useState({ visible: false, x: 0, y: 0, messageIndex: null });
-
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [selectedIndex, setSelectedIndex] = useState(null); // 선택한 메시지 인덱스
+  const [EmojiStatus, setEmojiStatus] = useState(false);
 
   const getCurrentTime = () => {
     const now = new Date();
     let hours = now.getHours();
     const minutes = now.getMinutes();
-    const ampm = hours >= 12 ? '오후' : '오전';
+    const ampm = hours >= 12 ? "오후" : "오전";
     hours = hours % 12;
     hours = hours ? hours : 12;
-    const minutesForMatted = minutes < 10 ? '0' + minutes : minutes;
+    const minutesForMatted = minutes < 10 ? "0" + minutes : minutes;
     return `${ampm} ${hours}: ${minutesForMatted}`;
   };
 
@@ -31,150 +42,204 @@ export default function MessageBox() {
     const year = now.getFullYear();
     const month = now.getMonth() + 1;
     const day = now.getDate();
-    const daysOfweek = ['월', '화', '수', '목', '금', '토', '일'];
+    const daysOfweek = ["월", "화", "수", "목", "금", "토", "일"];
     const dayOfWeek = daysOfweek[now.getDay()];
-    return `${year}. ${month < 10 ? '0' + month : month}. ${day < 10 ? '0' + day : day}. (${dayOfWeek})`;
+    return `${year}. ${month < 10 ? "0" + month : month}. ${
+      day < 10 ? "0" + day : day
+    }. (${dayOfWeek})`;
+  };
 
-  }
-
-  // 메시지 전송 함수
   const handleSendMessage = () => {
-    if (newMessage.trim()) {// 공백만 있는 메시지는 보내지 않음
+    if (newMessage.trim()) {
       const time = getCurrentTime();
       const date = messages.length === 0 ? getCurrentDate() : null;
       setMessages([...messages, { text: newMessage, time, date }]);
-      setNewMessage(""); // 일력 필드 초기화
+      setNewMessage("");
     }
   };
 
-  // ...클릭시 메뉴 처리
-  const contextMenuHandle = (event, index) => {
-    event.preventDefault();
-  
-    // 버튼의 위치 계산
-    const buttonRect = event.target.getBoundingClientRect();
-    
-    setContextMenu({
-      visible: true,
-      x: buttonRect.left + window.scrollX,  // 버튼 왼쪽 기준
-      y: buttonRect.left + window.scrollY,  // 버튼 왼쪽 기준
-      y: buttonRect.left + window.scrollZ,  // 버튼 왼쪽 기준
-      messageIndex: index,
-    });
+  const emojiSelect = (emojiObject) => {
+    setNewMessage((prevMessage) => prevMessage + emojiObject.emoji);
   };
 
-
-  // contextMenu 상태가 업데이트 된 후에 로그 출력
-  useEffect(() => {
-    if (contextMenu.visible) {
-      console.log('Button Rect:', contextMenu); // contextMenu 상태를 출력
-    }
-  }, [contextMenu]);  // contextMenu 값이 변경될 때마다 실행
-  //  메뉴 닫기
-  const closeContextMenu = () => {
-    setContextMenu({ visible: false, x: 0, y: 0, messageIndex: null });
-  };
-
-
-
-  //삭제
+  // 메시지 삭제 함수
   const deleteMessageHandle = () => {
-    const updatedMessages = messages.filter((_, index) => index !== contextMenu.messageIndex);
-    setMessages(updatedMessages);
-    closeContextMenu();
-  }
+    if (selectedIndex !== null) {
+      const updatedMessages = messages.filter((_, i) => i !== selectedIndex);
+      setMessages(updatedMessages);
+    }
+    handleClose();
+  };
 
-  // 편집
-  const editMessageHandle = () => {
-    const messageToEdit = messages[contextMenu.messageIndex];
-    setEditingMessage({ text: messageToEdit.text, index: contextMenu.messageIndex });
-    closeContextMenu();
-  }
+  const handleClick = (event, index) => {
+    setAnchorEl(event.currentTarget);
+    setSelectedIndex(index);
+    event.preventDefault();
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+    setSelectedIndex(null);
+  };
+
   const keyDown = (event) => {
     if (event.key === "Enter") {
       handleSendMessage();
       event.preventDefault();
     }
   };
-  // 편집된 메시지 저장
-  const saveEditHandle = () => {
-    if (editingMessage.text.trim()) {
-      const updatedMessages = [...messages];
-      updatedMessages[editingMessage.index].text = editingMessage.text;
-      setMessages(updatedMessages);
-      setEditingMessage(null);
-    }
-  };
-
-
-
 
   const inputHandle = (event) => {
     setNewMessage(event.target.value);
   };
-  const inputEditHandle = (event) => {
-    setEditingMessage({ ...editingMessage, text: event.target.value });
+
+  // 이모지 설정
+  const emojiOpen = () => {
+    setEmojiStatus(!EmojiStatus);
   };
 
   return (
     <div className="messageDiv">
       <div className="messageInfo">
-        <h2>강중원</h2>
-        <span>관리자</span>
+        <h2 className="chatRoomName">
+          <Avatar>강</Avatar>강중원
+        </h2>
+        <span></span>
       </div>
       <div className="chatBox">
         {messages.map((message, index) => (
-          <div key={index}>
-            <div className="message_date">{message.date}</div>
-            <div className="message_box">
-              <img
+          <div key={index} className="chatBlockByDay">
+            {message.date && <div className="message_date">{message.date}</div>}
+            <div
+              className="message_box"
+              onContextMenu={(event) => handleClick(event, index)}
+            >
+              <Avatar
+                alt="Remy Sharp"
                 src="/images/user_Icon.png"
-                alt="프로필"
                 className="chatProfile"
               />
               <div className="chatContent">
+                <div className="message_sender">이순신</div>
                 <div className="message_time">{message.time}</div>
                 <div className="text_box">
                   <p>{message.text}</p>
-                  <button className="menuBtn" onClick={(e) => contextMenuHandle(e, index)}>...</button>
                 </div>
               </div>
             </div>
           </div>
         ))}
       </div>
-
+      <Menu
+        id="basic-menu"
+        anchorEl={anchorEl}
+        open={Boolean(anchorEl)}
+        onClose={handleClose}
+        MenuListProps={{
+          "aria-labelledby": "basic-button",
+        }}
+      >
+        <MenuItem onClick={deleteMessageHandle}>삭제</MenuItem>
+      </Menu>
       <div className="message_input-bar">
-        {editingMessage ? (
-          <div>
+        <div className="input_container">
+          <div className="input_box">
+            <div className="input_tools">
+              <ToggleButtonGroup aria-label="text formatting">
+                <ToggleButton
+                  value="bold"
+                  aria-label="bold"
+                  style={{ border: "none" }}
+                >
+                  <FormatBoldIcon />
+                </ToggleButton>
+                <ToggleButton
+                  value="italic"
+                  aria-label="italic"
+                  style={{ border: "none" }}
+                >
+                  <FormatItalicIcon />
+                </ToggleButton>
+                <ToggleButton
+                  value="underlined"
+                  aria-label="underlined"
+                  style={{ border: "none" }}
+                >
+                  <FormatUnderlinedIcon />
+                </ToggleButton>
+                <ToggleButton
+                  value="color"
+                  aria-label="color"
+                  style={{ border: "none" }}
+                  disabled
+                >
+                  <FormatColorFillIcon />
+                </ToggleButton>
+              </ToggleButtonGroup>
+              <ToggleButtonGroup exclusive aria-label="text alignment">
+                <ToggleButton
+                  value="left"
+                  aria-label="left aligned"
+                  style={{ border: "none" }}
+                >
+                  <FormatAlignLeftIcon />
+                </ToggleButton>
+                <ToggleButton
+                  value="center"
+                  aria-label="centered"
+                  style={{ border: "none" }}
+                >
+                  <FormatAlignCenterIcon />
+                </ToggleButton>
+                <ToggleButton
+                  value="right"
+                  aria-label="right aligned"
+                  style={{ border: "none" }}
+                >
+                  <FormatAlignRightIcon />
+                </ToggleButton>
+                <ToggleButton
+                  value="justify"
+                  aria-label="justified"
+                  disabled
+                  style={{ border: "none" }}
+                >
+                  <FormatAlignJustifyIcon />
+                </ToggleButton>
+              </ToggleButtonGroup>
+            </div>
             <input
               type="text"
-              value={editingMessage.text}
-              onChange={inputEditHandle}
-              placeholder=""
-            />
-            <button onClick={saveEditHandle}>저장</button>
-          </div>
-        ) : (
-          <div className="input_box">
-            <input type="text"
               placeholder="메시지를 입력해주세요."
               value={newMessage}
               onChange={inputHandle}
-              onKeyDown={keyDown} />
-            <button onClick={handleSendMessage}>전송</button>
+              onKeyDown={keyDown}
+              className="chattingInput"
+            />
+            <div className="subInput_tools">
+              <IconButton aria-label="delete" color="black" onClick={emojiOpen}>
+                <EmojiEmotionsOutlinedIcon />
+              </IconButton>
+            </div>
           </div>
-        )}
+
+          <button onClick={handleSendMessage} className="sendButton">
+            전송
+          </button>
+          <EmojiPicker
+            rows={4}
+            perRow={8}
+            emojiSize={32}
+            style={{
+              position: "absolute",
+              bottom: "120px",
+              left: "0px",
+            }}
+            open={EmojiStatus}
+            onEmojiClick={emojiSelect}
+          />
+        </div>
       </div>
-
-
-      <ContextMenu
-        contextMenu={contextMenu}
-        deleteMessageHandle={deleteMessageHandle}
-        editMessageHandle={editMessageHandle}
-        closeContextMenu={closeContextMenu}
-      />
     </div>
-
   );
 }

@@ -1,11 +1,34 @@
-import { Link } from "react-router-dom";
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 
 export default function Terms() {
+
+  const [isChecked1, setIsChecked1] = useState(false);
+  const [isChecked2, setIsChecked2] = useState(false);
+  const navigate = useNavigate();
+  const checkboxHandle1 = () => {
+    setIsChecked1(!isChecked1); // 체크박스 상태 변경
+
+  }
+  const checkboxHandle2 = () => {
+    setIsChecked2(!isChecked2); // 체크박스 상태 변경
+
+  }
+
+  const submitHandle = (event) => {
+    event.preventDefault();
+
+    if (!isChecked1 || !isChecked2) {
+      alert('모든 항목에 동의 하셔야 합니다.')
+    } else {
+      navigate("/user/register");
+    }
+  }
   return (
     <div>
-      <div class="termsText1">
+      <div className="termsText1">
         <h3>사이트 이용약관</h3>
-        <textarea name="" id="" readonly>
+        <textarea name="" id="termsBox1" readonly>
           여러분을 환영합니다. 허브플로우 서비스 및 제품(이하 ‘서비스’)을 이용해
           주셔서 감사합니다. 본 약관은 다양한 허브플로우 서비스의 이용과
           관련하여 허브플로우 서비스를 제공하는 허브플로우 주식회사(이하
@@ -310,14 +333,17 @@ export default function Terms() {
           사항이 있으시면 고객센터(대표번호: 1588 – 3820/ 평일 09:00~18:00)로
           문의 주시기 바랍니다.
         </textarea>
-        <div class="agreement">
-          <input type="checkbox" id="agree1" />
+        <div className="agreement">
+          <input type="checkbox"
+            id="agree1"
+            checked={isChecked1}
+            onChange={checkboxHandle1} />
           <label for="agree1">동의하기</label>
         </div>
       </div>
-      <div class="termsText2">
+      <div className="termsText2">
         <h3>개인정보 취급방침</h3>
-        <textarea name="" id="" readonly>
+        <textarea name="" id="termsBox2" readonly>
           개인정보보호법에 따라 허브플로우에 회원가입 신청하시는 분께 수집하는
           개인정보의 항목, 개인정보의 수집 및 이용목적, 개인정보의 보유 및
           이용기간, 동의 거부권 및 동의 거부 시 불이익에 관한 사항을 안내
@@ -397,18 +423,24 @@ export default function Terms() {
           경우에는 로그인이 필요한 허브플로우 일부 서비스의 이용에 불편이 있을 수
           있습니다.
         </textarea>
-        <div class="agreement">
-          <input type="checkbox" id="agree2" />
+        <div className="agreement">
+          <input type="checkbox"
+            id="agree2"
+            checked={isChecked2}
+            onChange={checkboxHandle2} />
           <label for="agree2">동의하기</label>
         </div>
       </div>
-      <div class="regiBtn">
-        <Link to="/user/login" class="btnCancle">
+      <div className="regiBtn">
+        <Link to="/user/login" className="btnCancle">
           취소
         </Link>
-        <Link to="/user/register" class="btnNext">
+        <button
+          onClick={submitHandle} // 확인 버튼 클릭 시
+          className="btnNext"
+        >
           확인
-        </Link>
+        </button>
       </div>
     </div>
   );

@@ -1,6 +1,18 @@
+/*
+
+    날짜 : 2024/11/25
+    이름 : 최영진
+    내용 : 회원가입 
+
+    추가내역
+    2024-12-03 최영진 유효성 추가, 우편검색
+
+*/
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { postUser } from "../../../api/user/userAPI";
+import { authEmail, checkUserId, postUser, sandEmail } from "../../../api/user/userAPI";
+import DaumPostModal from './DaumPostModal'; // DaumPostModal 컴포넌트 임포트
+
 
 const initState = {
     userId: "",
@@ -13,19 +25,68 @@ const initState = {
     addr2: null,
 }
 export default function Register() {
+
     const navigate = useNavigate();
     const [user, setUser] = useState({ ...initState });
     const [passwordMatch, setPasswordMatch] = useState(true);
     const [authCode, setAuthCode] = useState("");
     const [pass2, setPass2] = useState("");
 
+    const [userId, setUserId] = useState(false);
+    const [emailAutn, setEmailAuth] = useState(false)
+    const [modalState, setModalState] = useState(false);
 
+    const onAddressSelect = (data) => {
+        setUser({
+            ...user,
+            zip: data.zonecode,
+            addr1: data.address,
+            addr2: ''
+        });
+        toggleModal();
+    }
+
+    // 모달 상태 토글 함수
+    const toggleModal = () => {
+    const [userId, setUserId] = useState(null);
+
+
+        setModalState(prevState => !prevState);
+    };
+
+    const checkUserIdHandler = async () => {
+        const response = await checkUserId(user.userId);
+        if (!response.data.isAvailable) {
+            setUserId(false); // 중복
+            alert("이미 사용중인 아이디입니다")
+        } else {
+            setUserId(true) // 사용가능
+            alert("사용가능 한 아이디입니다")
+        }
+    }
+    const sandEmailHandler = async () => {
+        const response = await sandEmail(user.email)
+        if (response.status === 200) {
+            setEmailAuth(true);
+            alert("인증번호가 발송되었습니다.")
+        } else {
+            setEmailAuth(false);
+
+            alert("인증 번호 발송중 문제 발생.")
+        }
+    }
+    const authEmailHandler = async () => {
+        const response = await authEmail(user.email, authCode)
+        if (response.status === 200) {
+            alert("인증이 완료 되었습니다.")
+        } else {
+            alert("인증 번호가 다릅니다.")
+        }
+    }
     const changeHandler = (e) => {
         const { name, value } = e.target;
-
         const updatedUser = { ...user, [name]: value };
         setUser(updatedUser);
-
         // pass과 pass2 비교
         if (name === "pass2") {
             setPass2(value);
@@ -44,9 +105,10 @@ export default function Register() {
             setAuthCode(value);  // 인증번호 상태 업데이트
         }
     }
+
     const submitHandler = (e) => {
         e.preventDefault();
-
+        
         const savedUser = postUser(user);
 
         if (savedUser) {
@@ -71,7 +133,7 @@ export default function Register() {
                                     placeholder="아이디 입력"
                                     value={user.userId}
                                     onChange={changeHandler} />
-                                <button type="button">
+                                <button type="button" onClick={checkUserIdHandler}>
                                     <img src="/images/check.svg" alt="중복확인" />
                                 </button>
                                 <span className="uidResult"></span>
@@ -134,7 +196,7 @@ export default function Register() {
                                     placeholder="이메일 입력"
                                     value={user.email}
                                     onChange={changeHandler} />
-                                <button type="button">
+                                <button type="button" onClick={sandEmailHandler}>
                                     <img src="/images/check.svg" alt="인증번호 받기" />
                                 </button>
                                 <div className="auth">
@@ -143,7 +205,7 @@ export default function Register() {
                                         placeholder="인증번호 입력"
                                         value={authCode}
                                         onChange={changeHandler} />
-                                    <button type="button">
+                                    <button type="button" onClick={authEmailHandler}>
                                         <img src="/images/check.svg" alt="확인" />
                                     </button>
                                 </div>
@@ -170,7 +232,7 @@ export default function Register() {
                                     value={user.zip}
                                     onChange={changeHandler}
                                 />
-                                <button type="button">
+                                <button type="button" onClick={toggleModal}>
                                     <img src="/images/search.svg" alt="우편번호찾기" />
                                 </button>
                                 <input
@@ -197,9 +259,11 @@ export default function Register() {
                     <Link to="/user/login" className="btnCancle">
                         취소
                     </Link>
-                    <input type="submit" value="회원가입" className="blueButton" />
+                    <input type="submit" value="회원가입" className="blueButton" disabled={!emailAutn || !passwordMatch || !userId} />
                 </div>
             </form>
+            {/* 모달을 modalState가 true일 때만 보이도록 렌더링 */}
+            {modalState && <DaumPostModal toggleModal={toggleModal} onAddressSelect={onAddressSelect} />}
         </div>
     );
 }
