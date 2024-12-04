@@ -11,7 +11,7 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { authEmail, checkUserId, postUser, sandEmail } from "../../../api/user/userAPI";
-import DaumPostModal from './DaumPostModal'; // DaumPostModal 컴포넌트 임포트
+import PostSearchPopup from "./PostSearchPopup";
 
 
 const initState = {
@@ -34,25 +34,7 @@ export default function Register() {
 
     const [userId, setUserId] = useState(false);
     const [emailAutn, setEmailAuth] = useState(false)
-    const [modalState, setModalState] = useState(false);
-
-    const onAddressSelect = (data) => {
-        setUser({
-            ...user,
-            zip: data.zonecode,
-            addr1: data.address,
-            addr2: ''
-        });
-        toggleModal();
-    }
-
-    // 모달 상태 토글 함수
-    const toggleModal = () => {
-    const [userId, setUserId] = useState(null);
-
-
-        setModalState(prevState => !prevState);
-    };
+    const [isPostcodePopupOpen, setIsPostcodePopupOpen] = useState(false);  // 우편번호 팝업 상태 관리
 
     const checkUserIdHandler = async () => {
         const response = await checkUserId(user.userId);
@@ -118,7 +100,26 @@ export default function Register() {
             alert("회원가입이 실패 했습니다.")
         }
     }
+    // 우편번호 팝업 열기
+    const openPostcodePopup = () => {
+        setIsPostcodePopupOpen(true);
+        console.log("레지스터에서 요청");
+    };
 
+    // 우편번호 검색 후 부모 컴포넌트로 데이터 전달
+    const handlePostcodeSearchComplete = ({ zonecode, address }) => {
+        setUser({
+            ...user,
+            zip: zonecode,
+            addr1: address,
+        });
+        setIsPostcodePopupOpen(false);  // 팝업 닫기
+    };
+    // 팝업 닫기
+    const closePostcodePopup = () => {
+        console.log("우편번호 팝업 닫기");
+        setIsPostcodePopupOpen(false);  // 팝업 닫기
+    };
     return (
         <div className="register">
             <form onSubmit={submitHandler}>
@@ -199,16 +200,18 @@ export default function Register() {
                                 <button type="button" onClick={sandEmailHandler}>
                                     <img src="/images/check.svg" alt="인증번호 받기" />
                                 </button>
-                                <div className="auth">
-                                    <input type="text"
-                                        name="auth"
-                                        placeholder="인증번호 입력"
-                                        value={authCode}
-                                        onChange={changeHandler} />
-                                    <button type="button" onClick={authEmailHandler}>
-                                        <img src="/images/check.svg" alt="확인" />
-                                    </button>
-                                </div>
+                                {emailAutn && (
+                                    <div className="auth">
+                                        <input type="text"
+                                            name="auth"
+                                            placeholder="인증번호 입력"
+                                            value={authCode}
+                                            onChange={changeHandler} />
+                                        <button type="button" onClick={authEmailHandler}>
+                                            <img src="/images/check.svg" alt="확인" />
+                                        </button>
+                                    </div>
+                                )}
                             </td>
                         </tr>
                         <tr>
@@ -232,9 +235,10 @@ export default function Register() {
                                     value={user.zip}
                                     onChange={changeHandler}
                                 />
-                                <button type="button" onClick={toggleModal}>
+                                <button type="button" onClick={openPostcodePopup}>
                                     <img src="/images/search.svg" alt="우편번호찾기" />
                                 </button>
+
                                 <input
                                     type="text"
                                     name="addr1"
@@ -262,8 +266,16 @@ export default function Register() {
                     <input type="submit" value="회원가입" className="blueButton" disabled={!emailAutn || !passwordMatch || !userId} />
                 </div>
             </form>
-            {/* 모달을 modalState가 true일 때만 보이도록 렌더링 */}
-            {modalState && <DaumPostModal toggleModal={toggleModal} onAddressSelect={onAddressSelect} />}
+            {isPostcodePopupOpen && (
+                <div className="popup-overlay">
+                    <div className="popup-content">
+                        <PostSearchPopup
+                            onSearchComplete={handlePostcodeSearchComplete}
+                            onClose={closePostcodePopup}  // 부모에서 전달한 onClose 호출
+                        />
+                    </div>
+                </div>
+            )}
         </div>
     );
 }
