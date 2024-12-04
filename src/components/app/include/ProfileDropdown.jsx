@@ -65,6 +65,9 @@ export default function ProfileDropdown({ isOpen }) {
         </div>
       </div>
       <div className="profileButtons">
+        <Link to="/admin/user" className="editProfileButton">
+          관리자
+        </Link>
         <Link to="/app/setting" className="editProfileButton">
           프로필 편집
         </Link>
