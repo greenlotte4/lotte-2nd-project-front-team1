@@ -16,15 +16,15 @@ import { getSettingUser } from "../../../../api/setting/SettingAPI";
 import { useSelector } from "react-redux";
 
 export default function UserSetting() {
-  const [contact, setContact] = useState("010-1234-5678");
-  const [email, setEmail] = useState("hello@hubflow.com");
-  const [statusMessage, setStatusMessage] = useState("오늘 하루도 열심히! 👏");
   const changePassHandle = () => {
     navigate("/user/find/findView", { state: { method: "PassFind" } });
   };
   const navigate = useNavigate();
   const [userData, setUserData] = useState(null);
   const user = useSelector((state) => state.userSlice);
+  const [hp, setHp] = useState("");
+  const [email, setEmail] = useState("");
+  const [statusMessage, setStatusMessage] = useState("오늘 하루도 열심히! 👏");
   // 사용자 정보를 API로 가져오는 함수
   useEffect(() => {
     if (!user || !user.userid) {
@@ -34,7 +34,6 @@ export default function UserSetting() {
 
     const fetchData = async () => {
       try {
-        console.log("API 호출 userId:", user.userid);
         const response = await getSettingUser(user.userid);
         console.log("API 응답 데이터:", response.data);
         setUserData(response.data);
@@ -45,7 +44,16 @@ export default function UserSetting() {
 
     fetchData();
   }, [user?.userid]);
-
+  useEffect(() => {
+    if (userData) {
+      setHp(userData.hp || "");
+      setEmail(userData.email || "");
+    }
+  }, [userData]);
+  const formatDate = (dateString) => {
+    if (!dateString) return "";
+    return dateString.split("T")[0]; // "2024-12-03T08:45:26.000+00:00" → "2024-12-03"
+  };
   if (!userData) {
     return <p>사용자 정보를 불러오는 중...</p>;
   }
@@ -65,17 +73,17 @@ export default function UserSetting() {
               <td>일반 / 2024-11-11</td>
             </tr>
             {/* 연락처 컴포넌트 */}
-            <ContactRow contact={contact} setContact={setContact} />
+            <ContactRow contact={hp} setContact={setHp} />
 
             {/* 이메일 컴포넌트 */}
             <EmailRow email={email} setEmail={setEmail} />
             <tr>
               <td>가입 날짜</td>
-              <td>{userData.createdAt}</td>
+              <td>{formatDate(userData.createdAt)}</td>
             </tr>
             <tr>
               <td>최근 로그인</td>
-              <td>{userData.updatedAt}</td>
+              <td>{formatDate(userData.updatedAt)}</td>
             </tr>
             <StatusMessage
               statusMessage={statusMessage}

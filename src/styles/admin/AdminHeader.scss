@@ -123,8 +123,17 @@
 
   /* 프로필 이미지 스타일 */
   .profileImageWrapper {
+    width: 80px;
+    height: 80px;
     flex-shrink: 0;
     margin-right: 15px;
+    border-radius: 50%;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 4px solid transparent;
+    transition: border-color 0.3s ease;
   }
 
   .ProfileDropdownImg {
@@ -162,11 +171,12 @@
   .profileButtons {
     display: flex;
     justify-content: space-between;
+    text-align: center;
   }
 
   .editProfileButton,
   .logoutButton {
-    width: 48%; /* 버튼 너비를 50%로 설정 */
+    width: 30%; /* 버튼 너비를 50%로 설정 */
     padding: 10px;
     border: none;
     border-radius: 5px;

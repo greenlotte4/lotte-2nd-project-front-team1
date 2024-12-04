@@ -7,9 +7,41 @@
     -------------
     00.00 이름 - 내용
 */
-import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useSearchParams } from "react-router-dom";
+import AdminUserItem from "./AdminUserItem";
+import { getAdminUserList } from "../../api/admin/AdminAPI";
+
+const initState = {
+  dtoList: [],
+  cate: "",
+  pg: 1,
+  size: 10,
+  total: 0,
+  startNo: 0,
+  start: 0,
+  end: 0,
+  prev: false,
+  next: false,
+  type: null,
+  keyword: null,
+};
 
 export default function AdminUser() {
+  const [data, setData] = useState(initState);
+
+  const [searchParams] = useSearchParams();
+  const pg = searchParams.get("pg") || 1;
+  useEffect(() => {
+    const fetchData = async () => {
+      const data = await getAdminUserList(pg);
+      console.log(data);
+      setData(data);
+    };
+
+    fetchData();
+  }, [pg]);
+
   return (
     <div className="adminuser-content">
       <div>
@@ -35,7 +67,8 @@ export default function AdminUser() {
                 </th>
                 <th>이름</th>
                 <th>아이디</th>
-                <th>등급</th>
+                <th>구매등급</th>
+                <th>권한</th>
                 <th>가입날짜</th>
                 <th>최근 로그인</th>
                 <th>상태</th>
@@ -43,70 +76,9 @@ export default function AdminUser() {
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td>
-                  <input type="checkbox" />
-                </td>
-                <td>이도영</td>
-                <td>qwer1234</td>
-                <td>
-                  <select name="grade" defaultValue="free">
-                    <option value="free">free</option>
-                    <option value="premium">premium</option>
-                    <option value="enterprise">enterprise</option>
-                  </select>
-                </td>
-                <td>2024-11-27</td>
-                <td>2024-11-28</td>
-                <td>
-                  <select name="status" defaultValue="정상">
-                    <option value="정상">정상</option>
-                    <option value="정지">정지</option>
-                    <option value="탈퇴">탈퇴</option>
-                    <option value="휴먼">휴먼</option>
-                  </select>
-                </td>
-                <td>
-                  <Link
-                    to={`/user-details/qwer1234`}
-                    className="details-button"
-                  >
-                    자세히
-                  </Link>
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  <input type="checkbox" />
-                </td>
-                <td>카리나</td>
-                <td>karina1234</td>
-                <td>
-                  <select name="grade" defaultValue="enterprise">
-                    <option value="free">free</option>
-                    <option value="premium">premium</option>
-                    <option value="enterprise">enterprise</option>
-                  </select>
-                </td>
-                <td>2024-12-27</td>
-                <td>2024-12-28</td>
-                <td>
-                  <select name="status" defaultValue="정지">
-                    <option value="정상">정상</option>
-                    <option value="정지">정지</option>
-                    <option value="탈퇴">탈퇴</option>
-                    <option value="휴먼">휴먼</option>
-                  </select>
-                </td>
-                <td>
-                  <Link
-                    to={`/user-details/karina1234`}
-                    className="details-button"
-                  >
-                    자세히
-                  </Link>
-                </td>
-              </tr>
+              {data.dtoList.map((user, index) => (
+                <AdminUserItem key={index} user={user} />
+              ))}
             </tbody>
           </table>
           <div className="inquiry-button-area">삭제</div>

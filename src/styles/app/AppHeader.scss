@@ -193,11 +193,12 @@
   .profileButtons {
     display: flex;
     justify-content: space-between;
+    text-align: center;
   }
 
   .editProfileButton,
   .logoutButton {
-    width: 48%; /* 버튼 너비를 50%로 설정 */
+    width: 30%; /* 버튼 너비를 50%로 설정 */
     padding: 10px;
     border: none;
     border-radius: 5px;
