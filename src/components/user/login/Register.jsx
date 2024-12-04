@@ -12,15 +12,18 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { authEmail, checkUserId, postUser, sandEmail } from "../../../api/user/userAPI";
 import PostSearchPopup from "./PostSearchPopup";
+import { Password } from "@mui/icons-material";
 
 
 const initState = {
     userId: "",
     pass: "",
-    name: "",
+    username: "",
     email: "",
     hp: "",
-    zip: null,
+    role:"USER",
+    status:"NORMAL",
+    zipcode: null,
     addr1: null,
     addr2: null,
 }
@@ -31,10 +34,18 @@ export default function Register() {
     const [passwordMatch, setPasswordMatch] = useState(true);
     const [authCode, setAuthCode] = useState("");
     const [pass2, setPass2] = useState("");
+    const [pass, setPass] = useState("");
 
     const [userId, setUserId] = useState(false);
     const [emailAutn, setEmailAuth] = useState(false)
     const [isPostcodePopupOpen, setIsPostcodePopupOpen] = useState(false);  // 우편번호 팝업 상태 관리
+    const [passValid, setPassValid] = useState(false);
+
+    const validatePass = (Password) => {
+        const passRegex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,}$/;
+        return passRegex.test(Password);
+    }
+
 
     const checkUserIdHandler = async () => {
         const response = await checkUserId(user.userId);
@@ -68,21 +79,27 @@ export default function Register() {
     const changeHandler = (e) => {
         const { name, value } = e.target;
         const updatedUser = { ...user, [name]: value };
+
         setUser(updatedUser);
         // pass과 pass2 비교
-        if (name === "pass2") {
-            setPass2(value);
-            // pass과 pass2 비교
-            if (user.pass !== value) {
+        if (name === "pass") {
+            setPass(value);
+            setPassValid(validatePass(value)); // 비밀번호 유효성 체크
+            // 비밀번호가 일치하는지 확인
+            if (value === pass2) {
+                setPasswordMatch(true); // 일치하면 true
+            } else if (pass2) {
                 setPasswordMatch(false); // 일치하지 않으면 false
-            } else {
-                setPasswordMatch(true);  // 일치하면 true
             }
-        } else {
-            const updatedUser = { ...user, [name]: value };
-            setUser(updatedUser);
+        } else if (name === "pass2") {
+            setPass2(value);
+            // 비밀번호가 일치하는지 확인
+            if (pass === value) {
+                setPasswordMatch(true); // 일치하면 true
+            } else if (value) {
+                setPasswordMatch(false); // 일치하지 않으면 false
+            }
         }
-
         if (name === "auth") {
             setAuthCode(value);  // 인증번호 상태 업데이트
         }
@@ -90,7 +107,7 @@ export default function Register() {
 
     const submitHandler = (e) => {
         e.preventDefault();
-        
+
         const savedUser = postUser(user);
 
         if (savedUser) {
@@ -110,7 +127,7 @@ export default function Register() {
     const handlePostcodeSearchComplete = ({ zonecode, address }) => {
         setUser({
             ...user,
-            zip: zonecode,
+            zipcode: zonecode,
             addr1: address,
         });
         setIsPostcodePopupOpen(false);  // 팝업 닫기
@@ -150,13 +167,16 @@ export default function Register() {
                                     onChange={changeHandler} />
                                 <span
                                     style={{
+                                        display:"block",
                                         color: passwordMatch ? "green" : "red",
                                         fontSize: "12px",
                                     }}
                                 >
-                                    {passwordMatch
-                                        ? " 일치합니다."
-                                        : " 일치하지 않습니다."}
+                                    {passValid && passwordMatch
+                                        ? "비밀번호가 일치합니다."
+                                        : passValid
+                                            ? "비밀번호는 유효하나 일치하지 않습니다."
+                                            : "비밀번호 특수문자/영문 대소문자 구별없이 8글자 이상 입력."}
                                 </span>
                             </td>
 
@@ -172,9 +192,6 @@ export default function Register() {
                                 />
                             </td>
                         </tr>
-                        <tr>
-
-                        </tr>
                     </tbody>
                 </table>
                 <table border="0">
@@ -183,9 +200,9 @@ export default function Register() {
                             <td>이름</td>
                             <td className="input-without-button">
                                 <input type="text"
-                                    name="name"
+                                    name="username"
                                     placeholder="이름 입력"
-                                    value={user.name}
+                                    value={user.username}
                                     onChange={changeHandler} />
                             </td>
                         </tr>
@@ -229,10 +246,10 @@ export default function Register() {
                             <td className="">
                                 <input
                                     type="text"
-                                    name="zip"
+                                    name="zipcode"
                                     className="short-input"
                                     placeholder="우편번호"
-                                    value={user.zip}
+                                    value={user.zipcode}
                                     onChange={changeHandler}
                                 />
                                 <button type="button" onClick={openPostcodePopup}>
@@ -260,10 +277,20 @@ export default function Register() {
                     </tbody>
                 </table>
                 <div className="regiBtn">
+
                     <Link to="/user/login" className="btnCancle">
                         취소
                     </Link>
-                    <input type="submit" value="회원가입" className="blueButton" disabled={!emailAutn || !passwordMatch || !userId} />
+                    <input type="submit"
+                        value="회원가입"
+                        className="blueButton"
+                        onClick={(e) => {
+                            if (!emailAutn || !passwordMatch || !userId) {
+                                e.preventDefault(); // 기본 동작을 막기
+                                alert("아이디 중복체크, 이메일 인증을 완료 해주세요!");
+                            }
+                        }}
+                    />
                 </div>
             </form>
             {isPostcodePopupOpen && (
