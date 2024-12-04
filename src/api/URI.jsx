@@ -18,6 +18,8 @@ export const USER_CHECK = `${SERVER_HOST}/user/`
 export const USER_EMAIL = `${SERVER_HOST}/api`
 // article
 export const BOARD_ARTICLE_WRITE_URI = `${SERVER_HOST}/article/write`;
+export const BOARD_TYPE = `${SERVER_HOST}/board/type`;
+export const BOARD_FAVORITE_UPDATE = `${SERVER_HOST}/board/favorite/{boardId}`;
 
 // product
 
