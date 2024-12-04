@@ -9,7 +9,7 @@
     2024/12/03 이도영 - 로그인 기능 추가
 */
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { login } from "../../../slices/UserSlice";
@@ -19,32 +19,43 @@ const initState = {
   userId: "",
   pass: "",
 };
-// 토큰이 아직 아보내져서 나중에 따로 다시 해야함
 export default function Login() {
   const [user, setUser] = useState({ ...initState });
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  useEffect(() => {
+    const savedUser = JSON.parse(localStorage.getItem("user"));
+    if (savedUser && savedUser.accessToken) {
+      dispatch(login(savedUser));
+      navigate("/");
+    }
+  }, [dispatch, navigate]);
+
   const changeHandler = (e) => {
     e.preventDefault();
     setUser({ ...user, [e.target.name]: e.target.value });
+
   };
 
-  const subnitHandler = async (e) => {
+  const subMitHandler = async (e) => {
     e.preventDefault();
-
+    console.log("전송 전 user 객체 확인:", user); // userId와 pass 값 확인
     const tokens = await postUserLogin(user);
     if (tokens) {
+      localStorage.setItem("user", JSON.stringify(tokens));  // 토큰을 localStorage에 저장
       dispatch(login(tokens));
+      console.log("토큰:", tokens.accessToken);  // 정확하게 토큰을 출력
+      console.log("리프레시 토큰:", tokens.refreshToken);  // 리프레시 토큰도 마찬가지
       navigate("/app/home");
     } else {
-      alert("아이디 또는 비밀번호가 잘못되었습니다.");
+      alert("아이디&비밀번호가 다릅니다.");
     }
   };
 
   return (
     <div className="login-container">
-      <form onSubmit={subnitHandler}>
+      <form onSubmit={subMitHandler}>
         <div className="loginImg">
           <div className="findHeader">
             <img src="/images/logo.png" alt="로그인 화면 이미지" />
