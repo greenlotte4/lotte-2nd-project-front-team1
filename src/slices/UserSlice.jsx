@@ -59,6 +59,7 @@ const userSlice = createSlice({
       state.email = null;
       // 쿠키 삭제
       Cookies.remove("auth");
+      localStorage.removeItem("user");
     },
   },
 });
