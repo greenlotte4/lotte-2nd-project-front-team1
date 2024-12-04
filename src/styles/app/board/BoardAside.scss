@@ -483,12 +483,14 @@
   
   .menu_box .input_fav {
     position: absolute;
-    clip: rect(0,0,0,0);
+    clip: rect(0, 0, 0, 0); /* 요소를 화면에서 숨김 */
     width: 1px;
     height: 1px;
     margin: -1px;
     overflow: hidden;
+    pointer-events: auto; /* 클릭 가능하도록 설정 */
   }
+
   
   .menu_box .ico_fav {
     font-size: 0;
@@ -496,20 +498,46 @@
     vertical-align: top;
   }
   
-  .menu_box .side_btn {
-    display: none;
-    position: absolute;
-    right: 5px;
-    top: 50%;
-    margin-top: -15px;
-    padding: 5px;
-    -webkit-box-sizing: border-box;
-    box-sizing: border-box;
-    overflow: hidden;
-    line-height: 0;
-    border: 0;
-    background-color: transparent;
-  }
+  /* 기본적으로 side_btn 숨기기 */
+.menu_box .side_btn {
+  display: none;  /* 기본적으로 숨김 */
+  position: absolute;
+  right: 5px;
+  top: 50%;
+  margin-top: -15px;
+  padding: 5px;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  overflow: hidden;
+  line-height: 0;
+  border: 0;
+  background-color: transparent;
+  opacity: 0;  /* 투명하게 설정 */
+  transition: opacity 0.3s ease;  /* 부드러운 전환 효과 */
+}
+
+/* .menu_item에 마우스를 올렸을 때 */
+.menu_item:hover {
+  display: block;  /* 마우스를 올리면 보이도록 설정 */
+  opacity: 1;  /* 투명도 1로 설정하여 보이도록 함 */
+  background-color: rgba(0, 0, 0, 0.1);  /* 마우스를 올리면 배경색 추가 */
+}
+.menu_item:hover .side_btn {
+  display: block;  /* 마우스를 올리면 보이도록 설정 */
+  opacity: 1;  /* 투명도 1로 설정하여 보이도록 함 */
+}
+  .menu_box .ico_fav:before {
+    background-image: url(https://static.worksmobile.net/static/pwe/wm/home/sp_board_967af075.png);
+    background-image: -webkit-gradient(linear,left top,left bottom,from(transparent),to(transparent)),url(https://static.worksmobile.net/static/pwe/wm/home/sp_board_9d215a12.svg);
+    background-image: linear-gradient(transparent,transparent),url(https://static.worksmobile.net/static/pwe/wm/home/sp_board_9d215a12.svg);
+    background-size: 500px 473px;
+    background-position: -424px -368px;
+    width: 20px;
+    height: 20px;
+    display: inline-block;
+    vertical-align: top;
+    content: "";
+}
   
   .mbox_trash .item_txt::before {
     background-image: url(https://static.worksmobile.net/static/pwe/wm/home/sp_board_967af075.png);
