@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { getBoards, updateFavorite } from "../../../api/board/boardAPI"; 
 
 /*
     날짜 : 2024/11/29
@@ -13,6 +14,7 @@ import { Link } from "react-router-dom";
 
 const BoardAside = ({ isVisible}) => {
   const [isAnimating, setIsAnimating] = useState(false);
+  const [boards, setBoards] = useState([]);
 
   useEffect(() => {
     if(isVisible){
@@ -23,6 +25,37 @@ const BoardAside = ({ isVisible}) => {
         
     }
   }, [isVisible]);
+
+  useEffect(() => {
+    const fetchArticles = async () => {
+      try {
+        const data = await getBoards(); // API 호출
+        setBoards(data); // 상태 업데이트
+      } catch (err) {
+        console.error("Failed to fetch articles:", err);
+      }
+    };
+
+    fetchArticles(); // 컴포넌트가 처음 렌더링될 때 호출
+  }, []);
+
+  const handleFavoriteClick = async (boardId, isFavorite) => {
+    try {
+        // 서버로 isFavorite 상태를 업데이트하는 API 호출
+        const updatedBoard = await updateFavorite(boardId, !isFavorite); // 반전된 isFavorite 값 보내기
+        console.log("Updated Board:", updatedBoard); // 서버에서 반환된 데이터 확인
+        
+        setBoards((prevBoards) =>
+            prevBoards.map((board) =>
+                board.boardId === boardId
+                    ? { ...board, isFavorite: !isFavorite }
+                    : board
+            )
+        ); // 상태 업데이트
+    } catch (err) {
+        console.error("Failed to update favorite:", err);
+    }
+};
 
   return (
     isAnimating &&(
@@ -162,79 +195,37 @@ const BoardAside = ({ isVisible}) => {
                   </button>
                 </div>
                 <ul className="lnb_tree">
-                  <li className="board">
+                {boards.map((board) => (
+                  <li key={board.boardId} className="board">
                     <div className="menu_item">
                       <button
                         type="button"
-                        title="공지사항"
+                        title={board.boardName}
                         className="item_txt"
                         onClick={() =>
                           (window.location.href =
                             " /app/announcementboard")
                         }
                       >
-                        <span className="text">공지사항</span>
+                        <span className="text">{board.boardName}</span>
                       </button>
                       <input
-                        id="bd_4070000000153153643"
+                        id={`${board.boardId}`}
                         type="checkbox"
                         name="chk_fav"
                         className="input_fav"
+                        checked={board.isFavorite}
+                        onChange={() => handleFavoriteClick(board.boardId, board.isFavorite)}
                       />
-                      <label
-                        htmlFor="bd_4070000000153153643"
-                        className="ico_fav side_btn"
-                      >
-                        즐겨찾기로 등록됨
-                      </label>
+                       <label
+                          htmlFor={`${board.boardId}`}
+                          className={`ico_fav side_btn ${board.isFavorite ? "favorite" : ""}`} // isFavorite 값에 따라 클래스를 동적으로 추가
+                        >
+                          {board.isFavorite ? "즐겨찾기 등록됨" : "즐겨찾기"}
+                        </label>
                     </div>
                   </li>
-                  <li className="board">
-                    <div className="menu_item">
-                      <button
-                        type="button"
-                        title="업무 매뉴얼"
-                        className="item_txt"
-                      >
-                        <span className="text">업무 매뉴얼</span>
-                      </button>
-                      <input
-                        id="bd_4070000000153153644"
-                        type="checkbox"
-                        name="chk_fav"
-                        className="input_fav"
-                      />
-                      <label
-                        htmlFor="bd_4070000000153153644"
-                        className="ico_fav side_btn"
-                      >
-                        즐겨찾기
-                      </label>
-                    </div>
-                  </li>
-                  <li className="board">
-                    <div className="menu_item">
-                      <button
-                        type="button"
-                        title="자유게시판"
-                        className="item_txt"
-                      >
-                        <span className="text">자유게시판</span>
-                      </button>
-                      <input
-                        id="bd_4070000000153153645"
-                        type="checkbox"
-                        name="chk_fav"
-                        className="input_fav"
-                      />
-                      <label
-                        htmlFor="bd_4070000000153153645"
-                        className="ico_fav side_btn"
-                      >
-                        즐겨찾기
-                      </label>
-                    </div>
-                  </li>
+                    ))}
                 </ul>
               </li>
             </ul>
