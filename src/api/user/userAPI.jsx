@@ -10,7 +10,7 @@
 */
 
 import axios from "axios";
-import { USER_CHECK, USER_EMAIL, USER_FIND, USER_LOGIN_URI, USER_URI } from "../URI";
+import { USER_CHECK, USER_EMAIL, USER_FIND, USER_LIST, USER_LOGIN_URI, USER_URI } from "../URI";
 
 export const postUser = async (data) => {
   try {
