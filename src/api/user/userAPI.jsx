@@ -11,7 +11,7 @@
 
 
 import axios from "axios";
-import { USER_CHECK, USER_EMAIL, USER_LOGIN_URI, USER_URI } from "../URI";
+import { USER_CHECK, USER_EMAIL, USER_FIND, USER_LOGIN_URI, USER_URI } from "../URI";
 
 export const postUser = async (data) => {
     try {
@@ -97,3 +97,15 @@ export const checkPhoneNumber = async (fullPhoneNumber) => {
         return { isAvailable: false }; // 에러 시 기본 false 반환
     }
 };
+
+export const findByEmail = async (email) => {
+    try {
+         console.log("보내는 이메일: ", email); 
+        const response = await axios.post(`${USER_FIND}findEmail`, {email : email})
+        console.log("보내는 이메일: ", email); 
+        return response;
+    } catch (error) {
+        console.error('아이디 조회 실패:', error);
+        return error; // 에러 시 기본 false 반환
+    }
+}

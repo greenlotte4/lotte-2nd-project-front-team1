@@ -1,6 +1,10 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 export default function IdView() {
+  const location = useLocation();
+  const { userId } = location.state || {};
+
+
   return (
     <div className=" ">
       <div>
@@ -8,7 +12,7 @@ export default function IdView() {
           <tbody>
             <tr>
               <td className="idColumn">아이디</td>
-              <td className="resultColumn">결과</td>
+              <td className="resultColumn">{userId ? userId : "아이디를 찾을 수 없습니다."}</td>
             </tr>
           </tbody>
         </table>
