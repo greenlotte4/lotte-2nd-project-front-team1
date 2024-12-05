@@ -419,7 +419,7 @@ function NewChannelDIV() {
             >
               <ListItemButton>
                 <ListItemAvatar>
-                  <Avatar></Avatar>
+                  <Avatar>{value.username.charAt(0)}</Avatar>
                 </ListItemAvatar>
                 <ListItemText id={labelId} primary={`${value.username}`} />
               </ListItemButton>
@@ -473,7 +473,7 @@ function NewDMDIV() {
             <ListItem key={index} disablePadding>
               <ListItemButton>
                 <ListItemAvatar>
-                  <Avatar></Avatar>
+                  <Avatar>{value.username.charAt(0)}</Avatar>
                 </ListItemAvatar>
                 <ListItemText id={labelId} primary={`${value.username}`} />
               </ListItemButton>
