@@ -40,3 +40,6 @@ export const SETTING_USER_INFO = `${SERVER_HOST}/setting/user`;
 export const ADMIN_USERLIST_INFO = `${SERVER_HOST}/admin/userlist`;
 export const ADMIN_DELETE_USERS = `${SERVER_HOST}/admin/userlist`; //이도영 12.05추가
 export const ADMIN_UPDATE_USERS = `${SERVER_HOST}/admin/updateuserlist`; //이도영 12.05추가
+
+//message
+export const MESSAGE_NEW_CHANNEL = `${SERVER_HOST}/message/newChannel`;
