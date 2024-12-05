@@ -1,5 +1,5 @@
 import axios from "axios";
-import {BOARD_ARTICLE_WRITE_URI, BOARD_TYPE, BOARD_FAVORITE_UPDATE , BOARD_USER_FAVORITE } from "../URI";
+import {BOARD_ARTICLE_WRITE_URI, BOARD_TYPE, BOARD_FAVORITE, BOARD_BRING_FAVORITE} from "../URI";
 
 export const postBoardArticleWrite = async (data) => {
     try {
@@ -34,27 +34,39 @@ export const getBoards = async () => {
     }
 };
 
-export const updateFavorite = async (boardId, isFavorite) => {
+// 즐겨찾기 추가 또는 삭제 API
+export const addFavoriteBoard = async ({ boardId, isFavorite, userId }) => {
     try {
-        const response = await axios.put(
-            `${BOARD_FAVORITE_UPDATE.replace("{boardId}", boardId)}`,
-            { boardId, isFavorite } // boardId와 isFavorite 값을 객체로 보내기
-        );
-        console.log("즐겨찾기 업데이트:", response.data);
-        return response.data;
+      console.log("Sending to API:", { boardId, isFavorite, userId }); // 요청 데이터 확인
+      const response = await axios.post(
+        BOARD_FAVORITE,
+        { boardId, isFavorite, userId }, // 요청 데이터에 userId 추가
+        {
+          headers: {
+            "Content-Type": "application/json",
+          }
+        }
+      );
+      console.log("즐찾 업뎃:", response.data); // 응답 데이터 확인
+      return response.data;
     } catch (err) {
-        console.error("즐겨찾기 에러:", err);
-        throw new Error("즐겨찾기를 실패했습니다.");
+      console.error("Error response:", err.response?.data || err.message);
+      throw new Error("즐겨찾기 상태를 변경하는 데 실패했습니다.");
     }
-};
+  };
 
-export const getUserFavorites = async () => {
+  export const getFavoriteBoards = async (userId) => {
     try {
-        // 새로운 경로로 API 호출
-        const response = await axios.get(BOARD_USER_FAVORITE);
-        return response.data; // 유저의 즐겨찾기 게시물 목록을 반환
+      const response = await axios.get(`${BOARD_BRING_FAVORITE}?userId=${userId}`);
+      console.log("Fetched Favorite Boards:", response.data);
+      return response.data; // 서버에서 가져온 데이터 반환
     } catch (err) {
-        console.error("즐겨찾기 목록을 가져오는 에러:", err);
-        throw new Error("즐겨찾기 목록을 가져오지 못했습니다.");
+      console.error("Error while fetching favorite boards:", err);
+      if (err.response) {
+        // 서버 응답 오류의 경우
+        console.error("Response error data:", err.response.data);
+        console.error("Response error status:", err.response.status);
+      }
+      throw new Error("즐겨찾기 보드를 가져오는 데 실패했습니다.");
     }
-};
+  };
