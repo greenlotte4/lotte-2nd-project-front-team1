@@ -77,19 +77,6 @@ export const authEmail = async (email, authCode) => {
 };
 
 export const checkPhoneNumber = async (fullPhoneNumber) => {
-  try {
-    // 실제 API URL로 변경 필요 (여기서는 USER_CHECK를 API URL로 가정)
-    const response = await axios.post(`${USER_CHECK}hpcheck`, {
-      phoneNumber: fullPhoneNumber,
-    });
-    console.log("요청함");
-    return response.data; // 예: { isAvailable: true/false }
-  } catch (error) {
-    console.error("폰번호 중복 체크 실패:", error);
-    return { isAvailable: false }; // 에러 시 기본 false 반환
-  }
-};
-
     try {
         // 실제 API URL로 변경 필요 (여기서는 USER_CHECK를 API URL로 가정)
         const response = await axios.post(`${USER_CHECK}hpcheck`, { phoneNumber: fullPhoneNumber });
