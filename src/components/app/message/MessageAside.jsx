@@ -231,7 +231,7 @@ const MessageAside = ({ isVisible }) => {
             >
               새로운 채팅 추가
             </Typography>
-            <Divider sx={{marginBottom:1}}/>
+            <Divider sx={{ marginBottom: 1 }} />
             <ToggleButtonGroup
               value={createChatType}
               exclusive
@@ -279,8 +279,6 @@ function NewChannelDIV() {
 
     setCheckedMember(newChecked);
   };
-
-  
 
   return (
     <div>
@@ -334,5 +332,54 @@ function NewChannelDIV() {
 }
 
 function NewDMDIV() {
-  return <div>DM</div>;
+  return (
+    <div>
+      <List
+        dense
+        sx={{
+          width: "100%",
+          maxWidth: 360,
+          bgcolor: "background.paper",
+          border: "1px solid #ddd",
+          borderRadius: 5,
+          height: "350px",
+          overflow: "scroll",
+          marginTop: 1,
+        }}
+      >
+        <ListItem disablePadding>
+          <ListItemButton>
+            <ListItemAvatar>
+              <Avatar></Avatar>
+            </ListItemAvatar>
+            <ListItemText primary={`강중원`} />
+          </ListItemButton>
+        </ListItem>
+        <ListItem disablePadding>
+          <ListItemButton>
+            <ListItemAvatar>
+              <Avatar></Avatar>
+            </ListItemAvatar>
+            <ListItemText primary={`강유정`} />
+          </ListItemButton>
+        </ListItem>
+        <ListItem disablePadding>
+          <ListItemButton>
+            <ListItemAvatar>
+              <Avatar></Avatar>
+            </ListItemAvatar>
+            <ListItemText primary={`박수정`} />
+          </ListItemButton>
+        </ListItem>
+        <ListItem disablePadding>
+          <ListItemButton>
+            <ListItemAvatar>
+              <Avatar></Avatar>
+            </ListItemAvatar>
+            <ListItemText primary={`박준우`} />
+          </ListItemButton>
+        </ListItem>
+      </List>
+    </div>
+  );
 }
