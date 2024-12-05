@@ -10,7 +10,7 @@
 */
 
 import axios from "axios";
-import { USER_CHECK, USER_EMAIL, USER_LIST, USER_LOGIN_URI, USER_URI } from "../URI";
+import { USER_CHECK, USER_EMAIL, USER_FIND, USER_LOGIN_URI, USER_URI } from "../URI";
 
 export const postUser = async (data) => {
   try {
@@ -89,6 +89,29 @@ export const checkPhoneNumber = async (fullPhoneNumber) => {
     return { isAvailable: false }; // 에러 시 기본 false 반환
   }
 };
+
+    try {
+        // 실제 API URL로 변경 필요 (여기서는 USER_CHECK를 API URL로 가정)
+        const response = await axios.post(`${USER_CHECK}hpcheck`, { phoneNumber: fullPhoneNumber });
+        console.log("요청함")
+        return response.data; // 예: { isAvailable: true/false }
+    } catch (error) {
+        console.error('폰번호 중복 체크 실패:', error);
+        return { isAvailable: false }; // 에러 시 기본 false 반환
+    }
+};
+
+export const findByEmail = async (email) => {
+    try {
+         console.log("보내는 이메일: ", email); 
+        const response = await axios.post(`${USER_FIND}findEmail`, {email : email})
+        console.log("보내는 이메일: ", email); 
+        return response;
+    } catch (error) {
+        console.error('아이디 조회 실패:', error);
+        return error; // 에러 시 기본 false 반환
+    }
+}
 
 export const getUserListAll = async () => {
   try {
