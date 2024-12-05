@@ -538,6 +538,10 @@ opacity: 1;  /* 투명도 1로 설정하여 보이도록 함 */
   vertical-align: top;
   content: "";
 }
+.menu_box .input_fav:checked+.ico_fav:before {
+  background-position: -424px -340px;
+}
+
 
 .mbox_trash .item_txt::before {
   background-image: url(https://static.worksmobile.net/static/pwe/wm/home/sp_board_967af075.png);
