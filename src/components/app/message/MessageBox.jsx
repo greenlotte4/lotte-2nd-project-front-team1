@@ -102,7 +102,8 @@ export default function MessageBox() {
     <div className="messageDiv">
       <div className="messageInfo">
         <h2 className="chatRoomName">
-          <Avatar>강</Avatar>강중원
+          <Avatar>강</Avatar>
+          <div className="chatRoomNameText">강중원</div>
         </h2>
         <span></span>
       </div>
