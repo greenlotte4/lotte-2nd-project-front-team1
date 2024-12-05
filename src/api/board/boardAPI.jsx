@@ -1,5 +1,5 @@
 import axios from "axios";
-import {BOARD_ARTICLE_WRITE_URI, BOARD_TYPE, BOARD_FAVORITE_UPDATE } from "../URI";
+import {BOARD_ARTICLE_WRITE_URI, BOARD_TYPE, BOARD_FAVORITE_UPDATE , BOARD_USER_FAVORITE } from "../URI";
 
 export const postBoardArticleWrite = async (data) => {
     try {
@@ -36,10 +36,9 @@ export const getBoards = async () => {
 
 export const updateFavorite = async (boardId, isFavorite) => {
     try {
-        // PUT 요청 시 isFavorite 값을 객체로 감싸서 전송
         const response = await axios.put(
             `${BOARD_FAVORITE_UPDATE.replace("{boardId}", boardId)}`,
-            { isFavorite } // isFavorite를 객체 형태로 전달
+            { boardId, isFavorite } // boardId와 isFavorite 값을 객체로 보내기
         );
         console.log("즐겨찾기 업데이트:", response.data);
         return response.data;
@@ -47,4 +46,15 @@ export const updateFavorite = async (boardId, isFavorite) => {
         console.error("즐겨찾기 에러:", err);
         throw new Error("즐겨찾기를 실패했습니다.");
     }
-}; 
+};
+
+export const getUserFavorites = async () => {
+    try {
+        // 새로운 경로로 API 호출
+        const response = await axios.get(BOARD_USER_FAVORITE);
+        return response.data; // 유저의 즐겨찾기 게시물 목록을 반환
+    } catch (err) {
+        console.error("즐겨찾기 목록을 가져오는 에러:", err);
+        throw new Error("즐겨찾기 목록을 가져오지 못했습니다.");
+    }
+};
