@@ -19,7 +19,8 @@ export const USER_EMAIL = `${SERVER_HOST}/api`
 // article
 export const BOARD_ARTICLE_WRITE_URI = `${SERVER_HOST}/article/write`;
 export const BOARD_TYPE = `${SERVER_HOST}/board/type`;
-export const BOARD_FAVORITE_UPDATE = `${SERVER_HOST}/board/favorite/{boardId}`;
+export const BOARD_FAVORITE_UPDATE = `${SERVER_HOST}/favorite/board/{boardId}`;
+export const BOARD_USER_FAVORITE = `${SERVER_HOST}/favorite/user`;
 
 // product
 
