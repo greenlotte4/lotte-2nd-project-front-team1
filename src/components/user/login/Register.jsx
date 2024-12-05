@@ -10,7 +10,7 @@
 */
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { authEmail, checkUserId, postUser, sandEmail } from "../../../api/user/userAPI";
+import { authEmail, checkEmail, checkPhoneNumber, checkUserId, postUser, sandEmail } from "../../../api/user/userAPI";
 import PostSearchPopup from "./PostSearchPopup";
 import { Password } from "@mui/icons-material";
 
@@ -20,9 +20,11 @@ const initState = {
     pass: "",
     username: "",
     email: "",
-    hp: "",
-    role:"USER",
-    status:"NORMAL",
+    hp1: "",
+    hp2: "",
+    hp3: "",
+    role: "USER",
+    status: "NORMAL",
     zipcode: null,
     addr1: null,
     addr2: null,
@@ -40,7 +42,8 @@ export default function Register() {
     const [emailAutn, setEmailAuth] = useState(false)
     const [isPostcodePopupOpen, setIsPostcodePopupOpen] = useState(false);  // 우편번호 팝업 상태 관리
     const [passValid, setPassValid] = useState(false);
-
+    const [isPhoneValid, setIsPhoneValid] = useState(true)
+    const [isPhoneAvailable, setIsPhoneAvailable] = useState(true)
     const validatePass = (Password) => {
         const passRegex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,}$/;
         return passRegex.test(Password);
@@ -58,14 +61,20 @@ export default function Register() {
         }
     }
     const sandEmailHandler = async () => {
-        const response = await sandEmail(user.email)
-        if (response.status === 200) {
-            setEmailAuth(true);
-            alert("인증번호가 발송되었습니다.")
+        const isEmailAvailable = await checkEmail(user.email);
+        if (isEmailAvailable) {
+            const response = await sandEmail(user.email)
+            if (response.status === 200) {
+                setEmailAuth(true);
+                alert("인증번호가 발송되었습니다.")
+            } else {
+                setEmailAuth(false);
+
+                alert("인증 번호 발송중 문제 발생.")
+            }
         } else {
             setEmailAuth(false);
-
-            alert("인증 번호 발송중 문제 발생.")
+            alert("이미 사용 중인 이메일 입니다.")
         }
     }
     const authEmailHandler = async () => {
@@ -78,7 +87,13 @@ export default function Register() {
     }
     const changeHandler = (e) => {
         const { name, value } = e.target;
-        const updatedUser = { ...user, [name]: value };
+        let updatedValue = value;
+
+        // 숫자만 입력되도록 처리
+        if (name === "hp1" || name === "hp2" || name === "hp3") {
+            updatedValue = value.replace(/\D/g, ''); // 숫자 이외의 문자는 제거
+        }
+        const updatedUser = { ...user, [name]: updatedValue };
 
         setUser(updatedUser);
         // pass과 pass2 비교
@@ -103,8 +118,36 @@ export default function Register() {
         if (name === "auth") {
             setAuthCode(value);  // 인증번호 상태 업데이트
         }
-    }
 
+        // 휴대폰 번호 입력 시, 숫자만 입력되도록 하고 길이에 맞춰 포커스를 이동
+        if (name === "hp1" && updatedValue.length === 3) {
+            document.querySelector('[name="hp2"]').focus();
+        } else if (name === "hp2" && updatedValue.length === 4) {
+            document.querySelector('[name="hp3"]').focus();
+        }
+
+        if (name === "hp1" || name === "hp2" || name === "hp3") {
+            const fullPhoneNumber = `${updatedUser.hp1}-${updatedUser.hp2}-${updatedUser.hp3}`;
+            updatedUser.hp = fullPhoneNumber;
+        }
+    }
+    const handlePhoneBlur = async () => {
+        const { hp1, hp2, hp3 } = user;
+
+        // 휴대폰 번호가 모두 입력되었을 때만 중복 체크
+        if (hp1 && hp2 && hp3) {
+            const fullPhoneNumber = `${hp1}-${hp2}-${hp3}`;
+            const response = await checkPhoneNumber(fullPhoneNumber);
+
+            if (!response.isAvailable) {
+                setIsPhoneAvailable(true); // 번호가 사용 가능하면 true
+                setIsPhoneValid(true);  // 번호가 유효하면 true
+            } else {
+                setIsPhoneValid(false);
+                setIsPhoneAvailable(false);
+            }
+        }
+    };
     const submitHandler = (e) => {
         e.preventDefault();
 
@@ -117,6 +160,7 @@ export default function Register() {
             alert("회원가입이 실패 했습니다.")
         }
     }
+    
     // 우편번호 팝업 열기
     const openPostcodePopup = () => {
         setIsPostcodePopupOpen(true);
@@ -130,13 +174,17 @@ export default function Register() {
             zipcode: zonecode,
             addr1: address,
         });
-        setIsPostcodePopupOpen(false);  // 팝업 닫기
     };
+
+
     // 팝업 닫기
     const closePostcodePopup = () => {
         console.log("우편번호 팝업 닫기");
         setIsPostcodePopupOpen(false);  // 팝업 닫기
     };
+    const isAnyInputFilled = user.hp1 || user.hp2 || user.hp3;  // 전화번호 입력란에 값이 있으면 true
+
+
     return (
         <div className="register">
             <form onSubmit={submitHandler}>
@@ -162,12 +210,12 @@ export default function Register() {
                             <td className="input-with-button">
                                 <input type="password"
                                     name="pass"
-                                    placeholder="비밀번호 특수문자/영문 대소문자 구별없이 8글자 이상 입력"
+                                    placeholder="비밀번호 입력"
                                     value={user.pass}
                                     onChange={changeHandler} />
                                 <span
                                     style={{
-                                        display:"block",
+                                        display: "block",
                                         color: passwordMatch ? "green" : "red",
                                         fontSize: "12px",
                                     }}
@@ -186,7 +234,7 @@ export default function Register() {
                             <td className="input-with-button">
                                 <input type="password"
                                     name="pass2"
-                                    placeholder="비밀번호 특수문자/영문 대소문자 구별없이 8글자 이상 재입력"
+                                    placeholder="비밀번호 입력"
                                     value={pass2}
                                     onChange={changeHandler}
                                 />
@@ -234,35 +282,59 @@ export default function Register() {
                         <tr>
                             <td>휴대폰</td>
                             <td className="input-without-button">
-                                <input type="text"
-                                    name="hp"
-                                    placeholder="전화번호 입력"
-                                    value={user.hp}
-                                    onChange={changeHandler} />
+                                <div className="ponnum">
+                                    <input type="text"
+                                        name="hp1"
+                                        placeholder="010"
+                                        value={user.hp1}
+                                        onChange={changeHandler}
+                                        maxLength={3} />
+                                    <span>-</span>
+                                    <input type="text"
+                                        name="hp2"
+                                        placeholder="1234"
+                                        value={user.hp2}
+                                        onChange={changeHandler}
+                                        maxLength={4} />
+                                    <span>-</span>
+                                    <input type="text"
+                                        name="hp3"
+                                        placeholder="5678"
+                                        value={user.hp3}
+                                        onChange={changeHandler}
+                                        maxLength={4}
+                                        onBlur={handlePhoneBlur} />
+                                </div>
+                                {/* 조건에 따라 span을 보여주기 */}
+                                {isAnyInputFilled && !isPhoneValid && (
+                                    <span style={{ color: "red" }}>이미 사용중인 번호입니다.</span>
+                                )}
+                                {isAnyInputFilled && isPhoneValid && isPhoneAvailable && (
+                                    <span style={{ color: "green" }}>사용 가능한 번호입니다.</span>
+                                )}
                             </td>
+
                         </tr>
                         <tr>
                             <td>주소</td>
                             <td className="">
-                                <input
+                                <input readOnly
                                     type="text"
                                     name="zipcode"
                                     className="short-input"
                                     placeholder="우편번호"
                                     value={user.zipcode}
-                                    onChange={changeHandler}
                                 />
                                 <button type="button" onClick={openPostcodePopup}>
                                     <img src="/images/search.svg" alt="우편번호찾기" />
                                 </button>
 
-                                <input
+                                <input readOnly
                                     type="text"
                                     name="addr1"
                                     className="long-input"
                                     placeholder="주소 검색"
                                     value={user.addr1}
-                                    onChange={changeHandler}
                                 />
                                 <input
                                     type="text"
@@ -285,9 +357,9 @@ export default function Register() {
                         value="회원가입"
                         className="blueButton"
                         onClick={(e) => {
-                            if (!emailAutn || !passwordMatch || !userId) {
+                            if (!emailAutn || !passwordMatch || !userId || !isPhoneValid) {
                                 e.preventDefault(); // 기본 동작을 막기
-                                alert("아이디 중복체크, 이메일 인증을 완료 해주세요!");
+                                alert("모든 필드입력 /아이디 중복체크, 이메일 인증을 완료 해주세요!");
                             }
                         }}
                     />
@@ -298,7 +370,7 @@ export default function Register() {
                     <div className="popup-content">
                         <PostSearchPopup
                             onSearchComplete={handlePostcodeSearchComplete}
-                            onClose={closePostcodePopup}  // 부모에서 전달한 onClose 호출
+                            onClose={closePostcodePopup}
                         />
                     </div>
                 </div>

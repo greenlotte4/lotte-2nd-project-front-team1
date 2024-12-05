@@ -419,7 +419,7 @@
       box-sizing: border-box;
     }
 
-    /* 짧은 우편번호 입력 필드 스타일 */
+
 
     /* 버튼 이미지 크기 조정 */
     button img {
@@ -478,38 +478,38 @@
       background-color: #7e7e7e;
     }
 
-    /* 기본 모달 스타일 */
-    .modal {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background-color: rgba(0, 0, 0, 0.5);
-      /* 반투명 배경 */
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      z-index: 1000;
-    }
-
-    .modal-content {
-      background-color: white;
-      padding: 20px;
-      border-radius: 10px;
-      width: 500px;
-      max-height: 80%;
-      overflow-y: auto;
-    }
-
-    .close-btn {
-      background-color: #f44336;
-      color: white;
-      padding: 10px;
-      border: none;
+    .ponnum {
+      border: 1px solid;
+      width: 350px;
       border-radius: 5px;
-      cursor: pointer;
-      margin-top: 10px;
+      height: 33px;
+      border: 1px solid #ccc;
+      display: flex;
+      /* 입력 필드를 가로로 정렬 */
+      align-items: center;
+
+      input {
+        width: 15%;
+        margin: 0;
+        margin-left: 5px;
+        border: none;
+        text-align: center;
+      }
+
+      input::-webkit-outer-spin-button,
+      input::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+      }
+
+      input[type=number] {
+        -moz-appearance: textfield;
+      }
+      span {
+        font-size: 20px; /* 하이픈 크기 */
+        margin: 0 5px; /* 하이픈 사이 간격 */
+        color: #333;
+    }
     }
 
   }

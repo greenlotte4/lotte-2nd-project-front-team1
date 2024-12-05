@@ -55,6 +55,19 @@ export const sandEmail = async (email) => {
         throw err;
     }
 }
+export const checkEmail = async (email) => {
+
+    try {
+        const response = await axios.post(`${USER_EMAIL}/checkEmail`, { email: email })
+        console.log('Email check response:', response); // 응답 확인
+
+        return response.data.isAvailable;
+    } catch (err) {
+
+        console.log("이메일 인증 오류" + err)
+        return false; // 실패 시 false 반환
+    }
+}
 export const authEmail = async (email, authCode) => {
 
     try {
@@ -71,3 +84,16 @@ export const authEmail = async (email, authCode) => {
         throw err;
     }
 }
+
+export const checkPhoneNumber = async (fullPhoneNumber) => {
+
+    try {
+        // 실제 API URL로 변경 필요 (여기서는 USER_CHECK를 API URL로 가정)
+        const response = await axios.post(`${USER_CHECK}hpcheck`, { phoneNumber: fullPhoneNumber });
+        console.log("요청함")
+        return response.data; // 예: { isAvailable: true/false }
+    } catch (error) {
+        console.error('폰번호 중복 체크 실패:', error);
+        return { isAvailable: false }; // 에러 시 기본 false 반환
+    }
+};
