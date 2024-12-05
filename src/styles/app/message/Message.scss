@@ -3,6 +3,7 @@
   flex: 1 0 auto;
   display: flex;
   flex-direction: column;
+  width: 100%;
 
   .messageInfo {
     display: flex;
@@ -20,6 +21,13 @@
   .messageInfo h2 {
     font-size: 14px;
     color: #888;
+  }
+  .chatRoomName {
+    display: flex;
+  }
+  .chatRoomNameText {
+    margin: auto 10px;
+    font-size: 20px;
   }
 
   .chatBox {
