@@ -462,3 +462,12 @@
     transform: translateY(-3px);
   }
 }
+.user-details-modal {
+  .modal-content {
+    width: 700px;
+  }
+  h3 {
+    font-size: 20px;
+    padding: 10px;
+  }
+}

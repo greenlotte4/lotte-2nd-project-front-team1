@@ -7,15 +7,16 @@
     추가내역
     -------------
     2924-12-03 최영진 check, email 추가
+    2024-12-05 이도영 관리자 사용자 정보 수정,삭제
 */
 const SERVER_HOST = "http://localhost:8080";
 
 // user
 export const USER_URI = `${SERVER_HOST}/user/register`;
 export const USER_LOGIN_URI = `${SERVER_HOST}/user/login`;
-export const USER_CHECK = `${SERVER_HOST}/user/`
+export const USER_CHECK = `${SERVER_HOST}/user/`;
 
-export const USER_EMAIL = `${SERVER_HOST}/api`
+export const USER_EMAIL = `${SERVER_HOST}/api`;
 // article
 export const BOARD_ARTICLE_WRITE_URI = `${SERVER_HOST}/article/write`;
 export const BOARD_TYPE = `${SERVER_HOST}/board/type`;
@@ -29,3 +30,5 @@ export const SETTING_USER_INFO = `${SERVER_HOST}/setting/user`;
 
 //admin
 export const ADMIN_USERLIST_INFO = `${SERVER_HOST}/admin/userlist`;
+export const ADMIN_DELETE_USERS = `${SERVER_HOST}/admin/userlist`;
+export const ADMIN_UPDATE_USERS = `${SERVER_HOST}/admin/updateuserlist`;
