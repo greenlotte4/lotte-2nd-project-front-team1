@@ -173,6 +173,8 @@ export default function MessageBox() {
       >
         <MenuItem onClick={deleteMessageHandle}>삭제</MenuItem>
       </Menu>
+
+      
       <div className="message_input-bar">
         <div className="input_container">
           <div className="input_box">

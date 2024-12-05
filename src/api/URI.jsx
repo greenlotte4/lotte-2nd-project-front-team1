@@ -33,3 +33,6 @@ export const SETTING_USER_INFO = `${SERVER_HOST}/setting/user`;
 
 //admin
 export const ADMIN_USERLIST_INFO = `${SERVER_HOST}/admin/userlist`;
+
+//message
+export const MESSAGE_NEW_CHANNEL = `${SERVER_HOST}/message/newChannel`;
