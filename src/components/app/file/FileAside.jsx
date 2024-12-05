@@ -5,7 +5,8 @@
 
     추가내역
     -------------
-    2024/11/29 이도영 어사이드 수정
+    2024/11/29 이도영 - 어사이드 수정
+    2024/12/04 박수정 - 어사이드 수정2
 */
 import { useEffect, useState } from "react";
 
@@ -49,47 +50,29 @@ export default function FileAside({ isVisible }) {
               <li
                 className="menu-item"
                 onClick={() => toggleFolder("내 드라이브")}
-              >
-                내 드라이브
+              > 내 드라이브
               </li>
-              {openFolders["내 드라이브"] && (
+              {/* {openFolders["내 드라이브"] && (
                 <ul className="sub-menu">
-                  <li className="menu-item">📄 문서</li>
-                  <li className="menu-item">📂 프로젝트</li>
+                  <li className="menu-item"> 문서</li>
+                  <li className="menu-item"> 프로젝트</li>
                 </ul>
-              )}
+              )} */}
 
-              {/* 공용 드라이브 */}
+              {/* 공유 드라이브 */}
               <li
                 className="menu-item"
-                onClick={() => toggleFolder("공용 드라이브")}
-              >
-                🗂️ 공용 드라이브
+                onClick={() => toggleFolder("공유 드라이브")}
+              > 공유 드라이브
               </li>
-              {openFolders["공용 드라이브"] && (
+              {/* {openFolders["공유 드라이브"] && (
                 <ul className="sub-menu">
-                  <li className="menu-item">📂 팀 폴더</li>
+                  <li className="menu-item">팀 폴더</li>
                 </ul>
-              )}
-
-              {/* 최근 사용 경로들 */}
-              <li className="menu-item">⏱️ 최근 사용 경로들</li>
-
-              {/* 즐겨찾기 */}
-              <li
-                className="menu-item"
-                onClick={() => toggleFolder("즐겨찾기")}
-              >
-                ⬇ 즐겨찾기
-              </li>
-              {openFolders["즐겨찾기"] && (
-                <ul className="sub-menu">
-                  <li className="menu-item">📄 즐겨찾은 파일</li>
-                </ul>
-              )}
+              )} */}
 
               {/* 휴지통 */}
-              <li className="menu-item">🗑️ 휴지통</li>
+              <li className="menu-item">휴지통</li>
             </ul>
           </nav>
         </aside>
