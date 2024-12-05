@@ -26,6 +26,8 @@ export default function MessageBox() {
   const [selectedIndex, setSelectedIndex] = useState(null); // 선택한 메시지 인덱스
   const [EmojiStatus, setEmojiStatus] = useState(false);
 
+  const [inputStatus, setinputStatus] = useState(() => ["bold", "italic"]);
+
   const getCurrentTime = () => {
     const now = new Date();
     let hours = now.getHours();
@@ -98,6 +100,10 @@ export default function MessageBox() {
     setEmojiStatus(!EmojiStatus);
   };
 
+  const handleFormat = (event, newFormats) => {
+    setinputStatus(newFormats);
+  };
+
   return (
     <div className="messageDiv">
       <div className="messageInfo">
@@ -134,7 +140,7 @@ export default function MessageBox() {
               <div className="message_sender">사용자 (나)</div>
               <div className="message_time">오후 2:30</div>
               <div className="text_box">
-                <p>그럼 죽어</p>
+                <p>그런가요</p>
               </div>
             </div>
           </div>
@@ -174,12 +180,15 @@ export default function MessageBox() {
         <MenuItem onClick={deleteMessageHandle}>삭제</MenuItem>
       </Menu>
 
-      
       <div className="message_input-bar">
         <div className="input_container">
           <div className="input_box">
             <div className="input_tools">
-              <ToggleButtonGroup aria-label="text formatting">
+              <ToggleButtonGroup
+                aria-label="text formatting"
+                value={inputStatus}
+                onChange={handleFormat}
+              >
                 <ToggleButton
                   value="bold"
                   aria-label="bold"
