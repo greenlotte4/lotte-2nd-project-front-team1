@@ -1,6 +1,33 @@
 import { Link } from "react-router-dom";
 
+import { getBoardArticles } from "../../../api/board/boardAPI";
+import { useEffect, useState } from "react";
+
 export default function AnnouncementBoard(){
+
+    const [articles, setArticles] = useState([]); // 게시글 상태
+    const [loading, setLoading] = useState(true); // 로딩 상태
+    const [error, setError] = useState(null); // 에러 상태
+
+    useEffect(() => {
+        // 데이터 가져오기
+        const fetchArticles = async () => {
+            try {
+                const data = await getBoardArticles(); // API 호출
+                setArticles(data); // 상태에 데이터 저장
+            } catch (err) {
+                setError(err.message); // 에러 상태 저장
+            } finally {
+                setLoading(false); // 로딩 상태 해제
+            }
+        };
+
+        fetchArticles();
+    }, []);
+
+    if (loading) return <p>Loading...</p>;
+    if (error) return <p>Error: {error}</p>;
+
     return(
         <div className="boardContentDiv" id="boardContentDiv">
             <div className="g_search">
@@ -276,78 +303,39 @@ export default function AnnouncementBoard(){
                 </div>
                 <div className="board_list">
                     <ul className="list edit_type default">
-                        <li className="read has_photo" style={{cursor: "pointer"}}>
-                            <p className="chk">
-                                <input id="check_4070000000153153646" type="checkbox" name="chk_bd"/>
-                                <label htmlFor="check_4070000000153153646">해당 게시글 선택</label>
-                            </p>
-                            <div className="sbj_box">
-                                <p className="sbj">
-                                    <em className="ic_noti">필독</em>
-                                    <Link to="/app/viewboard">업무 효율을 200%로 만드는 게시판 활용법</Link> 
-                                </p></div>
-                                <p className="infor">
-                                    <button type="button" className="user">Board</button>
-                                    <span className="read_chk">읽음
-                                        <strong>1</strong>
-                                    </span>
-                                </p>
-                                <p className="date">
-                                2024. 11. 27.
-                               </p>
-                            </li>
-                    </ul>
-                    <ul className="list edit_type default">
-                        <li className="read has_photo" style={{cursor: "pointer"}}>
-                            <p className="chk">
-                                <input id="check_4070000000153153646" type="checkbox" name="chk_bd"/>
-                                <label htmlFor="check_4070000000153153646">해당 게시글 선택</label>
-                            </p>
-                            <div className="sbj_box">
-                                <p className="sbj">
-                                    <em className="ic_noti">필독</em>
-                                    <a href="">업무 효율을 200%로 만드는 게시판 활용법</a> 
-                                </p></div>
-                                <p className="infor">
-                                    <button type="button" className="user">Board</button>
-                                    <span className="read_chk">읽음
-                                        <strong>1</strong>
-                                    </span>
-                                </p>
-                                <p className="date">
-                                2024. 11. 27.
-                               </p>
-                            </li>
-                    </ul>
-                    <ul className="list edit_type default">
-                        <li className="read has_photo" style={{cursor: "pointer"}}>
-                            <p className="chk">
-                                <input id="check_4070000000153153646" type="checkbox" name="chk_bd"/>
-                                <label htmlFor="check_4070000000153153646">해당 게시글 선택</label>
-                            </p>
-                            <div className="sbj_box">
-                                <p className="sbj">
-                                    <em className="ic_noti">필독</em>
-                                    <a href="">업무 효율을 200%로 만드는 게시판 활용법</a> 
-                                </p></div>
-                                <p className="infor">
-                                    <button type="button" className="user">Board</button>
-                                    <span className="read_chk">읽음
-                                        <strong>1</strong>
-                                    </span>
-                                </p>
-                                <p className="date">
-                                2024. 11. 27.
-                               </p>
-                            </li>
+                    {articles.map((article) => {
+    console.log(article); // 각 article 객체의 값을 콘솔에 출력
+    return (
+        <li key={article.id} className="read has_photo" style={{ cursor: "pointer" }}>
+            <p className="chk">
+                <input id={`check_${article.id}`} type="checkbox" name="chk_bd" />
+                <label htmlFor={`check_${article.id}`}>해당 게시글 선택</label>
+            </p>
+            <div className="sbj_box">
+                <p className="sbj">
+                    <em className="ic_noti">필독</em>
+                    <Link to={`/article/view/${article.id}`}>{article.title}</Link>
+                </p>
+            </div>
+            <p className="infor">
+                <button type="button" className="user">{article.userName || "Unknown User"}</button>
+                <span className="read_chk">
+                    읽음 <strong>{article.readCount || 0}</strong>
+                </span>
+            </p>
+            <p className="date">{new Date(article.created_At).toLocaleDateString("en-CA")}</p>
+        </li>
+    );
+})}
                     </ul>
                     <p className="bt_more">
-                        <button type="button" className="btn">
+                        <button type="button" className="btn" onClick={() =>
+                            (window.location.href =
+                            "/app/noticeboard")
+                        }>
                             글쓰기
                         </button>
-
                     </p>
-
                 </div>
 
             </div>            

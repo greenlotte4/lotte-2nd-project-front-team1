@@ -19,6 +19,8 @@ import {
   ListItemButton,
   ListItemIcon,
   ListItemText,
+  Menu,
+  MenuItem,
   Modal,
   TextField,
   ToggleButton,
@@ -26,6 +28,9 @@ import {
   Typography,
 } from "@mui/material";
 import { useEffect, useState } from "react";
+import { getUserListAll } from "../../../api/user/userAPI";
+import { makeNewChannel } from "../../../api/message/messageAPI";
+import { useSelector } from "react-redux";
 
 const MessageAside = ({ isVisible }) => {
   const [isAnimating, setIsAnimating] = useState(false);
@@ -33,6 +38,26 @@ const MessageAside = ({ isVisible }) => {
   const [isNewChatModalOpen, setIsNewChatModalOpen] = useState(false);
 
   const [createChatType, setCreateChatType] = useState("Channel");
+
+  const [anchorEl, setAnchorEl] = useState(null);
+
+  const [selectedIndex, setSelectedIndex] = useState(null); // 선택한 채팅 인덱스
+
+  const handleClose = () => {
+    setAnchorEl(null);
+    setSelectedIndex(null);
+  };
+
+  //채팅 나가기 함수
+  const deleteMessageHandle = () => {
+    handleClose();
+  };
+
+  const handleClick = (event, index) => {
+    setAnchorEl(event.currentTarget);
+    setSelectedIndex(index);
+    event.preventDefault();
+  };
 
   // 새로운 채팅 모달 열기
   const handleOpenNewChatModal = () => setIsNewChatModalOpen(true);
@@ -55,6 +80,7 @@ const MessageAside = ({ isVisible }) => {
   const DMhandleClick = () => {
     setDMOpen(!DMOpen);
   };
+
   useEffect(() => {
     if (isVisible) {
       setIsAnimating(true); // 보이기 시작하면 애니메이션 추가
@@ -93,7 +119,10 @@ const MessageAside = ({ isVisible }) => {
               </ListItemButton>
               <Collapse in={channelOpen} timeout="auto" unmountOnExit>
                 <List component="div" disablePadding>
-                  <ListItemButton sx={{ pl: 4 }}>
+                  <ListItemButton
+                    sx={{ pl: 4 }}
+                    onContextMenu={(event) => handleClick(event)}
+                  >
                     <ListItemIcon className="iconGroup">
                       <AvatarGroup
                         max={3}
@@ -122,7 +151,10 @@ const MessageAside = ({ isVisible }) => {
                     </div>
                   </ListItemButton>
 
-                  <ListItemButton sx={{ pl: 4 }}>
+                  <ListItemButton
+                    sx={{ pl: 4 }}
+                    onContextMenu={(event) => handleClick(event)}
+                  >
                     <ListItemIcon className="iconGroup">
                       <AvatarGroup
                         max={3}
@@ -176,7 +208,11 @@ const MessageAside = ({ isVisible }) => {
               <Collapse in={DMOpen} timeout="auto" unmountOnExit>
                 <List component="div" disablePadding>
                   {/* 반복 시작 */}
-                  <ListItemButton sx={{ pl: 4 }} className="curruntChatRoom">
+                  <ListItemButton
+                    sx={{ pl: 4 }}
+                    className="curruntChatRoom"
+                    onContextMenu={(event) => handleClick(event)}
+                  >
                     <ListItemIcon>
                       <Badge color="warning" variant="dot">
                         <Avatar>원</Avatar>
@@ -191,7 +227,11 @@ const MessageAside = ({ isVisible }) => {
                   </ListItemButton>
                   {/* 반복 끝 */}
                   {/* 반복 시작 */}
-                  <ListItemButton sx={{ pl: 4 }} className="curruntChatRoom">
+                  <ListItemButton
+                    sx={{ pl: 4 }}
+                    className="curruntChatRoom"
+                    onContextMenu={(event) => handleClick(event)}
+                  >
                     <ListItemIcon>
                       <Avatar>강</Avatar>
                     </ListItemIcon>
@@ -255,6 +295,17 @@ const MessageAside = ({ isVisible }) => {
             {createChatType === "DM" && <NewDMDIV />}
           </Box>
         </Modal>
+        <Menu
+          id="basic-menu"
+          anchorEl={anchorEl}
+          open={Boolean(anchorEl)}
+          onClose={handleClose}
+          MenuListProps={{
+            "aria-labelledby": "basic-button",
+          }}
+        >
+          <MenuItem onClick={deleteMessageHandle}>채팅방 나가기</MenuItem>
+        </Menu>
       </div>
     )
   );
@@ -263,9 +314,16 @@ const MessageAside = ({ isVisible }) => {
 export default MessageAside;
 
 function NewChannelDIV() {
-  const [makeChannelName, setMakeChannelName] = useState("");
+  const user = useSelector((state) => state.userSlice);
+  const initState = {
+    name: "",
+    manager: "",
+  };
 
-  const [checkedMember, setCheckedMember] = useState([1]);
+  const [channel, setChannel] = useState({ ...initState });
+
+  const [userList, setUserList] = useState([]);
+  const [checkedMember, setCheckedMember] = useState([]);
 
   const handleToggle = (value) => () => {
     const currentIndex = checkedMember.indexOf(value);
@@ -280,15 +338,56 @@ function NewChannelDIV() {
     setCheckedMember(newChecked);
   };
 
+  const changeHandler = (e) => {
+    const { name, value } = e.target;
+    let updatedValue = value;
+
+    const updatedChannel = { ...channel, [name]: updatedValue };
+    setChannel(updatedChannel);
+  };
+
+  useEffect(() => {
+    //유저목록 불러오기
+    const fetchUserList = async () => {
+      try {
+        const data = await getUserListAll();
+        setUserList(data);
+      } catch (err) {
+        console.error("유저 목록 불러오기 실패 : ", err);
+      }
+    };
+    fetchUserList();
+  }, []);
+
+  const submitChannel = (e) => {
+    e.preventDefault();
+
+    // user.userid를 manager에 할당
+    const updatedChannel = {
+      ...channel,
+      manager: user.userid, // user.userid를 manager에 설정
+    };
+
+    const savedChannel = makeNewChannel(updatedChannel);
+    console.log(savedChannel);
+
+    if (savedChannel) {
+      alert("채널이 추가되었습니다.👍");
+    } else {
+      alert("채널 추가 실패...😭");
+    }
+  };
+
   return (
     <div>
       <TextField
-        value={makeChannelName}
+        value={channel.name}
         id="standard-basic"
         label="대화방 이름"
+        name="name"
         variant="standard"
         sx={{ margin: "10px 0", width: "100%" }}
-        onChange={(e) => setMakeChannelName(e.target.value)}
+        onChange={changeHandler}
       />
       <List
         dense
@@ -298,15 +397,16 @@ function NewChannelDIV() {
           bgcolor: "background.paper",
           border: "1px solid #ddd",
           borderRadius: 5,
-          height: "300px",
+          height: "260px",
           overflow: "scroll",
+          marginBottom: "10px",
         }}
       >
-        {[0, 1, 2, 3, 4, 5, 6].map((value) => {
+        {userList.map((value, index) => {
           const labelId = `checkbox-list-secondary-label-${value}`;
           return (
             <ListItem
-              key={value}
+              key={index}
               secondaryAction={
                 <Checkbox
                   edge="end"
@@ -319,19 +419,39 @@ function NewChannelDIV() {
             >
               <ListItemButton>
                 <ListItemAvatar>
-                  <Avatar></Avatar>
+                  <Avatar>{value.username.charAt(0)}</Avatar>
                 </ListItemAvatar>
-                <ListItemText id={labelId} primary={`멤버 ${value + 1}`} />
+                <ListItemText id={labelId} primary={`${value.username}`} />
               </ListItemButton>
             </ListItem>
           );
         })}
       </List>
+      <Button
+        sx={{ width: "100%", backgroundColor: "#00c473", color: "white" }}
+        onClick={submitChannel}
+      >
+        채널 추가
+      </Button>
     </div>
   );
 }
 
 function NewDMDIV() {
+  const [userList, setUserList] = useState([]);
+  useEffect(() => {
+    //유저목록 불러오기
+    const fetchUserList = async () => {
+      try {
+        const data = await getUserListAll();
+        setUserList(data);
+      } catch (err) {
+        console.error("유저 목록 불러오기 실패 : ", err);
+      }
+    };
+
+    fetchUserList();
+  }, []);
   return (
     <div>
       <List
@@ -347,38 +467,19 @@ function NewDMDIV() {
           marginTop: 1,
         }}
       >
-        <ListItem disablePadding>
-          <ListItemButton>
-            <ListItemAvatar>
-              <Avatar></Avatar>
-            </ListItemAvatar>
-            <ListItemText primary={`강중원`} />
-          </ListItemButton>
-        </ListItem>
-        <ListItem disablePadding>
-          <ListItemButton>
-            <ListItemAvatar>
-              <Avatar></Avatar>
-            </ListItemAvatar>
-            <ListItemText primary={`강유정`} />
-          </ListItemButton>
-        </ListItem>
-        <ListItem disablePadding>
-          <ListItemButton>
-            <ListItemAvatar>
-              <Avatar></Avatar>
-            </ListItemAvatar>
-            <ListItemText primary={`박수정`} />
-          </ListItemButton>
-        </ListItem>
-        <ListItem disablePadding>
-          <ListItemButton>
-            <ListItemAvatar>
-              <Avatar></Avatar>
-            </ListItemAvatar>
-            <ListItemText primary={`박준우`} />
-          </ListItemButton>
-        </ListItem>
+        {userList.map((value, index) => {
+          const labelId = `checkbox-list-secondary-label-${value}`;
+          return (
+            <ListItem key={index} disablePadding>
+              <ListItemButton>
+                <ListItemAvatar>
+                  <Avatar>{value.username.charAt(0)}</Avatar>
+                </ListItemAvatar>
+                <ListItemText id={labelId} primary={`${value.username}`} />
+              </ListItemButton>
+            </ListItem>
+          );
+        })}
       </List>
     </div>
   );
