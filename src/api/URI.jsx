@@ -52,4 +52,4 @@ export const MESSAGE_NEW_CHANNEL = `${SERVER_HOST}/message/newChannel`;
 // project
 export const PROJECT_URI = `${SERVER_HOST}/project`;
 export const PROJECTITEM_URI = `${SERVER_HOST}/project/projectItem`;
-export const TASK_URI =  `${TASK_URI}/project/task`
+export const TASK_URI =  `${SERVER_HOST}/project/task`;
