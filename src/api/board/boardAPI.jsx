@@ -1,5 +1,5 @@
 import axios from "axios";
-import {BOARD_ARTICLE_WRITE_URI, BOARD_TYPE, BOARD_FAVORITE, BOARD_BRING_FAVORITE, BOARD_ARTICLE_VIEW, BOARD_ARTICLE_DETAIL} from "../URI";
+import {BOARD_ARTICLE_WRITE_URI, BOARD_TYPE, BOARD_FAVORITE, BOARD_BRING_FAVORITE, BOARD_ARTICLE_VIEW, BOARD_ARTICLE_DETAIL, BOARD_MOVE_BASKET, BOARD_TRASH_VIEW, BOARD_TRASH_PERMANENT} from "../URI";
 
 export const postBoardArticleWrite = async (data) => {
     try {
@@ -94,3 +94,43 @@ export const ArticleDetail = async (id) => {
       throw new Error("게시글 정보를 가져오는 데 실패했습니다.");
   }
 };  
+
+export const moveBoardToBasket = async (id) => {
+  try {
+      const response = await axios.delete(`${BOARD_MOVE_BASKET}?id=${id}`);
+      console.log("게시글 휴지통 이동:", response.data); // 응답 데이터 확인
+      return response.data; // 서버에서 반환된 데이터 반환
+  } catch (err) {
+      console.error(`Error while moving article with ID ${id} to basket:`, err);
+      throw new Error("게시글을 휴지통으로 이동하는 데 실패했습니다.");
+  }
+};
+
+export const getTrashArticles = async () => {
+  try {
+      // 서버에서 휴지통 게시글 데이터 가져오기
+      const response = await axios.get(BOARD_TRASH_VIEW);
+      console.log("Fetched Trash Articles:", response.data); // 응답 데이터 확인
+      return response.data; // 서버에서 반환된 데이터 반환
+  } catch (err) {
+      console.error("Error while fetching trash articles:", err); // 에러 출력
+      if (err.response) {
+          console.error("Response error data:", err.response.data);
+          console.error("Response error status:", err.response.status);
+      }
+      throw new Error("휴지통 게시글 목록을 가져오는 데 실패했습니다.");
+  }
+};
+
+export const deleteTrashArticles = async (articleIds) => {
+  try {
+      const queryString = articleIds.join(",");
+      console.log("Query String:", queryString); // 쿼리 확인
+      const response = await axios.delete(`${BOARD_TRASH_PERMANENT}?ids=${queryString}`);
+      console.log("Response:", response.data);
+      return response.data;
+  } catch (err) {
+      console.error("API Error:", err.response?.data || err.message);
+      throw new Error("휴지통 게시글 영구 삭제에 실패했습니다.");
+  }
+};

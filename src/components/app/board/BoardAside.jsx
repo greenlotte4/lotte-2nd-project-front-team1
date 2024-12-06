@@ -321,7 +321,10 @@ const BoardAside = ({ isVisible }) => {
             <ul className="lnb_tree">
               <li>
                 <div className="menu_item mbox_trash">
-                  <button type="button" className="item_txt">
+                  <button type="button" className="item_txt" onClick={() =>
+                          (window.location.href =
+                            " /app/basketboard")
+                        }>
                     휴지통
                   </button>
                 </div>

@@ -1,6 +1,6 @@
 import { Link, useNavigate } from "react-router-dom";
 
-import { getBoardArticles } from "../../../api/board/boardAPI";
+import { getBoardArticles, moveBoardToBasket } from "../../../api/board/boardAPI";
 import { useEffect, useState } from "react";
 
 export default function AnnouncementBoard(){
@@ -26,6 +26,31 @@ export default function AnnouncementBoard(){
             setSelectedArticles([]); // 모두 선택되어 있으면 선택 해제
         } else {
             setSelectedArticles(articles.map((article) => article.id)); // 모두 선택
+        }
+    };
+
+    const handleDelete = async () => {
+        if (selectedArticles.length === 0) {
+            alert("삭제할 게시글을 선택하세요.");
+            return;
+        }
+
+        if (!window.confirm("선택한 게시글을 삭제하시겠습니까?")) {
+            return;
+        }
+
+        try {
+            // 선택된 게시글 삭제
+            await Promise.all(selectedArticles.map((id) => moveBoardToBasket(id)));
+            // 삭제된 게시글을 화면에서 제거
+            setArticles((prevArticles) =>
+                prevArticles.filter((article) => !selectedArticles.includes(article.id))
+            );
+            setSelectedArticles([]); // 선택 초기화
+            alert("선택한 게시글이 삭제되었습니다.");
+        } catch (err) {
+            console.error("게시글 삭제 중 오류:", err);
+            alert("게시글 삭제에 실패했습니다.");
         }
     };
 
@@ -274,7 +299,7 @@ export default function AnnouncementBoard(){
                                 <strong>읽음</strong>
                             </button>
                             <div className="chk_del">
-                                <button type="button" disabled={selectedArticles.length === 0} className="point">
+                                <button type="button" disabled={selectedArticles.length === 0} className="point" onClick={handleDelete}>
                                     <strong>삭제</strong>
                                 </button>
                             </div>
@@ -330,7 +355,9 @@ export default function AnnouncementBoard(){
                 </div>
                 <div className="board_list">
                     <ul className="list edit_type default">
-                    {articles.map((article) => {
+                    {articles
+                     .filter((article) => article.status !== "trash")
+                    .map((article) => {
                         console.log(article); // 각 article 객체의 값을 콘솔에 출력
                         return (
                             <li
