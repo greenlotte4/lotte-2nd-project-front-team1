@@ -26,9 +26,11 @@ export const USER_EMAIL = `${SERVER_HOST}/api`;
 // article
 export const BOARD_ARTICLE_WRITE_URI = `${SERVER_HOST}/article/write`;
 export const BOARD_ARTICLE_VIEW = `${SERVER_HOST}/article/view`;
+export const BOARD_ARTICLE_DETAIL = `${SERVER_HOST}/article/view/detail`;
 export const BOARD_TYPE = `${SERVER_HOST}/board/type`;
 export const BOARD_FAVORITE = `${SERVER_HOST}/favorite/favoriteboard`;
 export const BOARD_BRING_FAVORITE = `${SERVER_HOST}/favorite/getFavoriteBoards`;
+
 
 
 // product
