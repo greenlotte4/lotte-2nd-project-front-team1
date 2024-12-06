@@ -21,6 +21,7 @@ import AssignmentOutlinedIcon from "@mui/icons-material/AssignmentOutlined";
 import DnsOutlinedIcon from "@mui/icons-material/DnsOutlined";
 import AccountTreeOutlinedIcon from "@mui/icons-material/AccountTreeOutlined";
 import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
+import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
 import MenuIcon from "@mui/icons-material/Menu";
 import { Tooltip } from "@mui/material";
 import { useSelector } from "react-redux";
@@ -119,7 +120,16 @@ export default function AppHeader({ onToggleSidebar, noneAside, thisPage }) {
             <DnsOutlinedIcon className="header_icons" />
           </Link>
         </Tooltip>
-
+        <Tooltip title="문의하기">
+          <Link
+            to="/user/mypage/inquiry"
+            className={
+              thisPage == "inquiry" ? "headerIcon currentIcon" : "headerIcon "
+            }
+          >
+            <HelpOutlineIcon className="header_icons" />
+          </Link>
+        </Tooltip>
         <div className="headerSettings">
           {/* 알림 버튼 */}
           <NotificationButton

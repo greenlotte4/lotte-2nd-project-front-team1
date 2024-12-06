@@ -45,7 +45,7 @@ const userSlice = createSlice({
       state.userid = data.userid;
       state.email = data.email;
       // 쿠키 저장(영구저장을 위해 쿠키 사용)
-      Cookies.set("auth", JSON.stringify(data));
+      Cookies.set("auth", JSON.stringify(data)); 
     },
     logout: (state) => {
       console.log("로그아웃...");

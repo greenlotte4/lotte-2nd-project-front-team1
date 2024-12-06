@@ -17,7 +17,7 @@ const SERVER_HOST = import.meta.env.VITE_SERVER_HOST;
 // user
 export const USER_URI = `${SERVER_HOST}/user/register`;
 export const USER_LOGIN_URI = `${SERVER_HOST}/user/login`;
-export const USER_FIND = `${SERVER_HOST}/user/`
+export const USER_FIND = `${SERVER_HOST}/user/`;
 export const USER_CHECK = `${SERVER_HOST}/user/`;
 export const USER_LIST = `${SERVER_HOST}/user/list`; // 강중원 12.05 추가
 
@@ -34,7 +34,6 @@ export const BOARD_TYPE = `${SERVER_HOST}/board/type`;
 export const BOARD_FAVORITE = `${SERVER_HOST}/favorite/favoriteboard`;
 export const BOARD_BRING_FAVORITE = `${SERVER_HOST}/favorite/getFavoriteBoards`;
 
-
 // product
 
 // setting
@@ -48,3 +47,12 @@ export const ADMIN_UPDATE_USERS = `${SERVER_HOST}/admin/updateuserlist`; //이�
 
 //message
 export const MESSAGE_NEW_CHANNEL = `${SERVER_HOST}/message/newChannel`;
+
+
+
+
+
+// project
+export const PROJECT_URI = `${SERVER_HOST}/project`;
+export const PROJECTITEM_URI = `${SERVER_HOST}/project/projectItem`;
+export const TASK_URI =  `${SERVER_HOST}/project/task`;

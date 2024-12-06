@@ -1,14 +1,12 @@
 import { useState } from "react";
-import { authEmail, sendVerificationWithIdAndEmail } from "../../../api/user/userAPI";
+import { authEmail, checkUserId, sendVerificationWithIdAndEmail } from "../../../api/user/userAPI";
 
-export default function IdFind() {
+export default function IdFind({setIsFormValid, setEmail, setUserId }) {
 
-  const [emailState, setEmailState] = useState("");
+  const [email, setEmailState] = useState("");
   const [authCode, setAuthCode] = useState("");
-  const [userId, setUserId] = useState("");
+  const [userId, setUserIdState] = useState("");
   const [isCodeSent, setIsCodeSent] = useState(false); // 인증번호 발송 상태
-  const [isVerified, setIsVerified] = useState(false); // 인증 성공 여부 상태
-
   const emailHandle = (e) => {
     setEmailState(e.target.value);
   }
@@ -16,18 +14,28 @@ export default function IdFind() {
     setAuthCode(e.target.value);
   }
   const userIdHandler = (e) => {
-    setUserId(e.target.value);
+    setUserIdState(e.target.value);
   }
 
+  const checkUserIdHandler = async () => {
+    const response = await checkUserId(userId);
+    if (!response.data.isAvailable) {
+      setIsFormValid((prev) => ({ ...prev, userIdVerified: true })); // 아이디 인증 완료
+      alert("아이디 인증 완료")
+    } else {
+      setIsFormValid((prev) => ({ ...prev, userIdVerified: false })); 
+      alert("가입하신 아이디가 없습니다.")
+    }
+  }
 
   const sendVerificationCode = async () => {
-    if (!userId || !emailState) {
+    if (!userId || !email) {
       alert("아이디와 이메일을 모두 입력해주세요");
       return;
     }
 
     // 이메일로 인증 번호 보내는 API 호출
-    const response = await sendVerificationWithIdAndEmail(userId, emailState); // email로 인증번호를 보내기
+    const response = await sendVerificationWithIdAndEmail(userId, email); // email로 인증번호를 보내기
     console.log("서버 응답 상태:", response.status); // 응답 상태 확인
 
     if (response.status === 200) {
@@ -39,12 +47,13 @@ export default function IdFind() {
   };
 
   const verifyCode = async () => {
-    const response = await authEmail(email, authCode)
+    const response = await authEmail(email, authCode, userId)
     if (response.status === 200) {
-      setIsVerified(true); // 인증 성공 시 부모 상태 업데이트
+      setIsFormValid((prev) => ({ ...prev, emailVerified: true })); // 이메일 인증 완료
+      setEmail(email)
       alert("인증이 완료 되었습니다.")
     } else {
-      setIsVerified(false);
+      setIsFormValid((prev) => ({ ...prev, emailVerified: false }));
       alert("인증 번호가 다릅니다.")
     }
   }
@@ -60,6 +69,9 @@ export default function IdFind() {
                 placeholder="아이디입력"
                 onChange={userIdHandler}
               />
+              <button type="button" onClick={checkUserIdHandler}>
+                <img src="/images/check.svg" alt="중복확인" />
+              </button>
             </td>
           </tr>
         </tbody>
@@ -78,7 +90,7 @@ export default function IdFind() {
                   className="authBtn"
                   type="button"
                   onClick={sendVerificationCode}
-                  disabled={!userId || !emailState} // 아이디와 이메일이 입력되지 않으면 비활성화
+                  disabled={!userId || !email} // 아이디와 이메일이 입력되지 않으면 비활성화
                 >
                   인증번호 받기
                 </button>

@@ -40,14 +40,15 @@ export default function AppHome() {
       id="AppHomeMain"
       style={{ backgroundImage: `url(${image})`, backgroundSize: `cover` }}
     >
-      <div className="logo-container">
-        <img
-          src="/images/logo-2.png"
-          alt="로고 이미지"
-          className="logo-image"
-        />
-      </div>
-
+      <Link to="/">
+        <div className="logo-container">
+          <img
+            src="/images/logo-2.png"
+            alt="로고 이미지"
+            className="logo-image"
+          />
+        </div>
+      </Link>
       <div className="main-page">
         <Link to="/app/page" className="icon-button">
           <DescriptionOutlinedIcon className="icon-image" />
@@ -62,9 +63,9 @@ export default function AppHome() {
           <ChatBubbleOutlineOutlinedIcon className="icon-image" />
           <div className="button-text">메신저</div>
         </Link>
-        
+
         <Link to="/app/mainboard" className="icon-button">
-         <AssignmentOutlinedIcon className="icon-image" />
+          <AssignmentOutlinedIcon className="icon-image" />
           <div className="button-text">게시판</div>
         </Link>
         <Link to="/app/project" className="icon-button">
