@@ -7,25 +7,26 @@ export default function ProjectSidebar({ isVisible }) {
   const [isAnimating, setIsAnimating] = useState(false);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
-  const [projects, setProjects] = useState([
-    {
-      id: 1,
-      name: "프로젝트 1",
-      teamLeader: "팀장1",
-      startDate: "2024-01-01",
-      endDate: "2024-12-31",
-      members: ["홍길동", "김영희", "이철수"],
-    },
-    {
-      id: 2,
-      name: "팀 프로젝트",
-      teamLeader: "팀장2",
-      startDate: "2024-02-01",
-      endDate: "2024-10-31",
-      members: ["박영수", "최민수"],
-    },
-  ]);
+  const [projects, setProjects] = useState([]);
   const [selectedProject, setSelectedProject] = useState(null);
+
+  useEffect(() => {
+    const fetchProjects = async () => {
+      try {
+        const response = await axios.get("/project/");
+        const { inProjectList, loginUserProjectList } = response.data;
+
+        // 프로젝트 리스트 업데이트
+        setProjects([...inProjectList, ...loginUserProjectList]); // 둘을 합침
+        
+      } catch (error) {
+        console.error("프로젝트 데이터를 가져오는 중 오류 발생:", error);
+      }
+    };
+
+    fetchProjects();
+  }, []); 
+
 
   useEffect(() => {
     if (isVisible) {
@@ -76,15 +77,18 @@ export default function ProjectSidebar({ isVisible }) {
   return (
     <>
       {isAnimating && (
-        <div id="sidebar-container">
-          <aside
-            className={
-              isVisible ? "aside-slide-in sidebar" : "aside-slide-out sidebar"
-            }
-          >
-            <nav className="menu">
-              <ul>
-                {projects.map((project) => (
+      <div id="sidebar-container">
+        <aside
+          className={
+            isVisible ? "aside-slide-in sidebar" : "aside-slide-out sidebar"
+          }
+        >
+          <nav className="menu">
+            <h3>내가 팀장인 프로젝트</h3>
+            <ul>
+              {projects
+                .filter((project) => project.teamLeader === "로그인 사용자") // 팀장 필터링
+                .map((project) => (
                   <li
                     key={project.id}
                     className={`menu-item ${
@@ -104,14 +108,41 @@ export default function ProjectSidebar({ isVisible }) {
                     </button>
                   </li>
                 ))}
-              </ul>
-              <button className="addButton" onClick={openAddModal}>
-                + 프로젝트 추가
-              </button>
-            </nav>
-          </aside>
-        </div>
-      )}
+            </ul>
+
+            <h3>참여한 프로젝트</h3>
+            <ul>
+              {projects
+                .filter((project) => project.teamLeader !== "로그인 사용자") // 팀원으로 참여 중인 프로젝트 필터링
+                .map((project) => (
+                  <li
+                    key={project.id}
+                    className={`menu-item ${
+                      selectedProject?.id === project.id ? "selected" : ""
+                    }`}
+                    onClick={() => selectProject(project)}
+                  >
+                    {project.name}
+                    <button
+                      className="update-button"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        openUpdateModal(project);
+                      }}
+                    >
+                      수정/삭제
+                    </button>
+                  </li>
+                ))}
+            </ul>
+
+            <button className="addButton" onClick={openAddModal}>
+              + 프로젝트 추가
+            </button>
+          </nav>
+        </aside>
+      </div>
+    )}
       <Modal isOpen={isAddModalOpen} onClose={closeAddModal} title="프로젝트 추가">
         <AddProjectForm onClose={closeAddModal} onAddProject={addProject} />
       </Modal>

@@ -23,6 +23,7 @@ export const USER_LIST = `${SERVER_HOST}/user/list`; // 강중원 12.05 추가
 
 export const USER_EMAIL = `${SERVER_HOST}/api`;
 
+<<<<<<< Updated upstream
 // article
 export const BOARD_ARTICLE_WRITE_URI = `${SERVER_HOST}/article/write`;
 export const BOARD_ARTICLE_VIEW = `${SERVER_HOST}/article/view`;
@@ -44,3 +45,14 @@ export const ADMIN_UPDATE_USERS = `${SERVER_HOST}/admin/updateuserlist`; //이�
 
 //message
 export const MESSAGE_NEW_CHANNEL = `${SERVER_HOST}/message/newChannel`;
+=======
+
+
+
+
+
+// project
+export const PROJECT_URI = `${SERVER_HOST}/project`;
+export const PROJECTITEM_URI = `${SERVER_HOST}/project/projectItem`;
+export const TASK_URI =  `${TASK_URI}/project/task`
+>>>>>>> Stashed changes
