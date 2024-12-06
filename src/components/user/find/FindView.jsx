@@ -1,6 +1,6 @@
 import { Link, useLocation } from "react-router-dom";
 import IdView from "./IdView";
-import PassView from "./PassView";
+import PassView from "./NewPass";
 
 export default function FindView() {
   const location = useLocation();

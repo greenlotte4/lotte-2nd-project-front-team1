@@ -131,20 +131,21 @@ export default function Register() {
             updatedUser.hp = fullPhoneNumber;
         }
     }
-    const handlePhoneBlur = async () => {
+    const handlePhoneBlur = async (e) => {
         const { hp1, hp2, hp3 } = user;
+        if (e.target.name === "hp3") {
+            // 휴대폰 번호가 모두 입력되었을 때만 중복 체크
+            if (hp1 && hp2 && hp3) {
+                const fullPhoneNumber = `${hp1}-${hp2}-${hp3}`;
+                const response = await checkPhoneNumber(fullPhoneNumber);
 
-        // 휴대폰 번호가 모두 입력되었을 때만 중복 체크
-        if (hp1 && hp2 && hp3) {
-            const fullPhoneNumber = `${hp1}-${hp2}-${hp3}`;
-            const response = await checkPhoneNumber(fullPhoneNumber);
-
-            if (!response.isAvailable) {
-                setIsPhoneAvailable(true); // 번호가 사용 가능하면 true
-                setIsPhoneValid(true);  // 번호가 유효하면 true
-            } else {
-                setIsPhoneValid(false);
-                setIsPhoneAvailable(false);
+                if (!response.isAvailable) {
+                    setIsPhoneAvailable(true); // 번호가 사용 가능하면 true
+                    setIsPhoneValid(true);  // 번호가 유효하면 true
+                } else {
+                    setIsPhoneAvailable(false);
+                    setIsPhoneValid(false);
+                }
             }
         }
     };
@@ -160,7 +161,7 @@ export default function Register() {
             alert("회원가입이 실패 했습니다.")
         }
     }
-    
+
     // 우편번호 팝업 열기
     const openPostcodePopup = () => {
         setIsPostcodePopupOpen(true);
@@ -216,15 +217,15 @@ export default function Register() {
                                 <span
                                     style={{
                                         display: "block",
-                                        color: passwordMatch ? "green" : "red",
+                                        color: !passValid || !passwordMatch ? "red" : "green",  // 기본 빨간색, 조건 맞으면 초록색
                                         fontSize: "12px",
                                     }}
                                 >
-                                    {passValid && passwordMatch
-                                        ? "비밀번호가 일치합니다."
-                                        : passValid
-                                            ? "비밀번호는 유효하나 일치하지 않습니다."
-                                            : "비밀번호 특수문자/영문 대소문자 구별없이 8글자 이상 입력."}
+                                    {passValid
+                                        ? passwordMatch
+                                            ? "비밀번호가 일치합니다."
+                                            : "비밀번호는 유효하나 일치하지 않습니다."
+                                        : "비밀번호 특수문자/영문 대소문자 구별없이 8글자 이상 입력."}
                                 </span>
                             </td>
 
@@ -292,14 +293,14 @@ export default function Register() {
                                     <span>-</span>
                                     <input type="text"
                                         name="hp2"
-                                        placeholder="1234"
+                                        placeholder="0000"
                                         value={user.hp2}
                                         onChange={changeHandler}
                                         maxLength={4} />
                                     <span>-</span>
                                     <input type="text"
                                         name="hp3"
-                                        placeholder="5678"
+                                        placeholder="0000"
                                         value={user.hp3}
                                         onChange={changeHandler}
                                         maxLength={4}
