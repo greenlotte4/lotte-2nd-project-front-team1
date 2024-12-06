@@ -3,26 +3,40 @@ import { Editor } from '@tinymce/tinymce-react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { postBoardArticleWrite } from "../../../api/board/boardAPI"; // URI 상수 import
+import { useSelector } from 'react-redux';
 
 const NoticeBoard = () => {
+    const userId = useSelector((state) => state.userSlice.userid);
     const [article, setArticle] = useState({
         title: '',
         content: '', // TinyMCE의 내용을 여기에 저장할 것
         board: '공지사항', // 게시판 선택
-        writer: '작성자ID', // 로그인 상태에서 작성자 ID를 가져와야 함
+        writer: userId || '', // 로그인 상태에서 작성자 ID를 가져와야 함
     });
 
     const navigate = useNavigate();
 
-    const handleEditorChange = (content, editor) => {
-        setArticle({ ...article, content }); // TinyMCE의 내용을 상태에 저장
-    };
+    const handleEditorChange = (content) => {
+    if (content !== article.content) {
+        setArticle((prev) => ({ ...prev, content })); // 상태가 달라질 때만 업데이트
+    }
+};
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+
+        const articlePayload = {
+            ...article,
+            userId: userId, // Redux에서 가져온 userId를 명시적으로 포함
+        };
+    
+        if (!userId) {
+            alert("로그인이 필요합니다.");
+            return;
+        }
     
         try {
-            const result = await postBoardArticleWrite(article);
+            const result = await postBoardArticleWrite(articlePayload);
             console.log("result: " + result);
     
             if(result) {
@@ -301,27 +315,23 @@ const NoticeBoard = () => {
                   <div className="workseditor-editor" style={{overflow: "auto", height: "auto"}}>
                   <Editor
                     apiKey='io6vv69eg9rs7jdt6rxcxtuwf127qkmot1d5e2ttm4khz10i'
-                    initialValue={article.content}
                     init={{
                         height: 500,
-                        forced_root_block: false, // IME 입력 문제를 해결
+                        forced_root_block: 'false', // IME 입력 문제를 해결
                         directionality: "ltr", // 텍스트 방향을 left-to-right로 설정
+                        language: 'ko_KR',
+                        fontsize_formats: '10pt 12pt 14pt 18pt 24pt 36pt 48pt',
                         plugins: [
                         // Core editing features
                         'anchor', 'autolink', 'charmap', 'codesample', 'emoticons', 'image', 'link', 'lists', 'media', 'searchreplace', 'table', 'visualblocks', 'wordcount',
                         // Your account includes a free trial of TinyMCE premium features
                         // Try the most popular premium features until Dec 17, 2024:
-                        'checklist', 'mediaembed', 'casechange', 'export', 'formatpainter', 'pageembed', 'a11ychecker', 'tinymcespellchecker', 'permanentpen', 'powerpaste', 'advtable', 'advcode', 'editimage', 'advtemplate', 'ai', 'mentions', 'tinycomments', 'tableofcontents', 'footnotes', 'mergetags', 'autocorrect', 'typography', 'inlinecss', 'markdown',
+                     
                         // Early access to document converters
                         'importword', 'exportword', 'exportpdf'
                         ],
                         toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table mergetags | addcomment showcomments | spellcheckdialog a11ycheck typography | align lineheight | checklist numlist bullist indent outdent | emoticons charmap | removeformat',
                         tinycomments_mode: 'embedded',
-                        tinycomments_author: 'Author name',
-                        mergetags_list: [
-                        { value: 'First.Name', title: 'First Name' },
-                        { value: 'Email', title: 'Email' },
-                        ],
                         ai_request: (request, respondWith) => respondWith.string(() => Promise.reject('See docs to implement AI Assistant')),
                     }}
                     onEditorChange={handleEditorChange}
