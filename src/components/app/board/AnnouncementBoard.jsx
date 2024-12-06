@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import { getBoardArticles } from "../../../api/board/boardAPI";
 import { useEffect, useState } from "react";
@@ -8,6 +8,8 @@ export default function AnnouncementBoard(){
     const [articles, setArticles] = useState([]); // 게시글 상태
     const [loading, setLoading] = useState(true); // 로딩 상태
     const [error, setError] = useState(null); // 에러 상태
+    const navigate = useNavigate();
+
 
     useEffect(() => {
         // 데이터 가져오기
@@ -27,6 +29,7 @@ export default function AnnouncementBoard(){
 
     if (loading) return <p>Loading...</p>;
     if (error) return <p>Error: {error}</p>;
+    
 
     return(
         <div className="boardContentDiv" id="boardContentDiv">
@@ -304,29 +307,40 @@ export default function AnnouncementBoard(){
                 <div className="board_list">
                     <ul className="list edit_type default">
                     {articles.map((article) => {
-    console.log(article); // 각 article 객체의 값을 콘솔에 출력
-    return (
-        <li key={article.id} className="read has_photo" style={{ cursor: "pointer" }}>
-            <p className="chk">
-                <input id={`check_${article.id}`} type="checkbox" name="chk_bd" />
-                <label htmlFor={`check_${article.id}`}>해당 게시글 선택</label>
-            </p>
-            <div className="sbj_box">
-                <p className="sbj">
-                    <em className="ic_noti">필독</em>
-                    <Link to={`/article/view/${article.id}`}>{article.title}</Link>
-                </p>
-            </div>
-            <p className="infor">
-                <button type="button" className="user">{article.userName || "Unknown User"}</button>
-                <span className="read_chk">
-                    읽음 <strong>{article.readCount || 0}</strong>
-                </span>
-            </p>
-            <p className="date">{new Date(article.created_At).toLocaleDateString("en-CA")}</p>
-        </li>
-    );
-})}
+                        console.log(article); // 각 article 객체의 값을 콘솔에 출력
+                        return (
+                            <li
+                            key={article.id}
+                            className="read has_photo"
+                            style={{ cursor: "pointer" }}
+                            onClick={() => navigate(`/article/view/${article.id}`)} // li 클릭 시 이동
+                        >
+                            <p className="chk">
+                                <input id={`check_${article.id}`} type="checkbox" name="chk_bd" />
+                                <label htmlFor={`check_${article.id}`}>해당 게시글 선택</label>
+                            </p>
+                            <div className="sbj_box">
+                                <p className="sbj">
+                                    <em className="ic_noti">필독</em>
+                                    <Link to={`/article/view/${article.id}`} onClick={(e) => e.stopPropagation()}>
+                                        {article.title}
+                                    </Link>
+                                </p>
+                            </div>
+                            <p className="infor">
+                                <button type="button" className="user">
+                                      {article.author?.username || "Unknown User"}
+                                </button>
+                                <span className="read_chk">
+                                    읽음 <strong>{article.readCount || 0}</strong>
+                                </span>
+                            </p>
+                            <p className="date">
+                                {new Date(article.createdAt).toLocaleDateString("en-CA")}
+                            </p>
+                        </li>
+                        );
+                    })}
                     </ul>
                     <p className="bt_more">
                         <button type="button" className="btn" onClick={() =>

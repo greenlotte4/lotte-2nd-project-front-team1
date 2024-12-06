@@ -1,5 +1,5 @@
 import axios from "axios";
-import {BOARD_ARTICLE_WRITE_URI, BOARD_TYPE, BOARD_FAVORITE, BOARD_BRING_FAVORITE, BOARD_ARTICLE_VIEW} from "../URI";
+import {BOARD_ARTICLE_WRITE_URI, BOARD_TYPE, BOARD_FAVORITE, BOARD_BRING_FAVORITE, BOARD_ARTICLE_VIEW, BOARD_ARTICLE_DETAIL} from "../URI";
 
 export const postBoardArticleWrite = async (data) => {
     try {
@@ -83,3 +83,14 @@ export const getBoardArticles = async () => {
         throw new Error("게시글 목록을 가져오는 데 실패했습니다.");
     }
 };
+
+export const ArticleDetail = async (id) => {
+  try {
+      const response = await axios.get(`${BOARD_ARTICLE_DETAIL}?id=${id}`); // URL과 파라미터 확인
+      console.log("Fetched Article Detail:", response.data);
+      return response.data;
+  } catch (err) {
+      console.error(`Error while fetching article with ID ${id}:`, err);
+      throw new Error("게시글 정보를 가져오는 데 실패했습니다.");
+  }
+};  

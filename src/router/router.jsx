@@ -77,7 +77,7 @@ const router = createBrowserRouter([
   { path: "/app/importantboard", element: <ImportantBoardPage/>},
   { path: "/app/mypostboard", element: <MyPostBoardPage/>},
   { path: "/app/announcementboard", element: <AnnouncementBoardPage/>},
-  { path: "/app/viewboard", element: <ViewBoardPage/>},
+  { path: "/article/view/:id", element: <ViewBoardPage/> }, 
 
   //Admin
   { path: "/admin/user", element: <AdminUserPage /> },

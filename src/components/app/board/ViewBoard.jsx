@@ -1,4 +1,31 @@
-export default function ViewBoard(){
+import React, { useEffect, useState } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+import { ArticleDetail } from "../../../api/board/boardAPI";
+
+export default function ViewBoard() {
+    const { id } = useParams(); // URL에서 게시글 ID 가져옴
+    const [article, setArticle] = useState(null);
+    const navigate = useNavigate();
+
+    // 게시글 데이터 가져오기
+    useEffect(() => {
+        const fetchArticle = async () => {
+            try {
+                const data = await ArticleDetail(id); // API 호출
+                setArticle(data);
+            } catch (error) {
+                console.error("게시글 정보를 가져오는 중 오류 발생:", error);
+              
+               
+            }
+        };
+        fetchArticle();
+    }, [id, navigate]);
+
+    // 로딩 상태 처리
+    if (!article) {
+        return <div>로딩 중...</div>;
+    }
     return(
         <div className="boardContentDiv" id="boardContentDiv">
             <div className="g_search">
@@ -214,9 +241,7 @@ export default function ViewBoard(){
                     </div>
                     <div className="subject">
                         <div className="txt_cover">
-                            <h3 className="txt">
-                                제목입니다.
-                            </h3>
+                        <h3 className="txt">{article.title}</h3>
                             <div className="check_cover">
                                 <input id="important_post_check" type="checkbox" className="important_post_check"/>
                                 <label htmlFor="important_post_check">
@@ -228,12 +253,22 @@ export default function ViewBoard(){
                     <div className="infor">
                         <div className="infor_inner">
                             <span className="name">
-                                <button type="button">이름</button>
+                                <button type="button">
+                                    {article.userName || "알 수 없음"}
+                                </button>
                                 <span style={{display: "none"}}></span> 
                                 <span style={{display: "none"}}>그린컴퓨터아카데미</span>
                             </span>
                             <span className="date">
-                                <em>2024. 11. 27. 10:27</em>
+                            <em>
+                                {new Date(article.createdAt).toLocaleString("ko-KR", {
+                                    year: "numeric",
+                                    month: "2-digit",
+                                    day: "2-digit",
+                                    hour: "2-digit",
+                                    minute: "2-digit",
+                                }) || "알 수 없음"}
+                            </em>
                             </span>
                             <span className="read">
                                 <button type="button">
@@ -257,8 +292,11 @@ export default function ViewBoard(){
                             </button>
                         </div>
                     </div>
-                    <div id="id_contents" className="cont" style={{fontFamily: '"Malgun Gothic", "맑은 고딕", sans-serif'}}>
-                        <div style={{fontFamily: '"Malgun Gothic", "맑은 고딕", sans-serif',fontSize: '14px'}}>내용입니다.</div>
+                    <div id="id_contents" className="cont">
+                        <div
+                            style={{ fontSize: "14px" }}
+                            dangerouslySetInnerHTML={{ __html: article.content || "내용 없음" }}
+                        />
                     </div>
                     <div className="btn_box _no_print">
                         <button type="button">
@@ -307,7 +345,7 @@ export default function ViewBoard(){
                             </div>
                         </div>
                         <div className="list_area">
-                            <ul className="list_box">
+                            <ul className="list_box" style={{display: "none"}}>
                                 <li>
                                    <div className="cmt_box">
                                     <div className="user">
