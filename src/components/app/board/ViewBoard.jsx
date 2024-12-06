@@ -230,7 +230,7 @@ export default function ViewBoard() {
                     <h2 className="tit _board_title">자유게시판</h2>
                     <div className="btn_area _no_print">
                         <p className="wrap_btn">
-                            <button type="button" className="list">목록</button>
+                            <button type="button" className="list" onClick={() => navigate(-1)}>목록</button>
                             <button type="button" className="prev">
                                 <i>이전글</i>
                             </button>
@@ -400,7 +400,7 @@ export default function ViewBoard() {
                     </div>
                     <div className="btn_area _no_print btm_type">
                         <p className="wrap_btn">
-                            <button type="button" className="list">
+                            <button type="button" className="list" onClick={() => navigate(-1)} >
                             목록
                             </button>
                             <button type="button" className="prev">
