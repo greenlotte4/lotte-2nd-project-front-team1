@@ -102,11 +102,43 @@ export default function MessageBox() {
     <div className="messageDiv">
       <div className="messageInfo">
         <h2 className="chatRoomName">
-          <Avatar>강</Avatar>강중원
+          <Avatar>강</Avatar>
+          <div className="chatRoomNameText">강중원</div>
         </h2>
         <span></span>
       </div>
       <div className="chatBox">
+        <div className="chatBlockByDay">
+          <div className="message_date">2024.12.05.(금)</div>
+          <div className="message_box">
+            <Avatar
+              alt="Remy Sharp"
+              src="/images/user_Icon.png"
+              className="chatProfile"
+            />
+            <div className="chatContent">
+              <div className="message_sender">강중원</div>
+              <div className="message_time">오후 2:30</div>
+              <div className="text_box">
+                <p>이거 이해가 잘 안되네요.</p>
+              </div>
+            </div>
+          </div>
+          <div className="message_box">
+            <Avatar
+              alt="Remy Sharp"
+              src="/images/user_Icon.png"
+              className="chatProfile"
+            />
+            <div className="chatContent">
+              <div className="message_sender">사용자 (나)</div>
+              <div className="message_time">오후 2:30</div>
+              <div className="text_box">
+                <p>그럼 죽어</p>
+              </div>
+            </div>
+          </div>
+        </div>
         {messages.map((message, index) => (
           <div key={index} className="chatBlockByDay">
             {message.date && <div className="message_date">{message.date}</div>}
@@ -115,12 +147,12 @@ export default function MessageBox() {
               onContextMenu={(event) => handleClick(event, index)}
             >
               <Avatar
-                alt="Remy Sharp"
+                alt="사용자 아이콘"
                 src="/images/user_Icon.png"
                 className="chatProfile"
               />
               <div className="chatContent">
-                <div className="message_sender">이순신</div>
+                <div className="message_sender">사용자 (나)</div>
                 <div className="message_time">{message.time}</div>
                 <div className="text_box">
                   <p>{message.text}</p>

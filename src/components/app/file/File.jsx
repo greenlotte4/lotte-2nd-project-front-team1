@@ -249,6 +249,8 @@ export default function File() {
                 <button value="rename" name="file-rename" onClick={renameFile}>
                   이름변경
                 </button>
+                <button>공유하기</button>
+                <button>이동하기</button>
                 <button
                   value="delete"
                   name="file-delete"

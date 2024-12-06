@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { getBoards, getUserFavorites, updateFavorite } from "../../../api/board/boardAPI"; 
+import { getBoards, addFavoriteBoard, getFavoriteBoards} from "../../../api/board/boardAPI"; 
+import { useSelector } from "react-redux";
 
 /*
     날짜 : 2024/11/29
@@ -15,7 +16,12 @@ import { getBoards, getUserFavorites, updateFavorite } from "../../../api/board/
 const BoardAside = ({ isVisible }) => {
   const [isAnimating, setIsAnimating] = useState(false);
   const [boards, setBoards] = useState([]);
-  const [userFavorites, setUserFavorites] = useState(new Set()); // 즐겨찾기 상태 저장
+  const [favoriteBoards, setFavoriteBoards] = useState(new Map());
+
+  const userId = useSelector((state) => state.userSlice.userid);
+
+  
+
 
   // 애니메이션 제어
   useEffect(() => {
@@ -27,20 +33,6 @@ const BoardAside = ({ isVisible }) => {
     }
   }, [isVisible]);
 
-  // 유저의 즐겨찾기 목록을 가져오기
-  useEffect(() => {
-    const fetchFavorites = async () => {
-      try {
-        const favoriteBoards = await getUserFavorites(); // 유저의 즐겨찾기 게시물 목록을 가져옵니다.
-        const favoriteBoardIds = new Set(favoriteBoards.map(board => board.boardId)); // 즐겨찾기한 게시물 ID를 Set에 저장
-        setUserFavorites(favoriteBoardIds); // 상태 업데이트
-      } catch (err) {
-        console.error("즐겨찾기 목록을 가져오는 에러:", err);
-      }
-    };
-
-    fetchFavorites(); // 컴포넌트가 마운트될 때 한 번만 실행
-  }, []);
 
   // 게시물 목록 가져오기
   useEffect(() => {
@@ -56,36 +48,63 @@ const BoardAside = ({ isVisible }) => {
     fetchArticles(); // 컴포넌트가 처음 렌더링될 때 호출
   }, []);
 
-  // 즐겨찾기 상태 변경
-  const handleFavoriteClick = async (boardId, isFavorite) => {
+  useEffect(() => {
+    const fetchFavoriteBoards = async () => {
+      if (!userId) return;
+  
+      try {
+        const favoriteData = await getFavoriteBoards(userId);
+        console.log("API Response:", favoriteData);
+  
+        // `favorite` 값을 `1` 또는 `0`으로 변환하여 `Map`에 저장
+        const favoriteMap = new Map();
+        favoriteData.forEach((board) => {
+          favoriteMap.set(board.boardId, board.favorite ? 1 : 0);
+        });
+  
+        setFavoriteBoards(favoriteMap);
+        console.log("즐겨찾기 맵:", Array.from(favoriteMap.entries())); // 확인 로그
+      } catch (err) {
+        console.error("Failed to fetch favorite boards:", err);
+      }
+    };
+  
+    fetchFavoriteBoards();
+  }, [userId]);
+
+  const onFavoriteToggle = async (boardId) => {
+    if (!userId) {
+      console.error("User is not logged in.");
+      return;
+    }
+  
+    const isFavorite = favoriteBoards.get(boardId) === 1;
+  
+    // Optimistic UI 업데이트
+    setFavoriteBoards((prevFavorites) => {
+      const updatedFavorites = new Map(prevFavorites);
+      updatedFavorites.set(boardId, !isFavorite ? 1 : 0);
+      return updatedFavorites;
+    });
+  
     try {
-      const updatedBoard = await updateFavorite(boardId, !isFavorite); // 반전된 isFavorite 값 서버에 전송
-      console.log("Updated Board:", updatedBoard); // 서버에서 반환된 데이터 확인
-
-      // UI에 반영된 즐겨찾기 상태 업데이트
-      setBoards((prevBoards) =>
-        prevBoards.map((board) =>
-          board.boardId === boardId
-            ? { ...board, isFavorite: !isFavorite } // 즐겨찾기 상태 반전
-            : board
-        )
-      );
-
-      // 즐겨찾기한 게시물 목록 업데이트
-      setUserFavorites((prevFavorites) => {
-        const updatedFavorites = new Set(prevFavorites);
-        if (updatedFavorites.has(boardId)) {
-          updatedFavorites.delete(boardId); // 즐겨찾기 제거
-        } else {
-          updatedFavorites.add(boardId); // 즐겨찾기 추가
-        }
-        return updatedFavorites;
+      // 서버에 즐겨찾기 상태 토글 요청
+      await addFavoriteBoard({
+        boardId,
+        isFavorite: !isFavorite,
+        userId,
       });
     } catch (err) {
-      console.error("Failed to update favorite:", err);
+      console.error("Failed to toggle favorite:", err.message || err);
+  
+      // 실패 시 원래 상태로 복원
+      setFavoriteBoards((prevFavorites) => {
+        const restoredFavorites = new Map(prevFavorites);
+        restoredFavorites.set(boardId, isFavorite ? 1 : 0);
+        return restoredFavorites;
+      });
     }
   };
-
   return (
     isAnimating &&(
     <div id="sidebar-container">
@@ -187,58 +206,57 @@ const BoardAside = ({ isVisible }) => {
             </ul>
           </div>
           <div className="menu_box _groups separator">
-            <div className="board_head_bar">
-              <button type="button" className="btn_fold">
-                <span className="text">즐겨찾기</span>
+  <div className="board_head_bar">
+    <button type="button" className="btn_fold">
+      <span className="text">즐겨찾기</span>
+    </button>
+  </div>
+
+  {boards.length > 0 &&
+  favoriteBoards.size > 0 &&
+  boards.some((board) => favoriteBoards.get(Number(board.boardId)) === 1) ? (
+    <ul className="lnb_favorite">
+      {boards
+        .filter((board) => favoriteBoards.get(Number(board.boardId)) === 1)
+        .map((favoriteBoard) => (
+          <li key={favoriteBoard.boardId} className="board">
+            <div className="menu_item">
+              <button
+                type="button"
+                title={favoriteBoard.boardName}
+                className="item_txt"
+                onClick={() => (window.location.href = "/app/announcementboard")}
+              >
+                <span className="text">{favoriteBoard.boardName}</span>
               </button>
+              <input
+                id={`fav_${favoriteBoard.boardId}`}
+                type="checkbox"
+                name={`${favoriteBoard.boardName}`}
+                className="input_fav"
+                checked={favoriteBoards.get(Number(favoriteBoard.boardId)) === 1}
+                onChange={() => onFavoriteToggle(favoriteBoard.boardId)}
+              />
+              <label
+                htmlFor={`fav_${favoriteBoard.boardId}`}
+                className="ico_fav side_btn"
+              >
+                {favoriteBoards.get(Number(favoriteBoard.boardId)) === 1
+                  ? "즐겨찾기 등록됨"
+                  : "즐겨찾기"}
+              </label>
             </div>
-            {boards.some((board) => board.isFavorite) ? (
-              // 즐겨찾기된 게시판 출력
-              <ul className="lnb_favorite">
-                {boards
-                  .filter((board) => board.isFavorite) // 즐겨찾기된 항목만 필터링
-                  .map((favoriteBoard) => (
-                    <li key={favoriteBoard.boardId} className="board">
-                      <div className="menu_item">
-                        <button
-                          type="button"
-                          title={favoriteBoard.boardName}
-                          className="item_txt"
-                          onClick={() =>
-                            (window.location.href = "/app/announcementboard")
-                          }
-                        >
-                          <span className="text">{favoriteBoard.boardName}</span>
-                        </button>
-                        <input
-                          id={`fav_${favoriteBoard.boardId}`}
-                          type="checkbox"
-                          name={`${favoriteBoard.boardName}`}
-                          className="input_fav"
-                          checked={favoriteBoard.isFavorite}
-                          onChange={() =>
-                            handleFavoriteClick(favoriteBoard.boardId, favoriteBoard.isFavorite)
-                          }
-                        />
-                        <label
-                          htmlFor={`fav_${favoriteBoard.boardId}`}
-                          className="ico_fav side_btn"
-                        >
-                          {favoriteBoard.isFavorite ? "즐겨찾기 등록됨" : "즐겨찾기"}
-                        </label>
-                      </div>
-                    </li>
-                  ))}
-              </ul>
-            ) : (
-              // 즐겨찾기가 없을 경우 메시지 출력
-              <div className="lnb_favorite_empty">
-                <p className="message">
-                  자주 찾는 게시판의 이름 옆 별 아이콘을 클릭하면 즐겨찾기로 추가할 수 있어요.
-                </p>
-              </div>
-            )}
-          </div>
+          </li>
+        ))}
+    </ul>
+  ) : (
+    <div className="lnb_favorite_empty">
+      <p className="message">
+        자주 찾는 게시판의 이름 옆 별 아이콘을 클릭하면 즐겨찾기로 추가할 수 있어요.
+      </p>
+    </div>
+  )}
+</div>
           <div className="menu_box separator">
             <div className="board_head_bar">
               <button type="button" title="전체 게시판" className="btn_fold">
@@ -279,19 +297,19 @@ const BoardAside = ({ isVisible }) => {
                         <span className="text">{board.boardName}</span>
                       </button>
                       <input
-                        id={`${board.boardId}`}
-                        type="checkbox"
-                        name={`${board.boardName}`}
-                        className="input_fav"
-                        checked={userFavorites.has(board.boardId)}  // 유저의 즐겨찾기 상태 기반으로 체크박스 상태 결정
-                        onChange={() => handleFavoriteClick(board.boardId, userFavorites.has(board.boardId))}  // 즐겨찾기 상태 반전
-                      />
-                      <label
-                        htmlFor={`${board.boardId}`}
-                        className={`ico_fav side_btn ${userFavorites.has(board.boardId) ? "favorite" : ""}`}  // isFavorite에 따라 클래스 동적 변경
-                      >
-                        {userFavorites.has(board.boardId) ? "즐겨찾기 등록됨" : "즐겨찾기"}
-                      </label>
+                  id={`${board.boardId}`}
+                  type="checkbox"
+                  name={`${board.boardName}`}
+                  className="input_fav"
+                  checked={favoriteBoards.get(board.boardId) === 1} // is_favorite 값이 1일 때 체크
+                  onChange={() => onFavoriteToggle(board.boardId)} // 클릭 시 상태 변경
+                />
+                <label
+                  htmlFor={`${board.boardId}`}
+                  className={`ico_fav side_btn ${
+                    favoriteBoards.get(board.boardId) === 1 ? "active" : ""
+                  }`}
+                ></label>
                     </div>
                   </li>
                     ))}
