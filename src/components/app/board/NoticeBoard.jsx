@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { Editor } from '@tinymce/tinymce-react';
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { postBoardArticleWrite } from "../../../api/board/boardAPI"; // URI 상수 import
@@ -313,30 +314,21 @@ const NoticeBoard = () => {
                       </li>
                   </ul>
                   <div className="workseditor-editor" style={{overflow: "auto", height: "auto"}}>
-                  <Editor
-                    apiKey='io6vv69eg9rs7jdt6rxcxtuwf127qkmot1d5e2ttm4khz10i'
-                    init={{
-                        height: 500,
-                        forced_root_block: 'false', // IME 입력 문제를 해결
-                        directionality: "ltr", // 텍스트 방향을 left-to-right로 설정
-                        language: 'ko_KR',
-                        fontsize_formats: '10pt 12pt 14pt 18pt 24pt 36pt 48pt',
-                        plugins: [
-                        // Core editing features
-                        'anchor', 'autolink', 'charmap', 'codesample', 'emoticons', 'image', 'link', 'lists', 'media', 'searchreplace', 'table', 'visualblocks', 'wordcount',
-                        // Your account includes a free trial of TinyMCE premium features
-                        // Try the most popular premium features until Dec 17, 2024:
-                     
-                        // Early access to document converters
-                        'importword', 'exportword', 'exportpdf'
-                        ],
-                        toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table mergetags | addcomment showcomments | spellcheckdialog a11ycheck typography | align lineheight | checklist numlist bullist indent outdent | emoticons charmap | removeformat',
-                        tinycomments_mode: 'embedded',
-                        ai_request: (request, respondWith) => respondWith.string(() => Promise.reject('See docs to implement AI Assistant')),
-                    }}
-                    onEditorChange={handleEditorChange}
-                 
-                    />
+                  <ReactQuill
+                            theme="snow"
+                            value={article.content}
+                            onChange={handleEditorChange}
+                            placeholder="내용을 입력하세요"
+                            modules={{
+                                toolbar: [
+                                    [{ header: [1, 2, 3, false] }],
+                                    ['bold', 'italic', 'underline', 'strike'], // 텍스트 스타일
+                                    ['link', 'image'], // 링크 및 이미지
+                                    [{ list: 'ordered' }, { list: 'bullet' }], // 목록
+                                    ['clean'], // 포맷 제거
+                                ],
+                            }}
+                        />
                   </div>
                   </form>
               </div>
