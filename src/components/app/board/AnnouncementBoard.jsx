@@ -8,7 +8,26 @@ export default function AnnouncementBoard(){
     const [articles, setArticles] = useState([]); // 게시글 상태
     const [loading, setLoading] = useState(true); // 로딩 상태
     const [error, setError] = useState(null); // 에러 상태
+    const [selectedArticles, setSelectedArticles] = useState([]);
     const navigate = useNavigate();
+
+     // 체크박스 선택/해제 핸들러
+     const handleCheckboxChange = (articleId) => {
+        setSelectedArticles((prevSelected) =>
+            prevSelected.includes(articleId)
+                ? prevSelected.filter((id) => id !== articleId) // 이미 선택된 경우 제거
+                : [...prevSelected, articleId] // 선택되지 않은 경우 추가
+        );
+    };
+
+    // 전체 선택/해제 핸들러
+    const handleSelectAll = () => {
+        if (selectedArticles.length === articles.length) {
+            setSelectedArticles([]); // 모두 선택되어 있으면 선택 해제
+        } else {
+            setSelectedArticles(articles.map((article) => article.id)); // 모두 선택
+        }
+    };
 
 
     useEffect(() => {
@@ -243,19 +262,24 @@ export default function AnnouncementBoard(){
                     <div className="task_area">
                         <div className="btn_box">
                             <span className="chk_board">
-                                <input id="chk_all" type="checkbox" name="chk_all"/>
+                                <input id="chk_all" 
+                                       type="checkbox" 
+                                       name="chk_all"  
+                                       checked={selectedArticles.length === articles.length}
+                                        onChange={handleSelectAll}
+                                />
                                 <label htmlFor="chk_all">전체 선택</label>
                             </span>
-                            <button type="button" disabled="disabled" className="point">
+                            <button type="button" disabled={selectedArticles.length === 0} className="point">
                                 <strong>읽음</strong>
                             </button>
                             <div className="chk_del">
-                                <button type="button" disabled="disabled" className="point">
+                                <button type="button" disabled={selectedArticles.length === 0} className="point">
                                     <strong>삭제</strong>
                                 </button>
                             </div>
                             <div className="chk_move">
-                                <button type="button" disabled="disabled">
+                                <button type="button" disabled={selectedArticles.length === 0}>
                                     이동
                                     <em className="bu"></em>
                                 </button>
@@ -315,10 +339,22 @@ export default function AnnouncementBoard(){
                             style={{ cursor: "pointer" }}
                             onClick={() => navigate(`/article/view/${article.id}`)} // li 클릭 시 이동
                         >
-                            <p className="chk">
-                                <input id={`check_${article.id}`} type="checkbox" name="chk_bd" />
-                                <label htmlFor={`check_${article.id}`}>해당 게시글 선택</label>
-                            </p>
+                             <p className="chk">
+                            <input
+                                id={`check_${article.id}`}
+                                type="checkbox"
+                                name="chk_bd"
+                                checked={selectedArticles.includes(article.id)}
+                                onClick={(e) => e.stopPropagation()} // 클릭 이벤트 전파 차단
+                                onChange={() => handleCheckboxChange(article.id)} // 상태 변경
+                            />
+                           <label
+                                htmlFor={`check_${article.id}`}
+                                onClick={(e) => e.stopPropagation()} // label 클릭 시 부모 이벤트 방지
+                            >
+                                해당 게시글 선택
+                            </label>
+                        </p>
                             <div className="sbj_box">
                                 <p className="sbj">
                                     <em className="ic_noti">필독</em>

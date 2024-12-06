@@ -1468,6 +1468,14 @@
   content: "";
 }
 
+.board_list .list .chk input[type=checkbox]:checked+label:before {
+  background-position: -452px -391px;
+}
+
+.btn_box .chk_board input[type=checkbox]:checked+label:before {
+  background-position: -452px -391px;
+}
+
 .board_list .list .chk input[type="checkbox"] + label {
   padding-left: 16px;
   font-size: 0;
@@ -1935,14 +1943,6 @@
   border-bottom: 1px solid #f1f3f9;
 }
 
-.board_list .list .chk input[type="checkbox"] {
-  position: absolute;
-  clip: rect(0, 0, 0, 0);
-  width: 1px;
-  height: 1px;
-  margin: -1px;
-  overflow: hidden;
-}
 
 .board_list .list .chk input[type="checkbox"] + label {
   padding-left: 16px;
