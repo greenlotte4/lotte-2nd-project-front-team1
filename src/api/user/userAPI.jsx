@@ -55,6 +55,15 @@ export const sandEmail = async (email) => {
         throw err;
     }
 }
+export const sendVerificationWithIdAndEmail = async (userId, email) => {
+    try {
+        const response = await axios.post(`${USER_EMAIL}/findPassEmail`, { userId, email });
+        return response;
+    } catch (err) {
+        console.log("아이디와 이메일 인증 오류: " + err);
+        throw err;
+    }
+}
 export const checkEmail = async (email) => {
 
     try {
@@ -100,9 +109,9 @@ export const checkPhoneNumber = async (fullPhoneNumber) => {
 
 export const findByEmail = async (email) => {
     try {
-         console.log("보내는 이메일: ", email); 
-        const response = await axios.post(`${USER_FIND}findEmail`, {email : email})
-        console.log("보내는 이메일: ", email); 
+        console.log("보내는 이메일: ", email);
+        const response = await axios.post(`${USER_FIND}findEmail`, { email: email })
+        console.log("보내는 이메일: ", email);
         return response;
     } catch (error) {
         console.error('아이디 조회 실패:', error);
