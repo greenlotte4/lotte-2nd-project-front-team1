@@ -60,14 +60,15 @@ export default function ProfileDropdown({ isOpen }) {
               <option value="away">자리비움</option>
             </select>
           </div>
-          <p className="profileDept">관리 부서</p>
           <p className="profileEmail">{user.email || "이메일 없음"}</p>
         </div>
       </div>
       <div className="profileButtons">
-        <Link to="/admin/user" className="editProfileButton">
-          관리자
-        </Link>
+        {user.role === "ADMIN" && (
+          <Link to="/admin/user" className="editProfileButton">
+            관리자
+          </Link>
+        )}
         <Link to="/app/setting" className="editProfileButton">
           프로필 편집
         </Link>
