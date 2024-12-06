@@ -41,15 +41,15 @@ export default function AdminUserItem({ user, isChecked, onCheck, onUpdate }) {
   function convertStatus(status) {
     switch (status) {
       case "NORMAL":
-        return "정상";
+        return "NORMAL";
       case "BANED":
-        return "정지";
+        return "BANED";
       case "DELETED":
-        return "탈퇴";
+        return "DELETED";
       case "SLEEP":
-        return "휴먼";
+        return "SLEEP";
       default:
-        return "정상"; // 기본값
+        return "NORMAL"; // 기본값
     }
   }
 
@@ -101,10 +101,10 @@ export default function AdminUserItem({ user, isChecked, onCheck, onUpdate }) {
             defaultValue={convertStatus(user.status)}
             onChange={handleInputChange}
           >
-            <option value="정상">정상</option>
-            <option value="정지">정지</option>
-            <option value="탈퇴">탈퇴</option>
-            <option value="휴먼">휴먼</option>
+            <option value="NORMAL">정상</option>
+            <option value="BANED">정지</option>
+            <option value="DELETED">탈퇴</option>
+            <option value="SLEEP">휴먼</option>
           </select>
         </td>
         <td>

@@ -87,18 +87,18 @@ export default function AdminUser() {
 
     try {
       // 체크된 사용자만 수정
-      const usersToEdit = checkedItems.map((userId) => ({
-        userId,
-        role:
-          updates[userId]?.usergrade ||
-          data.dtoList.find((user) => user.userId === userId).role,
-        planId:
-          updates[userId]?.planId ||
-          data.dtoList.find((user) => user.userId === userId).plan.planId,
-        status:
-          updates[userId]?.status ||
-          data.dtoList.find((user) => user.userId === userId).status,
-      }));
+      const usersToEdit = checkedItems.map((userId) => {
+        const userData = data.dtoList.find((user) => user.userId === userId);
+        return {
+          userId,
+          role: updates[userId]?.usergrade || userData.role,
+          planId:
+            typeof updates[userId]?.planId === "object"
+              ? updates[userId]?.planId.planId
+              : updates[userId]?.planId || userData.plan.planId,
+          status: updates[userId]?.status || userData.status,
+        };
+      });
       // 서버로 수정 요청
       console.log("usersToEdit:", JSON.stringify(usersToEdit, null, 2));
       await updateAdminUsers(usersToEdit);

@@ -1,6 +1,11 @@
 import React from "react";
+import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import { logout } from "../../slices/UserSlice";
 const Header = () => {
+  const user = useSelector((state) => state.userSlice);
+  const dispatch = useDispatch();
   return (
     <header className="header main-header">
       <div className="header-container">
@@ -26,12 +31,26 @@ const Header = () => {
           </ul>
         </nav>
         <div className="buttons">
-          <Link to="/app/home">
-            <button className="home">HOME</button>
-          </Link>
-          <Link to="/user/login">
-            <button className="login">로그인</button>
-          </Link>
+          {user.role ? (
+            <>
+              <Link to="/app/home">
+                <button className="home">HOME</button>
+              </Link>
+              <button
+                className="login"
+                onClick={() => {
+                  dispatch(logout()); // Redux 상태 초기화
+                  window.location.href = "/user/login"; // 로그인 페이지로 이동
+                }}
+              >
+                로그아웃
+              </button>
+            </>
+          ) : (
+            <Link to="/user/login">
+              <button className="login">로그인</button>
+            </Link>
+          )}
         </div>
       </div>
     </header>
