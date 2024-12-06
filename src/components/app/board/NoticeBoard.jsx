@@ -304,6 +304,8 @@ const NoticeBoard = () => {
                     initialValue={article.content}
                     init={{
                         height: 500,
+                        forced_root_block: false, // IME 입력 문제를 해결
+                        directionality: "ltr", // 텍스트 방향을 left-to-right로 설정
                         plugins: [
                         // Core editing features
                         'anchor', 'autolink', 'charmap', 'codesample', 'emoticons', 'image', 'link', 'lists', 'media', 'searchreplace', 'table', 'visualblocks', 'wordcount',

@@ -1,5 +1,5 @@
 import axios from "axios";
-import {BOARD_ARTICLE_WRITE_URI, BOARD_TYPE, BOARD_FAVORITE, BOARD_BRING_FAVORITE} from "../URI";
+import {BOARD_ARTICLE_WRITE_URI, BOARD_TYPE, BOARD_FAVORITE, BOARD_BRING_FAVORITE, BOARD_ARTICLE_VIEW} from "../URI";
 
 export const postBoardArticleWrite = async (data) => {
     try {
@@ -70,3 +70,16 @@ export const addFavoriteBoard = async ({ boardId, isFavorite, userId }) => {
       throw new Error("즐겨찾기 보드를 가져오는 데 실패했습니다.");
     }
   };
+
+  // 게시글 목록 가져오기
+export const getBoardArticles = async () => {
+    try {
+        // 서버에서 게시글 데이터를 가져오는 GET 요청
+        const response = await axios.get(BOARD_ARTICLE_VIEW);
+        console.log("Fetched Board Articles:", response.data); // 응답 데이터 확인
+        return response.data; // 서버에서 가져온 데이터 반환
+    } catch (err) {
+        console.error("Error while fetching board articles:", err); // 에러 출력
+        throw new Error("게시글 목록을 가져오는 데 실패했습니다.");
+    }
+};
