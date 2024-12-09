@@ -26,6 +26,10 @@ export default function ViewBoard() {
     if (!article) {
         return <div>로딩 중...</div>;
     }
+
+    const handleEdit = () => {
+        navigate(`/article/edit/${id}`); // 현재 게시글 ID를 수정 페이지로 전달
+    };
     return(
         <div className="boardContentDiv" id="boardContentDiv">
             <div className="g_search">
@@ -299,7 +303,7 @@ export default function ViewBoard() {
                         />
                     </div>
                     <div className="btn_box _no_print">
-                        <button type="button">
+                        <button type="button" onClick={handleEdit}>
                         수정
                         </button> 
                         <button type="button">
