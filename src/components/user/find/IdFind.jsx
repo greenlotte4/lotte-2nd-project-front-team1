@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { authEmail, checkUserId, sendVerificationWithIdAndEmail } from "../../../api/user/userAPI";
 
-export default function IdFind({setIsFormValid, setEmail, setUserId }) {
+export default function IdFind({ setIsFormValid, setEmail, setUserId }) {
 
   const [email, setEmailState] = useState("");
   const [authCode, setAuthCode] = useState("");
@@ -21,9 +21,11 @@ export default function IdFind({setIsFormValid, setEmail, setUserId }) {
     const response = await checkUserId(userId);
     if (!response.data.isAvailable) {
       setIsFormValid((prev) => ({ ...prev, userIdVerified: true })); // 아이디 인증 완료
+      setUserId(userId)
+      console.log("아이디 :" + userId)
       alert("아이디 인증 완료")
     } else {
-      setIsFormValid((prev) => ({ ...prev, userIdVerified: false })); 
+      setIsFormValid((prev) => ({ ...prev, userIdVerified: false }));
       alert("가입하신 아이디가 없습니다.")
     }
   }
@@ -33,16 +35,21 @@ export default function IdFind({setIsFormValid, setEmail, setUserId }) {
       alert("아이디와 이메일을 모두 입력해주세요");
       return;
     }
+    try {
+      // 이메일로 인증 번호 보내는 API 호출
+      const response = await sendVerificationWithIdAndEmail(userId, email); // email로 인증번호를 보내기
+      console.log("서버 응답 상태:", response.status); // 응답 상태 확인
 
-    // 이메일로 인증 번호 보내는 API 호출
-    const response = await sendVerificationWithIdAndEmail(userId, email); // email로 인증번호를 보내기
-    console.log("서버 응답 상태:", response.status); // 응답 상태 확인
-
-    if (response.status === 200) {
-      setIsCodeSent(true); // 인증번호 발송 완료
-      alert("인증번호가 발송되었습니다.");
-    } else {
-      alert("인증번호 발송 중 문제가 발생했습니다.");
+      if (response.status === 200) {
+        setIsCodeSent(true); // 인증번호 발송 완료
+        console.log(authCode);
+        alert("인증번호가 발송되었습니다.");
+        
+      } else {
+        alert("인증번호 발송 중 문제가 발생했습니다.");
+      }
+    } catch {
+      alert("가입한 아이디와 이메일이 일치하지 않습니다.")
     }
   };
 
