@@ -40,6 +40,29 @@
     left: 10px;
     /* 사이드바가 숨겨졌을 때의 위치 */
   }
+
+  //유저 리스트
+  .userButton {
+    position: fixed;
+    right: 20px;
+    bottom: 20px;
+    background-color: #99bc85;
+    width: 70px;
+    height: 70px;
+  }
+
+  .UserListWrapper {
+    position: fixed;
+    right: 20px;
+    bottom: 20px;
+    width: 250px;
+  }
+
+  .noneTeam{
+    width: 100%;
+    text-align: center;
+  }
+
 }
 // App의 모든 body
 body:has(.Appcontainer) {
