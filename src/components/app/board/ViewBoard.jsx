@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { ArticleDetail } from "../../../api/board/boardAPI";
+import { ArticleDetail, deleteBoardArticle } from "../../../api/board/boardAPI";
+import { useSelector } from "react-redux";
 
 export default function ViewBoard() {
     const { id } = useParams(); // URL에서 게시글 ID 가져옴
     const [article, setArticle] = useState(null);
     const navigate = useNavigate();
+    const userId = useSelector((state) => state.userSlice.userid); // Redux에서 userId 가져오기
 
     // 게시글 데이터 가져오기
     useEffect(() => {
@@ -21,6 +23,19 @@ export default function ViewBoard() {
         };
         fetchArticle();
     }, [id, navigate]);
+
+    const handleDelete = async () => {
+        if (!window.confirm("정말 이 게시글을 삭제하시겠습니까?")) return;
+
+        try {
+            await deleteBoardArticle(id, userId); // 삭제 API 호출
+            alert("게시글이 삭제되었습니다.");
+            navigate(-1); // 이전 페이지로 이동
+        } catch (error) {
+            console.error("게시글 삭제 중 오류 발생:", error);
+            alert("게시글 삭제에 실패했습니다.");
+        }
+    };
 
     // 로딩 상태 처리
     if (!article) {
@@ -306,7 +321,7 @@ export default function ViewBoard() {
                         <button type="button" onClick={handleEdit}>
                         수정
                         </button> 
-                        <button type="button">
+                        <button type="button" onClick={handleDelete}>
                         삭제
                         </button>
                     </div>

@@ -394,7 +394,9 @@ export default function BasketBoard(){
                                             <td className="date">
                                                 {new Date(article.trashDate).toLocaleDateString("en-CA")}
                                             </td>
-                                            <td className="name">{article.deleter || "알 수 없음"}</td>
+                                            <td className="name">
+                                                {article.deletedBy || "알 수 없음"}
+                                            </td>
                                             <td className="attach">{article.attachments || 0}</td>
                                         </tr>
                                     ))
