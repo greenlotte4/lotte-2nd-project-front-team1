@@ -1,5 +1,5 @@
 import axios from "axios";
-import {BOARD_ARTICLE_WRITE_URI, BOARD_TYPE, BOARD_FAVORITE, BOARD_BRING_FAVORITE, BOARD_ARTICLE_VIEW, BOARD_ARTICLE_DETAIL, BOARD_MOVE_BASKET, BOARD_TRASH_VIEW, BOARD_TRASH_PERMANENT} from "../URI";
+import {BOARD_ARTICLE_WRITE_URI, BOARD_TYPE, BOARD_FAVORITE, BOARD_BRING_FAVORITE, BOARD_ARTICLE_VIEW, BOARD_ARTICLE_DETAIL, BOARD_MOVE_BASKET, BOARD_TRASH_VIEW, BOARD_TRASH_PERMANENT, BOARD_ARTICLE_EDIT} from "../URI";
 
 export const postBoardArticleWrite = async (data) => {
     try {
@@ -132,5 +132,19 @@ export const deleteTrashArticles = async (articleIds) => {
   } catch (err) {
       console.error("API Error:", err.response?.data || err.message);
       throw new Error("휴지통 게시글 영구 삭제에 실패했습니다.");
+  }
+};
+
+export const updateArticle = async (id, articleData) => {
+  try {
+      const response = await axios.put(BOARD_ARTICLE_EDIT.replace(":id", id), articleData, {
+          headers: {
+              "Content-Type": "application/json",
+          },
+      });
+      return response.data;
+  } catch (error) {
+      console.error("게시글 수정 실패:", error);
+      throw error;
   }
 };

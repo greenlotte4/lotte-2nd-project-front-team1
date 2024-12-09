@@ -1,37 +1,46 @@
 import React, { useEffect, useState } from 'react';
-import { Editor } from '@tinymce/tinymce-react';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
-import { postBoardArticleWrite } from "../../../api/board/boardAPI"; // URI 상수 import
+import { useNavigate, useParams } from 'react-router-dom';
+import {  ArticleDetail, updateArticle} from "../../../api/board/boardAPI"; // URI 상수 import
+import ReactQuill from 'react-quill';
 
-const NoticeBoard = () => {
-    const [article, setArticle] = useState({
-        title: '',
-        content: '', // TinyMCE의 내용을 여기에 저장할 것
-        board: '공지사항', // 게시판 선택
-        writer: '작성자ID', // 로그인 상태에서 작성자 ID를 가져와야 함
-    });
-
+const EditPostBoard = () => {
+    const { id } = useParams(); // URL에서 게시글 ID 가져오기
     const navigate = useNavigate();
 
-    const handleEditorChange = (content, editor) => {
-        setArticle({ ...article, content }); // TinyMCE의 내용을 상태에 저장
+    const [article, setArticle] = useState({
+        title: '',
+        content: '',
+        board: '공지사항',
+        writer: '',
+    });
+
+    // 게시글 상세 정보 가져오기
+    useEffect(() => {
+        const fetchArticle = async () => {
+            try {
+                const data = await ArticleDetail(id); // API로 게시글 데이터 가져오기
+                setArticle(data); // 상태에 게시글 데이터 저장
+            } catch (error) {
+                console.error('게시글 정보를 가져오는 중 오류 발생:', error);
+            }
+        };
+        fetchArticle();
+    }, [id]);
+
+    const handleEditorChange = (content) => {
+        setArticle((prev) => ({ ...prev, content }));
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-    
         try {
-            const result = await postBoardArticleWrite(article);
-            console.log("result: " + result);
-    
-            if(result) {
-                alert("글 작성 완료");
-                navigate("/app/mainboard");
-            }
+            await updateArticle(id, article); // 게시글 수정 API 호출
+            alert('게시글이 성공적으로 수정되었습니다.');
+            navigate('/app/mainboard'); // 수정 후 게시판 목록으로 이동
         } catch (error) {
-            console.error("게시글 등록에 실패했습니다.", error);
-            alert("게시글 등록에 실패했습니다.");
+            console.error('게시글 수정에 실패했습니다:', error);
+            alert('게시글 수정에 실패했습니다.');
         }
     };
     
@@ -299,34 +308,21 @@ const NoticeBoard = () => {
                       </li>
                   </ul>
                   <div className="workseditor-editor" style={{overflow: "auto", height: "auto"}}>
-                  <Editor
-                    apiKey='io6vv69eg9rs7jdt6rxcxtuwf127qkmot1d5e2ttm4khz10i'
-                    initialValue={article.content}
-                    init={{
-                        height: 500,
-                        forced_root_block: false, // IME 입력 문제를 해결
-                        directionality: "ltr", // 텍스트 방향을 left-to-right로 설정
-                        plugins: [
-                        // Core editing features
-                        'anchor', 'autolink', 'charmap', 'codesample', 'emoticons', 'image', 'link', 'lists', 'media', 'searchreplace', 'table', 'visualblocks', 'wordcount',
-                        // Your account includes a free trial of TinyMCE premium features
-                        // Try the most popular premium features until Dec 17, 2024:
-                        'checklist', 'mediaembed', 'casechange', 'export', 'formatpainter', 'pageembed', 'a11ychecker', 'tinymcespellchecker', 'permanentpen', 'powerpaste', 'advtable', 'advcode', 'editimage', 'advtemplate', 'ai', 'mentions', 'tinycomments', 'tableofcontents', 'footnotes', 'mergetags', 'autocorrect', 'typography', 'inlinecss', 'markdown',
-                        // Early access to document converters
-                        'importword', 'exportword', 'exportpdf'
-                        ],
-                        toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table mergetags | addcomment showcomments | spellcheckdialog a11ycheck typography | align lineheight | checklist numlist bullist indent outdent | emoticons charmap | removeformat',
-                        tinycomments_mode: 'embedded',
-                        tinycomments_author: 'Author name',
-                        mergetags_list: [
-                        { value: 'First.Name', title: 'First Name' },
-                        { value: 'Email', title: 'Email' },
-                        ],
-                        ai_request: (request, respondWith) => respondWith.string(() => Promise.reject('See docs to implement AI Assistant')),
-                    }}
-                    onEditorChange={handleEditorChange}
-                 
-                    />
+                  <ReactQuill
+                            theme="snow"
+                            value={article.content}
+                            onChange={handleEditorChange}
+                            placeholder="내용을 입력하세요"
+                            modules={{
+                                toolbar: [
+                                    [{ header: [1, 2, 3, false] }],
+                                    ['bold', 'italic', 'underline', 'strike'], // 텍스트 스타일
+                                    ['link', 'image'], // 링크 및 이미지
+                                    [{ list: 'ordered' }, { list: 'bullet' }], // 목록
+                                    ['clean'], // 포맷 제거
+                                ],
+                            }}
+                        />
                   </div>
                   </form>
               </div>
@@ -338,4 +334,4 @@ const NoticeBoard = () => {
       );
 } 	
 
-export default NoticeBoard;
+export default EditPostBoard;

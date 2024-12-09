@@ -70,7 +70,6 @@ const router = createBrowserRouter([
   { path: "/app/setting", element: <SettingPage /> },
   { path: "/app/mainboard", element: <MainBoardPage/>},
   { path: "/app/noticeboard", element: <NoticeBoardPage/>},
-  { path: "/app/editpostboard", element: <EditPostBoardPage/>},
   { path: "/app/basketboard", element: <BasketBoardPage/>},
   { path: "/app/recentboard", element: <RecentBoardPage/>},
   { path: "/app/mustreadboard", element: <MustReadBoardPage/>},
@@ -78,6 +77,7 @@ const router = createBrowserRouter([
   { path: "/app/mypostboard", element: <MyPostBoardPage/>},
   { path: "/app/announcementboard", element: <AnnouncementBoardPage/>},
   { path: "/article/view/:id", element: <ViewBoardPage/> }, 
+  { path: "/article/edit/:id", element: <EditPostBoardPage /> },
 
   //Admin
   { path: "/admin/user", element: <AdminUserPage /> },
