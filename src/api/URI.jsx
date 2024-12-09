@@ -27,11 +27,14 @@ export const USER_EMAIL = `${SERVER_HOST}/api`;
 export const BOARD_ARTICLE_WRITE_URI = `${SERVER_HOST}/article/write`;
 export const BOARD_ARTICLE_VIEW = `${SERVER_HOST}/article/view`;
 export const BOARD_ARTICLE_DETAIL = `${SERVER_HOST}/article/view/detail`;
+export const BOARD_ARTICLE_BOARD = (boardId) => 
+    `${SERVER_HOST}/article/boards/${boardId}/articles`;
 export const BOARD_ARTICLE_EDIT = `${SERVER_HOST}/article/edit/:id`;
 export const BOARD_MOVE_BASKET = `${SERVER_HOST}/article/delete`;
 export const BOARD_TRASH_VIEW = `${SERVER_HOST}/article/trash`;
 export const BOARD_TRASH_PERMANENT =`${SERVER_HOST}/article/trash/permanent`;
 export const BOARD_TYPE = `${SERVER_HOST}/board/type`;
+export const BOARD_ALL = `${SERVER_HOST}/board/all`;
 export const BOARD_FAVORITE = `${SERVER_HOST}/favorite/favoriteboard`;
 export const BOARD_BRING_FAVORITE = `${SERVER_HOST}/favorite/getFavoriteBoards`;
 
