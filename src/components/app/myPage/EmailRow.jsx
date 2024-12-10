@@ -1,13 +1,19 @@
 import { useState } from "react";
+import { changeNewEmail } from "../../../api/user/userAPI";
 
 export default function EmailRow({ email, setEmail }) {
     const [isEditing, setIsEditing] = useState(false);
     const [tempEmail, setTempEmail] = useState(email);  // 임시 상태 추가
 
-    const handleSave = () => {
+    const handleSave = async() => {
+      const response = await changeNewEmail(tempEmail);
+      if(response.status === 200){
+        alert("이메일이 변경되었습니다.");
+        setEmail(tempEmail);
         setIsEditing(false);
-        setEmail(tempEmail);  // 수정된 이메일을 최종 상태에 반영
-        console.log("이메일 저장됨:", tempEmail);
+      } else{
+        alert("이메일 변경 중 오류가 발생했습니다.")
+      }
     };
 
     const handleCancel = () => {

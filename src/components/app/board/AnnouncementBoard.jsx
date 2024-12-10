@@ -1,14 +1,21 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 
-import { getBoardArticles, moveBoardToBasket } from "../../../api/board/boardAPI";
+import { addFavoriteBoard, getArticlesByBoard, getBoardArticles, getFavoriteBoards, moveBoardToBasket } from "../../../api/board/boardAPI";
 import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 
 export default function AnnouncementBoard(){
+    const { boardId } = useParams();
 
     const [articles, setArticles] = useState([]); // 게시글 상태
+    const [boardName, setBoardName] = useState(""); // 추가된 상태
     const [loading, setLoading] = useState(true); // 로딩 상태
     const [error, setError] = useState(null); // 에러 상태
     const [selectedArticles, setSelectedArticles] = useState([]);
+    const [favoriteBoards, setFavoriteBoards] = useState(new Map()); // 즐겨찾기 상태
+
+    const userId = useSelector((state) => state.userSlice.userid);
+    
     const navigate = useNavigate();
 
      // 체크박스 선택/해제 핸들러
@@ -30,18 +37,26 @@ export default function AnnouncementBoard(){
     };
 
     const handleDelete = async () => {
+        console.log("Redux userId:", userId);
+    
         if (selectedArticles.length === 0) {
             alert("삭제할 게시글을 선택하세요.");
             return;
         }
-
+    
         if (!window.confirm("선택한 게시글을 삭제하시겠습니까?")) {
             return;
         }
-
+    
         try {
             // 선택된 게시글 삭제
-            await Promise.all(selectedArticles.map((id) => moveBoardToBasket(id)));
+            await Promise.all(
+                selectedArticles.map((id) => {
+                    console.log("Deleting article:", { articleId: id, userId });
+                    return moveBoardToBasket(id, userId);
+                })
+            );
+    
             // 삭제된 게시글을 화면에서 제거
             setArticles((prevArticles) =>
                 prevArticles.filter((article) => !selectedArticles.includes(article.id))
@@ -50,26 +65,80 @@ export default function AnnouncementBoard(){
             alert("선택한 게시글이 삭제되었습니다.");
         } catch (err) {
             console.error("게시글 삭제 중 오류:", err);
-            alert("게시글 삭제에 실패했습니다.");
+            alert(`게시글 삭제에 실패했습니다. ${err.message}`);
         }
     };
 
-
     useEffect(() => {
-        // 데이터 가져오기
         const fetchArticles = async () => {
             try {
-                const data = await getBoardArticles(); // API 호출
-                setArticles(data); // 상태에 데이터 저장
+                const data = await getArticlesByBoard(boardId);
+                setArticles(data.articles); // 게시글 설정
+                setBoardName(data.boardName); // 게시판 이름 설정
             } catch (err) {
-                setError(err.message); // 에러 상태 저장
+                setError(err.message);
             } finally {
-                setLoading(false); // 로딩 상태 해제
+                setLoading(false);
             }
         };
 
         fetchArticles();
-    }, []);
+    }, [boardId]);
+
+    useEffect(() => {
+        const fetchFavoriteBoards = async () => {
+          if (!userId) return;
+          try {
+            const favoriteData = await getFavoriteBoards(userId);
+            const favoriteMap = new Map();
+            favoriteData.forEach((board) => {
+                favoriteMap.set(Number(board.boardId), board.favorite ? 1 : 0);
+            });
+            setFavoriteBoards(favoriteMap);
+          } catch (err) {
+            console.error("Failed to fetch favorite boards:", err);
+          }
+        };
+    
+        fetchFavoriteBoards();
+      }, [userId]);
+    
+      // 즐겨찾기 토글
+      const toggleFavorite = async () => {
+        if (!userId) {
+          console.error("User is not logged in.");
+          return;
+        }
+    
+        const boardIdNumber = Number(boardId); // 항상 숫자형으로 변환
+    
+        // Optimistic UI 업데이트
+        setFavoriteBoards((prevFavorites) => {
+            const isCurrentlyFavorite = prevFavorites.get(boardIdNumber) === 1; // 현재 상태 확인
+            const updatedFavorites = new Map(prevFavorites);
+            updatedFavorites.set(boardIdNumber, isCurrentlyFavorite ? 0 : 1); // 상태 반전
+            return updatedFavorites;
+          });
+
+        try {
+    await addFavoriteBoard({
+      boardId: boardIdNumber,
+      isFavorite: favoriteBoards.get(boardIdNumber) === 0, // API 요청 반영
+      userId,
+    });
+  } catch (err) {
+    console.error("Failed to toggle favorite:", err.message || err);
+
+    setFavoriteBoards((prevFavorites) => {
+        const isCurrentlyFavorite = prevFavorites.get(boardIdNumber) === 1;
+        const updatedFavorites = new Map(prevFavorites);
+        updatedFavorites.set(boardIdNumber, isCurrentlyFavorite ? 0 : 1);
+        console.log("Updated Favorites (After Toggle):", Array.from(updatedFavorites.entries())); // 상태 확인
+        return updatedFavorites;
+      });
+        }
+      };
+    
 
     if (loading) return <p>Loading...</p>;
     if (error) return <p>Error: {error}</p>;
@@ -278,21 +347,36 @@ export default function AnnouncementBoard(){
                 <div className="cont_head edit_type">
                     <div className="info_area">
                         <h2 className="board_title">
-                            <span className="text">공지사항</span> 
-                            <span role="switch" tabIndex="0" className="toggle_favorite">
-                                <span className="blind">즐겨찾기</span>
+                            <span className="text">{boardName}</span>
+                           <span
+                            role="switch"
+                            tabIndex="0"
+                            className={`toggle_favorite ${
+                                favoriteBoards.get(Number(boardId)) === 1 ? "active" : ""
+                            }`}
+                            aria-checked={favoriteBoards.get(Number(boardId)) === 1}
+                            onClick={toggleFavorite}
+                            onKeyPress={(e) => {
+                                if (e.key === "Enter") toggleFavorite();
+                            }}
+                            >
+                            <span className="blind">
+                                {favoriteBoards.get(Number(boardId)) === 1 ? "즐겨찾기 등록됨" : "즐겨찾기"}
+                            </span>
                             </span>
                         </h2>
                     </div>
                     <div className="task_area">
                         <div className="btn_box">
                             <span className="chk_board">
-                                <input id="chk_all" 
-                                       type="checkbox" 
-                                       name="chk_all"  
-                                       checked={selectedArticles.length === articles.length}
-                                        onChange={handleSelectAll}
-                                />
+                            <input
+                            id="chk_all"
+                            type="checkbox"
+                            name="chk_all"
+                            checked={articles.length > 0 && selectedArticles.length === articles.length} // 게시물이 있을 때만 체크 여부 판단
+                            onChange={handleSelectAll}
+                            disabled={articles.length === 0} // 게시물이 없으면 비활성화
+                        />
                                 <label htmlFor="chk_all">전체 선택</label>
                             </span>
                             <button type="button" disabled={selectedArticles.length === 0} className="point">
@@ -358,7 +442,7 @@ export default function AnnouncementBoard(){
                     {articles
                      .filter((article) => article.status !== "trash")
                     .map((article) => {
-                        console.log(article); // 각 article 객체의 값을 콘솔에 출력
+                        console.log("여기임: " + JSON.stringify(article, null, 2)); // 각 article 객체의 값을 콘솔에 출력
                         return (
                             <li
                             key={article.id}
@@ -392,7 +476,7 @@ export default function AnnouncementBoard(){
                             </div>
                             <p className="infor">
                                 <button type="button" className="user">
-                                      {article.author?.username || "Unknown User"}
+                                      {article.userName || "Unknown User"}
                                 </button>
                                 <span className="read_chk">
                                     읽음 <strong>{article.readCount || 0}</strong>
@@ -406,10 +490,9 @@ export default function AnnouncementBoard(){
                     })}
                     </ul>
                     <p className="bt_more">
-                        <button type="button" className="btn" onClick={() =>
-                            (window.location.href =
-                            "/app/noticeboard")
-                        }>
+                        <button type="button" className="btn"  onClick={() =>
+            navigate("/app/noticeboard", { state: { boardId, boardName } })
+        }>
                             글쓰기
                         </button>
                     </p>

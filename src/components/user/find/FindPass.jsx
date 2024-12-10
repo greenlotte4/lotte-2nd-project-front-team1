@@ -13,11 +13,14 @@ export default function FindPass() {
   useEffect(() => {
     console.log("isFormValid 상태가 변경되었습니다:", isFormValid);
   }, [isFormValid]); // isFormValid 값이 바뀔 때마다 실행
-
+  useEffect(() => {
+    console.log("userId 값:", userId); // userId 값이 제대로 업데이트되는지 확인
+  }, [userId]); // userId 상태가 바뀔 때마다 실행
   const changePassHandle = async (e) => {
     e.preventDefault();
     console.log("클릭됨")
     if (isFormValid.userIdVerified && isFormValid.emailVerified) {
+      console.log("보낼꺼 : " + email + userId)
       navigate("/user/find/findView", { state: { method: "PassFind", email, userId } });
 
 
