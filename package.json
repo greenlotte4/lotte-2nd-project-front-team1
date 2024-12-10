@@ -27,7 +27,7 @@
     "@fullcalendar/multimonth": "^6.1.15",
     "@fullcalendar/react": "^6.1.15",
     "@fullcalendar/timegrid": "^6.1.15",
-    "@mui/icons-material": "^6.1.9",
+    "@mui/icons-material": "^6.1.10",
     "@mui/material": "^6.1.9",
     "@reduxjs/toolkit": "^2.4.0",
     "@tanstack/react-query": "^5.62.2",

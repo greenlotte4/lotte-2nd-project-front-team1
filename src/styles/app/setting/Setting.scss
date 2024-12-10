@@ -315,7 +315,6 @@
       border: 1px solid #ccc;
       border-radius: 8px;
 
-
       .PageBackground {
         display: flex;
         align-items: center;
@@ -345,7 +344,7 @@
         font-size: 15px;
         width: 150px;
         display: inline-block;
-    }
+      }
 
       select {
         padding: 6px 10px;
@@ -414,6 +413,95 @@
       margin-bottom: 10px;
       border: 1px solid #ccc;
       border-radius: 10px;
+    }
+  }
+  .projectSetting {
+    /* 컨테이너 기본 스타일 */
+    padding: 20px;
+    font-family: Arial, sans-serif;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+    h5 {
+      margin-bottom: 10px;
+      font-size: 16px;
+      font-weight: bold;
+      color: #333;
+    }
+
+    .inputGroup {
+      display: flex;
+      align-items: center;
+      gap: 10px; /* 입력 필드와 버튼 사이 간격 */
+      margin-bottom: 20px;
+
+      input {
+        display: block !important; /* 전역 display: none을 무시 */
+        width: 300px; /* 고정 길이 설정 */
+        padding: 8px;
+        font-size: 14px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        background-color: #fff;
+        box-sizing: border-box;
+      }
+
+      button {
+        padding: 8px 16px;
+        font-size: 14px;
+        color: #fff;
+        background-color: #007bff;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+      }
+
+      button:hover {
+        background-color: #0056b3;
+      }
+    }
+
+    .roomTable {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+
+      th,
+      td {
+        border: 1px solid #ccc;
+        padding: 8px;
+        text-align: center;
+      }
+
+      th {
+        background-color: #f5f5f5;
+        font-weight: bold;
+      }
+
+      tr:nth-child(even) {
+        background-color: #f9f9f9;
+      }
+
+      tr:hover {
+        background-color: #f1f1f1;
+      }
+
+      button {
+        padding: 4px 8px;
+        font-size: 12px;
+        color: #fff;
+        background-color: #d9534f;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+      }
+
+      button:hover {
+        background-color: #c9302c;
+      }
     }
   }
 }
