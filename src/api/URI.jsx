@@ -33,6 +33,8 @@ export const BOARD_ARTICLE_BOARD = (boardId) =>
 export const BOARD_ARTICLE_EDIT = `${SERVER_HOST}/article/edit/:id`;
 export const BOARD_MOVE_BASKET = `${SERVER_HOST}/article/delete`;
 export const BOARD_TRASH_VIEW = `${SERVER_HOST}/article/trash`;
+//글 이동
+export const BOARD_ARTICLE_MOVE = `${SERVER_HOST}/article/articles/move`;
 export const BOARD_TRASH_PERMANENT = `${SERVER_HOST}/article/trash/permanent`;
 export const BOARD_TYPE = `${SERVER_HOST}/board/type`;
 export const BOARD_ALL = `${SERVER_HOST}/board/all`;
@@ -66,3 +68,12 @@ export const ADMIN_UPDATE_USERS = `${SERVER_HOST}/admin/updateuserlist`; //이�
 
 //message
 export const MESSAGE_NEW_CHANNEL = `${SERVER_HOST}/message/newChannel`;
+export const MESSAGE_NEW_DM = `${SERVER_HOST}/message/newDM`;
+export const MESSAGE_GET_ROOMS = `${SERVER_HOST}/message/rooms`;
+
+//calendar
+export const CALENDAR_CREATE = `${SERVER_HOST}/calendar/makecalendar`;
+export const CALENDAR_LIST = `${SERVER_HOST}/calendar/calendarlist`;
+
+
+

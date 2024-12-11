@@ -29,7 +29,11 @@ import {
 } from "@mui/material";
 import { useEffect, useState } from "react";
 import { getUserListAll } from "../../../api/user/userAPI";
-import { makeNewChannel } from "../../../api/message/messageAPI";
+import {
+  getMyChatRoom,
+  makeNewChannel,
+  makeNewDM,
+} from "../../../api/message/messageAPI";
 import { useSelector } from "react-redux";
 
 const MessageAside = ({ isVisible }) => {
@@ -81,6 +85,11 @@ const MessageAside = ({ isVisible }) => {
     setDMOpen(!DMOpen);
   };
 
+  const user = useSelector((state) => state.userSlice);
+
+  //채팅 방 가져오기
+  const [chatRoomList, setChatRoomList] = useState(null);
+
   useEffect(() => {
     if (isVisible) {
       setIsAnimating(true); // 보이기 시작하면 애니메이션 추가
@@ -88,6 +97,16 @@ const MessageAside = ({ isVisible }) => {
       const timer = setTimeout(() => setIsAnimating(false), 500); // 애니메이션 종료 후 숨기기
       return () => clearTimeout(timer);
     }
+    const fetchChatRoomList = async () => {
+      try {
+        const data = await getMyChatRoom(user.userid);
+        console.log(user.userid);
+        setChatRoomList(data);
+      } catch (err) {
+        console.error("채팅 목록 불러오기 실패 : ", err);
+      }
+    };
+    fetchChatRoomList();
   }, [isVisible]);
 
   return (
@@ -207,42 +226,37 @@ const MessageAside = ({ isVisible }) => {
               </ListItemButton>
               <Collapse in={DMOpen} timeout="auto" unmountOnExit>
                 <List component="div" disablePadding>
-                  {/* 반복 시작 */}
-                  <ListItemButton
-                    sx={{ pl: 4 }}
-                    className="curruntChatRoom"
-                    onContextMenu={(event) => handleClick(event)}
-                  >
-                    <ListItemIcon>
-                      <Badge color="warning" variant="dot">
-                        <Avatar>원</Avatar>
-                      </Badge>
-                    </ListItemIcon>
-                    <div className="chatRoom">
-                      <ListItemText primary="원기연" className="chatRoomName" />
-                      <div className="chatDescription">
-                        오늘 작업 내용입니다.가나다라마바사아자asdfjhajskdfh
-                      </div>
-                    </div>
-                  </ListItemButton>
-                  {/* 반복 끝 */}
-                  {/* 반복 시작 */}
-                  <ListItemButton
-                    sx={{ pl: 4 }}
-                    className="curruntChatRoom"
-                    onContextMenu={(event) => handleClick(event)}
-                  >
-                    <ListItemIcon>
-                      <Avatar>강</Avatar>
-                    </ListItemIcon>
-                    <div className="chatRoom">
-                      <ListItemText primary="강중원" className="chatRoomName" />
-                      <div className="chatDescription">
-                        작업 빨리 끝내주세요.
-                      </div>
-                    </div>
-                  </ListItemButton>
-                  {/* 반복 끝 */}
+                  {chatRoomList.map((value, index) => {
+                    if (
+                      value.chat.dtype === "CHANNEL" ||
+                      value.user.userId === user.userid
+                    ) {
+                      return null;
+                    }
+                    return (
+                      <ListItemButton
+                        key={index}
+                        sx={{ pl: 4 }}
+                        className="curruntChatRoom"
+                        onContextMenu={(event) =>
+                          handleClick(event, value.userId)
+                        }
+                      >
+                        <ListItemIcon>
+                          <Badge color="warning" variant="dot">
+                            <Avatar>{value.user.username.charAt(0)}</Avatar>
+                          </Badge>
+                        </ListItemIcon>
+                        <div className="chatRoom">
+                          <ListItemText
+                            primary={value.user.username}
+                            className="chatRoomName"
+                          />
+                          <div className="chatDescription">가나다</div>
+                        </div>
+                      </ListItemButton>
+                    );
+                  })}
                 </List>
               </Collapse>
             </List>
@@ -316,8 +330,9 @@ export default MessageAside;
 function NewChannelDIV() {
   const user = useSelector((state) => state.userSlice);
   const initState = {
-    name: "",
-    manager: "",
+    roomName: "",
+    dtype: "channel",
+    members: [],
   };
 
   const [channel, setChannel] = useState({ ...initState });
@@ -359,22 +374,27 @@ function NewChannelDIV() {
     fetchUserList();
   }, []);
 
-  const submitChannel = (e) => {
+  const submitChannel = async (e) => {
     e.preventDefault();
 
     // user.userid를 manager에 할당
     const updatedChannel = {
       ...channel,
-      manager: user.userid, // user.userid를 manager에 설정
+      members: [...checkedMember.map((member) => member.userId), user.userid],
     };
 
-    const savedChannel = makeNewChannel(updatedChannel);
-    console.log(savedChannel);
+    try {
+      const savedChannel = await makeNewChannel(updatedChannel);
+      console.log(savedChannel);
 
-    if (savedChannel) {
-      alert("채널이 추가되었습니다.👍");
-    } else {
-      alert("채널 추가 실패...😭");
+      if (savedChannel) {
+        alert("채널이 추가되었습니다.👍");
+      } else {
+        alert("채널 추가 실패...😭");
+      }
+    } catch (error) {
+      console.error("채널 추가 중 오류 발생:", error);
+      alert("채널 추가 중 오류 발생...😭");
     }
   };
 
@@ -384,7 +404,7 @@ function NewChannelDIV() {
         value={channel.name}
         id="standard-basic"
         label="대화방 이름"
-        name="name"
+        name="roomName"
         variant="standard"
         sx={{ margin: "10px 0", width: "100%" }}
         onChange={changeHandler}
@@ -403,6 +423,10 @@ function NewChannelDIV() {
         }}
       >
         {userList.map((value, index) => {
+          if (value.userId === user.userid) {
+            return null; // 현재 유저는 건너뜀
+          }
+
           const labelId = `checkbox-list-secondary-label-${value}`;
           return (
             <ListItem
@@ -438,6 +462,7 @@ function NewChannelDIV() {
 }
 
 function NewDMDIV() {
+  const user = useSelector((state) => state.userSlice);
   const [userList, setUserList] = useState([]);
   useEffect(() => {
     //유저목록 불러오기
@@ -452,6 +477,36 @@ function NewDMDIV() {
 
     fetchUserList();
   }, []);
+
+  const initState = {
+    roomName: "DM",
+    dtype: "DM",
+    members: [],
+  };
+
+  const [DM, setDM] = useState({ ...initState });
+
+  const submitDM = async (targetUserId) => {
+    // user.userid를 manager에 할당
+    const updatedDM = {
+      ...DM,
+      members: [user.userid, targetUserId],
+    };
+
+    try {
+      const savedDM = await makeNewDM(updatedDM);
+      console.log(savedDM);
+      if (savedDM) {
+        alert("DM이 추가되었습니다.👍");
+      } else {
+        alert("DM 추가 실패...😭");
+      }
+    } catch (error) {
+      console.error("DM 추가 중 오류 발생:", error);
+      alert("DM 추가 중 오류 발생...😭");
+    }
+  };
+
   return (
     <div>
       <List
@@ -468,10 +523,13 @@ function NewDMDIV() {
         }}
       >
         {userList.map((value, index) => {
+          if (value.userId === user.userid) {
+            return null; // 현재 유저는 건너뜀
+          }
           const labelId = `checkbox-list-secondary-label-${value}`;
           return (
             <ListItem key={index} disablePadding>
-              <ListItemButton>
+              <ListItemButton onClick={() => submitDM(value.userId)}>
                 <ListItemAvatar>
                   <Avatar>{value.username.charAt(0)}</Avatar>
                 </ListItemAvatar>

@@ -4134,4 +4134,209 @@ em {
 .cont_head .board_title .toggle_favorite[aria-checked=true]:before {
   background-position: -386px -373px;
 }
+
+.Basket_option_box {
+  padding: 0;
+  max-height: none;
+}
+.Basket_option_box {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 320px;
+  max-height: 380px;
+  padding: 7px 0;
+  margin-top: 4px;
+  border-radius: 8px;
+  border: 1px solid #e6e8eb;
+  background-color: #fff;
+  -webkit-box-shadow: 0 4px 10px 0 rgba(32,33,36,.1);
+  box-shadow: 0 4px 10px 0 rgba(32,33,36,.1);
+  text-align: left;
+  z-index: 200;
+}
+.Basket_option_box ul {
+  max-height: 307px;
+  padding: 7px 0;
+  overflow: auto;
+}
+
+.Basket_option_box ul li {
+  position: relative;
+}
+
+.Basket_option_box ul li {
+  border-bottom: 0;
+  padding: 0;
+}
+
+.Basket_option_box ul li span {
+  padding-left: 31px;
+}
+
+.Basket_option_box ul li span {
+  display: block;
+  font-weight: 700;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.Basket_option_box ul li span {
+  display: block;
+  line-height: 32px;
+  color: #202124;
+  text-align: left;
+  font-size: 14px;
+  white-space: nowrap;
+}
+
+.Basket_option_box ul li button {
+  padding-left: 64px;
+}
+
+.Basket_option_box ul li button {
+  height: 32px;
+}
+
+.Basket_option_box ul li button:after {
+  left: 31px;
+}
+
+.Basket_option_box ul li button:after{
+  content: "";
+  position: absolute;
+  top: 6px;
+  left: 11px;
+  background-image: url(https://static.worksmobile.net/static/pwe/wm/home/sp_board_967af075.png);
+  background-image: -webkit-gradient(linear,left top,left bottom,from(transparent),to(transparent)),url(https://static.worksmobile.net/static/pwe/wm/home/sp_board_9d215a12.svg);
+  background-image: linear-gradient(transparent,transparent),url(https://static.worksmobile.net/static/pwe/wm/home/sp_board_9d215a12.svg);
+  background-size: 500px 473px;
+  background-position: -228px -405px;
+  width: 20px;
+  height: 20px;
+}
+
+.Basket_option_box ul li button {
+  border: 0;
+  border-radius: 0;
+  background-color: transparent;
+  width: 100%;
+}
+
+.Basket_option_box ul li button{
+  display: block;
+  position: relative;
+  padding-left: 44px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.Basket_option_box ul li.depth button:after, .Basket_option_box ul li button:after {
+  left: 31px;
+}
+
+.Basket_option_box .btn {
+  padding: 12px 0;
+  border-top: 1px solid #e6e8eb;
+  text-align: center;
+}
+
+.Basket_option_box .btn button {
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  display: inline-block;
+  height: 32px;
+  border-radius: 8px;
+  background: #fff;
+  font-size: 12px;
+  color: #3f4247;
+  line-height: 17px;
+  padding: 7px 8px 6px;
+  vertical-align: top;
+  white-space: nowrap;
+  text-decoration: none;
+  border: 1px solid #e6e8eb;
+}
+
+.Basket_option_box ul li.selected {
+  display: block;
+  text-align: left;
+  border: 0;
+}
+
+.Basket_option_box ul li.selected {
+  display: block;
+  height: 32px;
+  text-align: left;
+  border: 0;
+}
+
+.select_box .selected {
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  height: 36px;
+  padding: 0 20px 0 8px;
+  border: 0;
+  border-radius: 8px;
+  background-color: #fff;
+  font-size: 14px;
+  color: #3f4247;
+  line-height: 36px;
+  vertical-align: top;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.select_box .selected {
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  height: 36px;
+  padding: 0 20px 0 8px;
+  border: 0;
+  border-radius: 8px;
+  background-color: #fff;
+  font-size: 14px;
+  color: #3f4247;
+  line-height: 36px;
+  vertical-align: top;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.Basket_option_box ul li.selected button {
+  font-weight: 700;
+  color: #118dff;
+}
+
+.Basket_option_box ul li.selected button:before {
+  content: "";
+  position: absolute;
+  left: 11px;
+  top: 8px;
+  background-position: -480px -52px;
+  width: 16px;
+  height: 16px;
+}
+.Basket_option_box ul li.selected button:before {
+  background-image: url(https://static.worksmobile.net/static/pwe/wm/home/sp_board_967af075.png);
+  background-image: -webkit-gradient(linear,left top,left bottom,from(transparent),to(transparent)),url(https://static.worksmobile.net/static/pwe/wm/home/sp_board_9d215a12.svg);
+  background-image: linear-gradient(transparent,transparent),url(https://static.worksmobile.net/static/pwe/wm/home/sp_board_9d215a12.svg);
+  background-size: 500px 473px;
+}
+
+.Basket_option_box ul li.selected button:after {
+  background-image: url(https://static.worksmobile.net/static/pwe/wm/home/sp_board_967af075.png);
+  background-image: -webkit-gradient(linear,left top,left bottom,from(transparent),to(transparent)),url(https://static.worksmobile.net/static/pwe/wm/home/sp_board_9d215a12.svg);
+  background-image: linear-gradient(transparent,transparent),url(https://static.worksmobile.net/static/pwe/wm/home/sp_board_9d215a12.svg);
+  background-size: 500px 473px;
+}
+
+.Basket_option_box ul li.selected button:after {
+  background-position: -200px -405px;
+  width: 20px;
+  height: 20px;
+}
 }

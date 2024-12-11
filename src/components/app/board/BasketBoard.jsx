@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { deleteTrashArticles, getTrashArticles } from "../../../api/board/boardAPI";
+import React, { useEffect, useRef, useState } from "react";
+import { deleteTrashArticles, getAllBoards, getTrashArticles, moveArticlesToBoard } from "../../../api/board/boardAPI";
 import { Link } from "react-router-dom";
 
 export default function BasketBoard(){
@@ -8,6 +8,11 @@ export default function BasketBoard(){
     const [trashArticles, setTrashArticles] = useState([]); // 휴지통 데이터 상태
     const [loading, setLoading] = useState(true); // 로딩 상태
     const [error, setError] = useState(null); // 에러 상태
+    const [isMoveBoxVisible, setIsMoveBoxVisible] = useState(false); 
+    const [selectedBoard, setSelectedBoard] = useState("");
+    const [boards, setBoards] = useState([]);
+    const moveBoxRef = useRef(null);
+    
 
     useEffect(() => {
         const fetchTrashArticles = async () => {
@@ -24,6 +29,19 @@ export default function BasketBoard(){
 
         fetchTrashArticles();
     }, []);
+
+    useEffect(() => {
+        const fetchBoards = async () => {
+          try {
+            const data = await getAllBoards(); // /board/all API 호출
+            setBoards(data); // 가져온 데이터 저장
+          } catch (err) {
+            console.error("게시판 데이터를 가져오는 중 오류 발생:", err);
+          }
+        };
+    
+        fetchBoards();
+      }, []);
      // 게시글 체크박스 선택/해제
      const handleCheckboxChange = (id) => {
         setSelectedArticles((prevSelected) =>
@@ -56,6 +74,80 @@ export default function BasketBoard(){
         } catch (err) {
             console.error("영구 삭제 중 오류:", err);
             alert("게시글 영구 삭제에 실패했습니다.");
+        }
+    };
+
+    const toggleMoveBox = () => {
+        setIsMoveBoxVisible((prev) => !prev); // 열기 또는 닫기 상태 전환
+    };
+    useEffect(() => {
+        const handleOutsideClick = (event) => {
+            // moveBoxRef 내부나, toggleMoveBox 버튼 클릭이면 예외 처리
+            if (
+                moveBoxRef.current &&
+                (moveBoxRef.current.contains(event.target) || event.target.closest(".toggle-move-box-button"))
+            ) {
+                return; // 아무 동작도 하지 않음
+            }
+    
+            setIsMoveBoxVisible(false); // 이동 박스 닫기
+        };
+    
+        if (isMoveBoxVisible) {
+            document.addEventListener("mousedown", handleOutsideClick); // 외부 클릭 이벤트 등록
+        } else {
+            document.removeEventListener("mousedown", handleOutsideClick); // 외부 클릭 이벤트 제거
+            setSelectedBoard("");
+        }
+    
+        return () => {
+            document.removeEventListener("mousedown", handleOutsideClick); // 정리(clean-up)
+        };
+    }, [isMoveBoxVisible]);
+
+    const handleBoardSelect = (boardName) => {
+         setSelectedBoard(boardName); // 선택된 게시판 설정
+     };  
+
+     const handleMoveArticles = async () => {
+        if (!selectedBoard) {
+            alert("이동할 게시판을 선택하세요.");
+            return;
+        }
+    
+        if (selectedArticles.length === 0) {
+            alert("이동할 게시글을 선택하세요.");
+            return;
+        }
+    
+        try {
+            // 선택한 게시판 ID 가져오기
+            const board = boards.find((board) => board.board_name === selectedBoard);
+    
+            if (!board) {
+                alert("유효한 게시판을 선택하세요.");
+                return;
+            }
+    
+            // 서버로 이동 요청
+            await moveArticlesToBoard(selectedArticles, board.board_id);
+    
+            if (!window.confirm("선택한 게시글을 이동하시겠습니까?")) {
+                return;
+            }
+    
+            // 이동 완료 후 데이터 업데이트
+            setTrashArticles((prev) =>
+                prev.filter((article) => !selectedArticles.includes(article.id))
+            );
+            setSelectedArticles([]);
+            setSelectedBoard("");
+            setIsMoveBoxVisible(false); // 이동 박스 닫기
+
+            alert("게시글이 성공적으로 이동되었습니다.");
+        } catch (error) {
+            console.error("게시글 이동 중 오류:", error);
+            alert("게시글 이동에 실패했습니다.");
         }
     };
 
@@ -291,18 +383,36 @@ export default function BasketBoard(){
                             </button>
                         </div> 
                         <div className="chk_move">
-                            <button type="button" disabled={selectedArticles.length === 0}>
+                            <button type="button" disabled={selectedArticles.length === 0}  onClick={toggleMoveBox} className="toggle-move-box-button">
                             이동
                             <em className="bu"></em>
                             </button> 
-                            <div id="move_option_box" className="option_box" style={{display: "none"}}>
-                                <ul></ul> 
+                            {isMoveBoxVisible && (
+                            <div id="move_option_box" className="Basket_option_box" ref={moveBoxRef}>
+                                <ul>
+                                    <li>
+                                        <span>그린컴퓨터아카데미</span>
+                                    </li>
+                                    {boards.map((board) => (
+                                    <li
+                                    key={board.board_id}
+                                    className={`depth ${selectedBoard === board.board_name ? "selected" : ""}`}
+                                    onClick={() => handleBoardSelect(board.board_name)}
+                                    >
+                                    <button type="button">{board.board_name}</button>
+                                    <li>
+                                        <span></span>
+                                    </li>
+                                    </li>
+                                 ))}
+                                </ul> 
                             <p className="btn">
-                                <button type="button">
+                                <button type="button" onClick={handleMoveArticles}>
                                 이동
                                 </button>
                             </p>
                             </div>
+                             )}
                         </div>
                     </div>
 

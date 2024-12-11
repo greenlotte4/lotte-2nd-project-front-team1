@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useNavigate, useParams } from 'react-router-dom';
-import {  ArticleDetail, updateArticle} from "../../../api/board/boardAPI"; // URI 상수 import
+import {  ArticleDetail, getAllBoards, updateArticle} from "../../../api/board/boardAPI"; // URI 상수 import
 import ReactQuill from 'react-quill';
 
 const EditPostBoard = () => {
+    const [showBoardSelect, setShowBoardSelect] = useState(false); // 모달 표시 상태
+    const [boards, setBoards] = useState([]);
     const { id } = useParams(); // URL에서 게시글 ID 가져오기
+    const [selectedBoard, setSelectedBoard] = useState(''); 
     const navigate = useNavigate();
 
     const [article, setArticle] = useState({
@@ -14,6 +17,34 @@ const EditPostBoard = () => {
         board: '공지사항',
         writer: '',
     });
+
+    const handleOpenBoardSelect = () => {
+        setShowBoardSelect(true);
+    };
+
+
+    const handleCloseBoardSelect = () => {
+        setShowBoardSelect(false);
+    };
+
+    const handleConfirmBoardSelect = () => {
+        setSelectedBoard(article.board); // 선택된 값을 업데이트
+        handleCloseBoardSelect(); // 모달 닫기
+    };
+
+    useEffect(() => {
+        console.log("NoticeBoard: useEffect 실행"); // useEffect 호출 확인
+        const fetchBoards = async () => {
+            try {
+                const fetchedBoards = await getAllBoards();
+                console.log('게시판 목록:', fetchedBoards); // 데이터 출력
+                setBoards(fetchedBoards);
+            } catch (error) {
+                console.error("게시판 목록을 가져오는 데 실패했습니다.", error);
+            }
+        };
+        fetchBoards();
+    }, []);
 
     // 게시글 상세 정보 가져오기
     useEffect(() => {
@@ -42,6 +73,11 @@ const EditPostBoard = () => {
             console.error('게시글 수정에 실패했습니다:', error);
             alert('게시글 수정에 실패했습니다.');
         }
+    };
+
+    const handleBoardSelect = (board_name) => {
+        setArticle((prev) => ({ ...prev, board: board_name }));
+        console.log("Selected board_name:", board_name); // 함수 호출 확인
     };
     
 
@@ -279,12 +315,12 @@ const EditPostBoard = () => {
                       </li>
                       <li className="opt_bd">
                       <h3 className="tx">게시판</h3>
-                      <button type="button" className="btn_board_select">
+                      <button type="button" className="btn_board_select"  onClick={handleOpenBoardSelect} >
                           게시판 선택
                       </button>
                       <span className="bd_name">
                           <span className="cate" >그린컴퓨터아카데미</span>
-                          <strong>공지사항</strong>
+                          <strong>{selectedBoard || '게시판을 선택하세요'}</strong>
                       </span>
                       </li>
                      
@@ -326,6 +362,64 @@ const EditPostBoard = () => {
                   </div>
                   </form>
               </div>
+
+              {showBoardSelect && (
+                <div className="ly_wrapper" style={{ display: "block" }}>
+                    <div className="ly_loading" style={{ left: "330px", top: "800px", display: "none" }}>
+                        <div className="cont">
+                            <p className="cont1">
+                                <span className="loading">
+                                    <img
+                                        src="https://static.worksmobile.net/static/pwe/address/loading_fff.gif"
+                                        width="32"
+                                        height="8"
+                                        alt="loading"
+                                    />
+                                </span>
+                            </p>
+                        </div>
+                    </div>
+                    <div className="ly_common">
+                        <div className="layer_area">
+                            <h3 className="tit">게시판 선택</h3>
+                            <div className="cont board_select">
+                                <div className="option_box">
+                            
+                            <ul>
+                                <li>
+                                    <span>그린컴퓨터아카데미</span>
+                                </li>
+                                {boards.map((board) => (
+                                    
+                                    <li key={board.board_id} className="depth"   onClick={() => handleBoardSelect(board.board_name)} >
+                                        <input
+                                            type="radio"
+                                            name="select_bd"
+                                            value={board.board_name}
+                                            checked={article.board === board.board_name} // 체크 상태를 확인
+                                            onChange={(e) => handleBoardSelect(e.target.value)}
+                                        />
+                                        <label>
+                                            <strong>{board.board_name}</strong>
+                                        </label>
+                                    </li>
+                                ))}
+                            </ul>
+                                </div>
+                            </div>
+                            <div className="btn_area">
+                                <button type="button" className="btn" onClick={handleCloseBoardSelect}>
+                                    닫기
+                                </button>
+                                <button type="button" className="btn tx_point" onClick={handleConfirmBoardSelect}>
+                                    <strong>확인</strong>
+                                </button>
+                            </div>
+                        </div>
+                        <div className="layer_bg" ></div>
+                </div> 
+                </div>
+                )}
               
 
           </div>  
