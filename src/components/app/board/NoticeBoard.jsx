@@ -433,7 +433,7 @@ const NoticeBoard = () => {
                         <div className="layer_bg" ></div>
                 </div> 
                 </div>
-              )}
+                )}
           </div>  
           </div>
       );

@@ -1,7 +1,7 @@
 import { Link, useNavigate, useParams } from "react-router-dom";
 
-import { addFavoriteBoard, getArticlesByBoard, getBoardArticles, getFavoriteBoards, moveBoardToBasket } from "../../../api/board/boardAPI";
-import { useEffect, useState } from "react";
+import { addFavoriteBoard, getAllBoards, getArticlesByBoard, getBoardArticles, getFavoriteBoards, moveArticlesToBoard, moveBoardToBasket } from "../../../api/board/boardAPI";
+import { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 
 export default function AnnouncementBoard(){
@@ -13,6 +13,10 @@ export default function AnnouncementBoard(){
     const [error, setError] = useState(null); // 에러 상태
     const [selectedArticles, setSelectedArticles] = useState([]);
     const [favoriteBoards, setFavoriteBoards] = useState(new Map()); // 즐겨찾기 상태
+    const [isMoveBoxVisible, setIsMoveBoxVisible] = useState(false); 
+    const [selectedBoard, setSelectedBoard] = useState("");
+    const [boards, setBoards] = useState([]);
+    const moveBoxRef = useRef(null);
 
     const userId = useSelector((state) => state.userSlice.userid);
     
@@ -68,6 +72,7 @@ export default function AnnouncementBoard(){
             alert(`게시글 삭제에 실패했습니다. ${err.message}`);
         }
     };
+    
 
     useEffect(() => {
         const fetchArticles = async () => {
@@ -138,6 +143,87 @@ export default function AnnouncementBoard(){
       });
         }
       };
+
+      const toggleMoveBox = () => {
+    setIsMoveBoxVisible((prev) => !prev); // 열기 또는 닫기 상태 전환
+};
+useEffect(() => {
+    const handleOutsideClick = (event) => {
+        // moveBoxRef 내부나, toggleMoveBox 버튼 클릭이면 예외 처리
+        if (
+            moveBoxRef.current &&
+            (moveBoxRef.current.contains(event.target) || event.target.closest(".toggle-move-box-button"))
+        ) {
+            return; // 아무 동작도 하지 않음
+        }
+
+        setIsMoveBoxVisible(false); // 이동 박스 닫기
+    };
+
+    if (isMoveBoxVisible) {
+        document.addEventListener("mousedown", handleOutsideClick); // 외부 클릭 이벤트 등록
+    } else {
+        document.removeEventListener("mousedown", handleOutsideClick); // 외부 클릭 이벤트 제거
+        setSelectedBoard("");
+    }
+
+    return () => {
+        document.removeEventListener("mousedown", handleOutsideClick); // 정리(clean-up)
+    };
+}, [isMoveBoxVisible]);
+
+    const handleBoardSelect = (boardName) => {
+         setSelectedBoard(boardName); // 선택된 게시판 설정
+     };  
+
+     const handleMoveArticles = async () => {
+        if (!selectedBoard) {
+            alert("이동할 게시판을 선택하세요.");
+            return;
+        }
+        if (!selectedArticles.length) {
+            alert("이동할 게시글을 선택하세요.");
+            return;
+        }
+        if (!window.confirm("선택한 게시글을 이동하시겠습니까?")) {
+            return;
+        }
+
+        try {
+            await moveArticlesToBoard(selectedArticles, selectedBoard); // 이동 API 호출
+
+            setArticles((prevArticles) =>
+                prevArticles.filter((article) => !selectedArticles.includes(article.id))
+            );
+            setSelectedArticles([]);
+            setSelectedBoard("");
+            const data = await getArticlesByBoard(boardId);
+            setArticles(data.articles); // 최신 게시글 목록 설정
+            setBoardName(data.boardName); // 게시판 이름 업데이트
+
+            setIsMoveBoxVisible(false); // 이동 박스 닫기
+
+            alert("게시글이 성공적으로 이동되었습니다.");
+            
+           
+        } catch (err) {
+            console.error("게시글 이동 중 오류:", err);
+            alert("게시글 이동에 실패했습니다.");
+        }
+    };
+
+    useEffect(() => {
+        const fetchBoards = async () => {
+          try {
+            const data = await getAllBoards (); // /board/all API 호출
+            setBoards(data); // 가져온 데이터 저장
+          } catch (err) {
+            console.error("게시판 데이터를 가져오는 중 오류 발생:", err);
+          }
+        };
+    
+        fetchBoards();
+      }, []);
     
 
     if (loading) return <p>Loading...</p>;
@@ -388,10 +474,33 @@ export default function AnnouncementBoard(){
                                 </button>
                             </div>
                             <div className="chk_move">
-                                <button type="button" disabled={selectedArticles.length === 0}>
-                                    이동
-                                    <em className="bu"></em>
+                                <button type="button" disabled={selectedArticles.length === 0} onClick={toggleMoveBox}  className="toggle-move-box-button">
+                                이동
+                                <em className="bu"></em>
                                 </button>
+                                {isMoveBoxVisible && (
+                             <div id="move_option_box" className="Basket_option_box"  ref={moveBoxRef}>
+                                <ul>
+                                     <li>
+                                        <span>그린컴퓨터아카데미</span>
+                                    </li>
+                                    {boards.map((board) => (
+                                        <li
+                                        key={board.board_id}
+                                        className={`depth ${selectedBoard === board.board_id ? "selected" : ""}`}
+                                        onClick={() => handleBoardSelect(board.board_id)}
+                                        >
+                                        <button type="button">{board.board_name}</button>
+                                        </li>
+                                    ))}
+                                </ul>
+                                <p className="btn">
+                                    <button type="button" onClick={handleMoveArticles}>
+                                    이동
+                                    </button>
+                                </p>
+                            </div>
+                        )}
                             </div>
                         </div>
                         <div className="h_util">
