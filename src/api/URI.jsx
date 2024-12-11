@@ -62,3 +62,7 @@ export const ADMIN_UPDATE_USERS = `${SERVER_HOST}/admin/updateuserlist`; //Ïù¥Îè
 
 //message
 export const MESSAGE_NEW_CHANNEL = `${SERVER_HOST}/message/newChannel`;
+
+//calendar
+export const CALENDAR_CREATE = `${SERVER_HOST}/calendar/makecalendar`;
+export const CALENDAR_LIST = `${SERVER_HOST}/calendar/calendarlist`;
