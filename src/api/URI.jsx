@@ -12,7 +12,7 @@
 
 */
 
-const SERVER_HOST = import.meta.env.VITE_SERVER_HOST;
+export const SERVER_HOST = import.meta.env.VITE_SERVER_HOST;
 
 // user
 export const USER_URI = `${SERVER_HOST}/user/register`;

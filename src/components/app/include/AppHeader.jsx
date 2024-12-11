@@ -9,7 +9,7 @@
     2024/11/19 강중원 noneAside를 통해 어사이드 버튼 비/활성화
     2024/12/03 이도영 로그인 정보 출력
 */
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import NotificationButton from "./NotificationButton";
 import ProfileDropdown from "./ProfileDropdown";
@@ -25,14 +25,29 @@ import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
 import MenuIcon from "@mui/icons-material/Menu";
 import { Tooltip } from "@mui/material";
 import { useSelector } from "react-redux";
+import { profileUrl } from "../../../api/user/userAPI";
 
 export default function AppHeader({ onToggleSidebar, noneAside, thisPage }) {
   const [openDropdown, setOpenDropdown] = useState(null); // "notification" | "profile" | null
   const [status, setStatus] = useState(null);
+  const [imageUrl, setImageUrl] = useState(null);
+
   const user = useSelector((state) => state.userSlice);
   const toggleDropdown = (type) => {
     setOpenDropdown((prev) => (prev === type ? null : type));
   };
+  // 이미지 URL을 받아오는 함수
+  const getImageUrl = async () => {
+    const url = await profileUrl();  // 이미지 URL을 비동기적으로 가져옴
+    console.log("받은 이미지 URL: ", url);
+    setImageUrl(url); // 받아온 URL을 상태에 저장
+  };
+
+  // 컴포넌트가 마운트될 때 프로필 이미지 URL을 가져옴
+  useEffect(() => {
+    getImageUrl();
+  }, []); // 빈 배열을 넣어 첫 렌더링에서만 실행되도록 설정
+
   // 상태별 테두리 색상
   const borderColor =
     {
@@ -40,7 +55,13 @@ export default function AppHeader({ onToggleSidebar, noneAside, thisPage }) {
       dnd: "red",
       away: "yellow",
     }[status] || "transparent"; // 기본값은 투명
-
+  const statusColor =
+    {
+      online: "green",
+      dnd: "red",
+      away: "yellow",
+      logout: "red", // 로그아웃 상태는 빨간색
+    }[status] || "transparent"
   return (
     <header className="AppHeader">
       <div className="headerTitle">
@@ -145,7 +166,19 @@ export default function AppHeader({ onToggleSidebar, noneAside, thisPage }) {
         <div className="headerProfile">
           {/* 프로필 버튼 */}
           <div className="ProfileDiv" onClick={() => toggleDropdown("profile")}>
-            <img src="/images/user_Icon.png" alt="👤" className="profileImg" />
+            <img src={imageUrl || "/images/user_Icon.png"}
+              alt="👤" className="profileImg" />
+            <div className="userStatus"
+              style={{
+                position: "absolute",  // 부모를 기준으로 위치
+                bottom: "8px",  // 프로필 이미지 아래쪽
+                right: "80px",  // 프로필 이미지 오른쪽
+                width: "8px",  // 크기
+                height: "8px",  // 크기
+                backgroundColor: "red", // 상태 색상
+                borderRadius: "50%", // 원형
+                // border: "2px solid white", // 테두리
+              }}></div>
             <p className="ProfileName">
               {user.username || "알 수 없는 사용자"}
             </p>

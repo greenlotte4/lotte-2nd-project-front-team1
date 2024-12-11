@@ -25,10 +25,15 @@ export const postUser = async (data) => {
 export const postUserLogin = async (data) => {
     try {
         const response = await axios.post(`${USER_LOGIN_URI}`, data);
-        console.log(response.data);
+        console.log("반환값" + response.status);
         return response.data;
     } catch (err) {
-        console.log(err);
+        if (err.response && err.response.status === 403) {
+            alert(err.response.data);
+        } else {
+
+            console.log(err);
+        }
     }
 };
 
@@ -145,7 +150,7 @@ export const changePassword = async (userId, newPassword) => { // 비번변경
 export const changeNewHp = async (newHp) => {
     try {
         console.log("전송되는 데이터" + newHp);
-        const user = JSON.parse(localStorage.getItem('user'));
+        const user = JSON.parse(localStorage.getItem('user')) || JSON.parse(sessionStorage.getItem('user'));
         console.log("localStorage에서 가져온 user: ", user);
         const userId = user.userid;
 
@@ -162,7 +167,7 @@ export const changeNewHp = async (newHp) => {
 export const changeNewEmail = async (newEmail) => {
     try {
         console.log("전송되는 데이터" + newEmail);
-        const user = JSON.parse(localStorage.getItem('user'));
+        const user = JSON.parse(localStorage.getItem('user')) || JSON.parse(sessionStorage.getItem('user'));
 
         const userId = user.userid;
 
@@ -178,12 +183,13 @@ export const changeNewEmail = async (newEmail) => {
 export const changeStatusMessage = async (statusMessage) => {
     try {
         console.log("전송되는 데이터" + statusMessage);
-        const user = JSON.parse(localStorage.getItem('user'));
+        const user = JSON.parse(localStorage.getItem('user')) || JSON.parse(sessionStorage.getItem('user'));
 
         const userId = user.userid;
 
         const response = await axios.put(`${USER_CHANGE}/statusMessage`,
             { statusMessage: statusMessage, userId: userId },
+
         );
         console.log("서버 응답: ", response);  // 응답 데이터 출력
         return response;
@@ -194,7 +200,7 @@ export const changeStatusMessage = async (statusMessage) => {
 
 export const uploadProfile = async (formData) => {
     try {
-        const user = JSON.parse(localStorage.getItem('user'));
+        const user = JSON.parse(localStorage.getItem('user')) || JSON.parse(sessionStorage.getItem('user'));
 
         const userId = user.userid;
         const response = await axios.post(`${USER_CHANGE}/profile`, formData, {
@@ -221,11 +227,49 @@ export const uploadProfile = async (formData) => {
 }
 
 // 파일 경로를 절대 URL로 변환하는 함수
-const getFileUrl = (filePath) => {
+export const getFileUrl = (filePath) => {
     const baseUrl = "http://localhost:8080";  // 서버 도메인 (배포 시 수정 필요)
-    if (filePath && (filePath.startsWith("/upload/"))){
+    if (filePath && (filePath.startsWith("/user/thumb/"))) {
         return `${baseUrl}${filePath}`;
     }
     console.error("잘못된 파일 경로:", filePath);
     return null;  // 잘못된 경로인 경우 null 반환
 };
+
+
+export const deleteuser = async () => {
+    try {
+        const user = JSON.parse(localStorage.getItem('user')) || JSON.parse(sessionStorage.getItem('user'));
+
+        const userId = user.userid;
+        const response = await axios.put(`${USER_CHANGE}/delete`,
+            {
+                userId: userId  // userId를 URL 파라미터로 전달
+            }
+        );
+        console.log("서버 응답: ", response);  // 응답 데이터 출력
+        return response;
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+export const profileUrl = async () => {
+    try {
+        const user = JSON.parse(localStorage.getItem('user')) || JSON.parse(sessionStorage.getItem('user'));
+        const userId = user.userid;
+        console.log("요청아이디" + userId);
+        const response = await axios.get(`${USER_CHANGE}/profileUrl`, {
+            params: {
+                userId: userId  // URL 쿼리 파라미터로 userId 전달
+            }
+        });
+        console.log("서버 응답: ", response);  // 응답 데이터 출력
+        const imageUrl = response.data; // 서버에서 반환된 이미지 URL
+
+        console.log("이미지 URL: ", imageUrl);  // 이미지 URL 출력
+        return imageUrl; // 이미지 URL을 반환
+    } catch (error) {
+        console.log(error)
+    }
+}
