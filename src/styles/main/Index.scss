@@ -72,14 +72,15 @@
     display: flex;
     justify-content: center;
     gap: 20px;
-    margin-top: 40px;
+    margin-top: 20px;
   }
 
   div.text1 {
-    margin-top: 30px;
-    margin-left: 370px;
+    margin-top: 20px;
+    margin-left: 410px;
     position: relative;
     /* 자식 요소의 절대 위치를 설정하기 위한 기준 */
+    width: 700px;
   }
 
   input[type="text"] {
@@ -111,11 +112,11 @@
   }
 
   img.main1 {
-    height: 327px;
+    height: 350px;
     width: 750px;
     border-radius: 10px;
     margin-left: 130px;
-    margin-top: 44px;
+    margin-top: 32px;
   }
 }
 
@@ -389,12 +390,12 @@
   background-color: #dddadaee;
   width: 1000px;
   height: 250px;
-  margin-top: 15px;
   border-radius: 5px;
   flex-direction: column;
   align-items: center; // 수직 중앙 정렬
   justify-content: center; // 수평 중앙 정렬
   margin: 0 auto; // 가로 중앙 정렬
+  margin-bottom: 15px;
 
   .main5-title {
     margin-left: 20px;

@@ -1,14 +1,45 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 
 const Index = () => {
+  const [currentSlide, setCurrentSlide] = useState(0);
+  const slides = [
+    {
+      img: "/images/main_card1.png",
+      text: "HUB FLOW는 실시간으로 공유하기 때문에 빠르게 문제 해결이 가능합니다.",
+      author: "AMOREPACIFIC",
+    },
+    {
+      img: "/images/main_card2.png",
+      text: "허브 플로우로 협업이 쉬워졌습니다.",
+      author: "롯데백화점",
+    },
+    {
+      img: "/images/main_card3.jpg",
+      text: "팀 전체의 생산성이 놀랍도록 향상되었습니다.",
+      author: "박철수 · 철수테크 PM",
+    },
+  ];
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % slides.length);
+    }, 3000); // 3초 간격으로 슬라이드 변경
+    return () => clearInterval(interval); // 컴포넌트 언마운트 시 타이머 정리
+  }, [slides.length]);
+
   return (
     <main className="Index-Content">
       <div className="main1">
         <h1>유연하고 생산적인 협업</h1>
         <h1>HUB FLOW</h1>
         <div className="btn">
-          <button className="btn1">도입문의</button>
-          <button className="btn2">회원가입</button>
+          <Link to="/main/support">
+            <button className="btn1">도입문의</button>
+          </Link>
+          <Link to="/user/terms">
+            <button className="btn2">회원가입</button>
+          </Link>
         </div>
         <div className="text1">
           <input type="text" placeholder="이번 주 진행한 업무를 요약해줘" />
@@ -29,9 +60,9 @@ const Index = () => {
               <br />
               업무 생산성이 올라갑니다.
             </p>
-            <button className="main2-btn">업무 소통에 효율적임</button>
-            <button className="main2-btn">손쉬운 멤버 관리</button>
-            <button className="main2-btn">안전하고 체계적인 정보 자산화</button>
+            <div className="main2-btn">업무 소통에 효율적임</div>
+            <div className="main2-btn">손쉬운 멤버 관리</div>
+            <div className="main2-btn">안전하고 체계적인 정보 자산화</div>
           </div>
           <img
             src="/images/main_img2.png"
@@ -53,13 +84,29 @@ const Index = () => {
             </p>
           </div>
           <div className="main3-slider">
-            <button className="slider-btn prev-btn">&lt;</button>
-            <button className="slider-btn next-btn">&gt;</button>
+            <button
+              className="slider-btn prev-btn"
+              onClick={() =>
+                setCurrentSlide(
+                  (prev) => (prev - 1 + slides.length) % slides.length
+                )
+              }
+            >
+              &lt;
+            </button>
+            <button
+              className="slider-btn next-btn"
+              onClick={() =>
+                setCurrentSlide((prev) => (prev + 1) % slides.length)
+              }
+            >
+              &gt;
+            </button>
             <div className="main3-card">
               <div className="main3-step">
                 <img
-                  src="/images/main_card1.jpg"
-                  alt="Hub Flow card1"
+                  src={slides[currentSlide].img}
+                  alt={`Hub Flow card${currentSlide + 1}`}
                   className="main3-img"
                 />
                 <div className="main3-overlay">
@@ -70,7 +117,7 @@ const Index = () => {
                 </div>
               </div>
               <div className="main3-author">
-                <p>홍길동 · 길동닷컴CEO</p>
+                <p>{slides[currentSlide].author}</p>
               </div>
             </div>
           </div>
@@ -100,14 +147,17 @@ const Index = () => {
 
       <div className="main5">
         <div className="main5-content">
-          <h3 className="main5-title">협업툴을 이용하고 싶다면?</h3>
+          <h3 className="main5-title">
+            <br></br>협업툴을 이용하고 싶다면?
+          </h3>
           <p className="main5-desc">
             도입문의를 남겨주시면 허브플로우 컨설턴트가 24시간 이내에
             연락드립니다.
           </p>
           <div className="btn3">
-            <button>도입문의</button>
-            <button>회원가입</button>
+            <Link to="/main/support">
+              <button>도입문의</button>
+            </Link>
           </div>
         </div>
       </div>
