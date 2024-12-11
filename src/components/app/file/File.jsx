@@ -8,6 +8,8 @@ export default function File() {
   const [isDragging, setIsDragging] = useState(false); // 드래그 상태
   const [selectedFiles, setSelectedFiles] = useState([]); // 선택된 파일 상태
   const [searchQuery, setSearchQuery] = useState(""); // 검색어 상태
+  const [showWarning, setShowWarning] = useState(false); // 경고 표시 여부
+  const [warningEnabled, setWarningEnabled] = useState(true); // 경고 켜기/끄기 여부
 
   // 로컬 스토리지에서 드라이브 데이터 불러오기
   useEffect(() => {
@@ -202,6 +204,15 @@ export default function File() {
 
   return (
     <div className="file-content">
+      {/* 경고 메시지 */}
+      {showWarning && (
+        <div className="warning-message">
+          <p>사용량이 60% 이상입니다! 파일 업로드를 조심하세요.</p>
+          <button onClick={toggleWarning}>
+            {warningEnabled ? "경고 끄기" : "경고 켜기"}
+          </button>
+        </div>
+      )}
       {/* 상단 용량 표시 */}
       <div className="storage-info">
         <h2>
