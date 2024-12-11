@@ -1,4 +1,5 @@
 import axios from "axios";
+
 import {
   BOARD_ARTICLE_WRITE_URI,
   BOARD_TYPE,
@@ -11,6 +12,7 @@ import {
   BOARD_TRASH_PERMANENT,
   BOARD_ARTICLE_EDIT,
 } from "../URI";
+
 
 export const postBoardArticleWrite = async (data) => {
   try {
@@ -108,14 +110,29 @@ export const ArticleDetail = async (id) => {
   }
 };
 
-export const moveBoardToBasket = async (id) => {
+export const moveBoardToBasket = async (id, userId) => {
   try {
-    const response = await axios.delete(`${BOARD_MOVE_BASKET}?id=${id}`);
-    console.log("게시글 휴지통 이동:", response.data); // 응답 데이터 확인
-    return response.data; // 서버에서 반환된 데이터 반환
+
+      console.log("Sending to server:", { id, userId });
+      const response = await axios.delete(`${BOARD_MOVE_BASKET}`, {
+          params: { id, userId },
+      });
+      console.log("게시글 휴지통 이동:", response.data); // 응답 데이터 확인
+      return response.data;
   } catch (err) {
     console.error(`Error while moving article with ID ${id} to basket:`, err);
     throw new Error("게시글을 휴지통으로 이동하는 데 실패했습니다.");
+  }
+};
+
+export const deleteBoardArticle = async (id, userId) => {
+  try {
+      const response = await axios.delete(`${BOARD_MOVE_BASKET}?id=${id}&userId=${userId}`);
+      console.log("게시글 삭제 응답:", response.data);
+      return response.data;
+  } catch (error) {
+      console.error(`게시글 삭제 중 오류 발생:`, error);
+      throw new Error("게시글 삭제에 실패했습니다.");
   }
 };
 
@@ -167,3 +184,30 @@ export const updateArticle = async (id, articleData) => {
     throw error;
   }
 };
+
+export const getAllBoards = async () => {
+  try {
+      const response = await axios.get(BOARD_ALL);
+      console.log("Fetched Boards:", response.data); // 응답 데이터 확인
+      console.log("BOARD_ALL URL:", BOARD_ALL); // BOARD_ALL 값 출력
+      return response.data;
+  } catch (err) {
+      console.error("Error while fetching all boards:", err);
+      throw new Error("게시판 데이터를 가져오는 데 실패했습니다.");
+  }
+};
+
+
+export const getArticlesByBoard = async (boardId) => {
+  try {
+      const url = BOARD_ARTICLE_BOARD(boardId); // URI 생성
+      console.log(`Fetching articles for board ID ${boardId}: ${url}`);
+      
+      const response = await axios.get(url); // GET 요청
+      return response.data; // 서버 응답 데이터 반환
+  } catch (err) {
+      console.error(`Error fetching articles for board ID ${boardId}:`, err);
+      throw new Error("게시판 게시글을 가져오는 데 실패했습니다.");
+  }
+};
+

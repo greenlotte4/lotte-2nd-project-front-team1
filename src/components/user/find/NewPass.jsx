@@ -1,12 +1,10 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { changePassword } from "../../../api/user/userAPI";
 
 export default function NewPass() {
   const location = useLocation();
   const navigate = useNavigate();
-  const [isAuthenticated, setIsAuthenticated] = useState(false); // 로그인 여부
-  const [resetToken, setResetToken] = useState(""); // 비밀번호 변경용 임시 토큰
 
   const { email, userId } = location.state || {};
 
@@ -16,6 +14,13 @@ export default function NewPass() {
   const [loading, setLoading] = useState(false);
   const passRegex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,}$/;
 
+
+
+  useEffect(() => {
+    console.log("NewPass에서 전달받은 데이터:", location.state); // state 전체 확인
+    console.log("NewPass에서 userId:", userId); // userId 확인
+    console.log("NewPass에서 email:", email); // email 확인
+  }, [location.state, userId, email]);
 
   // 비밀번호 확인 여부 실시간 검사
   const validatePasswords = () => {
@@ -40,15 +45,16 @@ export default function NewPass() {
   };
   const PassChangHandler = async (e) => {
     e.preventDefault();
+    console.log("클릭됨")
 
 
     setLoading(true);
     try {
       // 상황에 따라 적절한 토큰 선택
-      const token = isAuthenticated ? accessToken : resetToken;
-      console.log("사용된 토큰:", token);
 
-      const response = await changePassword(newPassword, token, userId);
+      console.log("전송할 데이터1(userId): ", userId);
+      console.log("전송할 데이터2(newPassword): ", newPassword);
+      const response = await changePassword(userId, newPassword);
 
       if (response.status === 200) {
         alert("비밀번호가 성공적으로 변경되었습니다.");
@@ -57,7 +63,7 @@ export default function NewPass() {
         alert("비밀번호 변경 중 오류가 발생했습니다.")
       }
     } catch (error) {
-      alert("보내지도 안흥ㅁ 비밀번호 변경 중 오류가 발생했습니다.")
+      alert("보내지도 안음 비밀번호 변경 중 오류가 발생했습니다.")
       console.log(error)
     } finally {
       setLoading(false);
