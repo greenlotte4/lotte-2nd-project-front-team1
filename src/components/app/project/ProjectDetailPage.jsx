@@ -1,118 +1,53 @@
-import { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
-import { postSelectProject } from "../../../api/project/project/projectAPI";
-import Modal from "../../modal/Modal";
+import React from "react";
+import { useParams } from "react-router-dom";
 
-export default function ProjectDetailPage() {
-  const { projectId } = useParams(); // URL에서 projectId를 가져옴
-  const navigate = useNavigate();
-  const [projectDetail, setProjectDetail] = useState(null);
-  const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
+const ProjectDetailPage = () => {
+  const { id } = useParams(); 
+  const [project, setProject] = React.useState(null);
 
-  // 프로젝트 상세보기 API 호출
-  useEffect(() => {
-    const fetchProjectDetail = async () => {
-      try {
-        const data = { projectId }; // 서버로 보낼 데이터
-        const response = await postSelectProject(data);
-        setProjectDetail(response);
-      } catch (error) {
-        console.error("프로젝트 상세 정보를 가져오는 중 오류 발생:", error);
-      }
-    };
+  const projects = [
+    {
+      id: 1,
+      name: "프로젝트 1",
+      teamLeader: "팀장1",
+      startDate: "2024-01-01",
+      endDate: "2024-12-31",
+      members: ["김철수", "박영희", "이민수"],
+    },
+    {
+      id: 2,
+      name: "팀 프로젝트",
+      teamLeader: "팀장2",
+      startDate: "2024-02-01",
+      endDate: "2024-10-31",
+      members: ["조수민", "한서진"],
+    },
+  ];
 
-    if (projectId) fetchProjectDetail();
-  }, [projectId]);
+  React.useEffect(() => {
+    const selectedProject = projects.find(
+      (project) => project.id === parseInt(id, 10)
+    );
+    setProject(selectedProject);
+  }, [id]);
 
-  const openUpdateModal = () => setIsUpdateModalOpen(true);
-  const closeUpdateModal = () => setIsUpdateModalOpen(false);
-
-  return (
-    <div>
-      {projectDetail ? (
-        <div>
-          <h2>{projectDetail.name}</h2>
-          <p>팀장: {projectDetail.teamLeader}</p>
-          <p>시작일: {projectDetail.startDate}</p>
-          <p>종료일: {projectDetail.endDate}</p>
-          <p>참여자: {projectDetail.members.join(", ")}</p>
-
-          <button onClick={() => navigate("/app/project")}>뒤로가기</button>
-          <button onClick={openUpdateModal}>수정/삭제</button>
-        </div>
-      ) : (
-        <p>로딩 중...</p>
-      )}
-
-      {isUpdateModalOpen && (
-        <Modal isOpen={isUpdateModalOpen} onClose={closeUpdateModal} title="프로젝트 수정/삭제">
-          <UpdateProjectForm project={projectDetail} onClose={closeUpdateModal} />
-        </Modal>
-      )}
-    </div>
-  );
-}
-
-function UpdateProjectForm({ project, onClose }) {
-  const [projectName, setProjectName] = useState(project.name);
-  const [teamLeader, setTeamLeader] = useState(project.teamLeader);
-  const [startDate, setStartDate] = useState(project.startDate);
-  const [endDate, setEndDate] = useState(project.endDate);
-
-  const handleUpdate = () => {
-    console.log("프로젝트 수정:", {
-      projectId: project.projectId,
-      name: projectName,
-      teamLeader,
-      startDate,
-      endDate,
-    });
-    onClose();
-  };
-
-  const handleDelete = () => {
-    if (window.confirm("정말로 이 프로젝트를 삭제하시겠습니까?")) {
-      console.log("프로젝트 삭제:", project.projectId);
-      onClose();
-    }
-  };
+  if (!project) {
+    return <p>프로젝트를 찾을 수 없습니다.</p>;
+  }
 
   return (
     <div>
-      <div>
-        <label>프로젝트 이름</label>
-        <input
-          type="text"
-          value={projectName}
-          onChange={(e) => setProjectName(e.target.value)}
-        />
-      </div>
-      <div>
-        <label>팀장</label>
-        <input
-          type="text"
-          value={teamLeader}
-          onChange={(e) => setTeamLeader(e.target.value)}
-        />
-      </div>
-      <div>
-        <label>시작일</label>
-        <input
-          type="date"
-          value={startDate}
-          onChange={(e) => setStartDate(e.target.value)}
-        />
-      </div>
-      <div>
-        <label>종료일</label>
-        <input
-          type="date"
-          value={endDate}
-          onChange={(e) => setEndDate(e.target.value)}
-        />
-      </div>
-      <button onClick={handleUpdate}>수정</button>
-      <button onClick={handleDelete}>삭제</button>
+      <h1>{project.name}</h1>
+      <p>팀장: {project.teamLeader}</p>
+      <p>기간: {project.startDate} ~ {project.endDate}</p>
+      <h3>참여자 목록:</h3>
+      <ul>
+        {project.members.map((member, index) => (
+          <li key={index}>{member}</li>
+        ))}
+      </ul>
     </div>
   );
-}
+};
+
+export default ProjectDetailPage;
