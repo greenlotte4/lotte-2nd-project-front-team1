@@ -87,9 +87,7 @@ export const CALENDAR_LIST = `${SERVER_HOST}/calendar/calendarlist`;
 export const CALENDAR_DELETE = `${SERVER_HOST}/calendar/deletecalendar`;
 export const CALENDAR_LEAVE = `${SERVER_HOST}/calendar/leavecalendar`;
 
-<<<<<<< Updated upstream
 export const CALENDAR_ADDEVENT = `${SERVER_HOST}/calendar/addevent`;
-=======
 // project
 export const PROJECT_LIST = `${SERVER_HOST}/project`
 export const SELECT_PROJECT = (no) => `${SERVER_HOST}/project/${no}`
@@ -101,7 +99,6 @@ export const DELETE_PROJECT = (no) => `${SERVER_HOST}/project/${no}`
 export const CREATE_PROJECT_ITEM = `${SERVER_HOST}/project/ProjectItem/create`
 export const UPDATE_PROJECT_ITEM = (no) => `${SERVER_HOST}/project/ProjectItem/update/${no}`
 export const DELETE_PROJECT_ITEM = (no) => `${SERVER_HOST}/project/ProjectItem/delete/${no}`
->>>>>>> Stashed changes
 
 // project/Task
 export const CREATE_TASK = `${SERVER_HOST}/project/task/create`
