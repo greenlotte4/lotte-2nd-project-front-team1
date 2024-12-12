@@ -199,12 +199,11 @@ const MessageAside = ({ isVisible, onSelectChat }) => {
                                     <Avatar
                                       key={idx}
                                       alt={member.username}
-                                      src={
-                                        member.avatar ||
-                                        "/static/images/default-avatar.jpg"
-                                      }
+                                      src={member.profile}
                                       className="groupAvatar"
-                                    />
+                                    >
+                                      {member.username.charAt(0)}
+                                    </Avatar>
                                   ))}
                               </AvatarGroup>
                             </ListItemIcon>
@@ -259,7 +258,9 @@ const MessageAside = ({ isVisible, onSelectChat }) => {
                         >
                           <ListItemIcon>
                             <Badge color="warning" variant="dot">
-                              <Avatar>{value.user.username.charAt(0)}</Avatar>
+                              <Avatar src={value.user.profile}>
+                                {value.user.username.charAt(0)}
+                              </Avatar>
                             </Badge>
                           </ListItemIcon>
                           <div className="chatRoom">
@@ -463,7 +464,9 @@ function NewChannelDIV() {
             >
               <ListItemButton>
                 <ListItemAvatar>
-                  <Avatar>{value.username.charAt(0)}</Avatar>
+                  <Avatar src={value.profile}>
+                    {value.username.charAt(0)}
+                  </Avatar>
                 </ListItemAvatar>
                 <ListItemText id={labelId} primary={`${value.username}`} />
               </ListItemButton>
@@ -551,7 +554,9 @@ function NewDMDIV() {
             <ListItem key={index} disablePadding>
               <ListItemButton onClick={() => submitDM(value.userId)}>
                 <ListItemAvatar>
-                  <Avatar>{value.username.charAt(0)}</Avatar>
+                  <Avatar src={value.profile}>
+                    {value.username.charAt(0)}
+                  </Avatar>
                 </ListItemAvatar>
                 <ListItemText id={labelId} primary={`${value.username}`} />
               </ListItemButton>
