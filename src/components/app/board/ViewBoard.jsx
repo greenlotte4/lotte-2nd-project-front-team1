@@ -1,20 +1,38 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { ArticleDetail, deleteBoardArticle } from "../../../api/board/boardAPI";
+import { ArticleDetail, deleteBoardArticle, toggleImportantArticle } from "../../../api/board/boardAPI";
 import { useSelector } from "react-redux";
+import axios from "axios";
 
 export default function ViewBoard() {
+
+    
+    const [openDropdown, setOpenDropdown] = useState(null);
     const { id } = useParams(); // URL에서 게시글 ID 가져옴
     const [article, setArticle] = useState(null);
     const navigate = useNavigate();
     const userId = useSelector((state) => state.userSlice.userid); // Redux에서 userId 가져오기
+    const [translatedText, setTranslatedText] = useState(null);
+    const [isTranslateVisible, setIsTranslateVisible] = useState(true);
+
+    const toggleTranslateVisibility = () => {
+        setIsTranslateVisible((prevState) => !prevState); // 상태 반전
+    };
+
+    const [selectedLanguages, setSelectedLanguages] = useState({
+        first: "한국어",
+        second: "영어",
+    });
 
     // 게시글 데이터 가져오기
     useEffect(() => {
+        
+        console.log("번역", translatedText);
         const fetchArticle = async () => {
             try {
                 const data = await ArticleDetail(id); // API 호출
                 setArticle(data);
+                console.log("Article Data:", data);
             } catch (error) {
                 console.error("게시글 정보를 가져오는 중 오류 발생:", error);
               
@@ -22,7 +40,7 @@ export default function ViewBoard() {
             }
         };
         fetchArticle();
-    }, [id, navigate]);
+    }, [id,translatedText, navigate], );
 
     const handleDelete = async () => {
         if (!window.confirm("정말 이 게시글을 삭제하시겠습니까?")) return;
@@ -37,6 +55,74 @@ export default function ViewBoard() {
         }
     };
 
+    const toggleDropdown = (dropdownId) => {
+        setOpenDropdown((prevId) => (prevId === dropdownId ? null : dropdownId));
+    };
+
+    const handleLanguageSelect = (dropdownId, language) => {
+        setSelectedLanguages((prev) => ({
+            ...prev,
+            [dropdownId]: language,
+        }));
+        setOpenDropdown(null); // 드롭다운 닫기
+    };
+
+    const swapLanguages = () => {
+        setSelectedLanguages((prev) => {
+            const updated = {
+                first: prev.second,
+                second: prev.first,
+            };
+            console.log("언어 교체:", updated); // 상태 업데이트 확인용
+            return updated;
+        });
+    };
+
+    const translateContent = async () => {
+        
+
+        const languageMap = {
+            한국어: "ko",
+            영어: "en",
+            일본어: "ja",
+            "중국어(번체)": "zh-TW",
+            프랑스어: "fr",
+            스페인어: "es",
+            러시아어: "ru",
+            베트남어: "vi",
+            태국어: "th",
+            인도네시아어: "id",
+            포르투갈어: "pt",
+        };
+
+        const sourceLang = languageMap[selectedLanguages.first] || "ko";
+        const targetLang = languageMap[selectedLanguages.second] || "en";
+
+        console.log("요청 소스 언어:", sourceLang);
+        console.log("요청 타겟 언어:", targetLang);
+
+
+        try {
+            const response = await axios.get(
+                "https://translation.googleapis.com/language/translate/v2",
+                {
+                    params: {
+                        key: 'AIzaSyBsNQNLgxfNOt8JhnBuLury_mW8hNCRpPk',
+                        q: article.content,
+                        source: sourceLang,
+                        target: targetLang,
+                        format: "text",
+                    },
+                }
+            );
+            
+            setTranslatedText(response.data.data.translations[0].translatedText);
+        } catch (error) {
+            console.error("번역 중 오류 발생:", error.response?.data || error.message);
+            alert("번역에 실패했습니다.");
+        }
+    };
+
     // 로딩 상태 처리
     if (!article) {
         return <div>로딩 중...</div>;
@@ -45,6 +131,19 @@ export default function ViewBoard() {
     const handleEdit = () => {
         navigate(`/article/edit/${id}`); // 현재 게시글 ID를 수정 페이지로 전달
     };
+
+    const handleToggleImportant = async () => {
+        try {
+            await toggleImportantArticle(id, userId); // 중요 게시글 토글 API 호출
+            setArticle((prev) => ({
+                ...prev,
+                isImportant: !prev.isImportant,
+            })); // isImportant 값 토글
+        } catch (error) {
+            console.error("중요 게시글 상태 변경 중 오류 발생:", error);
+            alert("중요 게시글 상태 변경에 실패했습니다.");
+        }
+    };  
     return(
         <div className="boardContentDiv" id="boardContentDiv">
             <div className="g_search">
@@ -246,7 +345,168 @@ export default function ViewBoard() {
             </div>          
             <div id="articleViewer">
                 <div className="board_view">
-                    <h2 className="tit _board_title">자유게시판</h2>
+                    <h2 className="tit _board_title">{article.boardName}</h2>
+                    <div className="translate _no_print show_translate"  style={{
+                            display: isTranslateVisible ? "none" : "block",
+                            transition: "opacity 0.3s ease-in-out",
+                            opacity: isTranslateVisible ? 0 : 1,
+                        }}>
+                        <div className="btn_box">
+                            <div className="btn_wrap">
+                                <button type="button"  onClick={() => toggleDropdown("first")}>
+                                {selectedLanguages.first}
+                                 <em className="ico"></em>
+                                 </button>
+                                 {openDropdown === "first" && (
+                                <ul className="ly_slct_lang">
+                                    <li data-value="en">
+                                        <button type="button" className={selectedLanguages.second === "영어" ? "selected" : ""} onClick={() =>
+                                            handleLanguageSelect("first", "영어")
+                                        }>
+                                            영어
+                                        </button>
+                                    </li>
+                                    <li data-value="ja">
+                                        <button type="button"  className={selectedLanguages.second === "일본어" ? "selected" : ""} onClick={() =>
+                                            handleLanguageSelect("first", "일본어")
+                                            }>
+                                        일본어
+                                        </button>
+                                    </li>
+                                    <li data-value="ko">
+                                        <button type="button"  className={selectedLanguages.second === "한국어" ? "selected" : ""} onClick={() =>
+                                            handleLanguageSelect("first", "한국어")
+                                            }
+                                        >
+                                            한국어
+                                        </button>
+                                    </li>
+                                
+                                    <li data-value="zh-TW">
+                                        <button type="button" className={selectedLanguages.second === "중국어(번체)" ? "selected" : ""} onClick={() =>
+                                            handleLanguageSelect("first", "중국어(번체)")
+                                            }
+                                        >중국어(번체)</button>
+                                    </li>
+                                    <li data-value="fr">
+                                        <button type="button" className={selectedLanguages.second === "프랑스어" ? "selected" : ""} onClick={() =>
+                                            handleLanguageSelect("first", "프랑스어")
+                                            }>프랑스어</button>
+                                    </li>
+                                    <li data-value="vi">
+                                        <button type="button" className={selectedLanguages.second === "베트남어" ? "selected" : ""} onClick={() =>
+                                            handleLanguageSelect("first", "베트남어")
+                                            }>베트남어</button>
+                                    </li>
+                                    <li data-value="th">
+                                        <button type="button" className={selectedLanguages.second === "태국어" ? "selected" : ""} onClick={() =>
+                                            handleLanguageSelect("first", "태국어")
+                                            }>태국어</button>
+                                    </li>
+                                    <li data-value="id">
+                                        <button type="button" className={selectedLanguages.second === "인도네시아어" ? "selected" : ""} onClick={() =>
+                                            handleLanguageSelect("first", "인도네시아어")
+                                            }>인도네시아어</button>
+                                    </li>
+                                    <li data-value="es">
+                                        <button type="button" className={selectedLanguages.second === "스페인어" ? "selected" : ""} onClick={() =>
+                                            handleLanguageSelect("first", "스페인어")
+                                            }>스페인어</button>
+                                    </li>
+                                    <li data-value="pt">
+                                        <button type="button" className={selectedLanguages.second === "포르투갈어" ? "selected" : ""} onClick={() =>
+                                            handleLanguageSelect("first", "포르투갈어")
+                                            }>포르투갈어</button>
+                                    </li>
+                                    <li data-value="ru">
+                                        <button type="button" className={selectedLanguages.second === "러시아어" ? "selected" : ""} onClick={() =>
+                                            handleLanguageSelect("first", "러시아어")
+                                            }>러시아어</button>
+                                    </li>
+                                </ul>
+                            )}
+                            </div>
+                            <button type="button" className="reverse" onClick={swapLanguages}>
+                                <em>바꾸기</em>
+                            </button>
+                            <div className="btn_wrap">
+                                <button type="button"  onClick={() => toggleDropdown("second")}>
+                                {selectedLanguages.second}
+                                 <em className="ico"></em>
+                                 </button>
+                                 {openDropdown === "second" && (
+                                <ul className="ly_slct_lang">
+                                    <li data-value="en">
+                                        <button type="button" className={selectedLanguages.second === "영어" ? "selected" : ""}  onClick={() =>
+                                                handleLanguageSelect("second", "영어")
+                                            }>
+                                            영어
+                                        </button>
+                                    </li>
+                                    <li data-value="ja">
+                                        <button type="button"  className={selectedLanguages.second === "일본어" ? "selected" : ""} onClick={() =>
+                                                handleLanguageSelect("second", "일본어")
+                                            }>일본어</button>
+                                    </li>
+                                    <li data-value="ko">
+                                        <button type="button" className={selectedLanguages.second === "한국어" ? "selected" : ""} onClick={() =>
+                                                handleLanguageSelect("second", "한국어")
+                                            }>한국어</button>
+                                    </li>
+    
+                                    <li data-value="zh-TW">
+                                        <button type="button" className={selectedLanguages.second === "중국어(번체)" ? "selected" : ""} onClick={() =>
+                                                handleLanguageSelect("second", "중국어(번체)")
+                                            }>중국어(번체)</button>
+                                    </li>
+                                    <li data-value="fr">
+                                        <button type="button" className={selectedLanguages.second === "프랑스어" ? "selected" : ""} onClick={() =>
+                                                handleLanguageSelect("second", "프랑스어")
+                                            }>프랑스어</button>
+                                    </li>
+                                    <li data-value="vi">
+                                        <button type="button" className={selectedLanguages.second === "베트남어" ? "selected" : ""} onClick={() =>
+                                                handleLanguageSelect("second", "베트남어")
+                                            }>베트남어</button>
+                                    </li>
+                                    <li data-value="th">
+                                        <button type="button" className={selectedLanguages.second === "태국어" ? "selected" : ""} onClick={() =>
+                                                handleLanguageSelect("second", "태국어")
+                                            }>태국어</button>
+                                    </li>
+                                    <li data-value="id">
+                                        <button type="button" className={selectedLanguages.second === "인도네시아어" ? "selected" : ""} onClick={() =>
+                                                handleLanguageSelect("second", "인도네시아어")
+                                            }>인도네시아어</button>
+                                    </li>
+                                    <li data-value="es">
+                                        <button type="button" className={selectedLanguages.second === "스페인어" ? "selected" : ""} onClick={() =>
+                                                handleLanguageSelect("second", "스페인어")
+                                            }>스페인어</button>
+                                    </li>
+                                    <li data-value="pt">
+                                        <button type="button" className={selectedLanguages.second === "포르투갈어" ? "selected" : ""} onClick={() =>
+                                                handleLanguageSelect("second", "포르투갈어")
+                                            }>포르투갈어</button>
+                                    </li>
+                                    <li data-value="ru" className={selectedLanguages.second === "러시아어" ? "selected" : ""} onClick={() =>
+                                                handleLanguageSelect("second", "러시아어")
+                                            }>
+                                        <button type="button">러시아어</button>
+                                    </li>
+                                </ul>
+                            )}
+                            </div>
+
+                            <button type="button" className="point" onClick={translateContent}>
+                                <strong>번역하기</strong>
+                            </button>
+                        </div>
+                        <button type="button" className="btn_off" onClick={toggleTranslateVisibility}>
+                            <i className="blind">번역 OFF</i>
+                        </button>
+
+                    </div>
                     <div className="btn_area _no_print">
                         <p className="wrap_btn">
                             <button type="button" className="list" onClick={() => navigate(-1)}>목록</button>
@@ -262,10 +522,19 @@ export default function ViewBoard() {
                         <div className="txt_cover">
                         <h3 className="txt">{article.title}</h3>
                             <div className="check_cover">
-                                <input id="important_post_check" type="checkbox" className="important_post_check"/>
+                            {article && (
+                                <input
+                                    id="important_post_check"
+                                    type="checkbox"
+                                    className="important_post_check"
+                                    checked={article.isImportant} // Boolean 값 사용
+                                    onChange={handleToggleImportant}
+                                />
+                                )}
                                 <label htmlFor="important_post_check">
                                     <span className="blind">중요 게시글 추가</span>
                                 </label>
+                               
                             </div>
                         </div>
                     </div>
@@ -303,8 +572,8 @@ export default function ViewBoard() {
                                     <em className="ico"></em>
                                 </button>
                             </div>
-                            <button id="translateLayerBtn" type="button" className="bt_translate">
-                                번역
+                            <button id="translateLayerBtn" type="button" className="bt_translate" onClick={toggleTranslateVisibility}>
+                                {isTranslateVisible ? "번역" : "번역 해제"}
                             </button>
                             <button type="button" className="print">
                                 인쇄
@@ -314,7 +583,10 @@ export default function ViewBoard() {
                     <div id="id_contents" className="cont">
                         <div
                             style={{ fontSize: "14px" }}
-                            dangerouslySetInnerHTML={{ __html: article.content || "내용 없음" }}
+                            dangerouslySetInnerHTML={{
+                                __html: translatedText || article.content || "내용 없음",
+                            }}
+                            
                         />
                     </div>
                     <div className="btn_box _no_print">
