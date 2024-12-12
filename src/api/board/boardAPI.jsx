@@ -25,7 +25,7 @@ export const postBoardArticleWrite = async (data) => {
     console.log("Sending Data:", data);
 
     // POST 요청으로 데이터 전송
-    const response = await axios.post(BOARD_ARTICLE_WRITE_URI, data, {
+    const response = await axios.post(BOARD_ARTIICLE_WRITE_URI, data, {
       headers: {
         "Content-Type": "application/json",
       },
