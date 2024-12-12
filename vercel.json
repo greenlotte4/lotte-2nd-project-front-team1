@@ -2,7 +2,7 @@
   "rewrites": [
     {
       "source": "/api/:path*",
-      "destination": "http://hubflow.store:8080/:path*"
+      "destination": "https://hubflow.store:8080/:path*"
     },
     { "source": "/(.*)", "destination": "/" },
     {
