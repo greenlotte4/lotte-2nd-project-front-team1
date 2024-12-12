@@ -471,7 +471,6 @@
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
   position: absolute;
-  display: none;
   top: 100%;
   left: auto;
   right: 0;
@@ -4338,5 +4337,550 @@ em {
   background-position: -200px -405px;
   width: 20px;
   height: 20px;
+}
+
+.board_list .list .empty {
+  padding: 90px 0;
+}
+
+.empty {
+  padding: 174px 0;
+  text-align: center;
+}
+
+.empty .desc {
+  position: relative;
+  padding-bottom: 32px;
+  font-size: 14px;
+  color: #71767a;
+  line-height: 17px;
+}
+
+.desc {
+  font-size: 11px;
+  color: #71767a;
+  line-height: 17px;
+}
+
+.empty .desc:before {
+  background-image: url(https://static.worksmobile.net/static/pwe/wm/home/sp_board_967af075.png);
+  background-image: -webkit-gradient(linear,left top,left bottom,from(transparent),to(transparent)),url(https://static.worksmobile.net/static/pwe/wm/home/sp_board_9d215a12.svg);
+  background-image: linear-gradient(transparent,transparent),url(https://static.worksmobile.net/static/pwe/wm/home/sp_board_9d215a12.svg);
+  background-size: 500px 473px;
+  background-position: -346px -82px;
+  width: 64px;
+  height: 64px;
+  display: block;
+  margin: 0 auto 16px;
+  content: "";
+}
+
+.empty .desc strong {
+  font-size: 16px;
+  color: #202124;
+  line-height: 19px;
+}
+
+.empty .desc p+p {
+  padding-top: 8px;
+}
+
+.empty button.btn {
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  display: inline-block;
+  height: 40px;
+  border-radius: 8px;
+  background: #fff;
+  font-size: 14px;
+  color: #3f4247;
+  line-height: 21px;
+  padding: 10px 24px 9px;
+  vertical-align: top;
+  white-space: nowrap;
+  text-decoration: none;
+  background: #118dff;
+  border: 0;
+  color: #fff;
+  font-weight: 700;
+}
+
+.toast_wrap, .toast_wrap .toast {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.toast_wrap {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-box-align: end;
+  -ms-flex-align: end;
+  align-items: flex-end;
+  z-index: 30;
+}
+.toast_wrap .toast {
+  -webkit-box-flex: 0;
+  -ms-flex: 0 0 auto;
+  flex: 0 0 auto;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  position: relative;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  min-width: 360px;
+  max-width: 445px;
+  padding: 16px 44px 16px 16px;
+  border-radius: 8px;
+  background-color: #202124;
+  color: #fff;
+}
+
+.toast_wrap .toast strong {
+  -webkit-box-flex: 1;
+  -ms-flex: 1 1 auto;
+  flex: 1 1 auto;
+  font-weight: 400;
+  word-break: break-all;
+  display: block;
+  display: -webkit-box;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  max-height: 36px;
+  line-height: 18px;
+}
+
+.board_write .option li .notice {
+  -webkit-box-flex: 0;
+  -ms-flex: 0 0 auto;
+  flex: 0 0 auto;
+  margin-left: auto;
+  padding-left: 24px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.board_write .option li .notice .notice_inner {
+  -webkit-box-flex: 0;
+  -ms-flex: 0 0 auto;
+  flex: 0 0 auto;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.board_write .option li .notice .btn_notice_wrap, .board_write .option li .notice .check_wrap {
+  -webkit-box-flex: 0;
+  -ms-flex: 0 0 auto;
+  flex: 0 0 auto;
+  display: inline-block;
+  font-size: 14px;
+  line-height: 20px;
+  vertical-align: top;
+}
+
+.board_write .option li .notice .check_notice {
+  margin: 3px 8px 0 0;
+  vertical-align: top;
+}
+
+.board_write .option li input[type=checkbox] {
+  position: absolute;
+  clip: rect(0,0,0,0);
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+}
+
+.board_write .option li .notice .check_notice+label {
+  display: inline-block;
+  font-size: 14px;
+  vertical-align: top;
+}
+
+.board_write .option li input[type=checkbox]+label {
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  position: relative;
+  min-height: 20px;
+  display: inline-block;
+  padding-left: 22px;
+  font-size: 14px;
+  color: #202124;
+  line-height: 20px;
+  vertical-align: top;
+}
+
+.board_write .option li input[type=checkbox]+label:before {
+  background-image: url(https://static.worksmobile.net/static/pwe/wm/home/sp_board_967af075.png);
+  background-image: -webkit-gradient(linear,left top,left bottom,from(transparent),to(transparent)),url(https://static.worksmobile.net/static/pwe/wm/home/sp_board_9d215a12.svg);
+  background-image: linear-gradient(transparent,transparent),url(https://static.worksmobile.net/static/pwe/wm/home/sp_board_9d215a12.svg);
+  background-size: 500px 473px;
+  background-position: -320px -254px;
+  width: 16px;
+  height: 16px;
+  position: absolute;
+  top: 2px;
+  left: 0;
+  content: "";
+}
+
+.board_write .option li .notice.must_read .tooltip_cover {
+  margin-left: 1px;
+}
+
+.board_write .option li .notice .tooltip_cover {
+  -webkit-box-flex: 0;
+  -ms-flex: 0 0 auto;
+  flex: 0 0 auto;
+}
+
+.board_write .tooltip_cover {
+  margin: 2px 0 0 4px;
+}
+
+.tooltip_cover {
+  position: relative;
+  display: inline-block;
+  line-height: 16px;
+}
+
+.btn_tooltip, .btn_tooltip:hover {
+  background-image: url(https://static.worksmobile.net/static/pwe/wm/home/sp_board_967af075.png);
+  background-image: -webkit-gradient(linear,left top,left bottom,from(transparent),to(transparent)),url(https://static.worksmobile.net/static/pwe/wm/home/sp_board_9d215a12.svg);
+  background-image: linear-gradient(transparent,transparent),url(https://static.worksmobile.net/static/pwe/wm/home/sp_board_9d215a12.svg);
+  background-size: 500px 473px;
+  width: 16px;
+  height: 16px;
+}
+
+.btn_tooltip {
+  background-position: -480px -196px;
+  border: 0;
+  border-radius: 0;
+  background-color: transparent;
+  display: inline-block;
+  vertical-align: top;
+  font-size: 0;
+  line-height: 0;
+  color: transparent;
+}
+
+.board_write .option li .notice.must_read+.notice {
+  margin-left: 0;
+}
+
+.board_write .option li .notice {
+  -webkit-box-flex: 0;
+  -ms-flex: 0 0 auto;
+  flex: 0 0 auto;
+  margin-left: auto;
+  padding-left: 24px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.board_write .option li .notice .check_notice {
+  margin: 3px 8px 0 0;
+  vertical-align: top;
+}
+
+.board_write .option li input[type=checkbox] {
+  position: absolute;
+  clip: rect(0,0,0,0);
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+}
+
+.board_write .option li .notice .check_notice+label {
+  display: inline-block;
+  font-size: 14px;
+  vertical-align: top;
+}
+
+.board_write .option li input[type=checkbox]+label {
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  position: relative;
+  min-height: 20px;
+  display: inline-block;
+  padding-left: 22px;
+  font-size: 14px;
+  color: #202124;
+  line-height: 20px;
+  vertical-align: top;
+}
+
+.board_view .translate.show_translate {
+  display: block;
+}
+
+.board_view .translate {
+  display: none;
+  position: relative;
+  border-top: 1px solid #e6e8eb;
+  margin-top: 16px;
+  padding: 10px 0 10px 30px;
+}
+
+.board_view .translate:before {
+  background-image: url(https://static.worksmobile.net/static/pwe/wm/home/sp_board_967af075.png);
+  background-image: -webkit-gradient(linear,left top,left bottom,from(transparent),to(transparent)),url(https://static.worksmobile.net/static/pwe/wm/home/sp_board_9d215a12.svg);
+  background-image: linear-gradient(transparent,transparent),url(https://static.worksmobile.net/static/pwe/wm/home/sp_board_9d215a12.svg);
+  background-size: 500px 473px;
+  background-position: -100px -373px;
+  width: 24px;
+  height: 24px;
+  position: absolute;
+  top: 14px;
+  left: 0;
+  content: "";
+}
+
+.board_view .translate .btn_box {
+  position: relative;
+  margin: 0;
+  padding: 0;
+  display: inline-block;
+  text-align: left;
+}
+
+.board_view .btn_box {
+  display: block;
+  padding: 40px 0 0;
+  text-align: right;
+}
+
+.btn_box {
+  display: inline-block;
+  vertical-align: top;
+  padding-top: 8px;
+  font-size: 0;
+}
+
+.board_view .translate .btn_box .btn_wrap, .board_view .translate .btn_box button {
+  position: relative;
+  display: inline-block;
+  vertical-align: top;
+}
+
+.board_view .translate .btn_box button {
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  height: 32px;
+  border-radius: 8px;
+  background: #fff;
+  font-size: 12px;
+  color: #3f4247;
+  line-height: 17px;
+  padding: 8px 6px 7px;
+  white-space: nowrap;
+  text-decoration: none;
+  border: 0;
+  font-size: 14px;
+  font-weight: 400;
+  padding-right: 18px;
+}
+
+.board_view .translate .btn_box .btn_wrap, .board_view .translate .btn_box button {
+  position: relative;
+  display: inline-block;
+  vertical-align: top;
+}
+
+address, em {
+  font-style: normal;
+}
+
+.board_view .translate .btn_box button em:before {
+  background-image: url(https://static.worksmobile.net/static/pwe/wm/home/sp_board_967af075.png);
+  background-image: -webkit-gradient(linear,left top,left bottom,from(transparent),to(transparent)),url(https://static.worksmobile.net/static/pwe/wm/home/sp_board_9d215a12.svg);
+  background-image: linear-gradient(transparent,transparent),url(https://static.worksmobile.net/static/pwe/wm/home/sp_board_9d215a12.svg);
+  background-size: 500px 473px;
+  background-position: -204px -457px;
+  width: 8px;
+  height: 8px;
+  position: absolute;
+  top: 50%;
+  right: 8px;
+  margin-top: -4px;
+  content: "";
+  right: 6px;
+}
+
+.board_view .translate .btn_box .reverse {
+  position: relative;
+  display: inline-block;
+  padding: 8px 6px;
+  line-height: 0;
+}
+
+.board_view .translate .btn_box button {
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  height: 32px;
+  border-radius: 8px;
+  background: #fff;
+  font-size: 12px;
+  color: #3f4247;
+  line-height: 17px;
+  padding: 8px 6px 7px;
+  white-space: nowrap;
+  text-decoration: none;
+  border: 0;
+  font-size: 14px;
+  font-weight: 400;
+  padding-right: 18px;
+}
+
+.board_view .translate .btn_box .btn_wrap, .board_view .translate .btn_box button {
+  position: relative;
+  display: inline-block;
+  vertical-align: top;
+}
+
+.board_view .translate .btn_box .reverse:before {
+  content: "";
+  display: inline-block;
+  background-image: url(https://static.worksmobile.net/static/pwe/wm/home/sp_board_967af075.png);
+  background-image: -webkit-gradient(linear,left top,left bottom,from(transparent),to(transparent)),url(https://static.worksmobile.net/static/pwe/wm/home/sp_board_9d215a12.svg);
+  background-image: linear-gradient(transparent,transparent),url(https://static.worksmobile.net/static/pwe/wm/home/sp_board_9d215a12.svg);
+  background-size: 500px 473px;
+  background-position: -480px -28px;
+  width: 16px;
+  height: 16px;
+}
+
+.board_view .translate .btn_box button em:before {
+  background-image: url(https://static.worksmobile.net/static/pwe/wm/home/sp_board_967af075.png);
+  background-image: -webkit-gradient(linear,left top,left bottom,from(transparent),to(transparent)),url(https://static.worksmobile.net/static/pwe/wm/home/sp_board_9d215a12.svg);
+  background-image: linear-gradient(transparent,transparent),url(https://static.worksmobile.net/static/pwe/wm/home/sp_board_9d215a12.svg);
+  background-size: 500px 473px;
+  background-position: -204px -457px;
+  width: 8px;
+  height: 8px;
+  position: absolute;
+  top: 50%;
+  right: 8px;
+  margin-top: -4px;
+  content: "";
+  right: 6px;
+}
+
+.board_view .translate .btn_box .reverse em {
+  position: absolute;
+  clip: rect(0,0,0,0);
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+}
+
+.board_view .translate .btn_box .point {
+  position: relative;
+  color: #118dff;
+  padding: 0 6px;
+  margin-left: 13px;
+} 
+
+.board_view .translate .btn_box button {
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  height: 32px;
+  border-radius: 8px;
+  background: #fff;
+  font-size: 12px;
+  color: #3f4247;
+  line-height: 17px;
+  padding: 8px 6px 7px;
+  white-space: nowrap;
+  text-decoration: none;
+  border: 0;
+  font-size: 14px;
+  font-weight: 400;
+  padding-right: 18px;
+}
+
+.board_view .translate .btn_box .point:before {
+  position: absolute;
+  top: 10px;
+  left: -7px;
+  width: 1px;
+  height: 12px;
+  background-color: #e4e5e6;
+  content: "";
+}
+
+.btn_box button strong {
+  font-weight: 400;
+}
+
+.board_view .translate .btn_off {
+  border: 0;
+  border-radius: 0;
+  background-color: transparent;
+  position: absolute;
+  right: -6px;
+  top: 14px;
+  padding: 6px;
+  line-height: 12px;
+}
+
+.board_view .translate .btn_off:before, .board_view .translate .btn_off:hover:before {
+  background-image: url(https://static.worksmobile.net/static/pwe/wm/home/sp_board_967af075.png);
+  background-image: -webkit-gradient(linear,left top,left bottom,from(transparent),to(transparent)),url(https://static.worksmobile.net/static/pwe/wm/home/sp_board_9d215a12.svg);
+  background-image: linear-gradient(transparent,transparent),url(https://static.worksmobile.net/static/pwe/wm/home/sp_board_9d215a12.svg);
+  background-size: 500px 473px;
+  width: 12px;
+  height: 12px;
+}
+
+.board_view .translate .btn_off:before {
+  background-position: -64px -457px;
+  display: inline-block;
+  vertical-align: top;
+  content: "";
+}
+
+.board_view .translate .btn_box .ly_slct_lang {
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  position: absolute;
+  top: 36px;
+  left: 0;
+  right: auto;
+  height: auto;
+  min-width: 160px;
+  padding: 8px 0;
+  border: 1px solid #e6e8eb;
+  border-radius: 8px;
+  background-color: #fff;
+  -webkit-box-shadow: 0 4px 10px 0 rgba(32,33,36,.1);
+  box-shadow: 0 4px 10px 0 rgba(32,33,36,.1);
+  overflow: auto;
+  overflow-x: hidden;
+  z-index: 105;
+}
+
+.board_view .translate .btn_box .ly_slct_lang li {
+  max-height: 32px;
+  border-bottom: 0;
+  padding: 0;
+}
+.board_view .subject .check_cover .important_post_check:checked+label:before {
+  background-position: -424px -144px;
 }
 }

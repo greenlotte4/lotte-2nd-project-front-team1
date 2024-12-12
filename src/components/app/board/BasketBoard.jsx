@@ -1,8 +1,10 @@
 import React, { useEffect, useRef, useState } from "react";
 import { deleteTrashArticles, getAllBoards, getTrashArticles, moveArticlesToBoard } from "../../../api/board/boardAPI";
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 export default function BasketBoard(){
+    const userId = useSelector((state) => state.userSlice.userid);
 
     const [selectedArticles, setSelectedArticles] = useState([]); // 선택된 게시글
     const [trashArticles, setTrashArticles] = useState([]); // 휴지통 데이터 상태
@@ -16,19 +18,19 @@ export default function BasketBoard(){
 
     useEffect(() => {
         const fetchTrashArticles = async () => {
-            try {
-                const data = await getTrashArticles(); // API 호출
-                setTrashArticles(data); // 데이터 상태에 저장
-            } catch (err) {
-                console.error("휴지통 데이터 가져오기 실패:", err);
-                setError(err.message); // 에러 상태 저장
-            } finally {
-                setLoading(false); // 로딩 상태 해제
-            }
+          try {
+            const data = await getTrashArticles(userId); // 사용자 ID로 필터링된 데이터 가져오기
+            setTrashArticles(data);
+          } catch (err) {
+            console.error("휴지통 데이터 가져오기 실패:", err);
+            setError(err.message);
+          } finally {
+            setLoading(false);
+          }
         };
-
+    
         fetchTrashArticles();
-    }, []);
+      }, [userId]);
 
     useEffect(() => {
         const fetchBoards = async () => {
