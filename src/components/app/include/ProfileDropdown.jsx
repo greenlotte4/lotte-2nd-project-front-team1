@@ -14,6 +14,7 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../../../slices/UserSlice";
 import { profileUrl } from "../../../api/user/userAPI";
+import { Avatar } from "@mui/material";
 
 export default function ProfileDropdown({ isOpen }) {
   const [status, setStatus] = useState("online"); // 상태값 저장
@@ -56,11 +57,9 @@ export default function ProfileDropdown({ isOpen }) {
               position: "relative",
             }}
           >
-            <img
-              src={imageUrl || "/images/user_Icon.png"}
-              alt="프로필 이미지"
-              className="ProfileDropdownImg"
-            />
+            <Avatar src={imageUrl} className="ProfileDropdownImg">
+              {user.username.charAt(0)}
+            </Avatar>
           </div>
           <div className="profileInfo">
             <div className="profileHeader">
