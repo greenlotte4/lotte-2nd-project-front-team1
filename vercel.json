@@ -7,8 +7,8 @@
     { "source": "/(.*)", "destination": "/" },
     {
       "source": "/user/thumb/:path*",
-      "destination": "https://13.125.166.237:8080/user/thumb/:path*",
-      "statusCode": 301
+      "destination": "http://13.125.166.237:8080/user/thumb/:path*",
+      "statusCode": 308
     }
   ]
 }
