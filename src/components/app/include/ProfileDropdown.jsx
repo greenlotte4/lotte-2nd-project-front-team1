@@ -21,8 +21,7 @@ export default function ProfileDropdown({ isOpen }) {
 
   const dispatch = useDispatch();
   const user = useSelector((state) => state.userSlice);
-  console.log("user" + user);
-
+  if (!isOpen) return null; // 드롭다운이 닫혀있으면 아무것도 렌더링하지 않음
 
   // 이미지 URL을 받아오는 함수
   const getImageUrl = async () => {
@@ -37,11 +36,6 @@ export default function ProfileDropdown({ isOpen }) {
   }, []); // 빈 배열을 넣어 첫 렌더링에서만 실행되도록 설정
 
   console.log("푸로필" + imageUrl)
-
-
-
-
-
 
   if (!isOpen) return null; // 드롭다운이 닫혀있으면 아무것도 렌더링하지 않음
   // 테두리 색상 결정

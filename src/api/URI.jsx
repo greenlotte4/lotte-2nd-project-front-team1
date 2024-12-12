@@ -75,7 +75,10 @@ export const MESSAGE_GET_LASTCHAT = `${SERVER_HOST}/message/lastchat`;
 
 //calendar
 export const CALENDAR_CREATE = `${SERVER_HOST}/calendar/makecalendar`;
+export const CALENDAR_INVITECODE = `${SERVER_HOST}/calendar/invitecalendar`;
 export const CALENDAR_LIST = `${SERVER_HOST}/calendar/calendarlist`;
+export const CALENDAR_DELETE = `${SERVER_HOST}/calendar/deletecalendar`;
+export const CALENDAR_LEAVE = `${SERVER_HOST}/calendar/leavecalendar`;
 
-
+export const CALENDAR_ADDEVENT = `${SERVER_HOST}/calendar/addevent`;
 

@@ -24,16 +24,21 @@ export default function AddCalendarModal({
     onClose(); // 모달 닫기
   };
 
-  const handleJoinByInviteCode = () => {
+  const handleJoinByInviteCode = async () => {
     if (!inviteCode.trim()) {
       alert("초대 코드를 입력해주세요.");
       return;
     }
 
-    // 초대 코드로 가입 처리
-    onJoinByInviteCode(inviteCode.trim());
-    setInviteCode(""); // 입력 초기화
-    onClose(); // 모달 닫기
+    try {
+      // 초대 코드로 가입 처리
+      await onJoinByInviteCode(inviteCode.trim());
+      setInviteCode(""); // 입력 초기화
+      onClose(); // 모달 닫기
+    } catch (error) {
+      console.error("초대 코드로 가입 실패:", error);
+      alert("초대 코드로 가입에 실패했습니다. 다시 시도해주세요.");
+    }
   };
 
   return (
@@ -69,7 +74,11 @@ export default function AddCalendarModal({
                   그룹으로 설정된 캘린더는 인증 코드가 생성됩니다.
                 </p>
               )}
-              <button onClick={handleSubmit} className="add-calendar-btn">
+              <button
+                onClick={handleSubmit}
+                className="add-calendar-btn"
+                disabled={!title.trim()}
+              >
                 캘린더 추가
               </button>
 
@@ -81,7 +90,11 @@ export default function AddCalendarModal({
                 onChange={(e) => setInviteCode(e.target.value)}
               />
 
-              <button onClick={handleJoinByInviteCode} className="join-btn">
+              <button
+                onClick={handleJoinByInviteCode}
+                className="join-btn"
+                disabled={!inviteCode.trim()}
+              >
                 초대 코드로 가입
               </button>
             </div>
