@@ -18,7 +18,6 @@ export default function ProfileDropdown({ isOpen }) {
   const [status, setStatus] = useState("online"); // 상태값 저장
   const dispatch = useDispatch();
   const user = useSelector((state) => state.userSlice);
-  console.log("user" + user);
   if (!isOpen) return null; // 드롭다운이 닫혀있으면 아무것도 렌더링하지 않음
 
   // 테두리 색상 결정
