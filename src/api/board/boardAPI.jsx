@@ -1,4 +1,5 @@
 import axios from "axios";
+
 import {
   BOARD_ARTICLE_WRITE_URI,
   BOARD_TYPE,
@@ -10,7 +11,11 @@ import {
   BOARD_TRASH_VIEW,
   BOARD_TRASH_PERMANENT,
   BOARD_ARTICLE_EDIT,
+  BOARD_ARTICLE_BOARD,
+  BOARD_ALL,
+  BOARD_ARTICLE_MOVE,
 } from "../URI";
+
 
 export const postBoardArticleWrite = async (data) => {
   try {
@@ -108,14 +113,29 @@ export const ArticleDetail = async (id) => {
   }
 };
 
-export const moveBoardToBasket = async (id) => {
+export const moveBoardToBasket = async (id, userId) => {
   try {
-    const response = await axios.delete(`${BOARD_MOVE_BASKET}?id=${id}`);
-    console.log("게시글 휴지통 이동:", response.data); // 응답 데이터 확인
-    return response.data; // 서버에서 반환된 데이터 반환
+
+      console.log("Sending to server:", { id, userId });
+      const response = await axios.delete(`${BOARD_MOVE_BASKET}`, {
+          params: { id, userId },
+      });
+      console.log("게시글 휴지통 이동:", response.data); // 응답 데이터 확인
+      return response.data;
   } catch (err) {
     console.error(`Error while moving article with ID ${id} to basket:`, err);
     throw new Error("게시글을 휴지통으로 이동하는 데 실패했습니다.");
+  }
+};
+
+export const deleteBoardArticle = async (id, userId) => {
+  try {
+      const response = await axios.delete(`${BOARD_MOVE_BASKET}?id=${id}&userId=${userId}`);
+      console.log("게시글 삭제 응답:", response.data);
+      return response.data;
+  } catch (error) {
+      console.error(`게시글 삭제 중 오류 발생:`, error);
+      throw new Error("게시글 삭제에 실패했습니다.");
   }
 };
 
@@ -167,3 +187,57 @@ export const updateArticle = async (id, articleData) => {
     throw error;
   }
 };
+
+export const getAllBoards = async () => {
+  try {
+      const response = await axios.get(BOARD_ALL);
+      console.log("Fetched Boards:", response.data); // 응답 데이터 확인
+      console.log("BOARD_ALL URL:", BOARD_ALL); // BOARD_ALL 값 출력
+      return response.data;
+  } catch (err) {
+      console.error("Error while fetching all boards:", err);
+      throw new Error("게시판 데이터를 가져오는 데 실패했습니다.");
+  }
+};
+
+
+export const getArticlesByBoard = async (boardId) => {
+  try {
+      const url = BOARD_ARTICLE_BOARD(boardId); // URI 생성
+      console.log(`Fetching articles for board ID ${boardId}: ${url}`);
+      
+      const response = await axios.get(url); // GET 요청
+      return response.data; // 서버 응답 데이터 반환
+  } catch (err) {
+      console.error(`Error fetching articles for board ID ${boardId}:`, err);
+      throw new Error("게시판 게시글을 가져오는 데 실패했습니다.");
+  }
+};
+
+
+// 게시글 이동
+export const moveArticlesToBoard = async (articleIds, boardId) => {
+  try {
+    // 요청 데이터
+    const requestData = {
+      articleIds, // 이동할 게시글 ID 리스트
+      boardId,    // 이동할 대상 게시판 ID
+    };
+
+    console.log("Sending move request:", requestData); // 전송 데이터 확인
+
+    // POST 요청으로 데이터 전송
+    const response = await axios.post(BOARD_ARTICLE_MOVE, requestData, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    console.log("Move Response:", response.data); // 응답 데이터 확인
+    return response.data; // 성공 시 응답 데이터 반환
+  } catch (err) {
+    console.error("Error while moving articles to board:", err.response?.data || err.message);
+    throw new Error("게시글 이동에 실패했습니다.");
+  }
+};
+

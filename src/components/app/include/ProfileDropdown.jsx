@@ -10,24 +10,45 @@
 */
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../../../slices/UserSlice";
+import { profileUrl } from "../../../api/user/userAPI";
 
 export default function ProfileDropdown({ isOpen }) {
   const [status, setStatus] = useState("online"); // 상태값 저장
+  const [imageUrl, setImageUrl] = useState(null);
+
   const dispatch = useDispatch();
   const user = useSelector((state) => state.userSlice);
   if (!isOpen) return null; // 드롭다운이 닫혀있으면 아무것도 렌더링하지 않음
 
+  // 이미지 URL을 받아오는 함수
+  const getImageUrl = async () => {
+    const url = await profileUrl();  // 이미지 URL을 비동기적으로 가져옴
+    console.log("받은 이미지 URL: ", url);
+    setImageUrl(url); // 받아온 URL을 상태에 저장
+  };
+
+  // 컴포넌트가 마운트될 때 프로필 이미지 URL을 가져옴
+  useEffect(() => {
+    getImageUrl();
+  }, []); // 빈 배열을 넣어 첫 렌더링에서만 실행되도록 설정
+
+  console.log("푸로필" + imageUrl)
+
+  if (!isOpen) return null; // 드롭다운이 닫혀있으면 아무것도 렌더링하지 않음
   // 테두리 색상 결정
+
+
   const borderColor =
     {
       online: "green",
       dnd: "red",
       away: "yellow",
+      logout: "red", // 로그아웃 상태는 빨간색
     }[status] || "transparent"; // 기본값은 투명
-
+ 
   return (
     <div className="ProfileDropdown">
       <div className="profileDetails">
@@ -36,13 +57,15 @@ export default function ProfileDropdown({ isOpen }) {
           style={{
             border: `3px solid ${borderColor}`, // 상태에 따른 테두리 색상
             borderRadius: "50%", // 동그란 프로필 이미지 유지
+            position: "relative"
           }}
         >
           <img
-            src="/images/user_Icon.png"
+            src={imageUrl || "/images/user_Icon.png"}
             alt="프로필 이미지"
             className="ProfileDropdownImg"
           />
+          
         </div>
         <div className="profileInfo">
           <div className="profileHeader">

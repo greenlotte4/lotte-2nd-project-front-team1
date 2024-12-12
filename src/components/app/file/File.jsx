@@ -8,6 +8,9 @@ export default function File() {
   const [isDragging, setIsDragging] = useState(false); // 드래그 상태
   const [selectedFiles, setSelectedFiles] = useState([]); // 선택된 파일 상태
   const [searchQuery, setSearchQuery] = useState(""); // 검색어 상태
+  const [showWarning, setShowWarning] = useState(false); // 경고 표시 여부
+  const [warningEnabled, setWarningEnabled] = useState(true); // 경고 켜기/끄기 여부
+  const [files, setFiles] = useState([]);
 
   // 로컬 스토리지에서 드라이브 데이터 불러오기
   useEffect(() => {
@@ -86,8 +89,26 @@ export default function File() {
     const remainingFiles = driveData.filter(
       (file) => !selectedFiles.includes(file.id)
     );
+
+    // 선택된 파일들의 크기만큼 현재 용량에서 빼기
+    const deletedFilesSize = driveData
+      .filter((file) => selectedFiles.includes(file.id))
+      .reduce((sum, file) => {
+        const fileSizeMB = parseFloat(file.size); // size는 이미 MB로 저장되어 있다고 가정
+        return sum + fileSizeMB;
+      }, 0);
+
+    // currentUsage 업데이트 시 음수 값 방지
+    const newUsage = Math.max(currentUsage - deletedFilesSize, 0);
+
     setDriveData(remainingFiles);
     setSelectedFiles([]);
+
+    // 삭제된 파일 크기만큼 currentUsage 업데이트
+    setCurrentUsage(newUsage);
+
+    // 로컬 스토리지에 삭제된 데이터 저장
+    localStorage.setItem("driveData", JSON.stringify(remainingFiles));
   };
 
   // 파일 다운로드 처리
@@ -202,6 +223,15 @@ export default function File() {
 
   return (
     <div className="file-content">
+      {/* 경고 메시지 */}
+      {showWarning && (
+        <div className="warning-message">
+          <p>사용량이 60% 이상입니다! 파일 업로드를 조심하세요.</p>
+          <button onClick={toggleWarning}>
+            {warningEnabled ? "경고 끄기" : "경고 켜기"}
+          </button>
+        </div>
+      )}
       {/* 상단 용량 표시 */}
       <div className="storage-info">
         <h2>
@@ -211,7 +241,17 @@ export default function File() {
         <div className="storage-bar">
           <div
             className="storage-progress"
-            style={{ width: `${(currentUsage / maxUsage) * 100}%` }}
+            style={{
+              // 용량 비율에 따른 너비 설정
+              width: `${Math.min((currentUsage / maxUsage) * 100, 100)}%`,
+              backgroundColor:
+                currentUsage / maxUsage < 0.7
+                  ? "green"
+                  : currentUsage / maxUsage < 0.9
+                    ? "orange"
+                    : "red",
+              transition: "width 1s ease-out", // 애니메이션 효과 추가
+            }}
           ></div>
         </div>
       </div>
