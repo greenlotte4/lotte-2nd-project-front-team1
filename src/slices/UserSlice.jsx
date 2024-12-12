@@ -11,14 +11,11 @@ import { createSlice } from "@reduxjs/toolkit";
 import Cookies from "js-cookie";
 
 const loadStateFromCookie = () => {
-  const auth = JSON.parse(Cookies.get("auth") || null);
-  const username = auth?.username;
-  const role = auth?.role;
-  const accessToken = auth?.accessToken;
-  const userid = auth?.userid;
-  const email = auth?.email;
-  console.log(username);
-  console.log(email);
+  const auth = Cookies.get("auth");
+  if (!auth) return initState; // 쿠키가 없으면 초기 상태 반환
+  const parsedAuth = JSON.parse(auth);
+  const { username, role, accessToken, userid, email } = parsedAuth || {};
+  console.log(username, email);
   return { username, role, accessToken, userid, email };
 };
 
@@ -45,7 +42,7 @@ const userSlice = createSlice({
       state.userid = data.userid;
       state.email = data.email;
       // 쿠키 저장(영구저장을 위해 쿠키 사용)
-      Cookies.set("auth", JSON.stringify(data));
+      Cookies.set("auth", JSON.stringify(data), { path: "/", sameSite: "strict" });
     },
     logout: (state) => {
       console.log("로그아웃...");
@@ -58,8 +55,9 @@ const userSlice = createSlice({
       state.userid = null;
       state.email = null;
       // 쿠키 삭제
-      Cookies.remove("auth");
-      localStorage.removeItem("user");
+      Cookies.remove("auth", { path: "/" });
+      localStorage.removeItem("user", { path: "/" });
+
     },
   },
 });

@@ -1,4 +1,160 @@
+import React, { useEffect, useRef, useState } from "react";
+import { deleteTrashArticles, getAllBoards, getTrashArticles, moveArticlesToBoard } from "../../../api/board/boardAPI";
+import { Link } from "react-router-dom";
+
 export default function BasketBoard(){
+
+    const [selectedArticles, setSelectedArticles] = useState([]); // 선택된 게시글
+    const [trashArticles, setTrashArticles] = useState([]); // 휴지통 데이터 상태
+    const [loading, setLoading] = useState(true); // 로딩 상태
+    const [error, setError] = useState(null); // 에러 상태
+    const [isMoveBoxVisible, setIsMoveBoxVisible] = useState(false); 
+    const [selectedBoard, setSelectedBoard] = useState("");
+    const [boards, setBoards] = useState([]);
+    const moveBoxRef = useRef(null);
+    
+
+    useEffect(() => {
+        const fetchTrashArticles = async () => {
+            try {
+                const data = await getTrashArticles(); // API 호출
+                setTrashArticles(data); // 데이터 상태에 저장
+            } catch (err) {
+                console.error("휴지통 데이터 가져오기 실패:", err);
+                setError(err.message); // 에러 상태 저장
+            } finally {
+                setLoading(false); // 로딩 상태 해제
+            }
+        };
+
+        fetchTrashArticles();
+    }, []);
+
+    useEffect(() => {
+        const fetchBoards = async () => {
+          try {
+            const data = await getAllBoards(); // /board/all API 호출
+            setBoards(data); // 가져온 데이터 저장
+          } catch (err) {
+            console.error("게시판 데이터를 가져오는 중 오류 발생:", err);
+          }
+        };
+    
+        fetchBoards();
+      }, []);
+     // 게시글 체크박스 선택/해제
+     const handleCheckboxChange = (id) => {
+        setSelectedArticles((prevSelected) =>
+            prevSelected.includes(id)
+                ? prevSelected.filter((articleId) => articleId !== id)
+                : [...prevSelected, id]
+        );
+    };
+
+    // 전체 선택/해제
+    const handleSelectAll = () => {
+        if (selectedArticles.length === trashArticles.length) {
+            setSelectedArticles([]); // 모두 선택 해제
+        } else {
+            setSelectedArticles(trashArticles.map((article) => article.id)); // 모두 선택
+        }
+    };
+
+    // 선택된 게시글 삭제
+    const handlePermanentDelete = async () => {
+        if (!window.confirm("선택한 게시글을 영구 삭제하시겠습니까?")) return;
+    
+        try {
+            await deleteTrashArticles(selectedArticles); // API 호출
+            setTrashArticles((prevArticles) =>
+                prevArticles.filter((article) => !selectedArticles.includes(article.id))
+            ); // 삭제된 게시글 제외
+            setSelectedArticles([]); // 선택 초기화
+            alert("선택한 게시글이 영구 삭제되었습니다.");
+        } catch (err) {
+            console.error("영구 삭제 중 오류:", err);
+            alert("게시글 영구 삭제에 실패했습니다.");
+        }
+    };
+
+    const toggleMoveBox = () => {
+        setIsMoveBoxVisible((prev) => !prev); // 열기 또는 닫기 상태 전환
+    };
+    useEffect(() => {
+        const handleOutsideClick = (event) => {
+            // moveBoxRef 내부나, toggleMoveBox 버튼 클릭이면 예외 처리
+            if (
+                moveBoxRef.current &&
+                (moveBoxRef.current.contains(event.target) || event.target.closest(".toggle-move-box-button"))
+            ) {
+                return; // 아무 동작도 하지 않음
+            }
+    
+            setIsMoveBoxVisible(false); // 이동 박스 닫기
+        };
+    
+        if (isMoveBoxVisible) {
+            document.addEventListener("mousedown", handleOutsideClick); // 외부 클릭 이벤트 등록
+        } else {
+            document.removeEventListener("mousedown", handleOutsideClick); // 외부 클릭 이벤트 제거
+            setSelectedBoard("");
+        }
+    
+        return () => {
+            document.removeEventListener("mousedown", handleOutsideClick); // 정리(clean-up)
+        };
+    }, [isMoveBoxVisible]);
+
+    const handleBoardSelect = (boardName) => {
+         setSelectedBoard(boardName); // 선택된 게시판 설정
+     };  
+
+     const handleMoveArticles = async () => {
+        if (!selectedBoard) {
+            alert("이동할 게시판을 선택하세요.");
+            return;
+        }
+    
+        if (selectedArticles.length === 0) {
+            alert("이동할 게시글을 선택하세요.");
+            return;
+        }
+    
+        try {
+            // 선택한 게시판 ID 가져오기
+            const board = boards.find((board) => board.board_name === selectedBoard);
+    
+            if (!board) {
+                alert("유효한 게시판을 선택하세요.");
+                return;
+            }
+    
+            // 서버로 이동 요청
+            await moveArticlesToBoard(selectedArticles, board.board_id);
+    
+            if (!window.confirm("선택한 게시글을 이동하시겠습니까?")) {
+                return;
+            }
+    
+            // 이동 완료 후 데이터 업데이트
+            setTrashArticles((prev) =>
+                prev.filter((article) => !selectedArticles.includes(article.id))
+            );
+            setSelectedArticles([]);
+            setSelectedBoard("");
+            setIsMoveBoxVisible(false); // 이동 박스 닫기
+
+            alert("게시글이 성공적으로 이동되었습니다.");
+        } catch (error) {
+            console.error("게시글 이동 중 오류:", error);
+            alert("게시글 이동에 실패했습니다.");
+        }
+    };
+
+    if (loading) return <p>Loading...</p>; // 로딩 중 표시
+    if (error) return <p>Error: {error}</p>; // 에러 표시
+
+
     return(
     <div className="boardContentDiv" id="boardContentDiv">
         <div className="g_search">
@@ -212,30 +368,51 @@ export default function BasketBoard(){
                 <div className="task_area">
                     <div className="btn_box">
                         <span className="chk_board">
-                            <input id="chk_all" type="checkbox" name="chk_all"/>
+                            <input id="chk_all" type="checkbox" name="chk_all" checked={
+                            selectedArticles.length === trashArticles.length &&
+                            trashArticles.length > 0}
+                            onChange={handleSelectAll}/>
                             <label htmlFor="chk_all">전체 선택</label>
                         </span> 
-                        <button type="button" disabled="disabled" className="point" style={{display: "none"}}>
+                        <button type="button" disabled={selectedArticles.length === 0} className="point" style={{display: "none"}}    onClick={handlePermanentDelete}>
                             <strong>읽음</strong>
                         </button> 
                         <div className="chk_del">
-                            <button type="button" disabled="disabled" className="point">
+                            <button type="button" disabled={selectedArticles.length === 0} className="point" onClick={handlePermanentDelete}>
                                 <strong>영구삭제</strong>
                             </button>
                         </div> 
                         <div className="chk_move">
-                            <button type="button" disabled="disabled">
+                            <button type="button" disabled={selectedArticles.length === 0}  onClick={toggleMoveBox} className="toggle-move-box-button">
                             이동
                             <em className="bu"></em>
                             </button> 
-                            <div id="move_option_box" className="option_box" style={{display: "none"}}>
-                                <ul></ul> 
+                            {isMoveBoxVisible && (
+                            <div id="move_option_box" className="Basket_option_box" ref={moveBoxRef}>
+                                <ul>
+                                    <li>
+                                        <span>그린컴퓨터아카데미</span>
+                                    </li>
+                                    {boards.map((board) => (
+                                    <li
+                                    key={board.board_id}
+                                    className={`depth ${selectedBoard === board.board_name ? "selected" : ""}`}
+                                    onClick={() => handleBoardSelect(board.board_name)}
+                                    >
+                                    <button type="button">{board.board_name}</button>
+                                    <li>
+                                        <span></span>
+                                    </li>
+                                    </li>
+                                 ))}
+                                </ul> 
                             <p className="btn">
-                                <button type="button">
+                                <button type="button" onClick={handleMoveArticles}>
                                 이동
                                 </button>
                             </p>
                             </div>
+                             )}
                         </div>
                     </div>
 
@@ -294,43 +471,51 @@ export default function BasketBoard(){
                         </tr>
                     </thead>
                     <tbody>
-                        <tr className="read">
-                            <td className="chk">
-                                <input id="check_4070000000153153648" type="checkbox" name="chk_bd"/>
-                                <label htmlFor="check_4070000000153153648">해당 게시글 선택</label>
-                            </td>
-                            <td className="bd_infor">
-                                <div className="sbj_box">
-                                    <p className="sbj">
-                                        <a href="">[게시글 작성 가이드] 공지사항 게시판 활용하기</a> 
-                                    </p>
-                                </div> 
-                                <p className="infor">
-                                    <button type="button" className="user">Board</button>
-                                    <span className="read_chk">읽음
-                                        <strong>1</strong>
-                                    </span>
-                                </p>
-                            </td>
-                            <td className="board_name">
-                                <div className="board_name_box">
-                                    <span className="board_name_text">공지사항</span>
-                                    <em className="icon_board">
-                                        <span className="blind">일반_게시판</span>
-                                    </em>
-                                </div>
-                            </td>
-                            <td className="date">2024. 11. 27.</td>
-                            <td className="date">2024. 11. 27.</td>
-                            <td className="name">
-                                <em className="ic_master">M</em>와이라노
-                            </td>
-
-                            <td className="attach">
-                                0
-                            </td>
-                        </tr>
-                    </tbody>
+                                {trashArticles.length > 0 ? (
+                                    trashArticles.map((article) => (
+                                        <tr key={article.id} className="read">
+                                            <td className="chk">
+                                                <input
+                                                    id={`check_${article.id}`}
+                                                    type="checkbox"
+                                                    name="chk_bd"
+                                                    checked={selectedArticles.includes(article.id)}
+                                                    onChange={() => handleCheckboxChange(article.id)}
+                                                />
+                                                <label htmlFor={`check_${article.id}`}>
+                                                    해당 게시글 선택
+                                                </label>
+                                            </td>
+                                            <td className="bd_infor">
+                                                <div className="sbj_box">
+                                                    <p className="sbj">
+                                                    <Link to={`/article/view/${article.id}`} onClick={(e) => e.stopPropagation()}>
+                                                        {article.title || "제목없음"}
+                                                    </Link>
+                                                    </p>
+                                                </div>
+                                            </td>
+                                            <td className="board_name">
+                                                {article.boardName || "알 수 없음"}
+                                            </td>
+                                            <td className="date">
+                                                {new Date(article.createdAt).toLocaleDateString("en-CA")}
+                                            </td>
+                                            <td className="date">
+                                                {new Date(article.trashDate).toLocaleDateString("en-CA")}
+                                            </td>
+                                            <td className="name">
+                                                {article.deletedBy || "알 수 없음"}
+                                            </td>
+                                            <td className="attach">{article.attachments || 0}</td>
+                                        </tr>
+                                    ))
+                                ) : (
+                                    <tr>
+                                        <td colSpan="7">휴지통에 게시글이 없습니다.</td>
+                                    </tr>
+                                )}
+                            </tbody>
                 </table>
 
             </div>

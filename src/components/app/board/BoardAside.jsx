@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { getBoards, addFavoriteBoard, getFavoriteBoards} from "../../../api/board/boardAPI"; 
 import { useSelector } from "react-redux";
 
@@ -17,8 +17,12 @@ const BoardAside = ({ isVisible }) => {
   const [isAnimating, setIsAnimating] = useState(false);
   const [boards, setBoards] = useState([]);
   const [favoriteBoards, setFavoriteBoards] = useState(new Map());
+  const navigate = useNavigate();
 
   const userId = useSelector((state) => state.userSlice.userid);
+  const handleBoardClick = (boardId) => {
+    navigate(`/app/board/${boardId}`); // 동적으로 생성된 경로로 이동
+};
 
   
 
@@ -117,10 +121,7 @@ const BoardAside = ({ isVisible }) => {
             <button
               type="button"
               className="write_button"
-              onClick={() =>
-                (window.location.href =
-                  "/app/noticeboard")
-              }
+              onClick={() => navigate("/app/noticeboard")}
             >
               <strong>글쓰기</strong>
             </button>
@@ -225,7 +226,7 @@ const BoardAside = ({ isVisible }) => {
                 type="button"
                 title={favoriteBoard.boardName}
                 className="item_txt"
-                onClick={() => (window.location.href = "/app/announcementboard")}
+                onClick={() => handleBoardClick(favoriteBoard.boardId)}
               >
                 <span className="text">{favoriteBoard.boardName}</span>
               </button>
@@ -285,16 +286,13 @@ const BoardAside = ({ isVisible }) => {
                 {boards.map((board) => (
                   <li key={board.boardId} className="board">
                     <div className="menu_item">
-                      <button
-                        type="button"
-                        title={board.boardName}
-                        className="item_txt"
-                        onClick={() =>
-                          (window.location.href =
-                            " /app/announcementboard")
-                        }
+                    <button
+                          type="button"
+                          title={board.boardName}
+                          className="item_txt"
+                          onClick={() => handleBoardClick(board.boardId)} // handleBoardClick 호출
                       >
-                        <span className="text">{board.boardName}</span>
+                          <span className="text">{board.boardName}</span>
                       </button>
                       <input
                   id={`${board.boardId}`}
@@ -321,7 +319,10 @@ const BoardAside = ({ isVisible }) => {
             <ul className="lnb_tree">
               <li>
                 <div className="menu_item mbox_trash">
-                  <button type="button" className="item_txt">
+                  <button type="button" className="item_txt" onClick={() =>
+                          (window.location.href =
+                            " /app/basketboard")
+                        }>
                     휴지통
                   </button>
                 </div>

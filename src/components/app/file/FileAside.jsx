@@ -38,12 +38,12 @@ export default function FileAside({ isVisible }) {
             isVisible ? "aside-slide-in sidebar" : "aside-slide-out sidebar"
           }
         >
-          <div className="sidebar-header">
+          {/* <div className="sidebar-header">
             <h2>닉네임</h2>
             <a href="#" className="search-link" id="open-modal">
               🔍 검색
             </a>
-          </div>
+          </div> */}
           <nav className="menu">
             <ul className="submenu">
               {/* 내 드라이브 */}

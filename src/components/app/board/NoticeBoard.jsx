@@ -1,32 +1,76 @@
 import React, { useEffect, useState } from 'react';
-import { Editor } from '@tinymce/tinymce-react';
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import { postBoardArticleWrite } from "../../../api/board/boardAPI"; // URI 상수 import
+import { getAllBoards, postBoardArticleWrite } from "../../../api/board/boardAPI"; // URI 상수 import
 import { useSelector } from 'react-redux';
 
 const NoticeBoard = () => {
+    const [showBoardSelect, setShowBoardSelect] = useState(false); // 모달 표시 상태
+    const [boards, setBoards] = useState([]);
+    const [selectedBoard, setSelectedBoard] = useState(''); 
     const userId = useSelector((state) => state.userSlice.userid);
+
+
+     const handleOpenBoardSelect = () => {
+        setShowBoardSelect(true);
+    };
+
+
+    const handleCloseBoardSelect = () => {
+        setShowBoardSelect(false);
+    };
+
     const [article, setArticle] = useState({
         title: '',
-        content: '', // TinyMCE의 내용을 여기에 저장할 것
-        board: '공지사항', // 게시판 선택
-        writer: userId || '', // 로그인 상태에서 작성자 ID를 가져와야 함
+        content: '', // TinyMCE의 내용을 여기에 저장
+        board: '', // 선택된 게시판
+        writer: userId || '', // 로그인 상태에서 작성자 ID
+        
     });
 
+    const handleConfirmBoardSelect = () => {
+        setSelectedBoard(article.board); // 선택된 값을 업데이트
+        handleCloseBoardSelect(); // 모달 닫기
+    };
+
     const navigate = useNavigate();
+
+    useEffect(() => {
+        console.log("NoticeBoard: useEffect 실행"); // useEffect 호출 확인
+        const fetchBoards = async () => {
+            try {
+                const fetchedBoards = await getAllBoards();
+                console.log('게시판 목록:', fetchedBoards); // 데이터 출력
+                setBoards(fetchedBoards);
+            } catch (error) {
+                console.error("게시판 목록을 가져오는 데 실패했습니다.", error);
+            }
+        };
+        fetchBoards();
+    }, []);
+    
+    const handleBoardSelect = (board_name) => {
+        setArticle((prev) => ({ ...prev, board: board_name }));
+        console.log("Selected board_name:", board_name); // 함수 호출 확인
+    };
+
 
     const handleEditorChange = (content) => {
     if (content !== article.content) {
         setArticle((prev) => ({ ...prev, content })); // 상태가 달라질 때만 업데이트
-    }
-};
+        }
+ 
+    };
+
 
     const handleSubmit = async (e) => {
         e.preventDefault();
 
         const articlePayload = {
             ...article,
+            boardName: selectedBoard,
             userId: userId, // Redux에서 가져온 userId를 명시적으로 포함
         };
     
@@ -48,6 +92,7 @@ const NoticeBoard = () => {
             alert("게시글 등록에 실패했습니다.");
         }
     };
+    
     
 
     return(
@@ -284,12 +329,12 @@ const NoticeBoard = () => {
                       </li>
                       <li className="opt_bd">
                       <h3 className="tx">게시판</h3>
-                      <button type="button" className="btn_board_select">
+                      <button type="button" className="btn_board_select"  onClick={handleOpenBoardSelect} >
                           게시판 선택
                       </button>
                       <span className="bd_name">
                           <span className="cate" >그린컴퓨터아카데미</span>
-                          <strong>공지사항</strong>
+                          <strong>{selectedBoard || '게시판을 선택하세요'}</strong>
                       </span>
                       </li>
                      
@@ -313,37 +358,83 @@ const NoticeBoard = () => {
                       </li>
                   </ul>
                   <div className="workseditor-editor" style={{overflow: "auto", height: "auto"}}>
-                  <Editor
-                    apiKey='io6vv69eg9rs7jdt6rxcxtuwf127qkmot1d5e2ttm4khz10i'
-                    init={{
-                        height: 500,
-                        forced_root_block: 'false', // IME 입력 문제를 해결
-                        directionality: "ltr", // 텍스트 방향을 left-to-right로 설정
-                        language: 'ko_KR',
-                        fontsize_formats: '10pt 12pt 14pt 18pt 24pt 36pt 48pt',
-                        plugins: [
-                        // Core editing features
-                        'anchor', 'autolink', 'charmap', 'codesample', 'emoticons', 'image', 'link', 'lists', 'media', 'searchreplace', 'table', 'visualblocks', 'wordcount',
-                        // Your account includes a free trial of TinyMCE premium features
-                        // Try the most popular premium features until Dec 17, 2024:
-                     
-                        // Early access to document converters
-                        'importword', 'exportword', 'exportpdf'
-                        ],
-                        toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table mergetags | addcomment showcomments | spellcheckdialog a11ycheck typography | align lineheight | checklist numlist bullist indent outdent | emoticons charmap | removeformat',
-                        tinycomments_mode: 'embedded',
-                        ai_request: (request, respondWith) => respondWith.string(() => Promise.reject('See docs to implement AI Assistant')),
-                    }}
-                    onEditorChange={handleEditorChange}
-                 
-                    />
+                  <ReactQuill
+                            theme="snow"
+                            value={article.content}
+                            onChange={handleEditorChange}
+                            placeholder="내용을 입력하세요"
+                            modules={{
+                                toolbar: [
+                                    [{ header: [1, 2, 3, false] }],
+                                    ['bold', 'italic', 'underline', 'strike'], // 텍스트 스타일
+                                    ['link', 'image'], // 링크 및 이미지
+                                    [{ list: 'ordered' }, { list: 'bullet' }], // 목록
+                                    ['clean'], // 포맷 제거
+                                ],
+                            }}
+                        />
                   </div>
                   </form>
               </div>
-              
 
+              {showBoardSelect && (
+                <div className="ly_wrapper" style={{ display: "block" }}>
+                    <div className="ly_loading" style={{ left: "330px", top: "800px", display: "none" }}>
+                        <div className="cont">
+                            <p className="cont1">
+                                <span className="loading">
+                                    <img
+                                        src="https://static.worksmobile.net/static/pwe/address/loading_fff.gif"
+                                        width="32"
+                                        height="8"
+                                        alt="loading"
+                                    />
+                                </span>
+                            </p>
+                        </div>
+                    </div>
+                    <div className="ly_common">
+                        <div className="layer_area">
+                            <h3 className="tit">게시판 선택</h3>
+                            <div className="cont board_select">
+                                <div className="option_box">
+                            
+                            <ul>
+                                <li>
+                                    <span>그린컴퓨터아카데미</span>
+                                </li>
+                                {boards.map((board) => (
+                                    
+                                    <li key={board.board_id} className="depth"   onClick={() => handleBoardSelect(board.board_name)} >
+                                        <input
+                                            type="radio"
+                                            name="select_bd"
+                                            value={board.board_name}
+                                            checked={article.board === board.board_name} // 체크 상태를 확인
+                                            onChange={(e) => handleBoardSelect(e.target.value)}
+                                        />
+                                        <label>
+                                            <strong>{board.board_name}</strong>
+                                        </label>
+                                    </li>
+                                ))}
+                            </ul>
+                                </div>
+                            </div>
+                            <div className="btn_area">
+                                <button type="button" className="btn" onClick={handleCloseBoardSelect}>
+                                    닫기
+                                </button>
+                                <button type="button" className="btn tx_point" onClick={handleConfirmBoardSelect}>
+                                    <strong>확인</strong>
+                                </button>
+                            </div>
+                        </div>
+                        <div className="layer_bg" ></div>
+                </div> 
+                </div>
+                )}
           </div>  
-                   
           </div>
       );
 } 	

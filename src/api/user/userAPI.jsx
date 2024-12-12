@@ -10,7 +10,7 @@
 */
 
 import axios from "axios";
-import { USER_CHECK, USER_EMAIL, USER_FIND, USER_LIST, USER_LOGIN_URI, USER_URI } from "../URI";
+import { USER_CHANGE, USER_CHECK, USER_EMAIL, USER_FIND, USER_LIST, USER_LOGIN_URI, USER_URI } from "../URI";
 
 export const postUser = async (data) => {
     try {
@@ -25,10 +25,15 @@ export const postUser = async (data) => {
 export const postUserLogin = async (data) => {
     try {
         const response = await axios.post(`${USER_LOGIN_URI}`, data);
-        console.log(response.data);
+        console.log("반환값" + response.status);
         return response.data;
     } catch (err) {
-        console.log(err);
+        if (err.response && err.response.status === 403) {
+            alert(err.response.data);
+        } else {
+
+            console.log(err);
+        }
     }
 };
 
@@ -121,22 +126,150 @@ export const getUserListAll = async () => {
         throw new Error("유저 목록을 불러오지 못했습니다.");
     }
 };
-export const changePassword = async (newPassword, userId, token) => { // 비번변경
+export const changePassword = async (userId, newPassword) => { // 비번변경
     try {
-        const response = await axios.put(`${USER_FIND}newPass`,
-            {
-                newPassword,
-                userId,
-            },
-            {
-                headers: {
-                    Authorization: `Bearer ${token}`
-                }
-            }
-        )
-    } catch (error) {
-        console.error("비밀번호 변경중 오류 발생 :", err);
-        throw error;
-    }
+        console.log("전송되는 데이터: ", { newPassword, userId });
 
+        const response = await axios.post(`${USER_FIND}newPass`,
+            {
+                newPassword: newPassword,
+                userId: userId
+            }
+        );
+        console.log("서버 응답: ", response);  // 응답 데이터 출력
+
+        return response;  // Handle response appropriately
+    } catch (error) {
+        console.error("비밀번호 변경중 오류 발생 :", error);
+        throw error;  // Handle error
+    }
+}
+
+
+
+export const changeNewHp = async (newHp) => {
+    try {
+        console.log("전송되는 데이터" + newHp);
+        const user = JSON.parse(localStorage.getItem('user')) || JSON.parse(sessionStorage.getItem('user'));
+        console.log("localStorage에서 가져온 user: ", user);
+        const userId = user.userid;
+
+        const response = await axios.put(`${USER_CHANGE}/newHp`,
+            { hp: newHp, userId: userId },
+        );
+        console.log("서버 응답: ", response);  // 응답 데이터 출력
+        return response;
+    } catch (error) {
+        console.error("변경중 오류 발생 " + error);
+    }
+}
+
+export const changeNewEmail = async (newEmail) => {
+    try {
+        console.log("전송되는 데이터" + newEmail);
+        const user = JSON.parse(localStorage.getItem('user')) || JSON.parse(sessionStorage.getItem('user'));
+
+        const userId = user.userid;
+
+        const response = await axios.put(`${USER_CHANGE}/newEmail`,
+            { email: newEmail, userId: userId },
+        );
+        console.log("서버 응답: ", response);  // 응답 데이터 출력
+        return response;
+    } catch (error) {
+        console.error("변경중 오류 발생 " + error);
+    }
+}
+export const changeStatusMessage = async (statusMessage) => {
+    try {
+        console.log("전송되는 데이터" + statusMessage);
+        const user = JSON.parse(localStorage.getItem('user')) || JSON.parse(sessionStorage.getItem('user'));
+
+        const userId = user.userid;
+
+        const response = await axios.put(`${USER_CHANGE}/statusMessage`,
+            { statusMessage: statusMessage, userId: userId },
+
+        );
+        console.log("서버 응답: ", response);  // 응답 데이터 출력
+        return response;
+    } catch (error) {
+        console.error("변경중 오류 발생 " + error);
+    }
+}
+
+export const uploadProfile = async (formData) => {
+    try {
+        const user = JSON.parse(localStorage.getItem('user')) || JSON.parse(sessionStorage.getItem('user'));
+
+        const userId = user.userid;
+        const response = await axios.post(`${USER_CHANGE}/profile`, formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            },
+            params: {
+                userId: userId  // userId를 URL 파라미터로 전달
+            }
+        });
+        const filePath = response.data
+        console.log(filePath)
+        if (filePath) {
+            console.log("파일 경로:", filePath);
+            return getFileUrl(filePath);  // 경로를 절대 URL로 변환하여 반환
+        } else {
+            console.error("filePath가 없거나 잘못된 응답:", response.data);
+            return null;  // filePath가 없으면 null 반환
+        }
+    } catch (error) {
+        console.error("변경중 오류 발생 " + error);
+
+    }
+}
+
+// 파일 경로를 절대 URL로 변환하는 함수
+export const getFileUrl = (filePath) => {
+    const baseUrl = "http://localhost:8080";  // 서버 도메인 (배포 시 수정 필요)
+    if (filePath && (filePath.startsWith("/user/thumb/"))) {
+        return `${baseUrl}${filePath}`;
+    }
+    console.error("잘못된 파일 경로:", filePath);
+    return null;  // 잘못된 경로인 경우 null 반환
+};
+
+
+export const deleteuser = async () => {
+    try {
+        const user = JSON.parse(localStorage.getItem('user')) || JSON.parse(sessionStorage.getItem('user'));
+
+        const userId = user.userid;
+        const response = await axios.put(`${USER_CHANGE}/delete`,
+            {
+                userId: userId  // userId를 URL 파라미터로 전달
+            }
+        );
+        console.log("서버 응답: ", response);  // 응답 데이터 출력
+        return response;
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+export const profileUrl = async () => {
+    try {
+        const user = JSON.parse(localStorage.getItem('user')) || JSON.parse(sessionStorage.getItem('user'));
+        const userId = user.userid;
+        console.log("요청아이디" + userId);
+        const response = await axios.get(`${USER_CHANGE}/profileUrl`, {
+            params: {
+                userId: userId  // URL 쿼리 파라미터로 userId 전달
+            }
+        });
+        console.log("서버 응답: ", response);  // 응답 데이터 출력
+        const imageUrl = response.data; // 서버에서 반환된 이미지 URL
+
+        console.log("이미지 URL: ", imageUrl);  // 이미지 URL 출력
+        return imageUrl; // 이미지 URL을 반환
+    } catch (error) {
+        console.log(error)
+    }
 }

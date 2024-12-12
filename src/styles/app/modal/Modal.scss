@@ -442,7 +442,11 @@
     border-radius: 4px;
     border: 1px solid #eee;
   }
-
+  .buttonspace {
+    display: flex;
+    justify-content: left; /* 버튼을 오른쪽으로 정렬 */
+    gap: 10px; /* 버튼 사이의 간격 */
+  }
   /* 삭제 버튼 */
   .delete-btn {
     padding: 10px 15px;
@@ -459,6 +463,22 @@
 
   .delete-btn:hover {
     background-color: #d32f2f;
+    transform: translateY(-3px);
+  }
+  .config-btn {
+    padding: 10px 15px;
+    font-size: 1rem;
+    background-color: #17792c;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition:
+      background-color 0.3s ease,
+      transform 0.2s ease;
+  }
+  .config-btn:hover {
+    background-color: #125c22;
     transform: translateY(-3px);
   }
 }
