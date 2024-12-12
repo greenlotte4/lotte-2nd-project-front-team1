@@ -21,11 +21,10 @@ export default function ProfileDropdown({ isOpen }) {
 
   const dispatch = useDispatch();
   const user = useSelector((state) => state.userSlice);
-  if (!isOpen) return null; // 드롭다운이 닫혀있으면 아무것도 렌더링하지 않음
 
   // 이미지 URL을 받아오는 함수
   const getImageUrl = async () => {
-    const url = await profileUrl();  // 이미지 URL을 비동기적으로 가져옴
+    const url = await profileUrl(); // 이미지 URL을 비동기적으로 가져옴
     console.log("받은 이미지 URL: ", url);
     setImageUrl(url); // 받아온 URL을 상태에 저장
   };
@@ -35,11 +34,7 @@ export default function ProfileDropdown({ isOpen }) {
     getImageUrl();
   }, []); // 빈 배열을 넣어 첫 렌더링에서만 실행되도록 설정
 
-  console.log("푸로필" + imageUrl)
-
-  if (!isOpen) return null; // 드롭다운이 닫혀있으면 아무것도 렌더링하지 않음
-  // 테두리 색상 결정
-
+  console.log("프로필" + imageUrl);
 
   const borderColor =
     {
@@ -48,63 +43,64 @@ export default function ProfileDropdown({ isOpen }) {
       away: "yellow",
       logout: "red", // 로그아웃 상태는 빨간색
     }[status] || "transparent"; // 기본값은 투명
- 
+
   return (
-    <div className="ProfileDropdown">
-      <div className="profileDetails">
-        <div
-          className="profileImageWrapper"
-          style={{
-            border: `3px solid ${borderColor}`, // 상태에 따른 테두리 색상
-            borderRadius: "50%", // 동그란 프로필 이미지 유지
-            position: "relative"
-          }}
-        >
-          <img
-            src={imageUrl || "/images/user_Icon.png"}
-            alt="프로필 이미지"
-            className="ProfileDropdownImg"
-          />
-          
-        </div>
-        <div className="profileInfo">
-          <div className="profileHeader">
-            <p className="profileName">
-              {user.username || "알 수 없는 사용자"}
-            </p>
-            <select
-              className="statusDropdown"
-              value={status}
-              onChange={(e) => setStatus(e.target.value)} // 상태 변경
-            >
-              <option value="online">온라인</option>
-              <option value="dnd">방해금지</option>
-              <option value="away">자리비움</option>
-            </select>
+    isOpen && (
+      <div className="ProfileDropdown">
+        <div className="profileDetails">
+          <div
+            className="profileImageWrapper"
+            style={{
+              border: `3px solid ${borderColor}`, // 상태에 따른 테두리 색상
+              borderRadius: "50%", // 동그란 프로필 이미지 유지
+              position: "relative",
+            }}
+          >
+            <img
+              src={imageUrl || "/images/user_Icon.png"}
+              alt="프로필 이미지"
+              className="ProfileDropdownImg"
+            />
           </div>
-          <p className="profileEmail">{user.email || "이메일 없음"}</p>
+          <div className="profileInfo">
+            <div className="profileHeader">
+              <p className="profileName">
+                {user.username || "알 수 없는 사용자"}
+              </p>
+              <select
+                className="statusDropdown"
+                value={status}
+                onChange={(e) => setStatus(e.target.value)} // 상태 변경
+              >
+                <option value="online">온라인</option>
+                <option value="dnd">방해금지</option>
+                <option value="away">자리비움</option>
+              </select>
+            </div>
+            <p className="profileEmail">{user.email || "이메일 없음"}</p>
+          </div>
+        </div>
+        <div className="profileButtons">
+          {user.role === "ADMIN" && (
+            <Link to="/admin/user" className="editProfileButton">
+              관리자
+            </Link>
+          )}
+          <Link to="/app/setting" className="editProfileButton">
+            프로필 편집
+          </Link>
+          <button
+            className="logoutButton"
+            onClick={() => {
+              dispatch(logout()); // Redux 상태 초기화
+              window.location.href = "/user/login"; // 로그인 페이지로 이동
+            }}
+          >
+            로그아웃
+          </button>
         </div>
       </div>
-      <div className="profileButtons">
-        {user.role === "ADMIN" && (
-          <Link to="/admin/user" className="editProfileButton">
-            관리자
-          </Link>
-        )}
-        <Link to="/app/setting" className="editProfileButton">
-          프로필 편집
-        </Link>
-        <button
-          className="logoutButton"
-          onClick={() => {
-            dispatch(logout()); // Redux 상태 초기화
-            window.location.href = "/user/login"; // 로그인 페이지로 이동
-          }}
-        >
-          로그아웃
-        </button>
-      </div>
-    </div>
+    )
   );
 }
 
