@@ -2,12 +2,12 @@
   "rewrites": [
     {
       "source": "/api/:path*",
-      "destination": "https://hubflow.store:8080/:path*"
+      "destination": "https://hubflow.store/:path*"
     },
     { "source": "/(.*)", "destination": "/" },
     {
       "source": "/user/thumb/:path*",
-      "destination": "https://hubflow.store:8080/user/thumb/:path*",
+      "destination": "https://hubflow.store/user/thumb/:path*",
       "statusCode": 308
     }
   ]
