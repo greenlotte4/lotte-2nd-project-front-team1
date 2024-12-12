@@ -27,16 +27,17 @@ import {
   ToggleButtonGroup,
   Typography,
 } from "@mui/material";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { getUserListAll } from "../../../api/user/userAPI";
 import {
+  getLastChat,
   getMyChatRoom,
   makeNewChannel,
   makeNewDM,
 } from "../../../api/message/messageAPI";
 import { useSelector } from "react-redux";
 
-const MessageAside = ({ isVisible }) => {
+const MessageAside = ({ isVisible, onSelectChat }) => {
   const [isAnimating, setIsAnimating] = useState(false);
   // 새로운 채팅 모달
   const [isNewChatModalOpen, setIsNewChatModalOpen] = useState(false);
@@ -89,6 +90,7 @@ const MessageAside = ({ isVisible }) => {
 
   //채팅 방 가져오기
   const [chatRoomList, setChatRoomList] = useState(null);
+  const [groupedChatRooms, setGroupedChatRooms] = useState({});
 
   useEffect(() => {
     if (isVisible) {
@@ -100,14 +102,41 @@ const MessageAside = ({ isVisible }) => {
     const fetchChatRoomList = async () => {
       try {
         const data = await getMyChatRoom(user.userid);
-        console.log(user.userid);
+        console.log("유저 ID:", user.userid);
+
         setChatRoomList(data);
+
+        const groupedData = groupByChatId(data);
+        setGroupedChatRooms(groupedData);
       } catch (err) {
-        console.error("채팅 목록 불러오기 실패 : ", err);
+        console.error("채팅 목록 불러오기 실패:", err);
       }
     };
     fetchChatRoomList();
   }, [isVisible]);
+
+  const lastChat = async (chatId) => {
+    const lastChatText = await getLastChat(chatId).data;
+    return lastChatText;
+  };
+
+  const groupByChatId = (chatRooms) => {
+    return chatRooms.reduce((groups, room) => {
+      const { chat, user } = room;
+
+      if (!groups[chat.chatId]) {
+        const lastOne = lastChat(Number(chat.chatId));
+        groups[chat.chatId] = {
+          roomName: chat.roomName,
+          users: [],
+          dtype: chat.dtype,
+          lastChat: lastOne.data,
+        };
+      }
+      groups[chat.chatId].users.push(user);
+      return groups;
+    }, {});
+  };
 
   return (
     isAnimating && (
@@ -138,81 +167,63 @@ const MessageAside = ({ isVisible }) => {
               </ListItemButton>
               <Collapse in={channelOpen} timeout="auto" unmountOnExit>
                 <List component="div" disablePadding>
-                  <ListItemButton
-                    sx={{ pl: 4 }}
-                    onContextMenu={(event) => handleClick(event)}
-                  >
-                    <ListItemIcon className="iconGroup">
-                      <AvatarGroup
-                        max={3}
-                        className="groupAvatarList"
-                        spacing="small"
-                      >
-                        <Avatar
-                          alt="Remy Sharp"
-                          src="/static/images/avatar/1.jpg"
-                          className="groupAvatar"
-                        />
-                        <Avatar
-                          alt="Travis Howard"
-                          src="/static/images/avatar/2.jpg"
-                        />
-                      </AvatarGroup>
-                    </ListItemIcon>
-                    <div className="chatRoom">
-                      <ListItemText
-                        primary="개발 팀"
-                        className="chatRoomName"
-                      />
-                      <div className="chatDescription">
-                        오늘 작업 내용입니다.가나다라마바사아자
-                      </div>
-                    </div>
-                  </ListItemButton>
-
-                  <ListItemButton
-                    sx={{ pl: 4 }}
-                    onContextMenu={(event) => handleClick(event)}
-                  >
-                    <ListItemIcon className="iconGroup">
-                      <AvatarGroup
-                        max={3}
-                        className="groupAvatarList"
-                        spacing="15"
-                      >
-                        <Avatar
-                          alt="Remy Sharp"
-                          src="/static/images/avatar/1.jpg"
-                          className="groupAvatar"
-                        />
-                        <Avatar
-                          alt="Travis Howard"
-                          src="/static/images/avatar/2.jpg"
-                        />
-                        <Avatar
-                          alt="Cindy Baker"
-                          src="/static/images/avatar/3.jpg"
-                        />
-                        <Avatar
-                          alt="Agnes Walker"
-                          src="/static/images/avatar/4.jpg"
-                        />
-                        <Avatar
-                          alt="Trevor Henderson"
-                          src="/static/images/avatar/5.jpg"
-                        />
-                      </AvatarGroup>
-                    </ListItemIcon>
-                    <div className="chatRoom">
-                      <ListItemText
-                        primary="디자인 팀"
-                        className="chatRoomName"
-                      />
-                      <div className="chatDescription">
-                        오늘 작업 내용입니다.가나다라마바사아자
-                      </div>
-                    </div>
-                  </ListItemButton>
+                  {Object.keys(groupedChatRooms).length > 0 ? (
+                    Object.keys(groupedChatRooms).map((chatId) => {
+                      const room = groupedChatRooms[chatId];
+                      if (room.dtype === "DM") {
+                        return null;
+                      }
+                      return (
+                        <React.Fragment key={chatId}>
+                          <ListItemButton
+                            sx={{ pl: 4 }}
+                            className="curruntChatRoom"
+                            onContextMenu={(event) =>
+                              handleClick(event, room.users[0]?.userId)
+                            }
+                            onClick={() => {
+                              onSelectChat(Number(chatId));
+                            }} // 수정된 부분
+                          >
+                            <ListItemIcon className="iconGroup">
+                              <AvatarGroup
+                                max={3}
+                                className="groupAvatarList"
+                                spacing="15"
+                              >
+                                {room.users
+                                  .filter(
+                                    (member) => member.userId !== user.userid
+                                  ) // 현재 유저 제외
+                                  .map((member, idx) => (
+                                    <Avatar
+                                      key={idx}
+                                      alt={member.username}
+                                      src={
+                                        member.avatar ||
+                                        "/static/images/default-avatar.jpg"
+                                      }
+                                      className="groupAvatar"
+                                    />
+                                  ))}
+                              </AvatarGroup>
+                            </ListItemIcon>
+                            <div className="chatRoom">
+                              <ListItemText
+                                primary={room.roomName} // 채팅방 이름
+                                className="chatRoomName"
+                              />
+                              <div className="chatDescription">
+                                오늘의 작업 내용입니다.
+                              </div>
+                            </div>
+                          </ListItemButton>
+                        </React.Fragment>
+                      );
+                    })
+                  ) : (
+                    <div>채팅방이 없습니다.</div>
+                  )}
                 </List>
               </Collapse>
 
@@ -226,37 +237,46 @@ const MessageAside = ({ isVisible }) => {
               </ListItemButton>
               <Collapse in={DMOpen} timeout="auto" unmountOnExit>
                 <List component="div" disablePadding>
-                  {chatRoomList.map((value, index) => {
-                    if (
-                      value.chat.dtype === "CHANNEL" ||
-                      value.user.userId === user.userid
-                    ) {
-                      return null;
-                    }
-                    return (
-                      <ListItemButton
-                        key={index}
-                        sx={{ pl: 4 }}
-                        className="curruntChatRoom"
-                        onContextMenu={(event) =>
-                          handleClick(event, value.userId)
-                        }
-                      >
-                        <ListItemIcon>
-                          <Badge color="warning" variant="dot">
-                            <Avatar>{value.user.username.charAt(0)}</Avatar>
-                          </Badge>
-                        </ListItemIcon>
-                        <div className="chatRoom">
-                          <ListItemText
-                            primary={value.user.username}
-                            className="chatRoomName"
-                          />
-                          <div className="chatDescription">가나다</div>
-                        </div>
-                      </ListItemButton>
-                    );
-                  })}
+                  {chatRoomList && chatRoomList.length > 0 ? (
+                    chatRoomList.map((value) => {
+                      if (
+                        value.chat.dtype === "CHANNEL" ||
+                        value.user.userId === user.userid
+                      ) {
+                        return null;
+                      }
+                      return (
+                        <ListItemButton
+                          key={value.chat.chatId}
+                          sx={{ pl: 4 }}
+                          className="curruntChatRoom"
+                          onContextMenu={(event) =>
+                            handleClick(event, value.userId)
+                          }
+                          onClick={() => {
+                            onSelectChat(value.chat.chatId);
+                          }} // 수정된 부분
+                        >
+                          <ListItemIcon>
+                            <Badge color="warning" variant="dot">
+                              <Avatar>{value.user.username.charAt(0)}</Avatar>
+                            </Badge>
+                          </ListItemIcon>
+                          <div className="chatRoom">
+                            <ListItemText
+                              primary={value.user.username}
+                              className="chatRoomName"
+                            />
+                            <div className="chatDescription">
+                              {value.lastChat}
+                            </div>
+                          </div>
+                        </ListItemButton>
+                      );
+                    })
+                  ) : (
+                    <div>채팅방이 없습니다.</div>
+                  )}
                 </List>
               </Collapse>
             </List>
