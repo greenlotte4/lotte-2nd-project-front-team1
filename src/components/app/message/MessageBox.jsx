@@ -20,6 +20,7 @@ import FormatAlignJustifyIcon from "@mui/icons-material/FormatAlignJustify";
 import EmojiEmotionsOutlinedIcon from "@mui/icons-material/EmojiEmotionsOutlined";
 import { getChatList, setChatText } from "../../../api/message/messageAPI";
 import { useSelector } from "react-redux";
+import { profileUrl } from "../../../api/user/userAPI";
 
 export default function MessageBox(roomId) {
   const [messages, setMessages] = useState([]);
@@ -27,6 +28,8 @@ export default function MessageBox(roomId) {
   const [anchorEl, setAnchorEl] = useState(null);
   const [selectedIndex, setSelectedIndex] = useState(null); // 선택한 메시지 인덱스
   const [EmojiStatus, setEmojiStatus] = useState(false);
+
+  const [imageUrl, setImageUrl] = useState(null);
 
   const [inputStatus, setinputStatus] = useState(() => ["bold", "italic"]);
 
@@ -37,7 +40,15 @@ export default function MessageBox(roomId) {
       const now = new Date();
       setChatList([
         ...chatList,
-        { context: newMessage, senderId: user.userid, sendTime: now },
+        {
+          context: newMessage,
+          senderId: {
+            userid: user.userid,
+            username: user.username + " (나)",
+            profile: imageUrl,
+          },
+          sendTime: now,
+        },
       ]);
 
       const chatText = {
@@ -99,6 +110,7 @@ export default function MessageBox(roomId) {
 
   //useEffect
   useEffect(() => {
+    getImageUrl();
     if (roomId) {
       fetchChatRoomList(roomId.roomId);
     }
@@ -112,6 +124,12 @@ export default function MessageBox(roomId) {
     } catch (err) {
       console.error("채팅 목록 불러오기 실패:", err);
     }
+  };
+
+  const getImageUrl = async () => {
+    const url = await profileUrl(); // 이미지 URL을 비동기적으로 가져옴
+    console.log("받은 이미지 URL: ", url);
+    setImageUrl(url); // 받아온 URL을 상태에 저장
   };
 
   return (
@@ -139,14 +157,14 @@ export default function MessageBox(roomId) {
                   onContextMenu={(event) => handleClick(event, index)}
                 >
                   <Avatar
-                    alt={
-                      chat.senderId.userId === user.userid
-                        ? user.username
-                        : chat.senderId.username
+                    src={
+                      chat.senderId.profile ||
+                      "/static/images/default-avatar.jpg"
                     }
-                    src={user.avatar || user.username}
+                    alt={chat.senderId.username}
                     className="chatAvatar"
-                  />
+                  ></Avatar>
+
                   <div className="chatContent">
                     <div className="message_sender">
                       {chat.senderId.userId === user.userid

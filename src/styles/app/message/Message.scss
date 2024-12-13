@@ -31,7 +31,9 @@
   }
 
   .chatBox {
-    flex: 1 0 auto;
+    flex: 1;
+    overflow: scroll;
+    display: block;
   }
   .chatBlockByDay {
     margin-bottom: 20px;

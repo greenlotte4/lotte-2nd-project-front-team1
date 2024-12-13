@@ -85,7 +85,9 @@ export default function UserListButton({ isOpen, onClose }) {
                   <ListItem key={index} disablePadding>
                     <ListItemButton>
                       <ListItemAvatar>
-                        <Avatar>{value.username.charAt(0)}</Avatar>
+                        <Avatar src={value.profile}>
+                          {value.username.charAt(0)}
+                        </Avatar>
                       </ListItemAvatar>
                       <ListItemText
                         id={labelId}
