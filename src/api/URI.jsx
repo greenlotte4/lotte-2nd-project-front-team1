@@ -86,11 +86,11 @@ export const CALENDAR_INVITECODE = `${SERVER_HOST}/calendar/invitecalendar`;
 export const CALENDAR_LIST = `${SERVER_HOST}/calendar/calendarlist`;
 export const CALENDAR_DELETE = `${SERVER_HOST}/calendar/deletecalendar`;
 export const CALENDAR_LEAVE = `${SERVER_HOST}/calendar/leavecalendar`;
-
 export const CALENDAR_ADDEVENT = `${SERVER_HOST}/calendar/addevent`;
+
 // project
 export const PROJECT_LIST = `${SERVER_HOST}/project`
-export const SELECT_PROJECT = (no) => `${SERVER_HOST}/project/${no}`
+export const SELECT_PROJECT = `${SERVER_HOST}/project`
 export const CREATE_PROJECT = `${SERVER_HOST}/project/create`;
 export const UPDATE_PROJECT = `${SERVER_HOST}/project/update/`
 export const DELETE_PROJECT = (no) => `${SERVER_HOST}/project/${no}`

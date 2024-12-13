@@ -49,9 +49,10 @@ export default function ProjectSidebar({ isVisible }) {
     }
   }, [isVisible]);
 
-  const selectProject = (projectId) => {
-    setSelectedProjectId(projectId); 
-    navigate(`/app/project/${projectId}`);
+  const selectProject = (projectId, tab = "main") => {
+    setSelectedProjectId(projectId);
+    console.log("Selected Project ID:", projectId);
+    navigate(`/app/project/${projectId}/${tab}`);
   };
 
   const handleEditClick = (project) => {
@@ -102,12 +103,18 @@ export default function ProjectSidebar({ isVisible }) {
               {projects.length > 0 ? (
                 projects.map((project) => (
                   <li key={project.projectId} style={{ display: "flex", alignItems: "center" }}>
-                  <span
-                    style={{ flex: 1 }}
-                    onClick={() => selectProject(project.projectId)}
-                  >
-                    {selectedProjectId === project.projectId ? `> ${project.name}` : project.name}
-                  </span>
+                    <span
+                      style={{ flex: 1, cursor: "pointer" }}
+                      onClick={() => selectProject(project.projectId)}
+                    >
+                      {selectedProjectId === project.projectId ? `> ${project.name}` : project.name}
+                    </span>
+                    <button
+                      style={{ marginLeft: "8px", cursor: "pointer" }}
+                      onClick={() => selectProject(project.projectId, "timeline")}
+                    >
+                      타임라인 보기
+                    </button>
                     <button
                       style={{ marginLeft: "8px", cursor: "pointer" }}
                       onClick={() => handleEditClick(project)}

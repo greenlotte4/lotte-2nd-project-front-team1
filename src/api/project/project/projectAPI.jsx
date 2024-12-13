@@ -38,22 +38,25 @@ export async function postSelectsProject(userId) {
     }
   }
 
-export const postSelectProject = async (data) => {
+  export const postSelectProject = async (id) => {
     try {
-        console.log("Sending Data:", data);
-        const response = await axios.post(SELECT_PROJECT, data, {
-            headers: {
-                "Content-Type": "application/json"
-            }
-        });
-
-        console.log("Response:", response.data);
-        return response.data;
+      console.log("Sending Request to:", `${SELECT_PROJECT}/${id}`);
+      const response = await axios.get(`${SELECT_PROJECT}/${id}`, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      if (response.status !== 200) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      console.log("Response Data:", response.data);
+      return response.data;
     } catch (err) {
-        console.error("Error:", err);
-        throw new Error("선택된 프로젝트 조회에 실패했습니다.");
+      console.error("Error:", err.message);
+      throw new Error("선택된 프로젝트 조회에 실패했습니다.");
     }
-};
+  };
+  
 
 export const postUpdateProject = async (data) => {
   try {
