@@ -29,7 +29,6 @@ import { profileUrl, selectLoginStatus } from "../../../api/user/userAPI";
 
 export default function AppHeader({ onToggleSidebar, noneAside, thisPage }) {
   const [openDropdown, setOpenDropdown] = useState(null); // "notification" | "profile" | null
-  const [status, setStatus] = useState(null);
   const [imageUrl, setImageUrl] = useState(null);
   const [userStatus, setUserStatus] = useState("");
   const user = useSelector((state) => state.userSlice);
@@ -51,8 +50,6 @@ export default function AppHeader({ onToggleSidebar, noneAside, thisPage }) {
     fetchData(); // 비동기 데이터 가져오기 실행
   }, []); // 빈 배열을 넣어 첫 렌더링 시 실행되도록 설정
 
-
-
   const getLoginStatus = async () => {
     try {
       const response = await selectLoginStatus(); // 서버에서 상태값 가져오기
@@ -67,19 +64,18 @@ export default function AppHeader({ onToggleSidebar, noneAside, thisPage }) {
     }
   };
 
-
   const statusColor =
     {
       online: "green",
       dnd: "red",
       away: "yellow",
       logout: "red", // 로그아웃 상태는 빨간색
-    }[userStatus] || "transparent"
+    }[userStatus] || "transparent";
   // userStatus가 변경될 때마다 AppHeader에서 상태 반영
   const handleStatusUpdate = (newStatus) => {
     setUserStatus(newStatus); // ProfileDropdown에서 변경된 상태값을 AppHeader로 전달
-  }[status] || "transparent";
-    
+  };
+
   return (
     <header className="AppHeader">
       <div className="headerTitle">
@@ -190,11 +186,11 @@ export default function AppHeader({ onToggleSidebar, noneAside, thisPage }) {
             <div
               className="userStatus"
               style={{
-                position: "absolute",  // 부모를 기준으로 위치
-                bottom: "8px",  // 프로필 이미지 아래쪽
-                right: "80px",  // 프로필 이미지 오른쪽
-                width: "8px",  // 크기
-                height: "8px",  // 크기
+                position: "absolute", // 부모를 기준으로 위치
+                bottom: "8px", // 프로필 이미지 아래쪽
+                right: "80px", // 프로필 이미지 오른쪽
+                width: "8px", // 크기
+                height: "8px", // 크기
                 backgroundColor: `${statusColor}`, // 상태 색상
                 borderRadius: "50%", // 원형
                 // border: "2px solid white", // 테두리
