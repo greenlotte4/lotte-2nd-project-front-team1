@@ -21,15 +21,15 @@ export const USER_FIND = `${SERVER_HOST}/user/`;
 export const USER_CHECK = `${SERVER_HOST}/user/`;
 export const USER_CHANGE = `${SERVER_HOST}/user`;
 export const USER_LIST = `${SERVER_HOST}/user/list`; // 강중원 12.05 추가
-
+export const USER_LIST_BYUSERID = `${SERVER_HOST}/teamspace/listbyid`; //이도영 12.13 추가
 export const USER_EMAIL = `${SERVER_HOST}/api`;
 
 // article
 export const BOARD_ARTICLE_WRITE_URI = `${SERVER_HOST}/article/write`;
 export const BOARD_ARTICLE_VIEW = `${SERVER_HOST}/article/view`;
 export const BOARD_ARTICLE_DETAIL = `${SERVER_HOST}/article/view/detail`;
-export const BOARD_ARTICLE_BOARD = (boardId) => 
-    `${SERVER_HOST}/article/boards/${boardId}/articles`;
+export const BOARD_ARTICLE_BOARD = (boardId) =>
+  `${SERVER_HOST}/article/boards/${boardId}/articles`;
 export const BOARD_ARTICLE_EDIT = `${SERVER_HOST}/article/edit/:id`;
 export const BOARD_MOVE_BASKET = `${SERVER_HOST}/article/delete`;
 export const BOARD_TRASH_VIEW = `${SERVER_HOST}/article/trash`;
