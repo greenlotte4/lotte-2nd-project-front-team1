@@ -23,7 +23,7 @@ export default function UserListButton({ isOpen, onClose }) {
     const fetchUserList = async () => {
       try {
         const data = await getUserListbyuserid(user.userid);
-
+        console.log("Response data:", data);
         setUserList(data);
       } catch (err) {
         console.error("유저 목록 불러오기 실패 : ", err);
