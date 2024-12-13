@@ -219,3 +219,4 @@ export default function AppHeader({ onToggleSidebar, noneAside, thisPage }) {
     </header>
   );
 }
+}
