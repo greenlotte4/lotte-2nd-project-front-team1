@@ -35,6 +35,13 @@ export const BOARD_MOVE_BASKET = `${SERVER_HOST}/article/delete`;
 export const BOARD_TRASH_VIEW = `${SERVER_HOST}/article/trash`;
 //글 이동
 export const BOARD_ARTICLE_MOVE = `${SERVER_HOST}/article/articles/move`;
+
+//내 게시물 출력
+export const BOARD_ARTICLE_USER = (userId) => `${SERVER_HOST}/article/user/${userId}`;
+
+//중요글 체크
+export const BOARD_IMPORTANT_ARTICLE = (articleId) => `${SERVER_HOST}/important-articles/${articleId}`;
+
 export const BOARD_TRASH_PERMANENT = `${SERVER_HOST}/article/trash/permanent`;
 export const BOARD_TYPE = `${SERVER_HOST}/board/type`;
 export const BOARD_ALL = `${SERVER_HOST}/board/all`;
@@ -70,10 +77,30 @@ export const ADMIN_UPDATE_USERS = `${SERVER_HOST}/admin/updateuserlist`; //이�
 export const MESSAGE_NEW_CHANNEL = `${SERVER_HOST}/message/newChannel`;
 export const MESSAGE_NEW_DM = `${SERVER_HOST}/message/newDM`;
 export const MESSAGE_GET_ROOMS = `${SERVER_HOST}/message/rooms`;
+export const MESSAGE_GET_CHAT = `${SERVER_HOST}/message/chat`;
+export const MESSAGE_GET_LASTCHAT = `${SERVER_HOST}/message/lastchat`;
 
 //calendar
 export const CALENDAR_CREATE = `${SERVER_HOST}/calendar/makecalendar`;
+export const CALENDAR_INVITECODE = `${SERVER_HOST}/calendar/invitecalendar`;
 export const CALENDAR_LIST = `${SERVER_HOST}/calendar/calendarlist`;
+export const CALENDAR_DELETE = `${SERVER_HOST}/calendar/deletecalendar`;
+export const CALENDAR_LEAVE = `${SERVER_HOST}/calendar/leavecalendar`;
+export const CALENDAR_ADDEVENT = `${SERVER_HOST}/calendar/addevent`;
 
+// project
+export const PROJECT_LIST = `${SERVER_HOST}/project`
+export const SELECT_PROJECT = `${SERVER_HOST}/project`
+export const CREATE_PROJECT = `${SERVER_HOST}/project/create`;
+export const UPDATE_PROJECT = `${SERVER_HOST}/project/update/`
+export const DELETE_PROJECT = (no) => `${SERVER_HOST}/project/${no}`
 
+// project/Item
+export const CREATE_PROJECT_ITEM = `${SERVER_HOST}/project/ProjectItem/create`
+export const UPDATE_PROJECT_ITEM = (no) => `${SERVER_HOST}/project/ProjectItem/update/${no}`
+export const DELETE_PROJECT_ITEM = (no) => `${SERVER_HOST}/project/ProjectItem/delete/${no}`
 
+// project/Task
+export const CREATE_TASK = `${SERVER_HOST}/project/task/create`
+export const UPDATE_TASK = (no) => `${SERVER_HOST}/project/task/update/${no}`
+export const DELETE_TASK = (no) => `${SERVER_HOST}/project/task/delete/${no}`

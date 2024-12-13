@@ -1,7 +1,7 @@
 import { Link, useNavigate, useParams } from "react-router-dom";
 
 import { addFavoriteBoard, getAllBoards, getArticlesByBoard, getBoardArticles, getFavoriteBoards, moveArticlesToBoard, moveBoardToBasket } from "../../../api/board/boardAPI";
-import { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 
 export default function AnnouncementBoard(){
@@ -144,9 +144,9 @@ export default function AnnouncementBoard(){
         }
       };
 
-      const toggleMoveBox = () => {
-    setIsMoveBoxVisible((prev) => !prev); // 열기 또는 닫기 상태 전환
-};
+        const toggleMoveBox = () => {
+        setIsMoveBoxVisible((prev) => !prev); // 열기 또는 닫기 상태 전환
+        };
 useEffect(() => {
     const handleOutsideClick = (event) => {
         // moveBoxRef 내부나, toggleMoveBox 버튼 클릭이면 예외 처리
@@ -539,6 +539,35 @@ useEffect(() => {
                                 <button type="button" className="selected">
                                     <strong>20개씩 보기</strong>
                                 </button>
+                                <div className="option_box" style={{display: "none"}}>
+                                    <ul>
+                                        <li>
+                                            <button type="button">
+                                                10개씩 보기
+                                            </button>
+                                        </li>
+                                        <li>
+                                            <button type="button">
+                                                20개씩 보기
+                                            </button>
+                                        </li>
+                                        <li>
+                                            <button type="button">
+                                                30개씩 보기
+                                            </button>
+                                        </li>
+                                        <li>
+                                            <button type="button">
+                                                40개씩 보기
+                                            </button>
+                                        </li>
+                                        <li>
+                                            <button type="button">
+                                                50개씩 보기
+                                            </button>
+                                        </li>
+                                    </ul>
+                                </div>
     
                             </div>
                         </div>
@@ -548,67 +577,106 @@ useEffect(() => {
                 </div>
                 <div className="board_list">
                     <ul className="list edit_type default">
-                    {articles
-                     .filter((article) => article.status !== "trash")
-                    .map((article) => {
-                        console.log("여기임: " + JSON.stringify(article, null, 2)); // 각 article 객체의 값을 콘솔에 출력
-                        return (
-                            <li
-                            key={article.id}
-                            className="read has_photo"
-                            style={{ cursor: "pointer" }}
-                            onClick={() => navigate(`/article/view/${article.id}`)} // li 클릭 시 이동
-                        >
-                             <p className="chk">
-                            <input
-                                id={`check_${article.id}`}
-                                type="checkbox"
-                                name="chk_bd"
-                                checked={selectedArticles.includes(article.id)}
-                                onClick={(e) => e.stopPropagation()} // 클릭 이벤트 전파 차단
-                                onChange={() => handleCheckboxChange(article.id)} // 상태 변경
-                            />
-                           <label
-                                htmlFor={`check_${article.id}`}
-                                onClick={(e) => e.stopPropagation()} // label 클릭 시 부모 이벤트 방지
-                            >
-                                해당 게시글 선택
-                            </label>
-                        </p>
-                            <div className="sbj_box">
-                                <p className="sbj">
-                                    <em className="ic_noti">필독</em>
-                                    <Link to={`/article/view/${article.id}`} onClick={(e) => e.stopPropagation()}>
-                                        {article.title}
-                                    </Link>
-                                </p>
-                            </div>
-                            <p className="infor">
-                                <button type="button" className="user">
-                                      {article.userName || "Unknown User"}
+                        {articles.length > 0 ? (
+                            articles
+                                .filter((article) => article.status !== "trash")
+                                .map((article, index) => {
+                                    const isLastArticle = index === articles.length - 1; // 마지막 요소인지 확인
+                                    return (
+                                        <React.Fragment key={article.id}>
+                                            <li
+                                                className="read has_photo"
+                                                style={{ cursor: "pointer" }}
+                                                onClick={() => navigate(`/article/view/${article.id}`)} // li 클릭 시 이동
+                                            >
+                                                <p className="chk">
+                                                    <input
+                                                        id={`check_${article.id}`}
+                                                        type="checkbox"
+                                                        name="chk_bd"
+                                                        checked={selectedArticles.includes(article.id)}
+                                                        onClick={(e) => e.stopPropagation()} // 클릭 이벤트 전파 차단
+                                                        onChange={() => handleCheckboxChange(article.id)} // 상태 변경
+                                                    />
+                                                    <label
+                                                        htmlFor={`check_${article.id}`}
+                                                        onClick={(e) => e.stopPropagation()} // label 클릭 시 부모 이벤트 방지
+                                                    >
+                                                        해당 게시글 선택
+                                                    </label>
+                                                </p>
+                                                <div className="sbj_box">
+                                                    <p className="sbj">
+                                                        <em className="ic_noti">필독</em>
+                                                        <Link
+                                                            to={`/article/view/${article.id}`}
+                                                            onClick={(e) => e.stopPropagation()}
+                                                        >
+                                                            {article.title}
+                                                        </Link>
+                                                    </p>
+                                                </div>
+                                                <p className="infor">
+                                                    <button type="button" className="user">
+                                                        {article.userName || "Unknown User"}
+                                                    </button>
+                                                    <span className="read_chk">
+                                                        읽음 <strong>{article.readCount || 0}</strong>
+                                                    </span>
+                                                </p>
+                                                <p className="date">
+                                                    {new Date(article.createdAt).toLocaleDateString("en-CA")}
+                                                </p>
+                                            </li>
+
+                                            {/* 마지막 게시글 이후에 추가 */}
+                                            {isLastArticle && (
+                                                <p className="bt_more">
+                                                    <button
+                                                        type="button"
+                                                        className="btn"
+                                                        onClick={() =>
+                                                            navigate("/app/noticeboard", {
+                                                                state: { boardId, boardName },
+                                                            })
+                                                        }
+                                                    >
+                                                        글쓰기
+                                                    </button>
+                                                </p>
+                                            )}
+                                        </React.Fragment>
+                                    );
+                                })
+                        ) : (
+                            <li className="empty">
+                                <div className="desc">
+                                    <p><strong>등록된 게시글이 없습니다.</strong></p>
+                                    <p>게시판에 공유할 글을 남겨보세요.</p>
+                                </div>
+                                <button
+                                    type="button"
+                                    className="btn"
+                                    onClick={() =>
+                                        navigate("/app/noticeboard", { state: { boardId, boardName } })
+                                    }
+                                >
+                                    글쓰기
                                 </button>
-                                <span className="read_chk">
-                                    읽음 <strong>{article.readCount || 0}</strong>
-                                </span>
-                            </p>
-                            <p className="date">
-                                {new Date(article.createdAt).toLocaleDateString("en-CA")}
-                            </p>
-                        </li>
-                        );
-                    })}
+                            </li>
+                        )}
                     </ul>
-                    <p className="bt_more">
-                        <button type="button" className="btn"  onClick={() =>
-            navigate("/app/noticeboard", { state: { boardId, boardName } })
-        }>
-                            글쓰기
-                        </button>
-                    </p>
                 </div>
 
-            </div>            
+            </div>    
+            <div className="toast_wrap" style={{display: "none"}}>
+                <div className="toast">
+                    <h3 className="blind"></h3> 
+                <strong className="message">새글 알림용</strong>
+                </div>
+            </div>        
     
             </div>
+           
     );
 }

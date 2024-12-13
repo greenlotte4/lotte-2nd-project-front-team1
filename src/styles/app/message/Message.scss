@@ -31,7 +31,9 @@
   }
 
   .chatBox {
-    flex: 1 0 auto;
+    flex: 1;
+    overflow: scroll;
+    display: block;
   }
   .chatBlockByDay {
     margin-bottom: 20px;
@@ -64,9 +66,7 @@
     display: flex;
   }
 
-  .chatProfile {
-    width: 40px;
-    display: inline-block;
+  .chatAvatar {
     margin-right: 10px;
   }
 

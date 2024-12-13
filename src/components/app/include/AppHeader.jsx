@@ -23,7 +23,7 @@ import AccountTreeOutlinedIcon from "@mui/icons-material/AccountTreeOutlined";
 import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
 import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
 import MenuIcon from "@mui/icons-material/Menu";
-import { Tooltip } from "@mui/material";
+import { Avatar, Tooltip } from "@mui/material";
 import { useSelector } from "react-redux";
 import { profileUrl, selectLoginStatus } from "../../../api/user/userAPI";
 
@@ -38,7 +38,7 @@ export default function AppHeader({ onToggleSidebar, noneAside, thisPage }) {
   };
   // 이미지 URL을 받아오는 함수
   const getImageUrl = async () => {
-    const url = await profileUrl();  // 이미지 URL을 비동기적으로 가져옴
+    const url = await profileUrl(); // 이미지 URL을 비동기적으로 가져옴
     console.log("받은 이미지 URL: ", url);
     setImageUrl(url); // 받아온 URL을 상태에 저장
   };
@@ -79,6 +79,7 @@ export default function AppHeader({ onToggleSidebar, noneAside, thisPage }) {
   const handleStatusUpdate = (newStatus) => {
     setUserStatus(newStatus); // ProfileDropdown에서 변경된 상태값을 AppHeader로 전달
   };
+    }[status] || "transparent";
   return (
     <header className="AppHeader">
       <div className="headerTitle">
@@ -183,9 +184,11 @@ export default function AppHeader({ onToggleSidebar, noneAside, thisPage }) {
         <div className="headerProfile">
           {/* 프로필 버튼 */}
           <div className="ProfileDiv" onClick={() => toggleDropdown("profile")}>
-            <img src={imageUrl || "/images/user_Icon.png"}
-              alt="👤" className="profileImg" />
-            <div className="userStatus"
+            <Avatar className="profileImg" src={imageUrl}>
+              {user.username.charAt(0)}
+            </Avatar>
+            <div
+              className="userStatus"
               style={{
                 position: "absolute",  // 부모를 기준으로 위치
                 bottom: "8px",  // 프로필 이미지 아래쪽
@@ -196,7 +199,6 @@ export default function AppHeader({ onToggleSidebar, noneAside, thisPage }) {
                 borderRadius: "50%", // 원형
                 // border: "2px solid white", // 테두리
               }}
-
             ></div>
             <p className="ProfileName">
               {user.username || "알 수 없는 사용자"}

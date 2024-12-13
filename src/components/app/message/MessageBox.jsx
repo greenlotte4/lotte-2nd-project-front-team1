@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import EmojiPicker from "emoji-picker-react";
 import {
   Avatar,
@@ -18,44 +18,46 @@ import FormatAlignCenterIcon from "@mui/icons-material/FormatAlignCenter";
 import FormatAlignRightIcon from "@mui/icons-material/FormatAlignRight";
 import FormatAlignJustifyIcon from "@mui/icons-material/FormatAlignJustify";
 import EmojiEmotionsOutlinedIcon from "@mui/icons-material/EmojiEmotionsOutlined";
+import { getChatList, setChatText } from "../../../api/message/messageAPI";
+import { useSelector } from "react-redux";
+import { profileUrl } from "../../../api/user/userAPI";
 
-export default function MessageBox() {
+export default function MessageBox(roomId) {
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
   const [anchorEl, setAnchorEl] = useState(null);
   const [selectedIndex, setSelectedIndex] = useState(null); // 선택한 메시지 인덱스
   const [EmojiStatus, setEmojiStatus] = useState(false);
 
+  const [imageUrl, setImageUrl] = useState(null);
+
   const [inputStatus, setinputStatus] = useState(() => ["bold", "italic"]);
 
-  const getCurrentTime = () => {
-    const now = new Date();
-    let hours = now.getHours();
-    const minutes = now.getMinutes();
-    const ampm = hours >= 12 ? "오후" : "오전";
-    hours = hours % 12;
-    hours = hours ? hours : 12;
-    const minutesForMatted = minutes < 10 ? "0" + minutes : minutes;
-    return `${ampm} ${hours}: ${minutesForMatted}`;
-  };
-
-  const getCurrentDate = () => {
-    const now = new Date();
-    const year = now.getFullYear();
-    const month = now.getMonth() + 1;
-    const day = now.getDate();
-    const daysOfweek = ["월", "화", "수", "목", "금", "토", "일"];
-    const dayOfWeek = daysOfweek[now.getDay()];
-    return `${year}. ${month < 10 ? "0" + month : month}. ${
-      day < 10 ? "0" + day : day
-    }. (${dayOfWeek})`;
-  };
+  const user = useSelector((state) => state.userSlice);
 
   const handleSendMessage = () => {
     if (newMessage.trim()) {
-      const time = getCurrentTime();
-      const date = messages.length === 0 ? getCurrentDate() : null;
-      setMessages([...messages, { text: newMessage, time, date }]);
+      const now = new Date();
+      setChatList([
+        ...chatList,
+        {
+          context: newMessage,
+          senderId: {
+            userid: user.userid,
+            username: user.username + " (나)",
+            profile: imageUrl,
+          },
+          sendTime: now,
+        },
+      ]);
+
+      const chatText = {
+        senderId: user.userid,
+        context: newMessage,
+        chatId: roomId.roomId,
+      };
+      setChatText(chatText);
+
       setNewMessage("");
     }
   };
@@ -104,6 +106,32 @@ export default function MessageBox() {
     setinputStatus(newFormats);
   };
 
+  const [chatList, setChatList] = useState(null);
+
+  //useEffect
+  useEffect(() => {
+    getImageUrl();
+    if (roomId) {
+      fetchChatRoomList(roomId.roomId);
+    }
+  }, [roomId]);
+
+  const fetchChatRoomList = async (chatId) => {
+    try {
+      const data = await getChatList(chatId);
+
+      setChatList(data);
+    } catch (err) {
+      console.error("채팅 목록 불러오기 실패:", err);
+    }
+  };
+
+  const getImageUrl = async () => {
+    const url = await profileUrl(); // 이미지 URL을 비동기적으로 가져옴
+    console.log("받은 이미지 URL: ", url);
+    setImageUrl(url); // 받아온 URL을 상태에 저장
+  };
+
   return (
     <div className="messageDiv">
       <div className="messageInfo">
@@ -115,37 +143,50 @@ export default function MessageBox() {
       </div>
       <div className="chatBox">
         <div className="chatBlockByDay">
-          <div className="message_date">2024.12.05.(금)</div>
-          <div className="message_box">
-            <Avatar
-              alt="Remy Sharp"
-              src="/images/user_Icon.png"
-              className="chatProfile"
-            />
-            <div className="chatContent">
-              <div className="message_sender">강중원</div>
-              <div className="message_time">오후 2:30</div>
-              <div className="text_box">
-                <p>이거 이해가 잘 안되네요.</p>
-              </div>
+          <div className="message_date">2024.12.12.(목)</div>
+
+          {/* chatList가 null 또는 빈 배열인 경우 처리 */}
+          {!chatList || chatList.length === 0 ? (
+            <div className="empty-message">메시지가 없습니다.</div>
+          ) : (
+            <div className="message-container">
+              {chatList.map((chat, index) => (
+                <div
+                  key={chat.id}
+                  className={`message_box ${chat.senderId.userId === user.userid ? "myMessage" : "otherMessage"}`}
+                  onContextMenu={(event) => handleClick(event, index)}
+                >
+                  <Avatar
+                    src={
+                      chat.senderId.profile ||
+                      "/static/images/default-avatar.jpg"
+                    }
+                    alt={chat.senderId.username}
+                    className="chatAvatar"
+                  ></Avatar>
+
+                  <div className="chatContent">
+                    <div className="message_sender">
+                      {chat.senderId.userId === user.userid
+                        ? user.username + " (나)"
+                        : chat.senderId.username}
+                    </div>
+                    <div className="message_time">
+                      {new Date(chat.sendTime).toLocaleTimeString("ko-KR", {
+                        hour: "2-digit",
+                        minute: "2-digit",
+                      })}
+                    </div>
+                    <div className="text_box">
+                      <p>{chat.context}</p>
+                    </div>
+                  </div>
+                </div>
+              ))}
             </div>
-          </div>
-          <div className="message_box">
-            <Avatar
-              alt="Remy Sharp"
-              src="/images/user_Icon.png"
-              className="chatProfile"
-            />
-            <div className="chatContent">
-              <div className="message_sender">사용자 (나)</div>
-              <div className="message_time">오후 2:30</div>
-              <div className="text_box">
-                <p>그런가요</p>
-              </div>
-            </div>
-          </div>
+          )}
         </div>
-        {messages.map((message, index) => (
+        {/* {messages.map((message, index) => (
           <div key={index} className="chatBlockByDay">
             {message.date && <div className="message_date">{message.date}</div>}
             <div
@@ -166,7 +207,7 @@ export default function MessageBox() {
               </div>
             </div>
           </div>
-        ))}
+        ))} */}
       </div>
       <Menu
         id="basic-menu"
@@ -266,7 +307,11 @@ export default function MessageBox() {
             </div>
           </div>
 
-          <button onClick={handleSendMessage} className="sendButton">
+          <button
+            onClick={handleSendMessage}
+            className="sendButton"
+            disabled={!roomId}
+          >
             전송
           </button>
           <EmojiPicker

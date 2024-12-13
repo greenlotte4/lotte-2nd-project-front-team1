@@ -14,12 +14,15 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../../../slices/UserSlice";
 import { loginStatus, profileUrl, selectLoginStatus } from "../../../api/user/userAPI";
+import { profileUrl } from "../../../api/user/userAPI";
+import { Avatar } from "@mui/material";
 
 export default function ProfileDropdown({ isOpen, userStatus, onStatusChange }) {
   const [imageUrl, setImageUrl] = useState(null);
 
   const dispatch = useDispatch();
   const user = useSelector((state) => state.userSlice);
+
   console.log("user" + user);
 
   // 상태값 변경 함수
@@ -41,6 +44,7 @@ export default function ProfileDropdown({ isOpen, userStatus, onStatusChange }) 
   // 이미지 URL을 받아오는 함수
   const getImageUrl = async () => {
     const url = await profileUrl();  // 이미지 URL을 비동기적으로 가져옴
+
     setImageUrl(url); // 받아온 URL을 상태에 저장
   };
 
@@ -63,6 +67,7 @@ export default function ProfileDropdown({ isOpen, userStatus, onStatusChange }) 
     }[userStatus] || "transparent"; // 기본값은 투명
 
   return (
+    isOpen && (
     <div className="ProfileDropdown">
       <div className="profileDetails">
         <div
@@ -73,12 +78,9 @@ export default function ProfileDropdown({ isOpen, userStatus, onStatusChange }) 
             position: "relative"
           }}
         >
-          <img
-            src={imageUrl || "/images/user_Icon.png"}
-            alt="프로필 이미지"
-            className="ProfileDropdownImg"
-          />
-
+          <Avatar src={imageUrl} className="ProfileDropdownImg">
+              {user.username.charAt(0)}
+            </Avatar>
         </div>
         <div className="profileInfo">
           <div className="profileHeader">
@@ -94,30 +96,30 @@ export default function ProfileDropdown({ isOpen, userStatus, onStatusChange }) 
               <option value="dnd">방해금지</option>
               <option value="away">자리비움</option>
             </select>
+
           </div>
-          <p className="profileEmail">{user.email || "이메일 없음"}</p>
+        </div>
+        <div className="profileButtons">
+          {user.role === "ADMIN" && (
+            <Link to="/admin/user" className="editProfileButton">
+              관리자
+            </Link>
+          )}
+          <Link to="/app/setting" className="editProfileButton">
+            프로필 편집
+          </Link>
+          <button
+            className="logoutButton"
+            onClick={() => {
+              dispatch(logout()); // Redux 상태 초기화
+              window.location.href = "/user/login"; // 로그인 페이지로 이동
+            }}
+          >
+            로그아웃
+          </button>
         </div>
       </div>
-      <div className="profileButtons">
-        {user.role === "ADMIN" && (
-          <Link to="/admin/user" className="editProfileButton">
-            관리자
-          </Link>
-        )}
-        <Link to="/app/setting" className="editProfileButton">
-          프로필 편집
-        </Link>
-        <button
-          className="logoutButton"
-          onClick={() => {
-            dispatch(logout()); // Redux 상태 초기화
-            window.location.href = "/user/login"; // 로그인 페이지로 이동
-          }}
-        >
-          로그아웃
-        </button>
-      </div>
-    </div>
+    )
   );
 }
 
