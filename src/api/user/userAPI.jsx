@@ -258,13 +258,13 @@ export const uploadProfile = async (formData) => {
 
 // 파일 경로를 절대 URL로 변환하는 함수
 export const getFileUrl = (filePath) => {
-    const baseUrl = "http://localhost:8080";  // 서버 도메인 (배포 시 수정 필요)
-    const bepoUrl = "http://13.125.166.237:8080"
-    if (filePath && (filePath.startsWith("/user/thumb/"))) {
-        return `${baseUrl}${filePath}`;
-    }
-    console.error("잘못된 파일 경로:", filePath);
-    return null;  // 잘못된 경로인 경우 null 반환
+  const baseUrl = "http://localhost:8080"; // 서버 도메인 (배포 시 수정 필요)
+  const bepoUrl = "http://13.125.166.237:8080";
+  if (filePath && filePath.startsWith("/user/thumb/")) {
+    return `${baseUrl}${filePath}`;
+  }
+  console.error("잘못된 파일 경로:", filePath);
+  return null; // 잘못된 경로인 경우 null 반환
 };
 
 export const deleteuser = async () => {
@@ -285,55 +285,58 @@ export const deleteuser = async () => {
 };
 
 export const profileUrl = async () => {
+  try {
+    const user =
+      JSON.parse(localStorage.getItem("user")) ||
+      JSON.parse(sessionStorage.getItem("user"));
+    const userId = user.userid;
+    console.log("요청아이디" + userId);
+    const response = await axios.get(`${USER_CHANGE}/profileUrl`, {
+      params: {
+        userId: userId, // URL 쿼리 파라미터로 userId 전달
+      },
+    });
+    console.log("서버 응답: ", response); // 응답 데이터 출력
+    const imageUrl = response.data; // 서버에서 반환된 이미지 URL
 
-    try {
-        const user = JSON.parse(localStorage.getItem('user')) || JSON.parse(sessionStorage.getItem('user'));
-        const userId = user.userid;
-        console.log("요청아이디" + userId);
-        const response = await axios.get(`${USER_CHANGE}/profileUrl`, {
-            params: {
-                userId: userId  // URL 쿼리 파라미터로 userId 전달
-            }
-        });
-        console.log("서버 응답: ", response);  // 응답 데이터 출력
-        const imageUrl = response.data; // 서버에서 반환된 이미지 URL
-
-        console.log("이미지 URL: ", imageUrl);  // 이미지 URL 출력
-        return imageUrl; // 이미지 URL을 반환
-    } catch (error) {
-        console.log(error)
-    }
-}
+    console.log("이미지 URL: ", imageUrl); // 이미지 URL 출력
+    return imageUrl; // 이미지 URL을 반환
+  } catch (error) {
+    console.log(error);
+  }
+};
 
 export const loginStatus = async (userStatus) => {
-    try {
-        const user = JSON.parse(localStorage.getItem('user')) || JSON.parse(sessionStorage.getItem('user'));
+  try {
+    const user =
+      JSON.parse(localStorage.getItem("user")) ||
+      JSON.parse(sessionStorage.getItem("user"));
 
-        const userId = user.userid;
-        const response = await axios.put(`${USER_CHANGE}/loginStatus`,
-            {
-                userId: userId, userStatus: userStatus  // userId를 URL 파라미터로 전달
-            }
-        );
-        return response;
-    } catch (error) {
-        console.log(error)
-    }
-}
+    const userId = user.userid;
+    const response = await axios.put(`${USER_CHANGE}/loginStatus`, {
+      userId: userId,
+      userStatus: userStatus, // userId를 URL 파라미터로 전달
+    });
+    return response;
+  } catch (error) {
+    console.log(error);
+  }
+};
 
 export const selectLoginStatus = async () => {
-    try {
-        const user = JSON.parse(localStorage.getItem('user')) || JSON.parse(sessionStorage.getItem('user'));
+  try {
+    const user =
+      JSON.parse(localStorage.getItem("user")) ||
+      JSON.parse(sessionStorage.getItem("user"));
 
-        const userId = user.userid;
-        const response = await axios.get(`${USER_CHANGE}/selectLoginStatus`, {
-            params: {
-                userId: userId  // URL 쿼리 파라미터로 userId 전달
-            }
-        });
-        return response;
-    } catch (error) { 
-        console.log(error)
-    }
-}
-
+    const userId = user.userid;
+    const response = await axios.get(`${USER_CHANGE}/selectLoginStatus`, {
+      params: {
+        userId: userId, // URL 쿼리 파라미터로 userId 전달
+      },
+    });
+    return response;
+  } catch (error) {
+    console.log(error);
+  }
+};

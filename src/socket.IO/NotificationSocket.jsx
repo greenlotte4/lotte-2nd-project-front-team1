@@ -6,9 +6,10 @@ import { io } from "socket.io-client";
 function NotificationSocket({ onAlertReceived }) {
   useEffect(() => {
     // 현재 환경에 맞는 소켓 서버 주소 선택
-    const socketUrl = window.location.hostname === "localhost" 
-      ? "http://localhost:8080" 
-      : "https://hubflow.store";
+    const socketUrl =
+      window.location.hostname === "localhost"
+        ? "http://localhost:8080"
+        : "https://hubflow.store";
 
     // 소켓 인스턴스 생성
     const socket = io(socketUrl);
