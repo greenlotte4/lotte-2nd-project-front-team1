@@ -10,18 +10,20 @@ import {
 } from "@mui/material";
 import RemoveIcon from "@mui/icons-material/Remove";
 import { useEffect, useState } from "react";
-import { getUserListAll } from "../../../api/user/userAPI";
+import { getUserListAll, getUserListbyuserid } from "../../../api/user/userAPI";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
 export default function UserListButton({ isOpen, onClose }) {
   const navigate = useNavigate();
   const [userList, setUserList] = useState([]);
+  const user = useSelector((state) => state.userSlice);
   useEffect(() => {
     //유저목록 불러오기
     const fetchUserList = async () => {
       try {
-        const data = await getUserListAll();
+        const data = await getUserListbyuserid(user.userid);
+
         setUserList(data);
       } catch (err) {
         console.error("유저 목록 불러오기 실패 : ", err);
@@ -30,8 +32,6 @@ export default function UserListButton({ isOpen, onClose }) {
 
     fetchUserList();
   }, []);
-
-  const user = useSelector((state) => state.userSlice);
 
   const toMakeTeamSpace = () => {
     navigate("/app/setting");
