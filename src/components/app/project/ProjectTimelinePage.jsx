@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Gantt, ViewMode } from "@wamra/gantt-task-react";
 import "@wamra/gantt-task-react/dist/style.css";
 import {
@@ -10,39 +10,51 @@ import {
   TextField,
   Autocomplete,
 } from "@mui/material";
+import { postSelectProject } from "../../../api/project/project/projectAPI"; // API 호출 함수
+import { useParams } from "react-router-dom";
 
-const App = () => {
-  const today = new Date();
-
-  const initialTasks = [
-    {
-      id: "1",
-      name: "Define PRD & User Stories",
-      start: today,
-      end: new Date(today.getTime() + 30 * 24 * 60 * 60 * 1000),
-      progress: 50,
-      assignees: ["John Doe", "Jane Smith"],
-      type: "task",
-    },
-    {
-      id: "2",
-      name: "Persona & Journey",
-      start: today,
-      end: new Date(today.getTime() + 60 * 24 * 60 * 60 * 1000),
-      progress: 30,
-      assignees: ["Emily Davis"],
-      type: "task",
-    },
-  ];
-
-  const allUsers = ["John Doe", "Jane Smith", "Emily Davis", "Michael Brown"];
-
-  const [tasks, setTasks] = useState(initialTasks);
+const ProjectTimelinePage = () => {
+  const { projectId } = useParams();
+  const [tasks, setTasks] = useState([]);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [selectedTask, setSelectedTask] = useState(null);
+  const [allUsers, setAllUsers] = useState([]);
+
+  useEffect(() => {
+    if (projectId) {
+      fetchProjectData(projectId);
+    }
+  }, [projectId]);
+
+  const fetchProjectData = async (id) => {
+    try {
+      const response = await postSelectProject(id);
+      const { project } = response;
+      
+      // 사용자 리스트 추출
+      setAllUsers(project.projectUserNames || []);
+
+      // 테스크 데이터 변환
+      const projectTasks = project.projectItems.flatMap((item) =>
+        item.tasks.map((task) => ({
+          id: `task-${task.taskId}`,
+          name: task.name,
+          start: new Date(task.startDate),
+          end: new Date(task.endDate),
+          progress: 0, // Progress 데이터가 없다면 기본값으로 설정
+          assignees: task.assignee ? [task.assignee] : [],
+          type: "task",
+        }))
+      );
+
+      setTasks(projectTasks);
+    } catch (error) {
+      console.error("Failed to fetch project data:", error.message);
+    }
+  };
 
   const openDialog = (task) => {
-    setSelectedTask({ ...task }); // Clone the task to avoid direct mutation
+    setSelectedTask({ ...task });
     setDialogOpen(true);
   };
 
@@ -69,7 +81,7 @@ const App = () => {
 
   return (
     <div style={{ padding: "20px" }}>
-      <h2>테스트 프로젝트 1</h2>
+      <h2>프로젝트 타임라인</h2>
       <Gantt
         tasks={tasks}
         viewMode={ViewMode.Month}
@@ -167,7 +179,10 @@ const App = () => {
             <Button onClick={handleTaskUpdate} color="primary">
               Save
             </Button>
-            <Button onClick={closeDialog} color="secondary">
+            <Button onClick={handleTaskDelete} color="secondary">
+              Delete
+            </Button>
+            <Button onClick={closeDialog} color="default">
               Cancel
             </Button>
           </DialogActions>
@@ -177,4 +192,4 @@ const App = () => {
   );
 };
 
-export default App;
+export default ProjectTimelinePage;
