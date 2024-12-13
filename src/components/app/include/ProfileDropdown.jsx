@@ -13,11 +13,18 @@ import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../../../slices/UserSlice";
-import { loginStatus, profileUrl, selectLoginStatus } from "../../../api/user/userAPI";
-import { profileUrl } from "../../../api/user/userAPI";
+import {
+  loginStatus,
+  profileUrl,
+  selectLoginStatus,
+} from "../../../api/user/userAPI";
 import { Avatar } from "@mui/material";
 
-export default function ProfileDropdown({ isOpen, userStatus, onStatusChange }) {
+export default function ProfileDropdown({
+  isOpen,
+  userStatus,
+  onStatusChange,
+}) {
   const [imageUrl, setImageUrl] = useState(null);
 
   const dispatch = useDispatch();
@@ -35,7 +42,7 @@ export default function ProfileDropdown({ isOpen, userStatus, onStatusChange }) 
       console.log("상태 변경 완료");
     }
   };
-  
+
   // userStatus 값 확인
   useEffect(() => {
     console.log("Current userStatus:", userStatus);
@@ -43,11 +50,10 @@ export default function ProfileDropdown({ isOpen, userStatus, onStatusChange }) 
 
   // 이미지 URL을 받아오는 함수
   const getImageUrl = async () => {
-    const url = await profileUrl();  // 이미지 URL을 비동기적으로 가져옴
+    const url = await profileUrl(); // 이미지 URL을 비동기적으로 가져옴
 
     setImageUrl(url); // 받아온 URL을 상태에 저장
   };
-
 
   // 컴포넌트가 마운트될 때 프로필 이미지 URL을 가져옴
   useEffect(() => {
@@ -56,7 +62,6 @@ export default function ProfileDropdown({ isOpen, userStatus, onStatusChange }) 
 
   if (!isOpen) return null; // 드롭다운이 닫혀있으면 아무것도 렌더링하지 않음
   // 테두리 색상 결정
-
 
   const borderColor =
     {
@@ -68,55 +73,55 @@ export default function ProfileDropdown({ isOpen, userStatus, onStatusChange }) 
 
   return (
     isOpen && (
-    <div className="ProfileDropdown">
-      <div className="profileDetails">
-        <div
-          className="profileImageWrapper"
-          style={{
-            border: `3px solid ${borderColor}`, // 상태에 따른 테두리 색상
-            borderRadius: "50%", // 동그란 프로필 이미지 유지
-            position: "relative"
-          }}
-        >
-          <Avatar src={imageUrl} className="ProfileDropdownImg">
-              {user.username.charAt(0)}
-            </Avatar>
-        </div>
-        <div className="profileInfo">
-          <div className="profileHeader">
-            <p className="profileName">
-              {user.username || "알 수 없는 사용자"}
-            </p>
-            <select
-              className="statusDropdown"
-              value={userStatus}
-              onChange={statusChange} // 상태 변경
-            >
-              <option value="online">온라인</option>
-              <option value="dnd">방해금지</option>
-              <option value="away">자리비움</option>
-            </select>
-
-          </div>
-        </div>
-        <div className="profileButtons">
-          {user.role === "ADMIN" && (
-            <Link to="/admin/user" className="editProfileButton">
-              관리자
-            </Link>
-          )}
-          <Link to="/app/setting" className="editProfileButton">
-            프로필 편집
-          </Link>
-          <button
-            className="logoutButton"
-            onClick={() => {
-              dispatch(logout()); // Redux 상태 초기화
-              window.location.href = "/user/login"; // 로그인 페이지로 이동
+      <div className="ProfileDropdown">
+        <div className="profileDetails">
+          <div
+            className="profileImageWrapper"
+            style={{
+              border: `3px solid ${borderColor}`, // 상태에 따른 테두리 색상
+              borderRadius: "50%", // 동그란 프로필 이미지 유지
+              position: "relative",
             }}
           >
-            로그아웃
-          </button>
+            <Avatar src={imageUrl} className="ProfileDropdownImg">
+              {user.username.charAt(0)}
+            </Avatar>
+          </div>
+          <div className="profileInfo">
+            <div className="profileHeader">
+              <p className="profileName">
+                {user.username || "알 수 없는 사용자"}
+              </p>
+              <select
+                className="statusDropdown"
+                value={userStatus}
+                onChange={statusChange} // 상태 변경
+              >
+                <option value="online">온라인</option>
+                <option value="dnd">방해금지</option>
+                <option value="away">자리비움</option>
+              </select>
+            </div>
+          </div>
+          <div className="profileButtons">
+            {user.role === "ADMIN" && (
+              <Link to="/admin/user" className="editProfileButton">
+                관리자
+              </Link>
+            )}
+            <Link to="/app/setting" className="editProfileButton">
+              프로필 편집
+            </Link>
+            <button
+              className="logoutButton"
+              onClick={() => {
+                dispatch(logout()); // Redux 상태 초기화
+                window.location.href = "/user/login"; // 로그인 페이지로 이동
+              }}
+            >
+              로그아웃
+            </button>
+          </div>
         </div>
       </div>
     )
@@ -127,5 +132,4 @@ ProfileDropdown.propTypes = {
   isOpen: PropTypes.bool.isRequired, // 드롭다운 열림 여부
   onClose: PropTypes.func, // 닫힘 이벤트 핸들러
   onStatusChange: PropTypes.func.isRequired, // 상태 변경 함수
-
 };
