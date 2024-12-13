@@ -54,6 +54,8 @@
     "sass": "^1.82.0",
     "slate": "^0.110.2",
     "slate-react": "^0.111.0",
+    "socket.io": "^4.8.1",
+    "socket.io-client": "^4.8.1",
     "tinymce": "^7.5.1"
   },
   "devDependencies": {
