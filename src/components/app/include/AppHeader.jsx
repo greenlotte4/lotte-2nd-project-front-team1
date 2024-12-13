@@ -25,13 +25,12 @@ import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
 import MenuIcon from "@mui/icons-material/Menu";
 import { Avatar, Tooltip } from "@mui/material";
 import { useSelector } from "react-redux";
-import { profileUrl } from "../../../api/user/userAPI";
+import { profileUrl, selectLoginStatus } from "../../../api/user/userAPI";
 
 export default function AppHeader({ onToggleSidebar, noneAside, thisPage }) {
   const [openDropdown, setOpenDropdown] = useState(null); // "notification" | "profile" | null
-  const [status, setStatus] = useState(null);
   const [imageUrl, setImageUrl] = useState(null);
-
+  const [userStatus, setUserStatus] = useState("");
   const user = useSelector((state) => state.userSlice);
   const toggleDropdown = (type) => {
     setOpenDropdown((prev) => (prev === type ? null : type));
@@ -45,23 +44,38 @@ export default function AppHeader({ onToggleSidebar, noneAside, thisPage }) {
 
   // 컴포넌트가 마운트될 때 프로필 이미지 URL을 가져옴
   useEffect(() => {
-    getImageUrl();
-  }, []); // 빈 배열을 넣어 첫 렌더링에서만 실행되도록 설정
+    const fetchData = async () => {
+      await Promise.all([getLoginStatus(), getImageUrl()]);
+    };
+    fetchData(); // 비동기 데이터 가져오기 실행
+  }, []); // 빈 배열을 넣어 첫 렌더링 시 실행되도록 설정
 
-  // 상태별 테두리 색상
-  const borderColor =
-    {
-      online: "green",
-      dnd: "red",
-      away: "yellow",
-    }[status] || "transparent"; // 기본값은 투명
+  const getLoginStatus = async () => {
+    try {
+      const response = await selectLoginStatus(); // 서버에서 상태값 가져오기
+      if (response) {
+        setUserStatus(response.data); // 상태 업데이트
+        console.log("서버에서 가져온 상태값:", setUserStatus);
+      } else {
+        console.warn("서버에서 상태값을 가져오지 못했습니다.");
+      }
+    } catch (error) {
+      console.error("상태값 가져오기 실패:", error);
+    }
+  };
+
   const statusColor =
     {
       online: "green",
       dnd: "red",
       away: "yellow",
       logout: "red", // 로그아웃 상태는 빨간색
-    }[status] || "transparent";
+    }[userStatus] || "transparent";
+  // userStatus가 변경될 때마다 AppHeader에서 상태 반영
+  const handleStatusUpdate = (newStatus) => {
+    setUserStatus(newStatus); // ProfileDropdown에서 변경된 상태값을 AppHeader로 전달
+  };
+
   return (
     <header className="AppHeader">
       <div className="headerTitle">
@@ -174,10 +188,10 @@ export default function AppHeader({ onToggleSidebar, noneAside, thisPage }) {
               style={{
                 position: "absolute", // 부모를 기준으로 위치
                 bottom: "8px", // 프로필 이미지 아래쪽
-                right: "70px", // 프로필 이미지 오른쪽
+                right: "80px", // 프로필 이미지 오른쪽
                 width: "8px", // 크기
                 height: "8px", // 크기
-                backgroundColor: "red", // 상태 색상
+                backgroundColor: `${statusColor}`, // 상태 색상
                 borderRadius: "50%", // 원형
                 // border: "2px solid white", // 테두리
               }}
@@ -191,6 +205,12 @@ export default function AppHeader({ onToggleSidebar, noneAside, thisPage }) {
             onClose={() => setOpenDropdown(null)}
           />
         </div>
+        <ProfileDropdown
+          isOpen={openDropdown === "profile"}
+          onClose={() => setOpenDropdown(null)}
+          userStatus={userStatus}
+          onStatusChange={handleStatusUpdate} // 상태 변경 함수 전달
+        />
       </div>
     </header>
   );
