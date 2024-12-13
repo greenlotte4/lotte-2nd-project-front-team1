@@ -14,6 +14,8 @@ import {
   BOARD_ARTICLE_BOARD,
   BOARD_ALL,
   BOARD_ARTICLE_MOVE,
+  BOARD_ARTICLE_USER,
+  BOARD_IMPORTANT_ARTICLE,
 } from "../URI";
 
 
@@ -23,7 +25,7 @@ export const postBoardArticleWrite = async (data) => {
     console.log("Sending Data:", data);
 
     // POST 요청으로 데이터 전송
-    const response = await axios.post(BOARD_ARTICLE_WRITE_URI, data, {
+    const response = await axios.post(BOARD_ARTIICLE_WRITE_URI, data, {
       headers: {
         "Content-Type": "application/json",
       },
@@ -139,10 +141,12 @@ export const deleteBoardArticle = async (id, userId) => {
   }
 };
 
-export const getTrashArticles = async () => {
+export const getTrashArticles = async (userId) => {
   try {
-    // 서버에서 휴지통 게시글 데이터 가져오기
-    const response = await axios.get(BOARD_TRASH_VIEW);
+    // 서버에서 휴지통 게시글 데이터 가져오기 (사용자 ID 전달)
+    const response = await axios.get(BOARD_TRASH_VIEW, {
+      params: { userId }, // 사용자 ID를 요청 파라미터로 전달
+    });
     console.log("Fetched Trash Articles:", response.data); // 응답 데이터 확인
     return response.data; // 서버에서 반환된 데이터 반환
   } catch (err) {
@@ -241,3 +245,37 @@ export const moveArticlesToBoard = async (articleIds, boardId) => {
   }
 };
 
+export const getArticlesByUser = async (userId) => {
+  try {
+    const url = BOARD_ARTICLE_USER(userId); // 사용자 ID 기반 URI 생성
+    console.log(`Fetching articles for user ID ${userId}: ${url}`);
+
+    const response = await axios.get(url); // GET 요청으로 데이터 가져오기
+    console.log("User Articles Response:", response.data); // 응답 데이터 확인
+    return response.data; // 성공 시 데이터 반환
+  } catch (err) {
+    console.error(`Error fetching articles for user ID ${userId}:`, err);
+    throw new Error("사용자가 작성한 게시글을 가져오는 데 실패했습니다.");
+  }
+};
+
+export const toggleImportantArticle = async (articleId, userId) => {
+  try {
+    const response = await axios.post(
+      BOARD_IMPORTANT_ARTICLE(articleId), // URL 생성
+      null, // PATCH 요청은 데이터가 필요하지 않음
+      {
+        params: { userId }, // 사용자 ID를 쿼리 파라미터로 전달
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    console.log("Important Article Toggled:", response.data); // 응답 데이터 확인
+    return response.data; // 서버에서 반환된 데이터 반환
+  } catch (err) {
+    console.error("Error while toggling important article:", err.response?.data || err.message); // 에러 출력
+    throw new Error("중요 게시글 여부를 변경하는 데 실패했습니다.");
+  }
+};

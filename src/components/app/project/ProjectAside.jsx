@@ -1,32 +1,44 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { postSelectsProject, deleteProject } from "../../../api/project/project/projectAPI";
 import Modal from "../../modal/Modal";
+import AddProjectForm from "./asideProjectModal/AddProjectForm";
+import { useSelector } from "react-redux";
+import EditProjectModal from "./asideProjectModal/EditProjectModal";
+
 
 export default function ProjectSidebar({ isVisible }) {
+  const userId = useSelector((state) => state.userSlice.userid);
   const navigate = useNavigate();
   const [isAnimating, setIsAnimating] = useState(false);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
-  const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
   const [projects, setProjects] = useState([]);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [selectedProject, setSelectedProject] = useState(null);
+  const [selectedProjectId, setSelectedProjectId] = useState(null);
+
+  const openAddModal = () => setIsAddModalOpen(true);
+  const closeAddModal = () => setIsAddModalOpen(false);
 
   useEffect(() => {
     const fetchProjects = async () => {
       try {
-        const response = await axios.get("/project/");
-        const { inProjectList, loginUserProjectList } = response.data;
-
-        // 프로젝트 리스트 업데이트
-        setProjects([...inProjectList, ...loginUserProjectList]); // 둘을 합침
-        
+        const data = await postSelectsProject(userId);
+        console.log("프로젝트 데이터:", data);
+        if (data) {
+          setProjects(data); 
+        } else {
+          setProjects([]); 
+        }
       } catch (error) {
         console.error("프로젝트 데이터를 가져오는 중 오류 발생:", error);
+        setProjects([]); 
       }
     };
-
-    fetchProjects();
-  }, []); 
-
+  
+    if (userId) fetchProjects();
+  }, [userId]);
+  
 
   useEffect(() => {
     if (isVisible) {
@@ -37,286 +49,104 @@ export default function ProjectSidebar({ isVisible }) {
     }
   }, [isVisible]);
 
-  const openAddModal = () => setIsAddModalOpen(true);
-  const closeAddModal = () => setIsAddModalOpen(false);
+  const selectProject = (projectId, tab = "main") => {
+    setSelectedProjectId(projectId);
+    console.log("Selected Project ID:", projectId);
+    navigate(`/app/project/${projectId}/${tab}`);
+  };
 
-  const openUpdateModal = (project) => {
+  const handleEditClick = (project) => {
     setSelectedProject(project);
-    setIsUpdateModalOpen(true);
+    setIsEditModalOpen(true);
   };
-  const closeUpdateModal = () => setIsUpdateModalOpen(false);
-
-  const addProject = (newProject) => {
-    const newId = projects.length + 1;
-    setProjects((prevProjects) => [
-      ...prevProjects,
-      { id: newId, ...newProject, members: [] }, 
-    ]);
-  };
-
-  const updateProject = (updatedProject) => {
-    setProjects((prevProjects) =>
-      prevProjects.map((project) =>
-        project.id === updatedProject.id ? updatedProject : project
-      )
-    );
-    closeUpdateModal();
-  };
-
-  const deleteProject = (projectToDelete) => {
-    setProjects((prevProjects) =>
-      prevProjects.filter((project) => project.id !== projectToDelete.id)
-    );
-  };
-
-  const selectProject = (project) => {
-    setSelectedProject(project); // Track selected project
-    navigate(`/app/project/${project.id}`); // Update URL
-  };
-
-  return (
-    <>
-      {isAnimating && (
-      <div id="sidebar-container">
-        <aside
-          className={
-            isVisible ? "aside-slide-in sidebar" : "aside-slide-out sidebar"
-          }
-        >
-          <nav className="menu">
-            <h3>내가 팀장인 프로젝트</h3>
-            <ul>
-              {projects
-                .filter((project) => project.teamLeader === "로그인 사용자") // 팀장 필터링
-                .map((project) => (
-                  <li
-                    key={project.id}
-                    className={`menu-item ${
-                      selectedProject?.id === project.id ? "selected" : ""
-                    }`}
-                    onClick={() => selectProject(project)}
-                  >
-                    {project.name}
-                    <button
-                      className="update-button"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        openUpdateModal(project);
-                      }}
-                    >
-                      수정/삭제
-                    </button>
-                  </li>
-                ))}
-            </ul>
-
-            <h3>참여한 프로젝트</h3>
-            <ul>
-              {projects
-                .filter((project) => project.teamLeader !== "로그인 사용자") // 팀원으로 참여 중인 프로젝트 필터링
-                .map((project) => (
-                  <li
-                    key={project.id}
-                    className={`menu-item ${
-                      selectedProject?.id === project.id ? "selected" : ""
-                    }`}
-                    onClick={() => selectProject(project)}
-                  >
-                    {project.name}
-                    <button
-                      className="update-button"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        openUpdateModal(project);
-                      }}
-                    >
-                      수정/삭제
-                    </button>
-                  </li>
-                ))}
-            </ul>
-
-            <button className="addButton" onClick={openAddModal}>
-              + 프로젝트 추가
-            </button>
-          </nav>
-        </aside>
-      </div>
-    )}
-      <Modal isOpen={isAddModalOpen} onClose={closeAddModal} title="프로젝트 추가">
-        <AddProjectForm onClose={closeAddModal} onAddProject={addProject} />
-      </Modal>
-      <Modal isOpen={isUpdateModalOpen} onClose={closeUpdateModal} title="프로젝트 수정">
-        {selectedProject && (
-          <UpdateProjectForm
-            project={selectedProject}
-            onClose={closeUpdateModal}
-            onUpdateProject={updateProject}
-            onDeleteProject={deleteProject}
-          />
-        )}
-      </Modal>
-
-      {selectedProject && (
-        <div className="selected-project-members">
-          <h3>{selectedProject.name} 참여자</h3>
-          <ul>
-            {selectedProject.members.map((member, index) => (
-              <li key={index}>{member}</li>
-            ))}
-          </ul>
-        </div>
-      )}
-    </>
-  );
-}
-
-function AddProjectForm({ onClose, onAddProject }) {
-  const [projectName, setProjectName] = useState("");
-  const [teamLeader, setTeamLeader] = useState("");
-  const [startDate, setStartDate] = useState("");
-  const [endDate, setEndDate] = useState("");
-  const [tasks, setTasks] = useState(["기본 Task"]);
-
-  const handleAddTask = () => {
-    const MAX_TASKS = 5;
-
-    if (tasks.length >= MAX_TASKS) {
-      alert(`Task는 최대 ${MAX_TASKS}개까지만 추가할 수 있습니다.`);
+  const handleDeleteClick = async (projectId) => {
+    console.log("삭제 ID:", projectId);
+    if (!window.confirm("정말로 이 프로젝트를 삭제하시겠습니까?")) {
       return;
     }
-
-    setTasks([...tasks, ""]);
-  };
-
-  const handleTaskChange = (index, value) => {
-    const updatedTasks = [...tasks];
-    updatedTasks[index] = value;
-    setTasks(updatedTasks);
-  };
-
-  const handleSubmit = () => {
-    const newProject = {
-      name: projectName,
-      teamLeader,
-      startDate,
-      endDate,
-      tasks,
-    };
-
-    onAddProject(newProject);
-    onClose();
-  };
-
-  return (
-    <div className="add-project-form">
-      <div>
-        <label>프로젝트 이름</label>
-        <input
-          type="text"
-          value={projectName}
-          onChange={(e) => setProjectName(e.target.value)}
-        />
-      </div>
-      <div>
-        <label>팀원</label>
-        <input
-          type="text"
-          value={teamLeader}
-          onChange={(e) => setTeamLeader(e.target.value)}
-        />
-        <button>사용자 추가</button>
-      </div>
-      <div>
-        <label>프로젝트 기간</label>
-        <input
-          type="date"
-          value={startDate}
-          onChange={(e) => setStartDate(e.target.value)}
-        />
-        <input
-          type="date"
-          value={endDate}
-          onChange={(e) => setEndDate(e.target.value)}
-        />
-      </div>
-      <div>
-        <label>Tasks</label>
-        {tasks.map((task, index) => (
-          <div key={index}>
-            <input
-              type="text"
-              value={task}
-              onChange={(e) => handleTaskChange(index, e.target.value)}
-            />
-          </div>
-        ))}
-        <button onClick={handleAddTask}>+ Task 추가</button>
-      </div>
-      <button onClick={handleSubmit}>저장</button>
-    </div>
-  );
-}
-
-function UpdateProjectForm({ project, onClose, onUpdateProject, onDeleteProject }) {
-  const [projectName, setProjectName] = useState(project.name);
-  const [teamLeader, setTeamLeader] = useState(project.teamLeader);
-  const [startDate, setStartDate] = useState(project.startDate);
-  const [endDate, setEndDate] = useState(project.endDate);
-
-  const handleUpdate = () => {
-    const updatedProject = {
-      ...project,
-      name: projectName,
-      teamLeader,
-      startDate,
-      endDate,
-    };
-
-    onUpdateProject(updatedProject);
-    onClose();
-  };
-
-  const handleDelete = () => {
-    if (window.confirm("정말로 이 프로젝트를 삭제하시겠습니까?")) {
-      onDeleteProject(project);
-      onClose();
+    try {
+      await deleteProject(projectId);
+      setProjects((prevProjects) =>
+        prevProjects.filter((project) => project.projectId !== projectId)
+      );
+      console.log(`프로젝트 ${projectId} 삭제 완료`);
+    } catch (err) {
+      console.error(`프로젝트 ${projectId} 삭제 실패`, err);
+      alert("프로젝트 삭제에 실패했습니다. 다시 시도해주세요.");
     }
   };
 
+  const handleSave = (updatedProject) => {
+    setProjects((prevProjects) =>
+      prevProjects.map((proj) =>
+        proj.projectId === updatedProject.projectId ? updatedProject : proj
+      )
+    );
+    setIsEditModalOpen(false);
+    setSelectedProject(null);
+  };
+
+  const handleAddProject = (newProject) => {
+    setProjects((prevProjects) => [...prevProjects, newProject]);
+  };
+
   return (
-    <div className="update-project-form">
-      <div>
-        <label>프로젝트 이름</label>
-        <input
-          type="text"
-          value={projectName}
-          onChange={(e) => setProjectName(e.target.value)}
+    <div id="sidebar-container">
+      {isAnimating && (
+        <aside className={isVisible ? "aside-slide-in sidebar" : "aside-slide-out sidebar"}>
+          <nav className="menu">
+          <button className="addButton" onClick={openAddModal}>
+              + 프로젝트 추가
+            </button>
+            <h3 style={{ fontSize: "24px" }}>프로젝트 List</h3>
+            <ul>
+              {projects.length > 0 ? (
+                projects.map((project) => (
+                  <li key={project.projectId} style={{ display: "flex", alignItems: "center" }}>
+                    <span
+                      style={{ flex: 1, cursor: "pointer" }}
+                      onClick={() => selectProject(project.projectId)}
+                    >
+                      {selectedProjectId === project.projectId ? `> ${project.name}` : project.name}
+                    </span>
+                    <button
+                      style={{ marginLeft: "8px", cursor: "pointer" }}
+                      onClick={() => selectProject(project.projectId, "timeline")}
+                    >
+                      타임라인 보기
+                    </button>
+                    <button
+                      style={{ marginLeft: "8px", cursor: "pointer" }}
+                      onClick={() => handleEditClick(project)}
+                    >
+                      수정
+                    </button>
+                    <button
+                      style={{ marginLeft: "8px", cursor: "pointer" }}
+                      onClick={() => handleDeleteClick(project.projectId)}
+                    >
+                      삭제
+                    </button>
+                  </li>
+                ))
+              ) : (
+                <li>참여 중인 프로젝트가 없습니다.</li>
+              )}
+            </ul>
+          </nav>
+        </aside>
+      )}
+      <Modal isOpen={isAddModalOpen} onClose={() => setIsAddModalOpen(false)} title="프로젝트 추가">
+        <AddProjectForm onClose={closeAddModal} onAddProject={handleAddProject} />
+      </Modal>
+      {selectedProject && (
+        <EditProjectModal
+          isOpen={isEditModalOpen}
+          onClose={() => setIsEditModalOpen(false)}
+          project={selectedProject}
+          onSave={handleSave}
         />
-      </div>
-      <div>
-        <label>팀원</label>
-        <input
-          type="text"
-          value={teamLeader}
-          onChange={(e) => setTeamLeader(e.target.value)}
-        />
-      </div>
-      <div>
-        <label>프로젝트 기간</label>
-        <input
-          type="date"
-          value={startDate}
-          onChange={(e) => setStartDate(e.target.value)}
-        />
-        <input
-          type="date"
-          value={endDate}
-          onChange={(e) => setEndDate(e.target.value)}
-        />
-      </div>
-      <button onClick={handleUpdate}>수정</button>
-      <button onClick={handleDelete}>삭제</button>
+      )}
     </div>
   );
 }

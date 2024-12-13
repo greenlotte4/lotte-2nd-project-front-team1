@@ -88,6 +88,7 @@ export default function UserSetting() {
           console.log(setUserData)
           localStorage.setItem("userProfileImage", imageUrl);  // 로컬 스토리지에 저장
           alert("프로필 사진이 변경되었습니다.");
+          window.location.reload()
         } else {
           alert("프로필 사진 변경에 실패했습니다.");
         }
@@ -192,6 +193,7 @@ export default function UserSetting() {
           </div>
         </div>
       </div>
+      
     </div>
   );
 }
