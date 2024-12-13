@@ -78,8 +78,8 @@ export default function AppHeader({ onToggleSidebar, noneAside, thisPage }) {
   // userStatus가 변경될 때마다 AppHeader에서 상태 반영
   const handleStatusUpdate = (newStatus) => {
     setUserStatus(newStatus); // ProfileDropdown에서 변경된 상태값을 AppHeader로 전달
-  };
-    }[status] || "transparent";
+  }[status] || "transparent";
+    
   return (
     <header className="AppHeader">
       <div className="headerTitle">
@@ -218,5 +218,4 @@ export default function AppHeader({ onToggleSidebar, noneAside, thisPage }) {
       </div>
     </header>
   );
-}
 }
