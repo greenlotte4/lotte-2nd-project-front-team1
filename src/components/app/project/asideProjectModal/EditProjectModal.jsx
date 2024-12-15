@@ -13,6 +13,8 @@ import {
   Checkbox,
 } from "@mui/material";
 import { getUserListAll } from "../../../../api/user/userAPI";
+import { postUpdateProject } from "../../../../api/project/project/projectAPI";
+
 
 export default function EditProjectModal({ isOpen, onClose, project, onSave, userList: initialUserList }) {
   const [projectName, setProjectName] = useState(project.name || "");
@@ -22,7 +24,6 @@ export default function EditProjectModal({ isOpen, onClose, project, onSave, use
   const [userList, setUserList] = useState(initialUserList || []);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
-  // Fetch user list if not provided
   useEffect(() => {
     if (!initialUserList?.length) {
       const fetchUserList = async () => {
@@ -49,17 +50,25 @@ export default function EditProjectModal({ isOpen, onClose, project, onSave, use
   const isUserSelected = (userId) =>
     selectedUsers.some((user) => user.userId === userId);
 
-  const handleSave = () => {
+  const handleSave = async () => {
     const updatedProject = {
-      ...project,
+      projectId: project.projectId, // 기존 프로젝트 ID 유지
       name: projectName,
       startDate,
       endDate,
-      users: selectedUsers,
+      projectUser: selectedUsers.map((user) => user.userId), // 선택된 유저 ID 배열로 변환
     };
-    onSave(updatedProject);
-    onClose();
+  
+    try {
+      await postUpdateProject(updatedProject); // API 호출
+      onSave(updatedProject); // 부모 컴포넌트에 변경된 데이터 전달
+      onClose(); // 모달 닫기
+    } catch (error) {
+      console.error("프로젝트 수정 실패:", error);
+      alert("프로젝트 수정에 실패했습니다. 다시 시도해주세요.");
+    }
   };
+  
 
   return (
     <Modal open={isOpen} onClose={onClose}>
@@ -130,7 +139,6 @@ export default function EditProjectModal({ isOpen, onClose, project, onSave, use
           </Button>
         </Box>
 
-        {/* 사용자 선택 다이얼로그 */}
         {isDialogOpen && (
           <Box
             sx={{

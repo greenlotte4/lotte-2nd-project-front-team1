@@ -32,6 +32,9 @@ export default function ProjectMainPage() {
   const [currentGroupId, setCurrentGroupId] = useState(null);
   const [currentTask, setCurrentTask] = useState(null);
   const [newTaskName, setNewTaskName] = useState("");
+  const [newTaskAssignee, setNewTaskAssignee] = useState("");
+  const [newTaskStartDate, setNewTaskStartDate] = useState("");
+  const [newTaskEndDate, setNewTaskEndDate] = useState("");
   const [taskAssignee, setTaskAssignee] = useState("");
   const [taskStartDate, setTaskStartDate] = useState("");
   const [taskEndDate, setTaskEndDate] = useState("");
@@ -109,7 +112,7 @@ export default function ProjectMainPage() {
 
     setTasks((prevTasks) => [
       ...prevTasks,
-      { id: `task-${Date.now()}`, name: newTaskName, group: currentGroupId, assignee: "", startDate: "", endDate: "" },
+      { id: projectId, name: newTaskName, group: currentGroupId, assignee: "", startDate: "", endDate: "" },
     ]);
 
     setNewTaskName("");
@@ -308,9 +311,39 @@ export default function ProjectMainPage() {
             fullWidth
             margin="normal"
           />
+           <TextField
+            label="Assignee"
+            value={taskAssignee}
+            onChange={(e) => setNewTaskAssignee(e.target.value)}
+            fullWidth
+            margin="normal"
+          />
+          <TextField
+            label="Start Date"
+            type="date"
+            value={taskStartDate}
+            onChange={(e) => setNewTaskStartDate(e.target.value)}
+            fullWidth
+            margin="normal"
+            InputLabelProps={{ shrink: true }}
+          />
+          <TextField
+            label="End Date"
+            type="date"
+            value={taskEndDate}
+            onChange={(e) => setNewTaskEndDate(e.target.value)}
+            fullWidth
+            margin="normal"
+            InputLabelProps={{ shrink: true }}
+          />
+          <Box sx={{ display: "flex", justifyContent: "space-between", marginTop: 3 }}>
           <Button variant="contained" onClick={handleAddTask}>
             Add
           </Button>
+          <Button variant="outlined" color="secondary" onClick={() => closeModal("addTask")}>
+              Cancel
+            </Button>
+          </Box>
         </Box>
       </Modal>
 

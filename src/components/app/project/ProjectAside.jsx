@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { postSelectsProject, deleteProject } from "../../../api/project/project/projectAPI";
 import Modal from "../../modal/Modal";
-import AddProjectForm from "./asideProjectModal/AddProjectForm";
+import AddProjectForm from "./asideProjectModal/AddProjectModal";
 import { useSelector } from "react-redux";
 import EditProjectModal from "./asideProjectModal/EditProjectModal";
 
@@ -16,9 +16,22 @@ export default function ProjectSidebar({ isVisible }) {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [selectedProject, setSelectedProject] = useState(null);
   const [selectedProjectId, setSelectedProjectId] = useState(null);
+  const [userList, setUserList] = useState([]);
 
   const openAddModal = () => setIsAddModalOpen(true);
   const closeAddModal = () => setIsAddModalOpen(false);
+
+ useEffect(() => {
+    const fetchUserList = async () => {
+      try {
+        const data = await getUserListAll();
+        setUserList(data);
+      } catch (err) {
+        console.error("유저 목록 불러오기 실패 : ", err);
+      }
+    };
+    fetchUserList();
+  }, []);
 
   useEffect(() => {
     const fetchProjects = async () => {
@@ -59,6 +72,7 @@ export default function ProjectSidebar({ isVisible }) {
     setSelectedProject(project);
     setIsEditModalOpen(true);
   };
+  
   const handleDeleteClick = async (projectId) => {
     console.log("삭제 ID:", projectId);
     if (!window.confirm("정말로 이 프로젝트를 삭제하시겠습니까?")) {
@@ -141,11 +155,19 @@ export default function ProjectSidebar({ isVisible }) {
       </Modal>
       {selectedProject && (
         <EditProjectModal
-          isOpen={isEditModalOpen}
-          onClose={() => setIsEditModalOpen(false)}
-          project={selectedProject}
-          onSave={handleSave}
-        />
+        isOpen={isEditModalOpen}
+        onClose={() => setIsEditModalOpen(false)}
+        project={selectedProject} 
+        userList={userList} 
+        onSave={(updatedProject) => {
+          setProjects((prevProjects) =>
+            prevProjects.map((project) =>
+              project.projectId === updatedProject.projectId ? updatedProject : project
+            )
+          );
+          alert("프로젝트가 성공적으로 수정되었습니다.");
+        }}
+      />
       )}
     </div>
   );
