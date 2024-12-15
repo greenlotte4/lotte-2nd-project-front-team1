@@ -28,30 +28,41 @@ const ProjectTimelinePage = () => {
 
   const fetchProjectData = async (id) => {
     try {
-      const response = await postSelectProject(id);
-      const { project } = response;
-      
-      // 사용자 리스트 추출
-      setAllUsers(project.projectUserNames || []);
+        const response = await postSelectProject(id);
+        const { project } = response;
 
-      // 테스크 데이터 변환
-      const projectTasks = project.projectItems.flatMap((item) =>
-        item.tasks.map((task) => ({
-          id: `task-${task.taskId}`,
-          name: task.name,
-          start: new Date(task.startDate),
-          end: new Date(task.endDate),
-          progress: 0, // Progress 데이터가 없다면 기본값으로 설정
-          assignees: task.assignee ? [task.assignee] : [],
-          type: "task",
-        }))
-      );
+        setAllUsers(project.projectUserNames || []);
 
-      setTasks(projectTasks);
+        const projectTasks = project.projectItems.flatMap((item) =>
+            item.tasks.map((task) => {
+                const startDate = new Date(task.startDate);
+                const endDate = new Date(task.endDate);
+                const currentDate = new Date();
+
+                const totalDuration = endDate - startDate; 
+                const elapsedDuration = currentDate - startDate;
+                const progress = totalDuration > 0
+                    ? Math.min(Math.max((elapsedDuration / totalDuration) * 100, 0), 100)
+                    : 0;
+
+                return {
+                    id: `task-${task.taskId}`,
+                    name: task.name,
+                    start: startDate,
+                    end: endDate,
+                    progress,
+                    assignees: task.assignee ? [task.assignee] : [],
+                    type: "task",
+                };
+            })
+        );
+
+        setTasks(projectTasks);
     } catch (error) {
-      console.error("Failed to fetch project data:", error.message);
+        console.error("Failed to fetch project data:", error.message);
     }
-  };
+};
+
 
   const openDialog = (task) => {
     setSelectedTask({ ...task });
