@@ -61,7 +61,7 @@ export async function postSelectsProject(userId) {
 export const postUpdateProject = async (data) => {
   try {
     console.log("Sending Data:", data);
-    const response = await axios.put(`${UPDATE_PROJECT}${data.projectId}`, data, {
+    const response = await axios.put(`${UPDATE_PROJECT}/${data.projectId}`, data, {
       headers: {
         "Content-Type": "application/json",
       },

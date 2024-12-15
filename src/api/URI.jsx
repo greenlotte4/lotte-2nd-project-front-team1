@@ -92,7 +92,7 @@ export const CALENDAR_ADDEVENT = `${SERVER_HOST}/calendar/addevent`;
 export const PROJECT_LIST = `${SERVER_HOST}/project`
 export const SELECT_PROJECT = `${SERVER_HOST}/project`
 export const CREATE_PROJECT = `${SERVER_HOST}/project/create`;
-export const UPDATE_PROJECT = `${SERVER_HOST}/project/update/`
+export const UPDATE_PROJECT = `${SERVER_HOST}/project/update`
 export const DELETE_PROJECT = (no) => `${SERVER_HOST}/project/${no}`
 
 // project/Item
