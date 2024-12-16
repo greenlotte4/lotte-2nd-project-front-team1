@@ -81,11 +81,9 @@ export const checkEmail = async (email) => {
     const response = await axios.post(`${USER_EMAIL}/checkEmail`, {
       email: email,
     });
-    console.log("Email check response:", response); // 응답 확인
 
     return response.data.isAvailable;
   } catch (err) {
-    console.log("이메일 인증 오류" + err);
     return false; // 실패 시 false 반환
   }
 };
@@ -97,7 +95,6 @@ export const authEmail = async (email, authCode) => {
     });
     return response;
   } catch (err) {
-    console.log("이메일 인증 오류" + err);
     throw err;
   }
 };
@@ -108,7 +105,6 @@ export const checkPhoneNumber = async (fullPhoneNumber) => {
     const response = await axios.post(`${USER_CHECK}hpcheck`, {
       phoneNumber: fullPhoneNumber,
     });
-    console.log("요청함");
     return response.data; // 예: { isAvailable: true/false }
   } catch (error) {
     console.error("폰번호 중복 체크 실패:", error);
@@ -118,11 +114,9 @@ export const checkPhoneNumber = async (fullPhoneNumber) => {
 
 export const findByEmail = async (email) => {
   try {
-    console.log("보내는 이메일: ", email);
     const response = await axios.post(`${USER_FIND}findEmail`, {
       email: email,
     });
-    console.log("보내는 이메일: ", email);
     return response;
   } catch (error) {
     console.error("아이디 조회 실패:", error);
@@ -153,13 +147,11 @@ export const getUserListbyuserid = async (userId) => {
 export const changePassword = async (userId, newPassword) => {
   // 비번변경
   try {
-    console.log("전송되는 데이터: ", { newPassword, userId });
 
     const response = await axios.post(`${USER_FIND}newPass`, {
       newPassword: newPassword,
       userId: userId,
     });
-    console.log("서버 응답: ", response); // 응답 데이터 출력
 
     return response; // Handle response appropriately
   } catch (error) {
@@ -170,18 +162,15 @@ export const changePassword = async (userId, newPassword) => {
 
 export const changeNewHp = async (newHp) => {
   try {
-    console.log("전송되는 데이터" + newHp);
     const user =
       JSON.parse(localStorage.getItem("user")) ||
       JSON.parse(sessionStorage.getItem("user"));
-    console.log("localStorage에서 가져온 user: ", user);
     const userId = user.userid;
 
     const response = await axios.put(`${USER_CHANGE}/newHp`, {
       hp: newHp,
       userId: userId,
     });
-    console.log("서버 응답: ", response); // 응답 데이터 출력
     return response;
   } catch (error) {
     console.error("변경중 오류 발생 " + error);
@@ -190,7 +179,6 @@ export const changeNewHp = async (newHp) => {
 
 export const changeNewEmail = async (newEmail) => {
   try {
-    console.log("전송되는 데이터" + newEmail);
     const user =
       JSON.parse(localStorage.getItem("user")) ||
       JSON.parse(sessionStorage.getItem("user"));
@@ -201,7 +189,6 @@ export const changeNewEmail = async (newEmail) => {
       email: newEmail,
       userId: userId,
     });
-    console.log("서버 응답: ", response); // 응답 데이터 출력
     return response;
   } catch (error) {
     console.error("변경중 오류 발생 " + error);
@@ -209,7 +196,6 @@ export const changeNewEmail = async (newEmail) => {
 };
 export const changeStatusMessage = async (statusMessage) => {
   try {
-    console.log("전송되는 데이터" + statusMessage);
     const user =
       JSON.parse(localStorage.getItem("user")) ||
       JSON.parse(sessionStorage.getItem("user"));
@@ -220,7 +206,6 @@ export const changeStatusMessage = async (statusMessage) => {
       statusMessage: statusMessage,
       userId: userId,
     });
-    console.log("서버 응답: ", response); // 응답 데이터 출력
     return response;
   } catch (error) {
     console.error("변경중 오류 발생 " + error);
@@ -277,7 +262,6 @@ export const deleteuser = async () => {
     const response = await axios.put(`${USER_CHANGE}/delete`, {
       userId: userId, // userId를 URL 파라미터로 전달
     });
-    console.log("서버 응답: ", response); // 응답 데이터 출력
     return response;
   } catch (error) {
     console.log(error);
@@ -290,16 +274,13 @@ export const profileUrl = async () => {
       JSON.parse(localStorage.getItem("user")) ||
       JSON.parse(sessionStorage.getItem("user"));
     const userId = user.userid;
-    console.log("요청아이디" + userId);
     const response = await axios.get(`${USER_CHANGE}/profileUrl`, {
       params: {
         userId: userId, // URL 쿼리 파라미터로 userId 전달
       },
     });
-    console.log("서버 응답: ", response); // 응답 데이터 출력
     const imageUrl = response.data; // 서버에서 반환된 이미지 URL
 
-    console.log("이미지 URL: ", imageUrl); // 이미지 URL 출력
     return imageUrl; // 이미지 URL을 반환
   } catch (error) {
     console.log(error);
