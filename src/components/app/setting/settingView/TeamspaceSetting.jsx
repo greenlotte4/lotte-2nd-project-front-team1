@@ -9,6 +9,7 @@ import {
 
 export default function TeamspaceSetting() {
   const user = useSelector((state) => state.userSlice);
+  const userid = user.userid;
   const [serialNumber, setSerialNumber] = useState("");
   const [roomName, setRoomName] = useState("");
   const [isLoading, setIsLoading] = useState(true);
@@ -17,7 +18,7 @@ export default function TeamspaceSetting() {
   useEffect(() => {
     const fetchJoinedRooms = async () => {
       try {
-        const response = await getJoinedRooms(user.userid);
+        const response = await getJoinedRooms(userid);
         console.log(response);
         if (response.status === 204) {
           // 방 목록이 없을 경우 처리
@@ -27,6 +28,8 @@ export default function TeamspaceSetting() {
             id: room.teamSpaceId, // 팀 방 ID
             roomName: room.roomname, // 방 이름
             owner: room.user.username, // 방장 이름
+            serialnumber: room.serialnumber,
+            ownerid: room.user.userId,
           }));
           setJoinedRooms(formattedRooms);
         }
@@ -112,7 +115,6 @@ export default function TeamspaceSetting() {
         userId: user.userid,
         teamspaceId: roomId,
       };
-      console.log("roomId" + roomId);
       const isDeleted = await deleteOutTeam(requestData);
 
       if (isDeleted) {
@@ -167,6 +169,7 @@ export default function TeamspaceSetting() {
               <tr>
                 <th>참여 중인 방</th>
                 <th>방장</th>
+                <th>초대코드</th>
                 <th>나가기</th>
               </tr>
             </thead>
@@ -175,6 +178,11 @@ export default function TeamspaceSetting() {
                 <tr key={room.id}>
                   <td>{room.roomName}</td>
                   <td>{room.owner}</td>
+                  <td>
+                    {room.ownerid === userid
+                      ? room.serialnumber
+                      : "방장만 확인가능"}
+                  </td>
                   <td>
                     <button onClick={() => handleLeaveRoom(room.id)}>
                       나가기
