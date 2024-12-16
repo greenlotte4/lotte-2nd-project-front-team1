@@ -465,9 +465,7 @@ useEffect(() => {
                         />
                                 <label htmlFor="chk_all">전체 선택</label>
                             </span>
-                            <button type="button" disabled={selectedArticles.length === 0} className="point">
-                                <strong>읽음</strong>
-                            </button>
+                           
                             <div className="chk_del">
                                 <button type="button" disabled={selectedArticles.length === 0} className="point" onClick={handleDelete}>
                                     <strong>삭제</strong>
@@ -620,9 +618,6 @@ useEffect(() => {
                                                     <button type="button" className="user">
                                                         {article.userName || "Unknown User"}
                                                     </button>
-                                                    <span className="read_chk">
-                                                        읽음 <strong>{article.readCount || 0}</strong>
-                                                    </span>
                                                 </p>
                                                 <p className="date">
                                                     {new Date(article.createdAt).toLocaleDateString("en-CA")}

@@ -235,9 +235,7 @@ export default function MustReadBoard(){
                             </div>
                             <p className="infor">
                                 <button type="button" className="user">Board</button> 
-                                <span className="read_chk">읽음
-                                    <strong>1</strong>
-                                </span>
+                             
                             </p> 
                             <div className="board_name_box">
                                 <span className="board_name_text">공지사항</span>
