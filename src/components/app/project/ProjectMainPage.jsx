@@ -18,6 +18,8 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import AddIcon from "@mui/icons-material/Add";
 import { useParams } from "react-router-dom";
 import { postSelectProject } from "../../../api/project/project/projectAPI";
+import { postCreateProjectItem, postUpdateProjectItem, postDeleteProjectItem } from "../../../api/project/projectItem/projectItemAPI";
+import { postCreateProjectTask, postUpdateProjectTask, postDeleteProjectTask } from "../../../api/project/task/projectTaskAPI";
 
 export default function ProjectMainPage() {
   const { projectId } = useParams();
@@ -40,13 +42,34 @@ export default function ProjectMainPage() {
   const [taskEndDate, setTaskEndDate] = useState("");
   const [newColumn, setNewColumn] = useState({ title: "", color: "#ffffff" });
   const [selectedColumn, setSelectedColumn] = useState(null);
-
+  const clearTaskForm = () => {
+    setNewTaskName("");
+    setNewTaskAssignee("");
+    setNewTaskStartDate("");
+    setNewTaskEndDate("");
+    setTaskAssignee("");
+    setTaskStartDate("");
+    setTaskEndDate("");
+    setCurrentTask(null);
+  };
+  
   useEffect(() => {
     if (projectId) {
       console.log("Fetching data for projectId:", projectId); 
       fetchProjectData(projectId);
     }
   }, [projectId]);
+
+  useEffect(() => {
+    if (selectedColumn) {
+      setNewColumn({
+        title: selectedColumn.title || "",
+        color: selectedColumn.color || "#ffffff",
+      });
+    } else {
+      setNewColumn({ title: "", color: "#ffffff" });
+    }
+  }, [selectedColumn]);
 
   const fetchProjectData = async (id) => {
     try {
@@ -78,46 +101,202 @@ export default function ProjectMainPage() {
     }
   };
   
-  const generateRandomColor = () =>
-    `#${Math.floor(Math.random() * 16777215).toString(16)}`;
-  
-  
-
+  const generateRandomColor = () => `#${Math.floor(Math.random() * 16777215).toString(16)}`;
   const openModal = (type) => setModals((prev) => ({ ...prev, [type]: true }));
   const closeModal = (type) => setModals((prev) => ({ ...prev, [type]: false }));
 
-  const handleAddColumn = () => {
-    if (!newColumn.title.trim()) return;
+   // 그룹 생성
+   const handleCreateItemGroup = async (column) => {
+    const dto = {
+      name: column.title,
+      color: column.color,
+      position: columns.length,
+      project: { projectId },
+    };
+  
+    try {
+      const response = await postCreateProjectItem(dto);
+      console.log("성공:", response);
+      setColumns((prev) => [
+        ...prev,
+        {
+          id: `column-${response.id}`, 
+          title: column.title,
+          color: column.color,
+        },
+      ]);
+      closeModal("addColumn");
+    } catch (error) {
+      console.error("Error creating item group:", error.message);
+    }
+  };
 
-    setColumns((prevColumns) => {
-      if (selectedColumn) {
-        return prevColumns.map((col) =>
+  // 업데이트
+  const handleUpdateItemGroup = (column) => {
+    if (!column || !column.id) {
+      console.error("Invalid column object:", column);
+      return;
+    }
+    setSelectedColumn(column);
+    openModal("addColumn");
+  };
+
+  const handleSaveColumn = async () => {
+    if (!selectedColumn) {
+      console.error("No column selected for update.");
+      return;
+    }
+  
+    const columnId = selectedColumn.id.split("-")[1]; // 컬럼 ID 추출
+  
+    const dto = {
+      name: newColumn.title, // 수정된 값
+      color: newColumn.color,
+      position: columns.findIndex((col) => col.id === selectedColumn.id),
+      project: { projectId },
+    };
+  
+    try {
+      const response = await postUpdateProjectItem(columnId, dto);
+      console.log("업데이트 성공:", response);
+  
+      // UI 업데이트
+      setColumns((prev) =>
+        prev.map((col) =>
           col.id === selectedColumn.id
             ? { ...col, title: newColumn.title, color: newColumn.color }
             : col
+        )
+      );
+  
+      closeModal("addColumn");
+      setSelectedColumn(null); // 상태 초기화
+    } catch (error) {
+      console.error("업데이트 실패:", error.message);
+    }
+  };
+
+  // 삭제
+  const handleDeleteItemGroup = async (columnId) => {
+    const itemgroupId = columnId.split("-")[1]; 
+    try {
+      const response = await postDeleteProjectItem(itemgroupId);
+      console.log("삭제 성공:", response);
+      setColumns((prevColumns) => prevColumns.filter((col) => col.id !== columnId));
+    } catch (error) {
+      console.error("삭제 실패:", error.message);
+    }
+  };
+  
+  const handleAddTask = async () => {
+    if (!newTaskName.trim() || !currentGroupId) {
+      console.error("Task 이름이나 그룹 ID가 누락되었습니다.");
+      return;
+    }
+  
+    const newTask = {
+      name: newTaskName.trim(),
+      assignee: newTaskAssignee.trim() || "Unassigned",
+      description: "", 
+      priority: null,  
+      status: "Pending", 
+      startDate: newTaskStartDate || null,
+      endDate: newTaskEndDate || null,
+      projectItem: { projectItemId: currentGroupId.split("-")[1] },
+    };
+  
+    try {
+      const response = await postCreateProjectTask(newTask);
+      console.log("Task 추가 성공:", response);
+  
+      setTasks((prevTasks) => [
+        ...prevTasks,
+        {
+          id: `task-${response.taskId}`, 
+          name: newTask.name,
+          assignee: newTask.assignee,
+          description: newTask.description,
+          priority: newTask.priority,
+          status: newTask.status,
+          startDate: newTask.startDate,
+          endDate: newTask.endDate,
+          group: currentGroupId,
+        },
+      ]);
+  
+      closeModal("addTask");
+      clearTaskForm(); 
+    } catch (error) {
+      console.error("Task 추가 실패:", error.message);
+    }
+  };
+  
+
+  const handleEditTask = async () => {
+    if (!currentTask || !currentTask.id) {
+        console.error("currentTask 또는 currentTask.id가 유효하지 않습니다:", currentTask);
+        return;
+    }
+
+    const taskId = currentTask.id.split("-")[1]; // Task ID 추출
+    if (!taskId) {
+        console.error("유효한 Task ID를 추출하지 못했습니다:", currentTask.id);
+        return;
+    }
+
+    const updatedTask = {
+        name: currentTask.name.trim(),
+        assignee: taskAssignee.trim() || "Unassigned",
+        startDate: taskStartDate || null,
+        endDate: taskEndDate || null,
+    };
+
+    try {
+        const response = await postUpdateProjectTask(taskId, updatedTask);
+        console.log("Task 수정 성공:", response);
+
+        setTasks((prevTasks) =>
+            prevTasks.map((task) =>
+                task.id === currentTask.id
+                    ? {
+                          ...task,
+                          name: updatedTask.name,
+                          assignee: updatedTask.assignee,
+                          startDate: updatedTask.startDate,
+                          endDate: updatedTask.endDate,
+                      }
+                    : task
+            )
         );
-      } else {
-        const newId = newColumn.title.replace(/\s+/g, "") + Date.now();
-        return [...prevColumns, { id: newId, title: newColumn.title, color: newColumn.color }];
-      }
-    });
 
-    setNewColumn({ title: "", color: "#ffffff" });
-    setSelectedColumn(null);
-    closeModal("addColumn");
+        closeModal("editTask");
+        setCurrentTask(null);
+        setTaskAssignee("");
+        setTaskStartDate("");
+        setTaskEndDate("");
+    } catch (error) {
+        console.error("Task 수정 실패:", error.message);
+    }
+};
+
+  
+  
+
+  const handleDeleteTask = async (taskId) => {
+    const taskID = taskId.split("-")[1]; 
+    console.log("test = " , taskID);
+    try {
+      await postDeleteProjectTask(taskID);
+      console.log("Task 삭제 성공");
+  
+      setTasks((prevTasks) => prevTasks.filter((task) => task.id !== taskId));
+    } catch (error) {
+      console.error("Task 삭제 실패:", error.message);
+    }
   };
+  
 
-  const handleAddTask = () => {
-    if (!newTaskName.trim()) return;
 
-    setTasks((prevTasks) => [
-      ...prevTasks,
-      { id: projectId, name: newTaskName, group: currentGroupId, assignee: "", startDate: "", endDate: "" },
-    ]);
-
-    setNewTaskName("");
-    closeModal("addTask");
-  };
 
   const onDragEnd = (result) => {
     const { source, destination, type } = result;
@@ -192,20 +371,18 @@ export default function ProjectMainPage() {
                         </Typography>
                       </Box>
                       <Box>
-                        <IconButton
+                      <IconButton
                           size="small"
                           onClick={() => {
-                            setSelectedColumn(column);
-                            openModal("addColumn");
+                            console.log("Editing column:", column);
+                            handleUpdateItemGroup(column);
                           }}
-                        >
-                          <EditIcon />
-                        </IconButton>
+                          >
+                            <EditIcon />
+                          </IconButton>
                         <IconButton
                           size="small"
-                          onClick={() =>
-                            setColumns((prevColumns) => prevColumns.filter((col) => col.id !== column.id))
-                          }
+                          onClick={() => handleDeleteItemGroup(column.id) }
                         >
                           <DeleteIcon />
                         </IconButton>
@@ -238,25 +415,38 @@ export default function ProjectMainPage() {
                                     <CardContent
                                       sx={{
                                         display: "flex",
-                                        justifyContent: "space-between",
                                         alignItems: "center",
                                       }}
                                     >
+                                      {/* Task 정보 */}
                                       <Box>
                                         <Typography variant="body1">{task.name}</Typography>
                                         <Typography variant="body2" color="textSecondary">
                                           {task.assignee || "Unassigned"}
                                         </Typography>
                                       </Box>
-                                      <IconButton
-                                        size="small"
-                                        onClick={() => {
-                                          setCurrentTask(task);
-                                          openModal("editTask");
+
+                                      {/* 버튼 그룹: 오른쪽으로 이동 */}
+                                      <Box
+                                        sx={{
+                                          marginLeft: "auto", // Flexbox의 오른쪽으로 밀기
+                                          display: "flex",    // 버튼 그룹 정렬
+                                          gap: 1,             // 버튼 사이 간격
                                         }}
                                       >
-                                        <EditIcon />
-                                      </IconButton>
+                                        <IconButton
+                                          size="small"
+                                          onClick={() => {
+                                            setCurrentTask(task);
+                                            openModal("editTask");
+                                          }}
+                                        >
+                                          <EditIcon />
+                                        </IconButton>
+                                        <IconButton size="small" onClick={() => handleDeleteTask(task.id)}>
+                                          <DeleteIcon />
+                                        </IconButton>
+                                      </Box>
                                     </CardContent>
                                   </Card>
                                 )}
@@ -300,7 +490,6 @@ export default function ProjectMainPage() {
         )}
       </Droppable>
 
-      {/* Add Task Modal */}
       <Modal open={modals.addTask} onClose={() => closeModal("addTask")}>
         <Box sx={{ width: 400, margin: "auto", padding: 4, bgcolor: "background.paper" }}>
           <Typography variant="h6">Add Task</Typography>
@@ -313,7 +502,7 @@ export default function ProjectMainPage() {
           />
            <TextField
             label="Assignee"
-            value={taskAssignee}
+            value={newTaskAssignee}
             onChange={(e) => setNewTaskAssignee(e.target.value)}
             fullWidth
             margin="normal"
@@ -321,7 +510,7 @@ export default function ProjectMainPage() {
           <TextField
             label="Start Date"
             type="date"
-            value={taskStartDate}
+            value={newTaskStartDate}
             onChange={(e) => setNewTaskStartDate(e.target.value)}
             fullWidth
             margin="normal"
@@ -330,14 +519,14 @@ export default function ProjectMainPage() {
           <TextField
             label="End Date"
             type="date"
-            value={taskEndDate}
+            value={newTaskEndDate}
             onChange={(e) => setNewTaskEndDate(e.target.value)}
             fullWidth
             margin="normal"
             InputLabelProps={{ shrink: true }}
           />
           <Box sx={{ display: "flex", justifyContent: "space-between", marginTop: 3 }}>
-          <Button variant="contained" onClick={handleAddTask}>
+          <Button variant="contained" onClick={() => handleAddTask()}>
             Add
           </Button>
           <Button variant="outlined" color="secondary" onClick={() => closeModal("addTask")}>
@@ -347,7 +536,6 @@ export default function ProjectMainPage() {
         </Box>
       </Modal>
 
-      {/* Edit Task Modal */}
       <Modal open={modals.editTask} onClose={() => closeModal("editTask")}>
         <Box sx={{ width: 400, margin: "auto", padding: 4, bgcolor: "background.paper" }}>
           <Typography variant="h6">Edit Task</Typography>
@@ -384,7 +572,7 @@ export default function ProjectMainPage() {
             InputLabelProps={{ shrink: true }}
           />
           <Box sx={{ display: "flex", justifyContent: "space-between", marginTop: 3 }}>
-            <Button variant="contained" color="primary">
+            <Button variant="contained" color="primary" onClick={handleEditTask}>
               Save
             </Button>
             <Button variant="outlined" color="secondary" onClick={() => closeModal("editTask")}>
@@ -394,10 +582,12 @@ export default function ProjectMainPage() {
         </Box>
       </Modal>
 
-      {/* Add/Edit Column Modal */}
+
       <Modal open={modals.addColumn} onClose={() => closeModal("addColumn")}>
         <Box sx={{ width: 400, margin: "auto", padding: 4, bgcolor: "background.paper" }}>
-          <Typography variant="h6">{selectedColumn ? "Edit Column" : "Add Column"}</Typography>
+          <Typography variant="h6">
+            {selectedColumn ? "Edit Column" : "Add Column"}
+          </Typography>
           <TextField
             label="Column Name"
             value={newColumn.title}
@@ -408,16 +598,28 @@ export default function ProjectMainPage() {
           <Typography>Select Color</Typography>
           <ChromePicker
             color={newColumn.color}
-            onChange={(updatedColor) => setNewColumn({ ...newColumn, color: updatedColor.hex })}
+            onChange={(updatedColor) =>
+              setNewColumn({ ...newColumn, color: updatedColor.hex })
+            }
           />
           <Box sx={{ display: "flex", justifyContent: "center", marginTop: 3 }}>
-            <Button variant="contained" color="primary" onClick={handleAddColumn}>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={() => {
+                if (selectedColumn) {
+                  handleSaveColumn();
+                } else {
+                  handleCreateItemGroup(newColumn);
+                }
+              }}
+              sx={{ marginTop: 2 }}
+            >
               {selectedColumn ? "Save" : "Add"}
             </Button>
           </Box>
         </Box>
       </Modal>
     </DragDropContext>
-
   );
 }

@@ -26,6 +26,7 @@ export default function ProfileDropdown({
   onStatusChange,
 }) {
   const [imageUrl, setImageUrl] = useState(null);
+  const [status, setStatus] = useState(userStatus);  // 상태 관리 변수 추가
 
   const dispatch = useDispatch();
   const user = useSelector((state) => state.userSlice);
@@ -93,7 +94,7 @@ export default function ProfileDropdown({
               <select
                 className="statusDropdown"
                 value={status}
-                onChange={(e) => setStatus(e.target.value)} // 상태 변경
+                onChange={statusChange} // 상태 변경
               >
                 <option value="online">온라인</option>
                 <option value="dnd">방해금지</option>

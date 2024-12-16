@@ -6,48 +6,46 @@ export const postCreateProjectItem = async (data) => {
         console.log("Sending Data:", data);
         const response = await axios.post(CREATE_PROJECT_ITEM, data, {
             headers: {
-                "Content-Type": "application/json"
-            }
+            "Content-Type": "application/json",
+            },
         });
 
-        console.log("Response:", response.data);
-        return response.data;
+    console.log("Response:", response.data); 
+    return response.data;
     } catch (err) {
-        console.error("Error:", err);
+        console.error("Error:", err); 
         throw new Error("프로젝트 아이템 생성에 실패했습니다.");
     }
-};
+  };
 
-export const postUpdateProjectItem = async (data) => {
+  export const postUpdateProjectItem = async (no, data) => {
     try {
-        console.log("Sending Data:", data);
-        const response = await axios.post(UPDATE_PROJECT_ITEM, data, {
-            headers: {
-                "Content-Type": "application/json"
-            }
-        });
-
-        console.log("Response:", response.data);
-        return response.data;
+      console.log("Sending Data:", data);
+      const response = await axios.put(UPDATE_PROJECT_ITEM(no), data, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      console.log("Response:", response.data);
+      return response.data;
     } catch (err) {
-        console.error("Error:", err);
-        throw new Error("프로젝트 아이템 수정에 실패했습니다.");
+      console.error("Error:", err);
+      throw new Error("프로젝트 아이템 수정에 실패했습니다.");
     }
-};
-
-export const postDeleteProjectItem = async (data) => {
+  };
+  
+export const postDeleteProjectItem = async (id) => {
     try {
-        console.log("Sending Data:", data);
-        const response = await axios.post(DELETE_PROJECT_ITEM, data, {
-            headers: {
-                "Content-Type": "application/json"
-            }
+        console.log("Deleting Item ID:", id);
+        const response = await axios.delete(DELETE_PROJECT_ITEM(id), {
+        headers: {
+            "Content-Type": "application/json",
+            },
         });
-
-        console.log("Response:", response.data);
+        console.log("삭제 성공:", response.data);
         return response.data;
     } catch (err) {
-        console.error("Error:", err);
+        console.error("삭제 실패:", err);
         throw new Error("프로젝트 아이템 삭제에 실패했습니다.");
     }
 };

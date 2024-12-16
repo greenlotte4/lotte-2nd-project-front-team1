@@ -96,8 +96,12 @@ export const CALENDAR_DELETEEVENT = `${SERVER_HOST}/calendar/deleteevent`;
 export const PROJECT_LIST = `${SERVER_HOST}/project`;
 export const SELECT_PROJECT = `${SERVER_HOST}/project`;
 export const CREATE_PROJECT = `${SERVER_HOST}/project/create`;
-export const UPDATE_PROJECT = `${SERVER_HOST}/project/update`;
-export const DELETE_PROJECT = (no) => `${SERVER_HOST}/project/${no}`;
+
+// export const UPDATE_PROJECT = `${SERVER_HOST}/project/update`;
+// export const DELETE_PROJECT = (no) => `${SERVER_HOST}/project/${no}`;
+
+export const UPDATE_PROJECT = `${SERVER_HOST}/project/update`
+export const DELETE_PROJECT = `${SERVER_HOST}/project/delete`
 
 // project/Item
 export const CREATE_PROJECT_ITEM = `${SERVER_HOST}/project/ProjectItem/create`;
@@ -107,6 +111,15 @@ export const DELETE_PROJECT_ITEM = (no) =>
   `${SERVER_HOST}/project/ProjectItem/delete/${no}`;
 
 // project/Task
-export const CREATE_TASK = `${SERVER_HOST}/project/task/create`;
-export const UPDATE_TASK = (no) => `${SERVER_HOST}/project/task/update/${no}`;
-export const DELETE_TASK = (no) => `${SERVER_HOST}/project/task/delete/${no}`;
+
+// export const CREATE_TASK = `${SERVER_HOST}/project/task/create`;
+// export const UPDATE_TASK = (no) => `${SERVER_HOST}/project/task/update/${no}`;
+// export const DELETE_TASK = (no) => `${SERVER_HOST}/project/task/delete/${no}`;
+
+export const CREATE_TASK = `${SERVER_HOST}/project/task/create`
+export const UPDATE_TASK = (no) => `${SERVER_HOST}/project/task/update/${no}`
+export const DELETE_TASK = (no) => `${SERVER_HOST}/project/task/delete/${no}`
+
+
+// file
+export const File = `${SERVER_HOST}/api/drive-files`

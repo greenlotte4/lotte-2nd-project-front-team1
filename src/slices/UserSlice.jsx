@@ -45,6 +45,7 @@ const userSlice = createSlice({
       state.profile = data.profile;
       // 쿠키 저장(영구저장을 위해 쿠키 사용)
       Cookies.set("auth", JSON.stringify(data), { path: "/", sameSite: "strict" });
+      
     },
     logout: (state) => {
       console.log("로그아웃...");

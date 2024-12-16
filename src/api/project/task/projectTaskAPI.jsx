@@ -18,32 +18,40 @@ export const postCreateProjectTask = async (data) => {
     }
 };
 
-export const postUpdateProjectTask = async (data) => {
+export const postUpdateProjectTask = async (no, data) => {
+    if (!no) {
+        console.error("Task ID가 유효하지 않습니다:", no);
+        throw new Error("Task ID가 누락되었습니다.");
+    }
+
     try {
         console.log("Sending Data:", data);
-        const response = await axios.post(UPDATE_TASK, data, {
+        const response = await axios.put(UPDATE_TASK(no), data, {
             headers: {
-                "Content-Type": "application/json"
-            }
+                "Content-Type": "application/json",
+            },
         });
 
         console.log("Response:", response.data);
-        return response.data;
+        return response.data; 
     } catch (err) {
-        console.error("Error:", err);
+        if (err.response) {
+            console.error("Server Error:", err.response.data);
+        } else {
+            console.error("Error Message:", err.message);
+        }
         throw new Error("Task 수정에 실패했습니다.");
     }
 };
 
-export const postDeleteProjectTask = async (data) => {
+export const postDeleteProjectTask = async (id) => {
     try {
-        console.log("Sending Data:", data);
-        const response = await axios.post(DELETE_TASK, data, {
+        console.log("Sending Data:", id);
+        const response = await axios.delete(DELETE_TASK(id), {
             headers: {
                 "Content-Type": "application/json"
             }
         });
-
         console.log("Response:", response.data);
         return response.data;
     } catch (err) {
