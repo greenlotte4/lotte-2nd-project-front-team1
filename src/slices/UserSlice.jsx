@@ -14,9 +14,9 @@ const loadStateFromCookie = () => {
   const auth = Cookies.get("auth");
   if (!auth) return initState; // 쿠키가 없으면 초기 상태 반환
   const parsedAuth = JSON.parse(auth);
-  const { username, role, accessToken, userid, email } = parsedAuth || {};
-  console.log(username, email);
-  return { username, role, accessToken, userid, email };
+  const { username, role, accessToken, userid, email, profile } = parsedAuth || {};
+  console.log(username, email, profile);
+  return { username, role, accessToken, userid, email, profile };
 };
 
 const initState = {
@@ -25,6 +25,7 @@ const initState = {
   accessToken: null,
   userid: null,
   email: null,
+  profile: null,
 };
 
 const userSlice = createSlice({
@@ -41,6 +42,7 @@ const userSlice = createSlice({
       state.accessToken = data.accessToken;
       state.userid = data.userid;
       state.email = data.email;
+      state.profile = data.profile;
       // 쿠키 저장(영구저장을 위해 쿠키 사용)
       Cookies.set("auth", JSON.stringify(data), { path: "/", sameSite: "strict" });
     },
@@ -54,6 +56,8 @@ const userSlice = createSlice({
       state.accessToken = null;
       state.userid = null;
       state.email = null;
+      state.profile = null;
+
       // 쿠키 삭제
       Cookies.remove("auth", { path: "/" });
       localStorage.removeItem("user", { path: "/" });

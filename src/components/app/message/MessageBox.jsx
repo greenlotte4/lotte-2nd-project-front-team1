@@ -21,6 +21,7 @@ import EmojiEmotionsOutlinedIcon from "@mui/icons-material/EmojiEmotionsOutlined
 import { getChatList, setChatText } from "../../../api/message/messageAPI";
 import { useSelector } from "react-redux";
 import { profileUrl } from "../../../api/user/userAPI";
+import { io } from "socket.io-client";
 
 export default function MessageBox(roomId) {
   const [messages, setMessages] = useState([]);
@@ -34,6 +35,7 @@ export default function MessageBox(roomId) {
   const [inputStatus, setinputStatus] = useState(() => ["bold", "italic"]);
 
   const user = useSelector((state) => state.userSlice);
+  const socket = io("http://localhost:8081"); // 서버 주소로 변경 (로컬일 경우)
 
   const handleSendMessage = () => {
     if (newMessage.trim()) {
@@ -132,11 +134,16 @@ export default function MessageBox(roomId) {
     setImageUrl(url); // 받아온 URL을 상태에 저장
   };
 
+
+  //  소켓 스페이스
+  useEffect(()=> {
+
+  })
   return (
     <div className="messageDiv">
       <div className="messageInfo">
         <h2 className="chatRoomName">
-          <Avatar>강</Avatar>
+          <Avatar sx={{ bgcolor: user.color }}>강</Avatar>
           <div className="chatRoomNameText">강중원</div>
         </h2>
         <span></span>

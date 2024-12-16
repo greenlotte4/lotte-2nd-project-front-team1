@@ -11,7 +11,6 @@ import NotificationsNoneOutlinedIcon from "@mui/icons-material/NotificationsNone
 import Badge from "@mui/material/Badge";
 import { styled } from "@mui/material/styles";
 import { useState } from "react";
-import NotificationSocket from "../../../socket.IO/NotificationSocket";
 
 const StyledBadge = styled(Badge)(({ theme }) => ({
   "& .MuiBadge-badge": {
@@ -74,7 +73,6 @@ export default function NotificationButton({ isOpen, onToggle }) {
           </div>
         </div>
       )}
-      <NotificationSocket onAlertReceived={handleAlertReceived} />
     </div>
   );
 }
