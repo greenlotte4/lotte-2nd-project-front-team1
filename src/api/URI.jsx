@@ -93,7 +93,7 @@ export const PROJECT_LIST = `${SERVER_HOST}/project`
 export const SELECT_PROJECT = `${SERVER_HOST}/project`
 export const CREATE_PROJECT = `${SERVER_HOST}/project/create`;
 export const UPDATE_PROJECT = `${SERVER_HOST}/project/update`
-export const DELETE_PROJECT = (no) => `${SERVER_HOST}/project/${no}`
+export const DELETE_PROJECT = `${SERVER_HOST}/project/delete`
 
 // project/Item
 export const CREATE_PROJECT_ITEM = `${SERVER_HOST}/project/ProjectItem/create`

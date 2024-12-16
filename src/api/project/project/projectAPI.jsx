@@ -1,5 +1,5 @@
 import axios from "axios";
-import { CREATE_PROJECT, DELETE_PROJECT, PROJECT_LIST, SELECT_PROJECT, UPDATE_PROJECT, UPDATE_PROJECT_ITEM } from "../../URI";
+import { CREATE_PROJECT, DELETE_PROJECT, PROJECT_LIST, SELECT_PROJECT, UPDATE_PROJECT } from "../../URI";
 
 export const postCreateProject = async (project, userId) => {
     try {
@@ -78,8 +78,7 @@ export const postUpdateProject = async (data) => {
 
 export const deleteProject = async (projectId) => {
     try {
-      console.log("Deleting project at:", DELETE_PROJECT(projectId));
-      const response = await axios.delete(DELETE_PROJECT(projectId), {
+      const response = await axios.delete(`${DELETE_PROJECT}/${projectId}`, {
         headers: {
           "Content-Type": "application/json",
         },
