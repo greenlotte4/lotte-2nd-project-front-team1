@@ -558,25 +558,13 @@ export default function ViewBoard() {
                                 }) || "알 수 없음"}
                             </em>
                             </span>
-                            <span className="read">
-                                <button type="button">
-                                읽음 1
-                                </button>
-                            </span>
+                           
                             <span className="edit">편집 허용 : OFF (작성자, 게시판 마스터만 편집 가능)</span>
                         </div>
                         <div className="btn _no_print">
-                            <div className="btn_wrap">
-                                <button type="button" className="_btn_share">
-                                    보내기
-                                    <em className="ico"></em>
-                                </button>
-                            </div>
+                            
                             <button id="translateLayerBtn" type="button" className="bt_translate" onClick={toggleTranslateVisibility}>
                                 {isTranslateVisible ? "번역" : "번역 해제"}
-                            </button>
-                            <button type="button" className="print">
-                                인쇄
                             </button>
                         </div>
                     </div>
@@ -600,12 +588,6 @@ export default function ViewBoard() {
                     <div id="id_comments" className="comments">
                         <div className="infor">
                             <div className="reaction_box">
-                                <div className="reaction_item">
-                                    <button id="_reactionRecentListButton" type="button" className="btn_reaction_item">
-                                        <span className="text">리액션</span>
-                                    </button>
-
-                                </div>
                                 <div className="reaction_item has_reply">
                                     <button type="button" className="btn_reply_item">
                                         <span className="blind">댓글</span>
@@ -674,9 +656,6 @@ export default function ViewBoard() {
                                             <input id="commentImageFile" type="file" title="" name="uploadImage" accept="*" multiple="multiple" style={{display: "none"}}/>
         
                                         </span>
-                                        <button className="btn_attach_sticker">
-                                            <i className="blind"></i>
-                                        </button>
                                     </div>
                                     <div className="register_btns">
                                         <button type="button" className="point">

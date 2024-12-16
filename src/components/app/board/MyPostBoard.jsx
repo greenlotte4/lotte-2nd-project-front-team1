@@ -455,7 +455,7 @@ export default function MyPostBoard(){
                                 <button type="button" className="user">
                                     {article.userName}
                                 </button>
-                                <span className="read_chk">읽음<strong>1</strong></span>
+                                
                                 <em title="댓글갯수" className="comments">
                                     <a style={{cursor: "pointer"}}>2</a>
                                 </em>

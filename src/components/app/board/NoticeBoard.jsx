@@ -12,6 +12,22 @@ const NoticeBoard = () => {
     const [selectedBoard, setSelectedBoard] = useState(''); 
     const userId = useSelector((state) => state.userSlice.userid);
 
+    const [uploadedFiles, setUploadedFiles] = useState([]); 
+
+    const totalFileSize = uploadedFiles.reduce((sum, file) => sum + file.size, 0);
+    
+    const handleFileChange = (event) => {
+        const files = Array.from(event.target.files); // 선택된 파일 가져오기
+        setUploadedFiles((prev) => [...prev, ...files]); // 파일 목록 추가
+    };
+
+    const handleFileUploadClick = () => {
+        document.getElementById('fileUploadInput').click(); // 숨겨진 파일 입력 클릭
+    };
+
+    const handleRemoveFile = (index) => {
+        setUploadedFiles((prev) => prev.filter((_, i) => i !== index)); // 파일 목록에서 삭제
+    };
 
      const handleOpenBoardSelect = () => {
         setShowBoardSelect(true);
@@ -309,7 +325,7 @@ const NoticeBoard = () => {
                           임시저장
                         </button>
                       </div>
-                      <button type="button" className="btn_write_fold">세부 설정</button>
+                    
                   </div>
                   <ul className="option">
                       <li className="opt_sbj">
@@ -372,13 +388,82 @@ const NoticeBoard = () => {
                           </button>
                           <div className="lw_file_attach_write">
                               <div className="file_infor">
-                                  <button type="button" className="btn_attach">
+                                  <button type="button" className="btn_attach" onClick={handleFileUploadClick}>
                                       내 PC
                                   </button>
-                                  <button type="button" className="btn_attach">
-                                      드라이브
-                                  </button>
-                                  <p className="total_volume">첨부파일 0개 (0KB)</p>
+                                  <p className="total_volume">
+                                    첨부파일 {uploadedFiles.length}개 (
+                                    {totalFileSize >= 1024 * 1024
+                                        ? `${(totalFileSize / (1024 * 1024)).toFixed(2)} MB` // MB로 변환
+                                        : `${(totalFileSize / 1024).toFixed(2)} KB`}
+                                    )
+                                </p>
+                              </div>
+                              <input
+                                id="fileUploadInput"
+                                type="file"
+                                multiple
+                                style={{ display: 'none' }}
+                                onChange={handleFileChange}
+                            />
+                              <div className='file_wrap'>
+                                <table className='file_head'>
+                                    <colgroup>
+                                        <col className='col_file_del'></col>
+                                        <col className='col_file_name'></col>
+                                        <col className='col_file_size'></col>
+                                        <col className='col_scroll_gap'></col>
+                                    </colgroup>
+                                    <thead>
+                                        <tr>
+                                            <th className='file_del'></th>
+                                            <th className='file_name'>
+                                                <p className='file_cell'>파일명</p>
+                                            </th>
+                                            <th className="file_size">
+                                                <p className="file_cell">용량</p>
+                                            </th>
+                                            <th className='scroll_gap'>
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                </table>
+                                <div className='file_scroll_box osx_scrl'>
+                                    <table className='file_cont'>
+                                        <colgroup>
+                                            <col className='col_file_del'></col>
+                                            <col className='col_file_name'></col>
+                                            <col className='col_file_size'></col>
+                                        </colgroup>
+                                        <tbody>
+                                        {uploadedFiles.map((file, index) => (
+                                            <tr key={index}>
+                                                <td>
+                                                    <button type="button" className='btn_file_dels' onClick={() => handleRemoveFile(index)}>
+                                                        <i className="blind">첨부 파일 삭제</i>
+                                                    </button>
+                                                </td>
+                                                <td>{file.name}</td>
+                                                <td>
+                                                {file.size >= 1024 * 1024
+                                                    ? `${(file.size / (1024 * 1024)).toFixed(2)} MB` // MB로 변환
+                                                    : `${(file.size / 1024).toFixed(2)} KB`}    
+
+                                                </td>
+                                            </tr>
+                                        ))}
+                                        {uploadedFiles.length === 0 && (
+                                            <tr>
+                                                <td colSpan={3} className="empty_list" id='forfile'>
+                                                    파일이 없습니다.
+                                                </td>
+                                            </tr>
+                                        )}
+                                    </tbody>
+                                    </table>
+
+                                </div>
+                                
                               </div>
 
                           </div>

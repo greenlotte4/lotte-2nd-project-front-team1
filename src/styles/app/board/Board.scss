@@ -4883,4 +4883,114 @@ address, em {
 .board_view .subject .check_cover .important_post_check:checked+label:before {
   background-position: -424px -144px;
 }
+
+.lw_file_attach_write .file_infor+.file_wrap {
+  margin-top: 8px;
+}
+
+.lw_file_attach_write .file_wrap {
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  border: 1px solid #e6e8eb;
+  border-radius: 8px;
+  background-color: #fff;
+  margin-top: 8px;
+}
+
+.lw_file_attach_write .file_wrap table {
+  width: 100%;
+  border-collapse: collapse;
+  border: 0;
+  border-spacing: 0;
+  table-layout: fixed;
+}
+
+.lw_file_attach_write .file_head {
+  border-radius: 8px 8px 0 0;
+  background-color: #f9fafc;
+  font-size: 12px;
+  color: #3f4247;
+  line-height: 26px;
+}
+
+.lw_file_attach_write .file_wrap .col_file_del {
+  width: 20px;
+}
+
+.lw_file_attach_write .file_wrap .col_file_size {
+  width: 93px;
+}
+
+.lw_file_attach_write .file_wrap .col_scroll_gap {
+  width: 16px;
+}
+
+.lw_file_attach_write .file_head th {
+  padding-right: 16px;
+  font-weight: 400;
+  white-space: nowrap;
+}
+
+.lw_file_attach_write .file_wrap td, .lw_file_attach_write .file_wrap th {
+  text-align: left;
+}
+
+.lw_file_attach_write .file_wrap .file_name {
+  padding-left: 16px;
+}
+
+.lw_file_attach_write .file_wrap .file_name .file_cell {
+  text-align: left;
+}
+
+.lw_file_attach_write .file_scroll_box {
+  position: relative;
+  height: 86px;
+  overflow-x: hidden;
+  overflow-y: scroll;
+}
+
+.lw_file_attach_write .file_cont {
+  margin: 4px 0;
+  font-size: 14px;
+  line-height: 24px;
+  color: #202124;
+}
+
+.lw_file_attach_write .file_wrap .col_file_del {
+  width: 20px;
+}
+
+.lw_file_attach_write .file_wrap .col_file_size {
+  width: 93px;
+}
+
+.lw_file_attach_write .file_cont .empty_list {
+  padding: 0;
+  vertical-align: middle;
+  height: 78px;
+}
+.btn_file_dels{
+  background-color: white;
+  border: 0;
+  margin-left: 5px;
+}
+
+.btn_file_dels:before {
+  content: "";
+  display: inline-block;
+  background-image: url(https://static.worksmobile.net/static/pwe/wm/home/sp_board_967af075.png);
+  background-image: -webkit-gradient(linear,left top,left bottom,from(transparent),to(transparent)),url(https://static.worksmobile.net/static/pwe/wm/home/sp_board_9d215a12.svg);
+  background-image: linear-gradient(transparent,transparent),url(https://static.worksmobile.net/static/pwe/wm/home/sp_board_9d215a12.svg);
+  background-size: 500px 473px;
+  background-position: -332px -457px;
+  width: 8px;
+  height: 8px;
+}
+
+#forfile{
+  text-align: center;
+}
+
+
 }
