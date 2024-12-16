@@ -3,6 +3,8 @@ import {
   CALENDAR_ADDEVENT,
   CALENDAR_CREATE,
   CALENDAR_DELETE,
+  CALENDAR_DELETEEVENT,
+  CALENDAR_EDITEVENT,
   CALENDAR_INVITECODE,
   CALENDAR_LEAVE,
   CALENDAR_LIST,
@@ -13,8 +15,14 @@ export async function createCalendar(calendarData) {
     const response = await axios.post(`${CALENDAR_CREATE}`, calendarData);
     return response.data; // 성공 시 데이터 반환
   } catch (error) {
-    console.error("방 생성에 실패했습니다:", error);
-    throw error; // 실패 시 에러를 호출자에게 전달
+    if (error.response) {
+      // 서버에서 응답한 에러 메시지
+      console.log("캘린더", error.response);
+      alert(`캘린더 생성 실패: ${error.response.data.message}`);
+    } else {
+      // 기타 에러
+      alert("캘린더 생성 과정에서 문제가 발생했습니다. 다시 시도해주세요.");
+    }
   }
 }
 //초대 코드 달력 생성
@@ -31,8 +39,13 @@ export async function joinCalendarByInviteCode(inviteCode, userId) {
     );
     return response.data; // 서버 응답 데이터 반환
   } catch (error) {
-    console.error("초대 코드 API 호출 실패:", error);
-    throw error;
+    if (error.response) {
+      // 서버에서 응답한 에러 메시지
+      alert(`캘린더 생성 실패: ${error.response.data}`);
+    } else {
+      // 기타 에러
+      alert("캘린더 생성 과정에서 문제가 발생했습니다. 다시 시도해주세요.");
+    }
   }
 }
 //달력 리스트 출력
@@ -87,7 +100,40 @@ export const addevent = async (eventlist) => {
     });
     return response.data; // 서버에서 반환된 데이터
   } catch (error) {
-    console.error("팀 나가기 실패:", error);
+    console.error("일정 추가 실패:", error);
+    throw new Error("Failed to leave calendar");
+  }
+};
+//일정 수정하기
+export const editevent = async (eventlist) => {
+  try {
+    console.log("API 호출 데이터:", { eventlist });
+    const response = await axios.put(`${CALENDAR_EDITEVENT}`, eventlist, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    return response.data; // 서버에서 반환된 데이터
+  } catch (error) {
+    console.error("일정 추가 실패:", error);
+    throw new Error("Failed to leave calendar");
+  }
+};
+//일정 삭제하기
+export const deleteevent = async (calendarEventId) => {
+  try {
+    console.log("API 호출 데이터:", { calendarEventId });
+    const response = await axios.delete(
+      `${CALENDAR_DELETEEVENT}/${calendarEventId}`,
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    return response.data; // 서버에서 반환된 데이터
+  } catch (error) {
+    console.error("일정 추가 실패:", error);
     throw new Error("Failed to leave calendar");
   }
 };
