@@ -4,16 +4,15 @@ import { postSelectProject } from "../../../api/project/project/projectAPI";
 import Modal from "../../modal/Modal";
 
 export default function ProjectDetailPage() {
-  const { projectId } = useParams(); // URL에서 projectId를 가져옴
+  const { projectId } = useParams(); 
   const navigate = useNavigate();
   const [projectDetail, setProjectDetail] = useState(null);
   const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
 
-  // 프로젝트 상세보기 API 호출
   useEffect(() => {
     const fetchProjectDetail = async () => {
       try {
-        const data = { projectId }; // 서버로 보낼 데이터
+        const data = { projectId }; 
         const response = await postSelectProject(data);
         setProjectDetail(response);
       } catch (error) {
