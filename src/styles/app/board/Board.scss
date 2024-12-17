@@ -5156,4 +5156,12 @@ address, em {
   color: #1573e6;
 }
 
+.board_write .option li input[type=checkbox]:checked+label:before {
+  background-position: -452px -391px;
+}
+
+.board_write .option li input[type=checkbox]:checked+label:before {
+  background-position: -452px -391px;
+}
+
 }
