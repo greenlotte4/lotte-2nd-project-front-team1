@@ -16,6 +16,7 @@ const NoticeBoard = () => {
     const [uploadedFiles, setUploadedFiles] = useState([]); 
     const [mustRead, setMustRead] = useState(false);
     const [Notification, setNotification] = useState(false);
+    
 
     const totalFileSize = uploadedFiles.reduce((sum, file) => sum + file.size, 0);
     
