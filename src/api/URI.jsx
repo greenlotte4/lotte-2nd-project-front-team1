@@ -44,6 +44,12 @@ export const BOARD_ARTICLE_USER = (userId) =>
 export const BOARD_IMPORTANT_ARTICLE = (articleId) =>
   `${SERVER_HOST}/important-articles/${articleId}`;
 
+//댓글 추가
+export const BOARD_COMMENT_ADD = `${SERVER_HOST}/comment/add`;
+
+//댓글 보기
+export const BOARD_COMMENT_VIEW = (articleId) =>
+  `${SERVER_HOST}/comment/${articleId}`;
 
 
 export const BOARD_TRASH_PERMANENT = `${SERVER_HOST}/article/trash/permanent`;
