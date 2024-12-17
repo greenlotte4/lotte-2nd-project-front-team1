@@ -568,6 +568,42 @@ export default function ViewBoard() {
                             </button>
                         </div>
                     </div>
+
+                    {article.files && article.files.length > 0 && (
+                    <div className="lw_file_attach_view">
+                        <div className="file_infor">
+                                <span className="file_tit">
+                                    <button type="button" className="btn_fold_attach">
+                                        <i className="blind">첨부 파일</i>
+                                    </button>
+                                    <span>첨부 파일 <em>1</em>개</span>
+                                    <span className="file_size">(4.6KB)</span>
+                                </span>
+                        </div>
+                        <div className="file_wrap">
+                                <ul className="file_list">
+                                {article.files.map((file) => (
+                                    <li key={file.boardFileId}> 
+                                        <span className="file_name">
+                                            <button type="button"  title={file.fileOriginalName} className="file_name_txt">{file.fileOriginalName}</button>
+                                        </span>
+                                        <span className="file_size">
+                                            {(
+                                                file.fileSize / 1024
+                                            ).toFixed(2)}{" "}
+                                            KB
+                                        </span>
+                                        <div className="file_btn_area _no_print">
+                                            <button type="button" className="btn_down_pc">
+                                                <i className="blind">PC 저장</i>
+                                            </button>
+                                        </div>
+                                    </li>
+                                    ))}
+                                </ul>
+                        </div>
+                    </div>
+                    )}
                     <div id="id_contents" className="cont">
                         <div
                             style={{ fontSize: "14px" }}
