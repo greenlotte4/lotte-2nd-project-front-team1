@@ -92,6 +92,10 @@ const NoticeBoard = () => {
         setMustRead((prev) => !prev); // 필독 여부 토글
     };
 
+    const handleCheckboxChange2 = () => {
+        setNotification((prev) => !prev); //공지 여부 토글
+    }
+
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -111,6 +115,7 @@ const NoticeBoard = () => {
                 boardName: selectedBoard,
                 userId: userId,
                 mustRead: mustRead,
+                notification: Notification,
             })], { type: "application/json" })
         );
     
@@ -392,7 +397,7 @@ const NoticeBoard = () => {
                       </div>
                     <div className='notice'>
                         <div className='check_wrap'>
-                            <input id="option_notice_3" type="checkbox" className="check_notice"/>
+                            <input id="option_notice_3" type="checkbox" className="check_notice" checked={Notification} onChange={handleCheckboxChange2}/>
                             <label htmlFor="option_notice_3">공지로 등록</label>
                         </div>
                         <div className='tooltip_cover'>
