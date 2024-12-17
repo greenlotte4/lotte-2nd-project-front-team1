@@ -498,7 +498,7 @@ const NoticeBoard = () => {
                                 </div>
                                 
                               </div>
-                            )}
+                                )}
                             </div>
                       </li>
                   </ul>
