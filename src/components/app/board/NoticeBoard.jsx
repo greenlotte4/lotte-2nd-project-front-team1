@@ -14,6 +14,8 @@ const NoticeBoard = () => {
 
     const [showFileWrap, setShowFileWrap] = useState(false);
     const [uploadedFiles, setUploadedFiles] = useState([]); 
+    const [mustRead, setMustRead] = useState(false);
+    const [Notification, setNotification] = useState(false);
 
     const totalFileSize = uploadedFiles.reduce((sum, file) => sum + file.size, 0);
     
@@ -86,6 +88,10 @@ const NoticeBoard = () => {
  
     };
 
+    const handleCheckboxChange = () => {
+        setMustRead((prev) => !prev); // 필독 여부 토글
+    };
+
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -104,6 +110,7 @@ const NoticeBoard = () => {
                 ...article,
                 boardName: selectedBoard,
                 userId: userId,
+                mustRead: mustRead,
             })], { type: "application/json" })
         );
     
@@ -372,7 +379,7 @@ const NoticeBoard = () => {
                       <div className='notice must_read'>
                         <div className='notice_inner'>
                             <div className='check_wrap'>
-                                <input id="option_notice" type="checkbox" className="check_notice"/>
+                                <input id="option_notice" type="checkbox" className="check_notice"  checked={mustRead} onChange={handleCheckboxChange}/>
                                 <label htmlFor="option_notice">필독으로 등록</label>
                             </div>
                         </div>

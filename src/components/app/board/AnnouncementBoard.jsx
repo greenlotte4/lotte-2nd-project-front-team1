@@ -600,7 +600,10 @@ useEffect(() => {
                                                 </p>
                                                 <div className="sbj_box">
                                                     <p className="sbj">
+                                                    <em className="ic_announcement">공지</em>
+                                                    {article.mustRead && ( // 필독이 true일 때만 표시
                                                         <em className="ic_noti">필독</em>
+                                                    )}
                                                         <Link
                                                             to={`/article/view/${article.id}`}
                                                             onClick={(e) => e.stopPropagation()}

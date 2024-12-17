@@ -211,6 +211,7 @@ export const getArticlesByBoard = async (boardId) => {
       console.log(`Fetching articles for board ID ${boardId}: ${url}`);
       
       const response = await axios.get(url); // GET 요청
+      console.log("Response:", response.data);
       return response.data; // 서버 응답 데이터 반환
   } catch (err) {
       console.error(`Error fetching articles for board ID ${boardId}:`, err);
@@ -251,7 +252,7 @@ export const getArticlesByUser = async (userId) => {
     console.log(`Fetching articles for user ID ${userId}: ${url}`);
 
     const response = await axios.get(url); // GET 요청으로 데이터 가져오기
-    console.log("User Articles Response:", response.data); // 응답 데이터 확인
+    console.log("유저별 글:", response.data); // 응답 데이터 확인
     return response.data; // 성공 시 데이터 반환
   } catch (err) {
     console.error(`Error fetching articles for user ID ${userId}:`, err);
