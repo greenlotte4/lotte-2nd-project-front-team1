@@ -1,6 +1,23 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";  // 페이지 이동을 위한 useNavigate
 
 const Subscription = () => {
+  const navigate = useNavigate();  // 페이지 이동을 위한 navigate 함수
+
+  // 로그인 상태 체크
+  const user = JSON.parse(localStorage.getItem('user')) || JSON.parse(sessionStorage.getItem('user'));
+
+  // 버튼 클릭 시 실행되는 함수
+  const handlePlanClick = (planType) => {
+    if (user) {
+      // 로그인 상태일 경우 MyPageMemberShip 페이지로 이동
+      navigate('../user/mypage/membership');
+    } else {
+      // 로그인되지 않은 상태일 경우 로그인 페이지로 이동
+      navigate('../user/login');
+    }
+  };
+
   return (
     <main className="main-content Subs-content">
       <div className="main-title">
@@ -26,7 +43,7 @@ const Subscription = () => {
             <li>기본 분석 도구</li>
             <li>1GB 저장 공간</li>
           </ul>
-          <button>시작하기</button>
+          <button onClick={() => handlePlanClick('free')}>시작하기</button>
         </div>
 
         {/* PREMIUM 요금제 */}
@@ -41,7 +58,7 @@ const Subscription = () => {
             <li>고급 분석 도구</li>
             <li>2GB 저장 공간</li>
           </ul>
-          <button>지금 업그레이드</button>
+          <button onClick={() => handlePlanClick('premium')}>지금 업그레이드</button>
         </div>
 
         {/* ENTERPRISE 요금제 */}
@@ -56,7 +73,7 @@ const Subscription = () => {
             <li>맞춤형 지원</li>
             <li>무제한 저장 공간</li>
           </ul>
-          <button>문의하기</button>
+          <button onClick={() => handlePlanClick('enterprise')}>문의하기</button>
         </div>
       </div>
 
@@ -101,54 +118,10 @@ const Subscription = () => {
         </table>
       </div>
 
-      {/* 자주 묻는 질문 말풍선 형식 */}
+      {/* 자주 묻는 질문 */}
       <div className="faq-chat">
         <h2>자주 묻는 질문</h2>
-
-        <div className="faq-message user-message">
-          <div className="message-bubble">
-            <p>허브플로우의 무료와 유료 버전의 차이는 무엇인가요?</p>
-          </div>
-        </div>
-
-        <div className="faq-message admin-message">
-          <div className="message-bubble">
-            <p>
-              무료 버전은 기본적인 기능을 제공하며, 유료 버전은 추가적인 저장
-              공간과 고급 분석 기능을 제공합니다.
-            </p>
-          </div>
-        </div>
-
-        <div className="faq-message user-message">
-          <div className="message-bubble">
-            <p>팀 멤버 수를 유동적으로 관리하는 방법은 무엇인가요?</p>
-          </div>
-        </div>
-
-        <div className="faq-message admin-message">
-          <div className="message-bubble">
-            <p>
-              사용 인원의 변동에 따라 유연하게 팀을 관리할 수 있으며, 추가
-              사용자에 대한 과금은 자동으로 적용됩니다.
-            </p>
-          </div>
-        </div>
-
-        <div className="faq-message user-message">
-          <div className="message-bubble">
-            <p>허브플로우에서 제공하는 할인 혜택에 대해 알고 싶어요.</p>
-          </div>
-        </div>
-
-        <div className="faq-message admin-message">
-          <div className="message-bubble">
-            <p>
-              교육기관, NGO, 비영리단체 및 사회적 기업에게는 특별 할인이
-              제공됩니다. 세부 사항은 별도로 문의해 주세요.
-            </p>
-          </div>
-        </div>
+        {/* FAQ 내용 */}
       </div>
     </main>
   );

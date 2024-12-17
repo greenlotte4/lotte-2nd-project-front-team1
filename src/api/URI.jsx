@@ -122,6 +122,11 @@ export const CREATE_TASK = `${SERVER_HOST}/project/task/create`
 export const UPDATE_TASK = (no) => `${SERVER_HOST}/project/task/update/${no}`
 export const DELETE_TASK = (no) => `${SERVER_HOST}/project/task/delete/${no}`
 
+//membership
+export const MEMBERSHIP_UPDATE = `${SERVER_HOST}/api/user/mypage/update-history`;
+export const MEMBERSHIP_CREATE = `${SERVER_HOST}/api/user/mypage/create-history`;
+export const savePlanHistory = `${SERVER_HOST}/api/user/mypage/plan-history`;
 
 // file
 export const File = `${SERVER_HOST}/api/drive-files`
+
