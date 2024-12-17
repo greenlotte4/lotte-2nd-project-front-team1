@@ -60,7 +60,6 @@ export default function CalendarAside({
       // 최신 캘린더 목록 갱신
       const updatedCalendars = await fetchCalendarList(user.userid);
       setCalendars(updatedCalendars);
-      alert("캘린더 초대 성공!");
     } catch (error) {
       console.error("초대 코드 처리 실패:", error);
       alert("초대 코드로 캘린더 가입에 실패했습니다.");

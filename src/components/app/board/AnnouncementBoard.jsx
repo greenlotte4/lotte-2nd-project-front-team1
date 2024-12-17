@@ -465,9 +465,7 @@ useEffect(() => {
                         />
                                 <label htmlFor="chk_all">전체 선택</label>
                             </span>
-                            <button type="button" disabled={selectedArticles.length === 0} className="point">
-                                <strong>읽음</strong>
-                            </button>
+                           
                             <div className="chk_del">
                                 <button type="button" disabled={selectedArticles.length === 0} className="point" onClick={handleDelete}>
                                     <strong>삭제</strong>
@@ -504,12 +502,7 @@ useEffect(() => {
                             </div>
                         </div>
                         <div className="h_util">
-                            <div className="notification">
-                                <strong className="title">새글 알림</strong> 
-                                <button type="button" role="switch" aria-checked="true" className="button_switch">
-                                    <span className="blind">새글 알림</span>
-                                </button>
-                            </div>
+                            
                             <div className="select_box" style={{display: "none"}}>
                                 <button type="button" className="selected">
                                     <strong>글 등록순</strong>
@@ -607,7 +600,13 @@ useEffect(() => {
                                                 </p>
                                                 <div className="sbj_box">
                                                     <p className="sbj">
+                                                    {article.notification &&(
+                                                        <em className="ic_announcement">공지</em>
+                                                    )}    
+                                                    
+                                                    {article.mustRead && ( // 필독이 true일 때만 표시
                                                         <em className="ic_noti">필독</em>
+                                                    )}
                                                         <Link
                                                             to={`/article/view/${article.id}`}
                                                             onClick={(e) => e.stopPropagation()}
@@ -620,9 +619,6 @@ useEffect(() => {
                                                     <button type="button" className="user">
                                                         {article.userName || "Unknown User"}
                                                     </button>
-                                                    <span className="read_chk">
-                                                        읽음 <strong>{article.readCount || 0}</strong>
-                                                    </span>
                                                 </p>
                                                 <p className="date">
                                                     {new Date(article.createdAt).toLocaleDateString("en-CA")}
@@ -668,13 +664,7 @@ useEffect(() => {
                     </ul>
                 </div>
 
-            </div>    
-            <div className="toast_wrap" style={{display: "none"}}>
-                <div className="toast">
-                    <h3 className="blind"></h3> 
-                <strong className="message">새글 알림용</strong>
-                </div>
-            </div>        
+            </div>       
     
             </div>
            

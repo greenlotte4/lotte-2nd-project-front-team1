@@ -7,7 +7,74 @@ import interactionPlugin from "@fullcalendar/interaction";
 import multiMonthPlugin from "@fullcalendar/multimonth";
 import Modal from "../../modal/Modal";
 import { useSelector } from "react-redux";
-import { addevent } from "../../../api/calendar/CalendarAPI";
+import {
+  addevent,
+  deleteevent,
+  editevent,
+} from "../../../api/calendar/CalendarAPI";
+import { addDays } from "@fullcalendar/core/internal";
+
+// Helper 함수: 날짜 포맷팅 (YYYY-MM-DD)
+const formatDate = (date) => {
+  const year = date.getFullYear();
+  const month = `${date.getMonth() + 1}`.padStart(2, "0");
+  const day = `${date.getDate()}`.padStart(2, "0");
+  return `${year}-${month}-${day}`;
+};
+
+// Helper 함수: 시간 포맷팅 (HH:MM)
+const formatTime = (date) => {
+  const hours = `${date.getHours()}`.padStart(2, "0");
+  const minutes = `${date.getMinutes()}`.padStart(2, "0");
+  return `${hours}:${minutes}`;
+};
+
+// Helper 함수: All-Day 이벤트의 종료 날짜 조정
+const adjustEndDate = (end, allDay) => {
+  if (!end) {
+    return {
+      endDate: "",
+      endTime: allDay ? "23:59" : "23:59",
+    };
+  }
+
+  if (allDay) {
+    const adjustedEnd = new Date(end);
+    adjustedEnd.setDate(adjustedEnd.getDate() - 1);
+    return {
+      endDate: formatDate(adjustedEnd),
+      endTime: "23:59",
+    };
+  } else {
+    return {
+      endDate: formatDate(end),
+      endTime: formatTime(end),
+    };
+  }
+};
+
+// Helper 함수: 이벤트 데이터 처리
+const processEvent = (event) => {
+  const start = event.start;
+  const end = event.end;
+  const allDay = event.allDay;
+
+  const startDate = formatDate(start);
+  const startTime = allDay ? "00:00" : formatTime(start);
+
+  const { endDate, endTime } = adjustEndDate(end, allDay);
+
+  return {
+    title: event.title,
+    startDate,
+    startTime,
+    endDate,
+    endTime,
+    allDay,
+    calendarId: event.extendedProps?.calendarId,
+    content: event.extendedProps?.content || "",
+  };
+};
 
 export default function Calendar({
   events = [], // 기본값 설정
@@ -25,12 +92,15 @@ export default function Calendar({
   const [selectedDate, setSelectedDate] = useState(null);
   const user = useSelector((state) => state.userSlice);
   console.log("events :", events);
+
   // FullCalendar에 맞게 이벤트 데이터 매핑 및 allDay 사용
   const calendarEvents = events.map((event) => ({
     id: event.calendarEventId,
     title: event.name,
     start: event.startDate,
-    end: event.endDate,
+    end: event.allDay
+      ? addDays(new Date(event.endDate), 1).toISOString().split("T")[0]
+      : event.endDate, // All-Day 이벤트의 end 날짜에 하루 추가
     allDay: event.allDay, // allDay 필드 추가
     calendarId: event.calendarId, // 캘린더 ID 포함
     calendarname: event.calendarname, // CalendarPage에서 전달하는 필드에 맞게 수정
@@ -47,6 +117,7 @@ export default function Calendar({
     targetCalendarIds: [], // 다중 선택 달력 ID 저장
     content: "", // content 필드 추가
   });
+
   // 날짜 클릭 핸들러: 새 일정 추가
   const handleDateClick = (info) => {
     const clickedDate = new Date(info.dateStr);
@@ -75,6 +146,7 @@ export default function Calendar({
 
     setIsModalOpen(true);
   };
+
   // 이벤트 클릭 핸들러
   const handleEventClick = (info) => {
     const event = info.event;
@@ -88,79 +160,38 @@ export default function Calendar({
       return;
     }
 
-    const start = event.start;
-    const end = event.end;
-    const allDay = event.allDay;
+    const eventData = processEvent(event);
 
-    // 시작 날짜 및 시간 추출
-    const startDate = start.toISOString().split("T")[0];
-    const startTime = allDay ? "00:00" : start.toTimeString().substring(0, 5);
+    console.log("Event Data:", eventData);
 
-    let endDate, endTime;
-
-    if (end) {
-      if (allDay) {
-        // allDay 이벤트의 경우, 종료 날짜를 하루 전으로 설정
-        const adjustedEnd = new Date(end);
-        adjustedEnd.setDate(adjustedEnd.getDate() - 1);
-        endDate = adjustedEnd.toISOString().split("T")[0];
-        endTime = "23:59";
-      } else {
-        endDate = end.toISOString().split("T")[0];
-        endTime = end.toTimeString().substring(0, 5);
-      }
-    } else {
-      // end가 정의되어 있지 않은 경우, 종료 날짜와 시간을 기본값으로 설정
-      endDate = startDate;
-      endTime = allDay ? "23:59" : "23:59";
-    }
-
-    console.log("startDate:", startDate);
-    console.log("startTime:", startTime);
-    console.log("endDate:", endDate);
-    console.log("endTime:", endTime);
-    console.log("Event All Day:", allDay);
-
-    // 해당 이벤트 날짜를 selectedDate로 설정
-    setSelectedDate(startDate);
-
-    // 해당 날짜 일정 필터링 (전체 이벤트 목록에서 필터링)
-    const clickedDate = new Date(startDate);
+    setSelectedDate(
+      eventData.allDay
+        ? eventData.startDate
+        : `${eventData.startDate} ${eventData.startTime}`
+    );
+    const clickedDate = new Date(eventData.startDate);
     const dayEvents = events.filter((e) => {
       const eventStart = new Date(e.startDate);
       const eventEnd = new Date(e.endDate);
       return clickedDate >= eventStart && clickedDate <= eventEnd;
     });
     setSelectedDateEvents(dayEvents);
-
-    // 수정 모드이므로 selectedEvent 설정, formData를 해당 이벤트 정보로 채움
     setSelectedEvent(event);
     setFormData({
-      title: event.title,
-      startDate,
-      startTime: allDay ? "00:00" : startTime,
-      endDate,
-      endTime: allDay ? "23:59" : endTime,
-      allDay: allDay,
-      targetCalendarIds: [event.extendedProps?.calendarId].filter(Boolean),
-      content: event.extendedProps?.content || "", // content 필드 설정
-    });
-
-    console.log("Form Data Set:", {
-      title: event.title,
-      startDate,
-      startTime: allDay ? "00:00" : startTime,
-      endDate,
-      endTime: allDay ? "23:59" : endTime,
-      allDay: allDay,
-      targetCalendarIds: [event.extendedProps?.calendarId].filter(Boolean),
-      content: event.extendedProps?.content || "",
+      title: eventData.title,
+      startDate: eventData.startDate,
+      startTime: eventData.startTime,
+      endDate: eventData.endDate,
+      endTime: eventData.endTime,
+      allDay: eventData.allDay,
+      targetCalendarIds: [eventData.calendarId].filter(Boolean),
+      content: eventData.content,
     });
 
     setIsModalOpen(true);
   };
 
-  // 날짜 검색 핸들러 (필요 시 수정)
+  // 날짜 검색 핸들러
   const handleDateSearch = () => {
     if (!searchDate) {
       alert("검색할 날짜를 입력하세요.");
@@ -183,68 +214,73 @@ export default function Calendar({
 
   // 선택된 날짜 이벤트 수정 핸들러
   const handleDateEventEdit = (dayEvent) => {
-    const [startDate, startTimeFull] = dayEvent.startDate.split("T");
-    const [endDateRaw, endTimeFull] = dayEvent.endDate.split("T");
-
-    // 'HH:MM:SS'에서 'HH:MM'만 추출
-    const startTime = startTimeFull.substring(0, 5); // "HH:MM"
-    const endTime = endTimeFull.substring(0, 5); // "HH:MM"
-
-    // 하루종일 이벤트 여부
-    const allDay = dayEvent.allDay;
-
-    // `allDay` 이벤트의 경우, 종료 날짜를 하루 전으로 설정
-    let endDate = endDateRaw;
-    if (allDay) {
-      const endDateObj = new Date(endDateRaw);
-      endDateObj.setDate(endDateObj.getDate() - 1);
-      endDate = endDateObj.toISOString().split("T")[0];
-    }
-
     setSelectedEvent(dayEvent);
     setFormData({
       title: dayEvent.name,
-      startDate,
-      startTime: allDay ? "00:00" : startTime,
-      endDate,
-      endTime: allDay ? "23:59" : endTime,
-      allDay: allDay,
-      targetCalendarIds: [dayEvent.calendarId],
+      startDate: dayEvent.startDate.split("T")[0], // YYYY-MM-DD 형식 추출
+      endDate: dayEvent.endDate.split("T")[0],
+      startTime: dayEvent.allDay
+        ? "00:00"
+        : dayEvent.startDate.split("T")[1].substring(0, 5),
+      endTime: dayEvent.allDay
+        ? "23:59"
+        : dayEvent.endDate.split("T")[1].substring(0, 5),
+      allDay: dayEvent.allDay,
+      targetCalendarIds: [dayEvent.calendarId], // 수정할 달력 ID 설정
       content: dayEvent.content || "",
     });
-
-    console.log("Edited Form Data Set:", {
-      title: dayEvent.name,
-      startDate,
-      startTime: allDay ? "00:00" : startTime,
-      endDate,
-      endTime: allDay ? "23:59" : endTime,
-      allDay: allDay,
-      targetCalendarIds: [dayEvent.calendarId],
-      content: dayEvent.content || "",
-    });
+    setIsModalOpen(true); // 모달 열기
   };
 
   // 이벤트 드롭 핸들러
-  const handleEventDrop = (info) => {
-    const updatedEvent = {
-      ...events.find((e) => e.calendarEventId === info.event.id),
-      startDate: info.event.startStr, // 새로 드롭된 시작 날짜
-      endDate: info.event.endStr, // 새로 드롭된 종료 날짜
-      allDay: info.event.allDay, // allDay 업데이트
-    };
+  const handleEventDrop = async (info) => {
+    const event = info.event;
+    const eventId = event.id;
 
-    // 이벤트 업데이트
-    // 실제로는 백엔드 API를 호출하여 업데이트해야 하지만, 여기서는 상태만 업데이트
-    setFilteredEvents((prevEvents) =>
-      prevEvents.map((event) =>
-        event.calendarEventId === info.event.id ? updatedEvent : event
-      )
+    const eventData = processEvent(event);
+    console.log("Event Drop - ID:", eventId);
+    console.log("New Event Data:", eventData);
+
+    // 날짜 및 시간 유효성 검증
+    const startDateTime = new Date(
+      `${eventData.startDate}T${eventData.allDay ? "00:00" : eventData.startTime}`
+    );
+    const endDateTime = new Date(
+      `${eventData.endDate}T${eventData.allDay ? "23:59" : eventData.endTime}`
     );
 
-    // 필요 시, 상위 컴포넌트에 업데이트를 알리기 위해 onRefetch 호출
-    if (onRefetch) {
-      onRefetch();
+    if (startDateTime > endDateTime) {
+      alert("시작 날짜 및 시간이 종료 날짜 및 시간보다 늦을 수 없습니다.");
+      info.revert();
+      return;
+    }
+
+    // 업데이트할 이벤트 데이터 구성
+    const updatedEvent = {
+      calendarEventId: parseInt(eventId, 10),
+      name: eventData.title,
+      startDate: `${eventData.startDate}T${eventData.allDay ? "00:00:00" : `${eventData.startTime}:00`}`,
+      endDate: `${eventData.endDate}T${eventData.allDay ? "23:59:00" : `${eventData.endTime}:00`}`,
+      allDay: eventData.allDay,
+      content: eventData.content,
+      calendarId: eventData.calendarId,
+    };
+
+    // 백엔드 API 호출하여 이벤트 업데이트
+    try {
+      const response = await editevent([updatedEvent]); // editevent는 배열을 받는 것으로 가정
+      console.log("이벤트 업데이트 성공:", response);
+      alert("이벤트가 성공적으로 업데이트되었습니다.");
+
+      // 필요 시, 상위 컴포넌트에 업데이트를 알리기 위해 onRefetch 호출
+      if (onRefetch) {
+        onRefetch();
+      }
+    } catch (error) {
+      console.error("이벤트 업데이트 실패:", error);
+      alert("이벤트 업데이트에 실패했습니다. 다시 시도해주세요.");
+      // 오류 발생 시 원래 위치로 되돌림
+      info.revert();
     }
   };
 
@@ -281,29 +317,61 @@ export default function Calendar({
       formData.allDay ? "23:59:00" : `${formData.endTime}:00`
     }`;
 
-    // eventlist 구성 (allDay 필드 추가)
-    const eventlist = formData.targetCalendarIds.map((calendarId) => ({
-      calendarId: calendarId,
-      assigneeId: user.userid, // Redux나 props에서 가져온 사용자 ID
-      name: formData.title,
-      content: formData.content || "",
-      startDate: fullStart,
-      endDate: fullEnd,
-      allDay: formData.allDay, // allDay 필드 추가
-      notification: false,
-    }));
+    let eventlist;
+
+    if (selectedEvent) {
+      // **수정 모드**
+      eventlist = formData.targetCalendarIds.map((calendarId) => ({
+        calendarEventId: selectedEvent.id, // 기존 이벤트 ID
+        calendarId: calendarId,
+        assigneeId: user.userid, // Redux나 props에서 가져온 사용자 ID
+        name: formData.title,
+        content: formData.content || "",
+        startDate: fullStart,
+        endDate: fullEnd,
+        allDay: formData.allDay,
+        notification: false,
+      }));
+    } else {
+      // **추가 모드**
+      eventlist = formData.targetCalendarIds.map((calendarId) => ({
+        calendarId: calendarId,
+        assigneeId: user.userid, // Redux나 props에서 가져온 사용자 ID
+        name: formData.title,
+        content: formData.content || "",
+        startDate: fullStart,
+        endDate: fullEnd,
+        allDay: formData.allDay,
+        notification: false,
+      }));
+    }
 
     try {
-      const response = await addevent(eventlist);
-      console.log("일정 추가 성공:", response);
+      if (selectedEvent) {
+        // **수정 시 editevent 함수 호출**
+        const response = await editevent(eventlist);
+        console.log("일정 수정 성공:", response);
+        alert("일정이 성공적으로 수정되었습니다.");
+      } else {
+        // **추가 시 addevent 함수 호출**
+        const response = await addevent(eventlist);
+        console.log("일정 추가 성공:", response);
+        alert("일정이 성공적으로 추가되었습니다.");
+      }
 
       // 일정 추가 후 모달 닫기, 상태 초기화 등 원하는 처리
       setIsModalOpen(false);
-      resetForm();
       onRefetch(); // 상위 컴포넌트에 데이터 재요청
     } catch (error) {
-      console.error("일정 추가 실패:", error);
-      alert("일정 추가에 실패했습니다. 다시 시도해주세요.");
+      console.error(
+        selectedEvent ? "일정 수정 실패:" : "일정 추가 실패:",
+        error
+      );
+      alert(
+        selectedEvent
+          ? "일정 수정에 실패했습니다. 다시 시도해주세요."
+          : "일정 추가에 실패했습니다. 다시 시도해주세요."
+      );
     }
   };
 
@@ -345,24 +413,38 @@ export default function Calendar({
     setSearchDate("");
     setSearchTitle("");
   };
+
   // 이벤트 삭제 핸들러
-  const handleDeleteEvent = () => {
-    if (selectedEvent) {
-      // 백엔드 API를 호출하여 이벤트 삭제 (예: deleteEvent(selectedEvent.id))
-      // 여기서는 단순히 상태에서 삭제
-      const eventId = selectedEvent.id;
-      // 실제 삭제 API 호출 추가 필요
-      setFilteredEvents((prevEvents) =>
-        prevEvents.filter((event) => event.calendarEventId !== eventId)
-      );
+  const handleDeleteEvent = async () => {
+    if (!selectedEvent) return;
+
+    const confirmDelete = window.confirm("정말로 이 일정을 삭제하시겠습니까?");
+    if (!confirmDelete) return;
+
+    try {
+      await deleteevent(selectedEvent.id);
+      alert("일정이 성공적으로 삭제되었습니다.");
+
+      // 일정 삭제 후 모달 닫기 및 상태 초기화
       setIsModalOpen(false);
+      setFormData({
+        title: "",
+        startDate: "",
+        endDate: "",
+        startTime: "00:00",
+        endTime: "23:59",
+        allDay: false,
+        targetCalendarIds: [],
+        content: "",
+      });
       setSelectedEvent(null);
-      resetForm();
-      if (onRefetch) {
-        onRefetch(); // 상위 컴포넌트에 데이터 재요청 알리기
-      }
+      onRefetch(); // 상위 컴포넌트에 데이터 재요청
+    } catch (error) {
+      console.error("일정 삭제 실패:", error);
+      alert("일정 삭제에 실패했습니다. 다시 시도해주세요.");
     }
   };
+
   return (
     <div className="calendar-page">
       {/* 날짜 검색 섹션 */}
@@ -400,6 +482,7 @@ export default function Calendar({
         className="calendarstyle"
         aspectRatio={1.2} // 가로 대비 세로 비율
         height="600px" // 고정된 전체 높이
+        timeZone="local" // 로컬 시간대 설정
       />
 
       {/* 제목 검색 섹션 */}
@@ -450,7 +533,7 @@ export default function Calendar({
         >
           {/* 디버깅 로그 */}
           <div>
-            <p>Modal All Day: {formData.allDay.toString()}</p>
+            <p>Modal All Day: {formData.allDay ? "True" : "False"}</p>
           </div>
 
           <h3>이벤트를 추가할 달력 선택</h3>
@@ -491,18 +574,17 @@ export default function Calendar({
 
           <h2>{selectedDate} 일정</h2>
           <h3>해당 날짜의 다른 일정</h3>
-          <ul>
+          <ul className="event-list">
             {selectedDateEvents.length > 0 ? (
               selectedDateEvents.map((dayEvent) => {
-                // Adjusted endDate for allDay events
-                let displayEndTime = dayEvent.allDay
-                  ? "23:59"
-                  : dayEvent.endTime;
+                // 조건에 따라 표시할 시간 문자열 설정
+                const displayTime = dayEvent.allDay
+                  ? "하루종일"
+                  : `${dayEvent.startTime} ~ ${dayEvent.endTime}`;
 
                 return (
-                  <li key={dayEvent.calendarEventId}>
-                    <strong>{dayEvent.name}</strong> - {dayEvent.startTime} ~{" "}
-                    {displayEndTime}
+                  <li key={dayEvent.calendarEventId} className="event-item">
+                    <strong>{dayEvent.name}</strong> : {displayTime}
                     <button onClick={() => handleDateEventEdit(dayEvent)}>
                       수정
                     </button>

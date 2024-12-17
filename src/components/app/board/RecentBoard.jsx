@@ -205,40 +205,19 @@ export default function RecentBoard(){
                         <span className="text">최신글</span> 
                     </h2>
                     <p className="desc">
-                        환경설정에서 알림 설정한 게시판의 30일간 등록/업데이트 된 게시글을 보여줍니다.
+                        게시판의 30일간 등록/업데이트 된 게시글을 보여줍니다.
                     </p>
                     
                 </div>
                 <div className="task_area">
-                    <div className="btn_box"><span className="chk_board">
-                        <input id="chk_all" type="checkbox" name="chk_all"/>
-                        <label htmlFor="chk_all">전체 선택</label>
-                    </span> 
-                    <button type="button" disabled="disabled" className="point" style={{display: "none"}}>
-                        <strong>읽음</strong>
-                    </button> 
-                    <div className="chk_del">
-                        <button type="button" disabled="disabled" className="point">
-                            <strong>읽음</strong>
-                        </button>
-                    </div> 
-                    <div className="chk_move">
-                      
-                       
-                    </div>
-                </div>
-
+                   
                     <div className="h_util">
                         <div className="select_box">
                             <button type="button" className="selected">
                                 <strong>글 등록순</strong>
                             </button>
                         </div>
-                        <div className="select_box">
-                            <button type="button" className="selected">
-                                <strong>전체</strong>
-                            </button>
-                        </div>
+                       
                         <div className="select_box">
                             <button type="button" className="selected">
                                 <strong>20개씩 보기</strong>
@@ -250,19 +229,16 @@ export default function RecentBoard(){
                 
             </div>
             <div className="board_list" >
-                <ul className="list edit_type newest_type mypost_typle default">
+                <ul className="list edit_types newest_type mypost_typle default">
                     <li className="read" style={{cursor: "pointer"}}>
-                        <p className="chk">
-                            <input id="check_4070000000153172123" type="checkbox" name="chk_bd"/>
-                            <label htmlFor="check_4070000000153172123">해당 게시글 선택</label>
-                        </p>
+                        
                         <div className="sbj_box">
                             <p className="sbj">
                                 <a href="">ㅇㅇ</a>
                             </p></div>
                             <p className="infor">
                                 <button type="button" className="user">1조</button>
-                                <span className="read_chk">읽음<strong>1</strong></span>
+                               
                                 <em title="댓글갯수" className="comments">
                                     <a style={{cursor: "pointer"}}>2</a>
                                 </em>

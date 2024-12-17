@@ -558,28 +558,52 @@ export default function ViewBoard() {
                                 }) || "알 수 없음"}
                             </em>
                             </span>
-                            <span className="read">
-                                <button type="button">
-                                읽음 1
-                                </button>
-                            </span>
+                           
                             <span className="edit">편집 허용 : OFF (작성자, 게시판 마스터만 편집 가능)</span>
                         </div>
                         <div className="btn _no_print">
-                            <div className="btn_wrap">
-                                <button type="button" className="_btn_share">
-                                    보내기
-                                    <em className="ico"></em>
-                                </button>
-                            </div>
+                            
                             <button id="translateLayerBtn" type="button" className="bt_translate" onClick={toggleTranslateVisibility}>
                                 {isTranslateVisible ? "번역" : "번역 해제"}
                             </button>
-                            <button type="button" className="print">
-                                인쇄
-                            </button>
                         </div>
                     </div>
+
+                    {article.files && article.files.length > 0 && (
+                    <div className="lw_file_attach_view">
+                        <div className="file_infor">
+                                <span className="file_tit">
+                                    <button type="button" className="btn_fold_attach">
+                                        <i className="blind">첨부 파일</i>
+                                    </button>
+                                    <span>첨부 파일 <em>1</em>개</span>
+                                    <span className="file_size">(4.6KB)</span>
+                                </span>
+                        </div>
+                        <div className="file_wrap">
+                                <ul className="file_list">
+                                {article.files.map((file) => (
+                                    <li key={file.boardFileId}> 
+                                        <span className="file_name">
+                                            <button type="button"  title={file.fileOriginalName} className="file_name_txt">{file.fileOriginalName}</button>
+                                        </span>
+                                        <span className="file_size">
+                                            {(
+                                                file.fileSize / 1024
+                                            ).toFixed(2)}{" "}
+                                            KB
+                                        </span>
+                                        <div className="file_btn_area _no_print">
+                                            <button type="button" className="btn_down_pc">
+                                                <i className="blind">PC 저장</i>
+                                            </button>
+                                        </div>
+                                    </li>
+                                    ))}
+                                </ul>
+                        </div>
+                    </div>
+                    )}
                     <div id="id_contents" className="cont">
                         <div
                             style={{ fontSize: "14px" }}
@@ -600,12 +624,6 @@ export default function ViewBoard() {
                     <div id="id_comments" className="comments">
                         <div className="infor">
                             <div className="reaction_box">
-                                <div className="reaction_item">
-                                    <button id="_reactionRecentListButton" type="button" className="btn_reaction_item">
-                                        <span className="text">리액션</span>
-                                    </button>
-
-                                </div>
                                 <div className="reaction_item has_reply">
                                     <button type="button" className="btn_reply_item">
                                         <span className="blind">댓글</span>
@@ -674,9 +692,6 @@ export default function ViewBoard() {
                                             <input id="commentImageFile" type="file" title="" name="uploadImage" accept="*" multiple="multiple" style={{display: "none"}}/>
         
                                         </span>
-                                        <button className="btn_attach_sticker">
-                                            <i className="blind"></i>
-                                        </button>
                                     </div>
                                     <div className="register_btns">
                                         <button type="button" className="point">

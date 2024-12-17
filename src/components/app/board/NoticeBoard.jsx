@@ -12,6 +12,31 @@ const NoticeBoard = () => {
     const [selectedBoard, setSelectedBoard] = useState(''); 
     const userId = useSelector((state) => state.userSlice.userid);
 
+    const [showFileWrap, setShowFileWrap] = useState(false);
+    const [uploadedFiles, setUploadedFiles] = useState([]); 
+    const [mustRead, setMustRead] = useState(false);
+    const [Notification, setNotification] = useState(false);
+    
+
+    const totalFileSize = uploadedFiles.reduce((sum, file) => sum + file.size, 0);
+    
+    const handleFileChange = (event) => {
+        const files = Array.from(event.target.files); // 선택된 파일 가져오기
+        setUploadedFiles((prev) => [...prev, ...files]); // 파일 목록 추가
+        setShowFileWrap(true);
+    };
+
+    const handleToggleFileWrap = () => {
+        setShowFileWrap((prev) => !prev); // 상태를 토글하여 열기/닫기 구현
+    };
+
+    const handleFileUploadClick = () => {
+        document.getElementById('fileUploadInput').click(); // 숨겨진 파일 입력 클릭
+    };
+
+    const handleRemoveFile = (index) => {
+        setUploadedFiles((prev) => prev.filter((_, i) => i !== index)); // 파일 목록에서 삭제
+    };
 
      const handleOpenBoardSelect = () => {
         setShowBoardSelect(true);
@@ -64,26 +89,47 @@ const NoticeBoard = () => {
  
     };
 
+    const handleCheckboxChange = () => {
+        setMustRead((prev) => !prev); // 필독 여부 토글
+    };
+
+    const handleCheckboxChange2 = () => {
+        setNotification((prev) => !prev); //공지 여부 토글
+    }
+
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-
-        const articlePayload = {
-            ...article,
-            boardName: selectedBoard,
-            userId: userId, // Redux에서 가져온 userId를 명시적으로 포함
-        };
     
         if (!userId) {
             alert("로그인이 필요합니다.");
             return;
         }
     
-        try {
-            const result = await postBoardArticleWrite(articlePayload);
-            console.log("result: " + result);
+        const formData = new FormData();
     
-            if(result) {
+        // 게시글 데이터를 JSON 문자열로 변환하여 FormData에 추가
+        formData.append(
+            "boardArticleDTO",
+            new Blob([JSON.stringify({
+                ...article,
+                boardName: selectedBoard,
+                userId: userId,
+                mustRead: mustRead,
+                notification: Notification,
+            })], { type: "application/json" })
+        );
+    
+        // 업로드된 파일 데이터를 FormData에 추가
+        uploadedFiles.forEach((file) => {
+            formData.append("files", file);
+        });
+    
+        try {
+            const result = await postBoardArticleWrite(formData);
+            console.log("Result:", result);
+    
+            if (result) {
                 alert("글 작성 완료");
                 navigate("/app/mainboard");
             }
@@ -309,7 +355,7 @@ const NoticeBoard = () => {
                           임시저장
                         </button>
                       </div>
-                      <button type="button" className="btn_write_fold">세부 설정</button>
+                    
                   </div>
                   <ul className="option">
                       <li className="opt_sbj">
@@ -339,7 +385,7 @@ const NoticeBoard = () => {
                       <div className='notice must_read'>
                         <div className='notice_inner'>
                             <div className='check_wrap'>
-                                <input id="option_notice" type="checkbox" className="check_notice"/>
+                                <input id="option_notice" type="checkbox" className="check_notice"  checked={mustRead} onChange={handleCheckboxChange}/>
                                 <label htmlFor="option_notice">필독으로 등록</label>
                             </div>
                         </div>
@@ -352,7 +398,7 @@ const NoticeBoard = () => {
                       </div>
                     <div className='notice'>
                         <div className='check_wrap'>
-                            <input id="option_notice_3" type="checkbox" className="check_notice"/>
+                            <input id="option_notice_3" type="checkbox" className="check_notice" checked={Notification} onChange={handleCheckboxChange2}/>
                             <label htmlFor="option_notice_3">공지로 등록</label>
                         </div>
                         <div className='tooltip_cover'>
@@ -367,21 +413,93 @@ const NoticeBoard = () => {
                      
                       <li className="opt_file">
                           <h3 className="tx">파일첨부</h3>
-                          <button type="button" className="btn_fold_attach close">
-                              <i className="blind">첨부 파일 목록 열기</i>
+                          <button type="button"  className={`btn_fold_attach ${showFileWrap ? 'open' : 'close'}`} onClick={handleToggleFileWrap}>
+                                <i className="blind">
+                                    {showFileWrap ? '첨부 파일 목록 닫기' : '첨부 파일 목록 열기'}
+                                </i>
                           </button>
                           <div className="lw_file_attach_write">
                               <div className="file_infor">
-                                  <button type="button" className="btn_attach">
+                                  <button type="button" className="btn_attach" onClick={handleFileUploadClick}>
                                       내 PC
                                   </button>
-                                  <button type="button" className="btn_attach">
-                                      드라이브
-                                  </button>
-                                  <p className="total_volume">첨부파일 0개 (0KB)</p>
+                                  <p className="total_volume">
+                                    첨부파일 {uploadedFiles.length}개 (
+                                    {totalFileSize >= 1024 * 1024
+                                        ? `${(totalFileSize / (1024 * 1024)).toFixed(2)} MB` // MB로 변환
+                                        : `${(totalFileSize / 1024).toFixed(2)} KB`}
+                                    )
+                                </p>
                               </div>
+                              <input
+                                id="fileUploadInput"
+                                type="file"
+                                multiple
+                                style={{ display: 'none' }}
+                                onChange={handleFileChange}
+                            />
+                            {showFileWrap && (
+                            <div className='file_wrap'>
+                                <table className='file_head'>
+                                    <colgroup>
+                                        <col className='col_file_del'></col>
+                                        <col className='col_file_name'></col>
+                                        <col className='col_file_size'></col>
+                                        <col className='col_scroll_gap'></col>
+                                    </colgroup>
+                                    <thead>
+                                        <tr>
+                                            <th className='file_del'></th>
+                                            <th className='file_name'>
+                                                <p className='file_cell'>파일명</p>
+                                            </th>
+                                            <th className="file_size">
+                                                <p className="file_cell">용량</p>
+                                            </th>
+                                            <th className='scroll_gap'>
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                </table>
+                                <div className='file_scroll_box osx_scrl'>
+                                    <table className='file_cont'>
+                                        <colgroup>
+                                            <col className='col_file_del'></col>
+                                            <col className='col_file_name'></col>
+                                            <col className='col_file_size'></col>
+                                        </colgroup>
+                                        <tbody>
+                                        {uploadedFiles.map((file, index) => (
+                                            <tr key={index}>
+                                                <td>
+                                                    <button type="button" className='btn_file_dels' onClick={() => handleRemoveFile(index)}>
+                                                        <i className="blind">첨부 파일 삭제</i>
+                                                    </button>
+                                                </td>
+                                                <td>{file.name}</td>
+                                                <td>
+                                                {file.size >= 1024 * 1024
+                                                    ? `${(file.size / (1024 * 1024)).toFixed(2)} MB` // MB로 변환
+                                                    : `${(file.size / 1024).toFixed(2)} KB`}    
 
-                          </div>
+                                                </td>
+                                            </tr>
+                                        ))}
+                                        {uploadedFiles.length === 0 && (
+                                            <tr>
+                                                <td colSpan={3} className="empty_list" id='forfile'>
+                                                    파일이 없습니다.
+                                                </td>
+                                            </tr>
+                                        )}
+                                    </tbody>
+                                    </table>
+
+                                </div>
+                                
+                              </div>
+                            )}
+                            </div>
                       </li>
                   </ul>
                   <div className="workseditor-editor" style={{overflow: "auto", height: "auto"}}>

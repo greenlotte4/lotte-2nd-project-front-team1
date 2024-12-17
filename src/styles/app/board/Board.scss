@@ -4883,4 +4883,285 @@ address, em {
 .board_view .subject .check_cover .important_post_check:checked+label:before {
   background-position: -424px -144px;
 }
+
+.lw_file_attach_write .file_infor+.file_wrap {
+  margin-top: 8px;
+}
+
+.lw_file_attach_write .file_wrap {
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  border: 1px solid #e6e8eb;
+  border-radius: 8px;
+  background-color: #fff;
+  margin-top: 8px;
+}
+
+.lw_file_attach_write .file_wrap table {
+  width: 100%;
+  border-collapse: collapse;
+  border: 0;
+  border-spacing: 0;
+  table-layout: fixed;
+}
+
+.lw_file_attach_write .file_head {
+  border-radius: 8px 8px 0 0;
+  background-color: #f9fafc;
+  font-size: 12px;
+  color: #3f4247;
+  line-height: 26px;
+}
+
+.lw_file_attach_write .file_wrap .col_file_del {
+  width: 20px;
+}
+
+.lw_file_attach_write .file_wrap .col_file_size {
+  width: 93px;
+}
+
+.lw_file_attach_write .file_wrap .col_scroll_gap {
+  width: 16px;
+}
+
+.lw_file_attach_write .file_head th {
+  padding-right: 16px;
+  font-weight: 400;
+  white-space: nowrap;
+}
+
+.lw_file_attach_write .file_wrap td, .lw_file_attach_write .file_wrap th {
+  text-align: left;
+}
+
+.lw_file_attach_write .file_wrap .file_name {
+  padding-left: 16px;
+}
+
+.lw_file_attach_write .file_wrap .file_name .file_cell {
+  text-align: left;
+}
+
+.lw_file_attach_write .file_scroll_box {
+  position: relative;
+  height: 86px;
+  overflow-x: hidden;
+  overflow-y: scroll;
+}
+
+.lw_file_attach_write .file_cont {
+  margin: 4px 0;
+  font-size: 14px;
+  line-height: 24px;
+  color: #202124;
+}
+
+.lw_file_attach_write .file_wrap .col_file_del {
+  width: 20px;
+}
+
+.lw_file_attach_write .file_wrap .col_file_size {
+  width: 93px;
+}
+
+.lw_file_attach_write .file_cont .empty_list {
+  padding: 0;
+  vertical-align: middle;
+  height: 78px;
+}
+.btn_file_dels{
+  background-color: white;
+  border: 0;
+  margin-left: 5px;
+}
+
+.btn_file_dels:before {
+  content: "";
+  display: inline-block;
+  background-image: url(https://static.worksmobile.net/static/pwe/wm/home/sp_board_967af075.png);
+  background-image: -webkit-gradient(linear,left top,left bottom,from(transparent),to(transparent)),url(https://static.worksmobile.net/static/pwe/wm/home/sp_board_9d215a12.svg);
+  background-image: linear-gradient(transparent,transparent),url(https://static.worksmobile.net/static/pwe/wm/home/sp_board_9d215a12.svg);
+  background-size: 500px 473px;
+  background-position: -332px -457px;
+  width: 8px;
+  height: 8px;
+}
+
+#forfile{
+  text-align: center;
+}
+
+
+.board_view .lw_file_attach_view {
+  padding-top: 20px;
+}
+
+.lw_file_attach_view {
+  max-width: 700px;
+}
+
+.lw_file_attach_view .file_infor .file_tit {
+  float: left;
+  line-height: 17px;
+  color: #202124;
+}
+
+.lw_file_attach_view .file_infor .btn_fold_attach {
+  display: inline-block;
+  margin: 1px 4px 0 -3px;
+  padding: 4px;
+  vertical-align: top;
+  line-height: 0;
+  border: 0;
+  border-radius: 0;
+  background-color: transparent;
+}
+
+.lw_file_attach_view .file_infor .btn_fold_attach.close:before, .lw_file_attach_view .file_infor .btn_fold_attach:before {
+  background-image: url(https://static.worksmobile.net/static/pwe/wm/home/sp_board_967af075.png);
+  background-image: -webkit-gradient(linear,left top,left bottom,from(transparent),to(transparent)),url(https://static.worksmobile.net/static/pwe/wm/home/sp_board_9d215a12.svg);
+  background-image: linear-gradient(transparent,transparent),url(https://static.worksmobile.net/static/pwe/wm/home/sp_board_9d215a12.svg);
+  background-size: 500px 473px;
+  width: 8px;
+  height: 8px;
+}
+
+.lw_file_attach_view .file_infor .btn_fold_attach:before {
+  content: "";
+  display: inline-block;
+  background-position: -284px -457px;
+}
+
+.lw_file_attach_view .file_infor .file_tit {
+  float: left;
+  line-height: 17px;
+  color: #202124;
+}
+
+.lw_file_attach_view .file_infor .file_tit .file_size {
+  padding-left: 4px;
+}
+
+.lw_file_attach_view .file_size {
+  color: #71767a;
+}
+
+.lw_file_attach_view .file_infor:after {
+  display: block;
+  clear: both;
+  content: "";
+}
+
+.lw_file_attach_view .file_infor+.file_wrap {
+  margin-top: 8px;
+}
+
+.lw_file_attach_view .file_wrap {
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  border: 1px solid #e6e8eb;
+  border-radius: 8px;
+  background-color: #fff;
+}
+
+.lw_file_attach_view .file_list {
+  padding: 7px 0;
+}
+
+.lw_file_attach_view .file_list li {
+  padding: 4px 16px;
+  line-height: 24px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.lw_file_attach_view .file_list .file_name {
+  -webkit-box-flex: 0;
+  -ms-flex: 0 1 auto;
+  flex: 0 1 auto;
+  position: relative;
+  display: block;
+  text-align: left;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.lw_file_attach_view .file_list .file_name .file_name_txt {
+  border: 0;
+  border-radius: 0;
+  background-color: transparent;
+  max-width: 100%;
+  color: #202124;
+  line-height: 24px;
+  vertical-align: top;
+  text-align: left;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.lw_file_attach_view .file_list .file_size {
+  -webkit-box-flex: 0;
+  -ms-flex: 0 0 auto;
+  flex: 0 0 auto;
+  display: block;
+  margin-left: 3px;
+}
+
+.lw_file_attach_view .file_btn_area {
+  -webkit-box-flex: 0;
+  -ms-flex: 0 0 auto;
+  flex: 0 0 auto;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  margin-left: auto;
+  padding-left: 24px;
+  font-size: 0;
+}
+
+.lw_file_attach_view .file_btn_area .btn_file_view+.btn_down_pc {
+  margin-left: 16px;
+}
+
+.lw_file_attach_view .file_btn_area .btn_down_pc:before {
+  background-image: url(https://static.worksmobile.net/static/pwe/wm/home/sp_board_967af075.png);
+  background-image: -webkit-gradient(linear,left top,left bottom,from(transparent),to(transparent)),url(https://static.worksmobile.net/static/pwe/wm/home/sp_board_9d215a12.svg);
+  background-image: linear-gradient(transparent,transparent),url(https://static.worksmobile.net/static/pwe/wm/home/sp_board_9d215a12.svg);
+  background-size: 500px 473px;
+  background-position: -172px -433px;
+  width: 16px;
+  height: 16px;
+}
+
+.lw_file_attach_view .file_btn_area button.btn_down_drive, .lw_file_attach_view .file_btn_area button.btn_down_pc, .lw_file_attach_view .file_btn_area button.btn_file_view {
+  border: 0;
+  border-radius: 0;
+  background-color: transparent;
+}
+
+.lw_file_attach_view .file_btn_area .btn_down_drive:before, .lw_file_attach_view .file_btn_area .btn_down_pc:before, .lw_file_attach_view .file_btn_area .btn_file_del:before, .lw_file_attach_view .file_btn_area .btn_file_view:before {
+  display: inline-block;
+  vertical-align: top;
+  content: "";
+}
+
+.ic_announcement {
+  border: 1px solid rgba(21,115,230,.5);
+  color: #1573e6;
+}
+
+.board_write .option li input[type=checkbox]:checked+label:before {
+  background-position: -452px -391px;
+}
+
+.board_write .option li input[type=checkbox]:checked+label:before {
+  background-position: -452px -391px;
+}
+
 }
