@@ -502,12 +502,7 @@ useEffect(() => {
                             </div>
                         </div>
                         <div className="h_util">
-                            <div className="notification">
-                                <strong className="title">새글 알림</strong> 
-                                <button type="button" role="switch" aria-checked="true" className="button_switch">
-                                    <span className="blind">새글 알림</span>
-                                </button>
-                            </div>
+                            
                             <div className="select_box" style={{display: "none"}}>
                                 <button type="button" className="selected">
                                     <strong>글 등록순</strong>
@@ -663,13 +658,7 @@ useEffect(() => {
                     </ul>
                 </div>
 
-            </div>    
-            <div className="toast_wrap" style={{display: "none"}}>
-                <div className="toast">
-                    <h3 className="blind"></h3> 
-                <strong className="message">새글 알림용</strong>
-                </div>
-            </div>        
+            </div>       
     
             </div>
            

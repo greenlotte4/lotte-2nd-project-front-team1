@@ -27,7 +27,7 @@ export const postBoardArticleWrite = async (data) => {
     // POST 요청으로 데이터 전송
     const response = await axios.post(BOARD_ARTICLE_WRITE_URI, data, {
       headers: {
-        "Content-Type": "application/json",
+        "Content-Type": "multipart/form-data",
       },
     });
 

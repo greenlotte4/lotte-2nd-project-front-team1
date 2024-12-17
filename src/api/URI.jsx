@@ -44,6 +44,8 @@ export const BOARD_ARTICLE_USER = (userId) =>
 export const BOARD_IMPORTANT_ARTICLE = (articleId) =>
   `${SERVER_HOST}/important-articles/${articleId}`;
 
+
+
 export const BOARD_TRASH_PERMANENT = `${SERVER_HOST}/article/trash/permanent`;
 export const BOARD_TYPE = `${SERVER_HOST}/board/type`;
 export const BOARD_ALL = `${SERVER_HOST}/board/all`;
