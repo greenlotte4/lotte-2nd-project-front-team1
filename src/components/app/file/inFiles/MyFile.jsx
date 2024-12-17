@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import JSZip from "jszip"; // JSZip import
-import { savedFile } from "../../../../api/file/fileAPI";
+import { createFolder, savedFile } from "../../../../api/file/fileAPI";
 
-export default function MyFile() {
+export default function MyFile({ isShared }) {
   const [driveData, setDriveData] = useState([]); // 파일 데이터
   const [currentUsage, setCurrentUsage] = useState(0); // 현재 사용량
   const maxUsage = 1024; // 최대 용량
@@ -12,7 +12,32 @@ export default function MyFile() {
   const [showWarning, setShowWarning] = useState(false); // 경고 표시 여부
   const [warningEnabled, setWarningEnabled] = useState(true); // 경고 켜기/끄기 여부
   const [files, setFiles] = useState([]);
+  const [currentPath, setCurrentPath] = useState([]);
+  // 폴더 클릭 시 경로를 업데이트하는 함수
+  const handleFolderClick = (folder) => {
+    // 현재 경로에 폴더 ID를 추가하여 해당 폴더로 이동
+    setCurrentPath((prev) => [...prev, folder.id]);
+  };
+  // 상위 폴더로 이동하는 함수
+  const handleBackClick = () => {
+    // 현재 경로에서 마지막 폴더 ID를 제거하여 상위 폴더로 이동
+    setCurrentPath((prev) => prev.slice(0, prev.length - 1));
+  };
 
+  // 현재 경로에 해당하는 폴더들을 찾아서 반환
+  const getFilesForCurrentPath = (path) => {
+    let currentFiles = files;
+
+    // 경로를 따라가며 해당하는 폴더와 파일을 찾음
+    path.forEach((folderId) => {
+      const folder = currentFiles.find((file) => file.id === folderId && file.type === "folder");
+      if (folder && folder.children) {
+        currentFiles = folder.children;
+      }
+    });
+
+    return currentFiles;
+  };
   // 로컬 스토리지에서 드라이브 데이터 불러오기
   useEffect(() => {
     const savedDriveData = JSON.parse(localStorage.getItem("driveData"));
@@ -61,8 +86,8 @@ export default function MyFile() {
 
   // 파일 업로드 처리
   const uploadFiles = async (files) => {
-  
-  
+
+
     const totalSize = files.reduce(
       (sum, file) => sum + file.size / (1024 * 1024),
       0
@@ -84,7 +109,7 @@ export default function MyFile() {
 
     setDriveData((prevData) => [...prevData, ...uploadedFiles]);
     setCurrentUsage((prevUsage) => prevUsage + totalSize);
-    console.log("업로드파일" , files);
+    console.log("업로드파일", files);
 
     try {
       const response = await savedFile(files);  // formData로 업로드
@@ -194,27 +219,52 @@ export default function MyFile() {
   );
 
   // 새폴더 만들기 처리
-  const handleCreateFolder = (folderName) => {
+  const handleCreateFolder = async (folderName) => {
     if (!folderName) {
       alert("폴더 이름을 입력해주세요.");
+
       return;
     }
+    const user =
+      JSON.parse(localStorage.getItem("user")) ||
+      JSON.parse(sessionStorage.getItem("user"));
 
-    // 폴더 생성 시 알림 표시
-    const newFolder = {
-      id: Date.now(),
-      name: folderName,
-      size: "0MB", // 기본 크기 설정
-      modified: new Date().toISOString().split("T")[0],
-      created: new Date().toISOString().split("T")[0],
-      type: "folder", // 폴더 유형을 지정
-      files: [], // 폴더 내부 파일 목록
-    };
+    const userId = user.userid;
+    const driveId = 1;
+    // 폴더 생성 요청에 필요한 데이터 준비
 
-    setDriveData((prevData) => [...prevData, newFolder]);
+    console.log("보낼거1", userId, folderName, driveId); // 확인용 로그
 
-    // 폴더 생성 성공 알림
-    alert(`새 폴더 '${folderName}'가 생성되었습니다.`);
+    // 서버에 폴더 생성 요청
+    try {
+      const response = await createFolder(folderName, driveId); // 서버 API 호출 (폴더 데이터 전달)
+
+      // 서버 응답 확인
+      if (response.status === 200) {
+        console.log("폴더 생성 성공:", response);
+        // 폴더 생성 성공 후 로컬 상태와 UI 업데이트
+        setDriveData((prevData) => [
+          ...prevData,
+          {
+            id: response.data.folderId,
+            name: folderName,
+            size: "0MB", // 기본 크기 설정
+            modified: new Date().toISOString().split("T")[0],
+            created: new Date().toISOString().split("T")[0],
+            type: "folder", // 폴더 유형을 지정
+            files: [], // 폴더 내부 파일 목록
+          },
+        ]);
+
+        // 폴더 생성 성공 알림
+        alert(`새 폴더 '${folderName}'가 생성되었습니다.`);
+      } else {
+        throw new Error("폴더 생성에 실패했습니다aa.");
+      }
+    } catch (error) {
+      console.error("폴더 생성 실패:", error);
+      alert("폴더 생성에 실패했습니다.");
+    }
   };
 
   // 파일 이름 변경 처리 함수
@@ -383,7 +433,9 @@ export default function MyFile() {
           <tbody>
             {filteredFiles.length > 0 ? (
               filteredFiles.map((file) => (
-                <tr key={file.id}>
+                <tr key={file.id}
+
+                >
                   <td>
                     <input
                       type="checkbox"
@@ -391,7 +443,14 @@ export default function MyFile() {
                       onChange={() => handleCheckBoxChange(file.id)}
                     />
                   </td>
-                  <td>{file.name}</td>
+                  <td>
+                    {file.type === "folder" ? (
+                      <span className="folder-icon">📁</span> // 폴더 아이콘
+                    ) : (
+                      <span className="file-icon">📄</span> // 파일 아이콘
+                    )}
+                    {file.name}
+                  </td>
                   <td>{file.size}</td>
                   <td>{file.modified}</td>
                   <td>{file.created}</td>
