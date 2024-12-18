@@ -1,7 +1,8 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import EmojiPicker from "emoji-picker-react";
 import {
   Avatar,
+  AvatarGroup,
   IconButton,
   Menu,
   MenuItem,
@@ -18,7 +19,11 @@ import FormatAlignCenterIcon from "@mui/icons-material/FormatAlignCenter";
 import FormatAlignRightIcon from "@mui/icons-material/FormatAlignRight";
 import FormatAlignJustifyIcon from "@mui/icons-material/FormatAlignJustify";
 import EmojiEmotionsOutlinedIcon from "@mui/icons-material/EmojiEmotionsOutlined";
-import { getChatList, setChatText } from "../../../api/message/messageAPI";
+import {
+  getChatList,
+  getThisRoom,
+  setChatText,
+} from "../../../api/message/messageAPI";
 import { useSelector } from "react-redux";
 // import { profileUrl } from "../../../api/user/userAPI";
 import { connectStomp, publish, subscribe } from "../../../WebSocket/STOMP";
@@ -35,6 +40,8 @@ export default function MessageBox({ roomId }) {
   const [inputStatus, setinputStatus] = useState(() => ["bold", "italic"]);
 
   const [chatList, setChatList] = useState([]);
+
+  const [chatRoom, setChatRoom] = useState();
 
   const user = useSelector((state) => state.userSlice);
 
@@ -101,31 +108,60 @@ export default function MessageBox({ roomId }) {
     setinputStatus(newFormats);
   };
 
+  const subscriptionRef = useRef(null); // 구독을 저장할 Ref
+
   //useEffect
   useEffect(() => {
     // getImageUrl();
     if (roomId) {
-      fetchChatRoomList(roomId);
+      fetchChatList(roomId);
+      fetchChatRoom(roomId);
 
-      connectStomp(SERVER_HOST+"/socket", () => {
+      if (subscriptionRef.current) {
+        subscriptionRef.current.unsubscribe();
+        subscriptionRef.current = null; // 구독 초기화
+      }
+
+      connectStomp(SERVER_HOST + "/socket", () => {
         console.log("연결 성공");
 
         // 구독 설정
-        subscribe(`/sub/room/${roomId}`, (message) => {
-          console.log("요청받음!");
-          setChatList((prev) => [...prev, message]);
-        });
+        subscriptionRef.current = subscribe(
+          `/sub/room/${roomId}`,
+          (message) => {
+            console.log("요청받음!");
+            setChatList((prev) => [...prev, message]);
+          }
+        );
       });
     }
+
+    return () => {
+      // 컴포넌트 언마운트 시 구독 해제
+      if (subscriptionRef.current) {
+        subscriptionRef.current.unsubscribe();
+        subscriptionRef.current = null;
+      }
+    };
   }, [roomId]);
 
-  const fetchChatRoomList = async (chatId) => {
+  const fetchChatList = async (chatId) => {
     try {
       const data = await getChatList(chatId);
 
       setChatList(data);
     } catch (err) {
       console.error("채팅 목록 불러오기 실패:", err);
+    }
+  };
+
+  const fetchChatRoom = async (chatId) => {
+    try {
+      const data = await getThisRoom(chatId);
+
+      setChatRoom(data);
+    } catch (err) {
+      console.error("채팅 이름 불러오기 실패:", err);
     }
   };
 
@@ -140,12 +176,76 @@ export default function MessageBox({ roomId }) {
   return (
     <div className="messageDiv">
       <div className="messageInfo">
-        <h2 className="chatRoomName">
-          <Avatar sx={{ bgcolor: user.color }}>강</Avatar>
-          <div className="chatRoomNameText">강중원</div>
-        </h2>
-        <span></span>
+        {chatRoom && chatRoom.length > 0 ? (
+          chatRoom
+            .filter(
+              (value, index, self) =>
+                self.findIndex((v) => v.chat.chatId === value.chat.chatId) ===
+                index
+            ) // 고유한 chatId만 남김
+            .map((value, index) => {
+              if (value.chat.dtype === "CHANNEL") {
+                return (
+                  <h2 className="chatRoomName" key={index}>
+                    <AvatarGroup>
+                      {chatRoom
+                        .filter(
+                          (room) => room.chat.chatId === value.chat.chatId
+                        ) // 동일한 chatId의 유저만 반복
+                        .map((room, i) => (
+                          <Avatar
+                            key={i}
+                            sx={{
+                              bgcolor: room.user.profile
+                                ? undefined
+                                : user.color,
+                            }}
+                            src={room.user.profile || undefined} // 프로필 이미지
+                            alt={room.user.username}
+                          >
+                            {!room.user.profile && room.user.username.charAt(0)}
+                          </Avatar>
+                        ))}
+                    </AvatarGroup>
+                    <div className="chatRoomNameText">
+                      {value.chat.roomName}
+                    </div>
+                  </h2>
+                );
+              } else if (value.chat.dtype === "DM") {
+                // 다른 유저를 찾아 렌더링
+                const otherUser = chatRoom.find(
+                  (room) =>
+                    room.chat.chatId === value.chat.chatId &&
+                    room.user.userId !== user.userid
+                )?.user;
+
+                return (
+                  otherUser && (
+                    <h2 className="chatRoomName" key={index}>
+                      <Avatar
+                        sx={{
+                          bgcolor: otherUser.profile ? undefined : user.color,
+                        }}
+                        src={otherUser.profile || undefined} // 프로필 이미지
+                        alt={otherUser.username}
+                      >
+                        {!otherUser.profile && otherUser.username.charAt(0)}
+                      </Avatar>
+                      <div className="chatRoomNameText">
+                        {otherUser.username}
+                      </div>
+                    </h2>
+                  )
+                );
+              }
+              return null; // 다른 경우를 명시적으로 처리
+            })
+        ) : (
+          <div>채팅방이 없습니다.</div>
+        )}
       </div>
+
       <div className="chatBox">
         <div className="chatBlockByDay">
           <div className="message_date">2024.12.12.(목)</div>

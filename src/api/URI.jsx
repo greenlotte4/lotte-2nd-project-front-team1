@@ -87,6 +87,7 @@ export const ADMIN_UPDATE_USERS = `${SERVER_HOST}/admin/updateuserlist`; //Ïù¥Îè
 export const MESSAGE_NEW_CHANNEL = `${SERVER_HOST}/message/newChannel`;
 export const MESSAGE_NEW_DM = `${SERVER_HOST}/message/newDM`;
 export const MESSAGE_GET_ROOMS = `${SERVER_HOST}/message/rooms`;
+export const MESSAGE_GET_ROOM = `${SERVER_HOST}/message/room`;
 export const MESSAGE_GET_CHAT = `${SERVER_HOST}/message/chat`;
 export const MESSAGE_GET_LASTCHAT = `${SERVER_HOST}/message/lastchat`;
 
