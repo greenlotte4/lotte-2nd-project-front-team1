@@ -5391,5 +5391,10 @@ menu, ol, ul {
   background-color: transparent;
 }
 
+strong {
+  font-weight: bold;
+  font-size: 1.2em; /* 예: 글씨 크기를 키움 */
+  color: #333; /* 예: 색상을 변경 */
+}
 
 }
