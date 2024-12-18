@@ -19,6 +19,8 @@ const BoardAside = ({ isVisible }) => {
   const [favoriteBoards, setFavoriteBoards] = useState(new Map());
   const navigate = useNavigate();
 
+  const [searchQuery, setSearchQuery] = useState("");
+
   const userId = useSelector((state) => state.userSlice.userid);
   const handleBoardClick = (boardId) => {
     navigate(`/app/board/${boardId}`); // 동적으로 생성된 경로로 이동
@@ -109,6 +111,20 @@ const BoardAside = ({ isVisible }) => {
       });
     }
   };
+
+  const handleSearchChange = (e) => {
+    setSearchQuery(e.target.value.toLowerCase()); // 검색어를 소문자로 변환
+  };
+
+  const filteredFavoriteBoards = boards.filter(
+    (board) =>
+      favoriteBoards.get(board.boardId) === 1 && // 즐겨찾기에 포함된 게시판만
+      board.boardName.toLowerCase().includes(searchQuery) // 검색어와 일치
+  );
+
+  const filteredBoards = boards.filter((board) =>
+    board.boardName.toLowerCase().includes(searchQuery)
+  );
   return (
     isAnimating &&(
     <div id="sidebar-container">
@@ -166,6 +182,8 @@ const BoardAside = ({ isVisible }) => {
               autoComplete="off"
               placeholder="게시판 이름으로 검색"
               className="board_search_input"
+              value={searchQuery}
+              onChange={handleSearchChange}
             />
             <button
               type="button"
@@ -174,9 +192,7 @@ const BoardAside = ({ isVisible }) => {
             >
               <span className="blind">취소</span>
             </button>
-            <button type="button" className="board_button_search">
-              <span className="blind">검색</span>
-            </button>
+          
           </div>
           <button
             type="button"
@@ -216,40 +232,36 @@ const BoardAside = ({ isVisible }) => {
   {boards.length > 0 &&
   favoriteBoards.size > 0 &&
   boards.some((board) => favoriteBoards.get(Number(board.boardId)) === 1) ? (
-    <ul className="lnb_favorite">
-      {boards
-        .filter((board) => favoriteBoards.get(Number(board.boardId)) === 1)
-        .map((favoriteBoard) => (
-          <li key={favoriteBoard.boardId} className="board">
-            <div className="menu_item">
-              <button
-                type="button"
-                title={favoriteBoard.boardName}
-                className="item_txt"
-                onClick={() => handleBoardClick(favoriteBoard.boardId)}
-              >
-                <span className="text">{favoriteBoard.boardName}</span>
-              </button>
-              <input
-                id={`fav_${favoriteBoard.boardId}`}
-                type="checkbox"
-                name={`${favoriteBoard.boardName}`}
-                className="input_fav"
-                checked={favoriteBoards.get(Number(favoriteBoard.boardId)) === 1}
-                onChange={() => onFavoriteToggle(favoriteBoard.boardId)}
-              />
-              <label
-                htmlFor={`fav_${favoriteBoard.boardId}`}
-                className="ico_fav side_btn"
-              >
-                {favoriteBoards.get(Number(favoriteBoard.boardId)) === 1
-                  ? "즐겨찾기 등록됨"
-                  : "즐겨찾기"}
-              </label>
-            </div>
-          </li>
-        ))}
-    </ul>
+    <ul className="lnb_tree">
+  {filteredFavoriteBoards.map((board) => (
+    <li key={board.boardId} className="board">
+      <div className="menu_item">
+        <button
+          type="button"
+          title={board.boardName}
+          className="item_txt"
+          onClick={() => handleBoardClick(board.boardId)}
+        >
+          <span className="text">{board.boardName}</span>
+        </button>
+        <input
+          id={`${board.boardId}`}
+          type="checkbox"
+          name={`${board.boardName}`}
+          className="input_fav"
+          checked={favoriteBoards.get(board.boardId) === 1}
+          onChange={() => onFavoriteToggle(board.boardId)}
+        />
+        <label
+          htmlFor={`${board.boardId}`}
+          className={`ico_fav side_btn ${
+            favoriteBoards.get(board.boardId) === 1 ? "active" : ""
+          }`}
+        ></label>
+      </div>
+    </li>
+  ))}
+</ul>
   ) : (
     <div className="lnb_favorite_empty">
       <p className="message">
@@ -283,35 +295,35 @@ const BoardAside = ({ isVisible }) => {
                   </button>
                 </div>
                 <ul className="lnb_tree">
-                {boards.map((board) => (
-                  <li key={board.boardId} className="board">
-                    <div className="menu_item">
-                    <button
-                          type="button"
-                          title={board.boardName}
-                          className="item_txt"
-                          onClick={() => handleBoardClick(board.boardId)} // handleBoardClick 호출
-                      >
-                          <span className="text">{board.boardName}</span>
-                      </button>
-                      <input
-                        id={`${board.boardId}`}
-                        type="checkbox"
-                        name={`${board.boardName}`}
-                        className="input_fav"
-                        checked={favoriteBoards.get(board.boardId) === 1} // is_favorite 값이 1일 때 체크
-                        onChange={() => onFavoriteToggle(board.boardId)} // 클릭 시 상태 변경
-                      />
-                      <label
-                        htmlFor={`${board.boardId}`}
-                        className={`ico_fav side_btn ${
-                          favoriteBoards.get(board.boardId) === 1 ? "active" : ""
-                        }`}
-                      ></label>
-                    </div>
-                  </li>
-                    ))}
-                </ul>
+  {filteredBoards.map((board) => (
+    <li key={board.boardId} className="board">
+      <div className="menu_item">
+        <button
+          type="button"
+          title={board.boardName}
+          className="item_txt"
+          onClick={() => handleBoardClick(board.boardId)}
+        >
+          <span className="text">{board.boardName}</span>
+        </button>
+        <input
+          id={`${board.boardId}`}
+          type="checkbox"
+          name={`${board.boardName}`}
+          className="input_fav"
+          checked={favoriteBoards.get(board.boardId) === 1}
+          onChange={() => onFavoriteToggle(board.boardId)}
+        />
+        <label
+          htmlFor={`${board.boardId}`}
+          className={`ico_fav side_btn ${
+            favoriteBoards.get(board.boardId) === 1 ? "active" : ""
+          }`}
+        ></label>
+      </div>
+    </li>
+  ))}
+</ul>
               </li>
             </ul>
           </div>

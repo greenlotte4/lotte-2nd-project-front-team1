@@ -5160,5 +5160,236 @@ address, em {
   background-position: -452px -391px;
 }
 
+.board_view .comments .list_area .list_box li.reply {
+  background-color: #f9fafc;
+  padding-left: 56px;
+}
+
+
+
+.board_view .comments .list_area .list_box .cmt_box .user {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.board_view .comments .list_area .list_box .cmt_box .user .cmt_task .ly_context {
+  top: 100%;
+  right: 6px;
+  margin-top: 12px;
+}
+
+.ly_context ul li button {
+  border: 0;
+  border-radius: 0;
+  background-color: transparent;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  width: 100%;
+}
+
+.ly_context ul li a, .ly_context ul li button, .ly_context ul li span {
+  display: block;
+  padding: 0 16px;
+  line-height: 32px;
+  color: #202124;
+  text-align: left;
+  font-size: 14px;
+  white-space: nowrap;
+}
+
+.ly_context ul li a, .ly_context ul li button {
+  text-decoration: none;
+}
+
+.ly_context {
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  position: absolute;
+  top: 40px;
+  left: auto;
+  right: 0;
+  min-width: 160px;
+  height: auto;
+  border: 1px solid #e6e8eb;
+  border-radius: 8px;
+  background-color: #fff;
+  -webkit-box-shadow: 0 4px 10px 0 rgba(32,33,36,.1);
+  box-shadow: 0 4px 10px 0 rgba(32,33,36,.1);
+  overflow: auto;
+  overflow-x: hidden;
+  z-index: 20;
+}
+
+
+.ly_context ul {
+  padding: 8px 0;
+}
+
+menu, ol, ul {
+  list-style: none;
+}
+
+.board_view .comments .list_area .list_box li .ly_context li {
+  padding: 0;
+} 
+
+.board_view .comments .list_area .list_box li {
+  position: relative;
+  padding: 16px 0;
+}
+
+.ly_context ul li {
+  border-bottom: 0;
+  padding: 0;
+}
+
+.board_view .comments .list_area .list_box .cmt_box .cmt_area .mention.mine {
+  background-color: #f5ff00;
+}
+
+.board_view .comments .list_area .list_box .cmt_box .cmt_area .mention {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  display: inline-block;
+  max-width: 265px;
+  margin-right: 3px;
+  color: #118dff;
+  font-weight: 400;
+  text-align: left;
+}
+.board_view .comments .list_area .list_box .cmt_box .cmt_area button {
+  border: 0;
+  border-radius: 0;
+  background-color: transparent;
+}
+
+.board_view .comments .list_area .list_box li.reply:after {
+  content: "";
+  position: absolute;
+  top: 17px;
+  left: 28px;
+  background-image: url(https://static.worksmobile.net/static/pwe/wm/home/sp_board_967af075.png);
+  background-image: -webkit-gradient(linear,left top,left bottom,from(transparent),to(transparent)),url(https://static.worksmobile.net/static/pwe/wm/home/sp_board_9d215a12.svg);
+  background-image: linear-gradient(transparent,transparent),url(https://static.worksmobile.net/static/pwe/wm/home/sp_board_9d215a12.svg);
+  background-size: 500px 473px;
+  background-position: -424px -312px;
+  width: 20px;
+  height: 20px;
+}
+
+.board_view .comments .list_area .list_box li.reply.write_ver {
+  padding-left: 0;
+}
+
+.board_view .comments .list_area .list_box .cmt_box .user .btn_writer_select+.name {
+  margin-left: 12px;
+}
+
+.board_view .comments .list_area .list_box li {
+  position: relative;
+  padding: 16px 0;
+}
+
+.board_view .comments .list_area .list_box li.reply {
+  background-color: #f9fafc;
+  padding-left: 56px;
+}
+
+.board_view .comments .list_area .list_box li.reply .register_box {
+  padding-right: 28px;
+}
+
+.board_view .comments .list_area .list_box li .register_box {
+  margin-top: 10px;
+}
+
+.board_view .comments .list_area .register_box {
+  position: relative;
+  margin: 20px 0 0;
+}
+
+.board_view .comments .list_area .register_box .inp_box {
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  position: relative;
+  border: 1px solid #e6e8eb;
+  border-radius: 8px 8px 0 0;
+  background-color: #fff;
+  overflow: hidden;
+}
+
+.board_view .comments .list_area .register_box .textbox {
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  position: relative;
+  padding: 0 15px;
+  max-height: 360px;
+  overflow-y: auto;
+  word-break: keep-all;
+  word-wrap: break-word;
+  word-break: break-word;
+}
+
+.board_view .comments .list_area .register_box .textbox .comment_input {
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  min-height: 102px;
+  padding: 10px 0;
+  font-size: 14px;
+  color: #202124;
+  line-height: 22px;
+  overflow: hidden;
+  z-index: 10;
+  word-wrap: break-word;
+  word-break: break-word;
+  vertical-align: top;
+}
+
+.board_view .comments .list_area .register_box .textbox .comment_input .tag {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  display: inline-block;
+  max-width: 265px;
+  color: #118dff;
+  margin-right: 4px;
+  vertical-align: top;
+}
+
+.board_view .comments .list_area .register_box .bt_cancel {
+  display: inline-block;
+  vertical-align: top;
+  height: 38px;
+  margin-top: 1px;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.board_view .comments .list_area .register_box .bt_cancel button {
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  display: inline-block;
+  height: 38px;
+  border-radius: 8px;
+  background: #fff;
+  font-size: 14px;
+  color: #3f4247;
+  line-height: 21px;
+  padding: 9px 16px 8px;
+  white-space: nowrap;
+  border: 0;
+  font-weight: 400;
+  text-decoration: none;
+  border-radius: 0;
+  vertical-align: top;
+  background-color: transparent;
+}
+
 
 }

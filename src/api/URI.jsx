@@ -48,8 +48,16 @@ export const BOARD_IMPORTANT_ARTICLE = (articleId) =>
 export const BOARD_COMMENT_ADD = `${SERVER_HOST}/comment/add`;
 
 //댓글 보기
-export const BOARD_COMMENT_VIEW = (articleId) =>
-  `${SERVER_HOST}/comment/${articleId}`;
+export const BOARD_COMMENT_VIEW = (commentId) =>
+  `${SERVER_HOST}/comment/${commentId}`;
+
+//답글 추가
+export const BOARD_REPLY_ADD = (commentId) =>
+  `${SERVER_HOST}/comment/${commentId}/reply`;
+
+// 답글 보기
+export const BOARD_REPLY_VIEW = (commentId) =>
+  `${SERVER_HOST}/comment/${commentId}/reply`;
 
 
 export const BOARD_TRASH_PERMANENT = `${SERVER_HOST}/article/trash/permanent`;

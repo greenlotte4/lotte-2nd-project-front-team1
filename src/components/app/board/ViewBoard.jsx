@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { addComment, ArticleDetail, deleteBoardArticle, getCommentsByArticle, toggleImportantArticle } from "../../../api/board/boardAPI";
+import { addComment, addReply, ArticleDetail, deleteBoardArticle, getCommentsByArticle, getRepliesByComment, toggleImportantArticle } from "../../../api/board/boardAPI";
 import { useSelector } from "react-redux";
 import axios from "axios";
 
@@ -14,9 +14,18 @@ export default function ViewBoard() {
     const userId = useSelector((state) => state.userSlice.userid); // Redux에서 userId 가져오기
     const [translatedText, setTranslatedText] = useState(null);
     const [isTranslateVisible, setIsTranslateVisible] = useState(true);
+    const [activeReply, setActiveReply] = useState(null); 
 
     const [comments, setComments] = useState([]); // 댓글 목록
     const [newComment, setNewComment] = useState(""); // 새 댓글 입력
+
+    const handleReplyClick = (commentId) => {
+        setActiveReply(activeReply === commentId ? null : commentId); // 클릭 시 토글
+      };
+    
+    // 답글 상태 관리
+    const [replies, setReplies] = useState({});
+    const [newReply, setNewReply] = useState(""); // 새 답글 입력 상태
 
     const toggleTranslateVisibility = () => {
         setIsTranslateVisible((prevState) => !prevState); // 상태 반전
@@ -177,6 +186,46 @@ export default function ViewBoard() {
             alert("댓글 등록에 실패했습니다.");
         }
     };
+
+    // 답글 조회
+    const fetchReplies = async (commentId) => {
+        try {
+            const replyData = await getRepliesByComment(commentId);
+            setReplies((prevReplies) => ({
+                ...prevReplies,
+                [commentId]: replyData,
+            })); // 해당 댓글의 답글 목록 갱신
+        } catch (error) {
+            console.error("답글 조회 실패:", error.message);
+            alert("답글을 불러오는 중 오류가 발생했습니다.");
+        }
+    };
+  
+  // 답글 추가
+  const handleAddReply = async (commentId) => {
+    if (!newReply.trim()) {
+        alert("답글 내용을 입력해주세요.");
+        return;
+    }
+
+    // 전달된 commentId 확인
+    console.log("Replying to commentId:", commentId);
+
+    try {
+        await addReply({
+            commentId: commentId, // 전달된 commentId 사용
+            userId: userId,
+            content: newReply,
+        });
+
+        alert("답글이 등록되었습니다!");
+        setNewReply(""); // 입력 필드 초기화
+        fetchReplies(commentId); // 답글 목록 새로고침
+    } catch (error) {
+        console.error("답글 등록 실패:", error);
+        alert("답글 등록에 실패했습니다.");
+    }
+};
     return(
         <div className="boardContentDiv" id="boardContentDiv">
             <div className="g_search">
@@ -684,34 +733,75 @@ export default function ViewBoard() {
                         <ul className="list_box">
                                 {comments.map((comment) => (
                                     <li key={comment.commentId}>
-                                        <div className="cmt_box">
+                                    <div className="cmt_box">
+                                        <div className="user">
+                                        <strong className="name">{comment.userId || "익명"}</strong>
+                                        <span className="date">
+                                            {new Date(comment.createdAt).toLocaleString("ko-KR", {
+                                            year: "numeric",
+                                            month: "2-digit",
+                                            day: "2-digit",
+                                            hour: "2-digit",
+                                            minute: "2-digit",
+                                            })}
+                                        </span>
+                                        <div className="cmt_task _no_print">
+                                            <button type="button" className="btn_more">
+                                            <span className="blind">메뉴 더보기</span>
+                                            </button>
+                                        </div>
+                                        </div>
+                                        <p className="cmt_area">
+                                        <span className="translateArea">{comment.content}</span>
+                                        </p>
+                                        <div className="task_area">
+                                        <button
+                                            type="button"
+                                            className="btn_reply _no_print"
+                                            onClick={() => handleReplyClick(comment.commentId)}
+                                        >
+                                            답글
+                                        </button>
+                                        </div>
+                                    </div>
+                                    
+
+                                    {/* 답글 입력 UI */}
+                                    {activeReply === comment.commentId && (
+                                        <li className="reply write_ver">
+                                        <div className="cmt_box"> 
                                             <div className="user">
-                                                <strong className="name">{comment.userId || "익명"}</strong>
-                                                <span className="date">
-                                                    {new Date(comment.createdAt).toLocaleString("ko-KR", {
-                                                        year: "numeric",
-                                                        month: "2-digit",
-                                                        day: "2-digit",
-                                                        hour: "2-digit",
-                                                        minute: "2-digit",
-                                                    })}
-                                                </span>
-                                                <div className="cmt_task _no_print">
-                                                    <button type="button" className="btn_more">
-                                                        <span className="blind">메뉴 더보기</span>
-                                                    </button>
+                                            <strong className="name">{comment.userId || "익명"}</strong>
+                                            <span className="date"></span>
+                                            </div>
+                                            <div className="register_box _no_print">
+                                            <div className="inp_box">
+                                                <div id={`replyInput_${comment.commentId}`} className="textbox textbox_writing">
+                                                <div
+                                                    contentEditable="true"
+                                                    className="comment_input notranslate"
+                                                    onInput={(e) => setNewReply(e.target.innerText)}
+                                                    suppressContentEditableWarning={true}
+                                                >
+                                                    <em className="tag" contentEditable="false">@{comment.userId}</em>&nbsp;
+                                                </div>
                                                 </div>
                                             </div>
-                                            <p className="cmt_area">
-                                                <span className="translateArea">{comment.content}</span>
-                                            </p>
-                                            <div className="task_area">
-                                                <button type="button" className="btn_reply _no_print">답글</button>
+                                            <div className="btn_box">
+                                                <div className="register_btns">
+                                                <p className="bt_cancel">
+                                                    <button type="button" onClick={() => setActiveReply(null)}>취소</button>
+                                                    <button type="button" className="point" onClick={() => handleAddReply(comment.commentId)}>입력</button>
+                                                </p> 
+                                                </div>
+                                            </div>
                                             </div>
                                         </div>
+                                        </li>
+                                    )}
                                     </li>
                                 ))}
-                            </ul>
+                                </ul>
                             <div className="register_box _no_print">
                                 <div className="inp_box">
                                     <div id="commentScrollTarget_1" className="textbox">
