@@ -12,6 +12,7 @@ export default defineConfig({
     global: "window", // global을 window로 대체
   },
   build: {
+    outDir: "dist",
     rollupOptions: {
       external: [
         "react",
