@@ -19,7 +19,7 @@ const Footer = () => {
         <div className="footer-bottom">
           {/* prettier-ignore */}
           <p>
-            VERSION - 0.1.3-SNAPSHOT
+            VERSION - 0.1.4-SNAPSHOT
             사업자등록번호: 2024-1100-1800 통신판매업신고번호: 2024-부산진구-1118호<br />
             대표이사: 강중원 주소: 부산광역시 부산진구 중앙대로 749(범향빌딩), 그린컴퓨터아카데미 서면2별관<br />
             © Hub Flow. <a href="#"> 개인정보처리방침 </a> | <a href="#">이용약관</a>
