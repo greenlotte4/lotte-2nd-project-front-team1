@@ -9,6 +9,11 @@
       "source": "/user/thumb/:path*",
       "destination": "https://hubflow.store/user/thumb/:path*",
       "statusCode": 308
+    },
+    {
+      "source": "/message/img/:path*",
+      "destination": "https://hubflow.store/message/img/:path*",
+      "statusCode": 308
     }
   ]
 }
