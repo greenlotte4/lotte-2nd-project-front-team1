@@ -50,11 +50,16 @@ export default function MessageBox({ roomId }) {
     if (newMessage.trim()) {
       const now = new Date();
 
+      // 한국 시간으로 변환 (UTC +9)
+      const koreaTime = new Date(
+        now.getTime() + 9 * 60 * 60 * 1000 // UTC 시간에 +9시간
+      );
+
       const chatText = {
         senderId: user.userid,
         context: newMessage,
         chatId: roomId,
-        sendTime: now,
+        sendTime: koreaTime,
       };
       setChatText(chatText);
 
@@ -173,6 +178,23 @@ export default function MessageBox({ roomId }) {
 
   //  소켓 스페이스
 
+  const groupMessagesByDate = (messages) => {
+    return messages.reduce((acc, message) => {
+      const dateKey = new Date(message.sendTime).toLocaleDateString("ko-KR", {
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit",
+      });
+      if (!acc[dateKey]) {
+        acc[dateKey] = [];
+      }
+      acc[dateKey].push(message);
+      return acc;
+    }, {});
+  };
+
+  const groupedMessages = groupMessagesByDate(chatList);
+
   return (
     <div className="messageDiv">
       <div className="messageInfo">
@@ -247,19 +269,18 @@ export default function MessageBox({ roomId }) {
       </div>
 
       <div className="chatBox">
-        <div className="chatBlockByDay">
-          <div className="message_date">2024.12.12.(목)</div>
-
-          {/* chatList가 null 또는 빈 배열인 경우 처리 */}
-          {!chatList || chatList.length === 0 ? (
-            <div className="empty-message">메시지가 없습니다.</div>
-          ) : (
+        {Object.keys(groupedMessages).map((date) => (
+          <div key={date} className="chatBlockByDay">
+            <div className="message_date">{date}</div>
             <div className="message-container">
-              {chatList.map((chat, index) => (
+              {groupedMessages[date].map((chat, index) => (
                 <div
                   key={chat.id}
-                  className={`message_box ${chat.senderId.userId === user.userid ? "myMessage" : "otherMessage"}`}
-                  onContextMenu={(event) => handleClick(event, index)}
+                  className={`message_box ${
+                    chat.senderId.userId === user.userid
+                      ? "myMessage"
+                      : "otherMessage"
+                  }`}
                 >
                   <Avatar
                     src={
@@ -268,12 +289,11 @@ export default function MessageBox({ roomId }) {
                     }
                     alt={chat.senderId.username}
                     className="chatAvatar"
-                  ></Avatar>
-
+                  />
                   <div className="chatContent">
                     <div className="message_sender">
                       {chat.senderId.userId === user.userid
-                        ? user.username + " (나)"
+                        ? `${user.username} (나)`
                         : chat.senderId.username}
                     </div>
                     <div className="message_time">
@@ -289,8 +309,8 @@ export default function MessageBox({ roomId }) {
                 </div>
               ))}
             </div>
-          )}
-        </div>
+          </div>
+        ))}
       </div>
       <Menu
         id="basic-menu"
