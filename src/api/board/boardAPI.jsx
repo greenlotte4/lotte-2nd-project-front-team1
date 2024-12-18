@@ -18,6 +18,8 @@ import {
   BOARD_IMPORTANT_ARTICLE,
   BOARD_COMMENT_ADD,
   BOARD_COMMENT_VIEW,
+  BOARD_REPLY_ADD,
+  BOARD_REPLY_VIEW,
 } from "../URI";
 
 
@@ -301,13 +303,42 @@ export const addComment = async ({ articleId, userId, content }) => {
 };
 
 // 댓글 보기 함수
-export const getCommentsByArticle = async (articleId) => {
+export const getCommentsByArticle = async (commentId) => {
   try {
-    const response = await axios.get(BOARD_COMMENT_VIEW(articleId)); // GET 요청
+    const response = await axios.get(BOARD_COMMENT_VIEW(commentId)); // GET 요청
     console.log("댓글 조회 성공:", response.data);
     return response.data; // 댓글 데이터 반환
   } catch (error) {
     console.error("댓글 조회 실패:", error);
     throw new Error("댓글을 가져오는 데 실패했습니다.");
+  }
+};
+
+// 답글 추가 함수
+export const addReply = async ({ commentId, userId, content }) => {
+  try {
+    const response = await axios.post(BOARD_REPLY_ADD(commentId), {
+      commentId,
+      userId, // 사용자 ID
+      content, // 답글 내용
+    });
+
+    console.log("답글 등록 성공:", response.data);
+    return response.data; // 서버 응답 반환
+  } catch (error) {
+    console.error("답글 등록 실패:", error);
+    throw new Error("답글 등록에 실패했습니다.");
+  }
+};
+
+// 답글 조회 함수
+export const getRepliesByComment = async (commentId) => {
+  try {
+    const response = await axios.get(BOARD_REPLY_VIEW(commentId)); // GET 요청
+    console.log("답글 조회 성공:", response.data);
+    return response.data; // 답글 데이터 반환
+  } catch (error) {
+    console.error("답글 조회 실패:", error);
+    throw new Error("답글을 가져오는 데 실패했습니다.");
   }
 };
