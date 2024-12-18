@@ -38,7 +38,10 @@ export default function AppHeader({ onToggleSidebar, noneAside, thisPage }) {
   // 이미지 URL을 받아오는 함수
   const getImageUrl = async () => {
     const url = await profileUrl(); // 이미지 URL을 비동기적으로 가져옴
+    /* const user = JSON.parse(localStorage.getItem('user')) || JSON.parse(sessionStorage.getItem('user'));
+    const url1 = user ? user.profile : null; // user가 없거나 profile이 없으면 null
     console.log("받은 이미지 URL: ", url);
+    console.log("받은 이미지 URL11: ", url1); */
     setImageUrl(url); // 받아온 URL을 상태에 저장
   };
 
@@ -55,7 +58,6 @@ export default function AppHeader({ onToggleSidebar, noneAside, thisPage }) {
       const response = await selectLoginStatus(); // 서버에서 상태값 가져오기
       if (response) {
         setUserStatus(response.data); // 상태 업데이트
-        console.log("서버에서 가져온 상태값:", setUserStatus);
       } else {
         console.warn("서버에서 상태값을 가져오지 못했습니다.");
       }

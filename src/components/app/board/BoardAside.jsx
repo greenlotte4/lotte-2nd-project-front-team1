@@ -295,19 +295,19 @@ const BoardAside = ({ isVisible }) => {
                           <span className="text">{board.boardName}</span>
                       </button>
                       <input
-                  id={`${board.boardId}`}
-                  type="checkbox"
-                  name={`${board.boardName}`}
-                  className="input_fav"
-                  checked={favoriteBoards.get(board.boardId) === 1} // is_favorite 값이 1일 때 체크
-                  onChange={() => onFavoriteToggle(board.boardId)} // 클릭 시 상태 변경
-                />
-                <label
-                  htmlFor={`${board.boardId}`}
-                  className={`ico_fav side_btn ${
-                    favoriteBoards.get(board.boardId) === 1 ? "active" : ""
-                  }`}
-                ></label>
+                        id={`${board.boardId}`}
+                        type="checkbox"
+                        name={`${board.boardName}`}
+                        className="input_fav"
+                        checked={favoriteBoards.get(board.boardId) === 1} // is_favorite 값이 1일 때 체크
+                        onChange={() => onFavoriteToggle(board.boardId)} // 클릭 시 상태 변경
+                      />
+                      <label
+                        htmlFor={`${board.boardId}`}
+                        className={`ico_fav side_btn ${
+                          favoriteBoards.get(board.boardId) === 1 ? "active" : ""
+                        }`}
+                      ></label>
                     </div>
                   </li>
                     ))}

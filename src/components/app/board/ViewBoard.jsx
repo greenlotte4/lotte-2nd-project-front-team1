@@ -1,12 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { ArticleDetail, deleteBoardArticle, toggleImportantArticle } from "../../../api/board/boardAPI";
+import { addComment, ArticleDetail, deleteBoardArticle, getCommentsByArticle, toggleImportantArticle } from "../../../api/board/boardAPI";
 import { useSelector } from "react-redux";
 import axios from "axios";
 
 export default function ViewBoard() {
 
-    
+    const commentInputRef = useRef(null);
     const [openDropdown, setOpenDropdown] = useState(null);
     const { id } = useParams(); // URL에서 게시글 ID 가져옴
     const [article, setArticle] = useState(null);
@@ -14,6 +14,9 @@ export default function ViewBoard() {
     const userId = useSelector((state) => state.userSlice.userid); // Redux에서 userId 가져오기
     const [translatedText, setTranslatedText] = useState(null);
     const [isTranslateVisible, setIsTranslateVisible] = useState(true);
+
+    const [comments, setComments] = useState([]); // 댓글 목록
+    const [newComment, setNewComment] = useState(""); // 새 댓글 입력
 
     const toggleTranslateVisibility = () => {
         setIsTranslateVisible((prevState) => !prevState); // 상태 반전
@@ -31,7 +34,9 @@ export default function ViewBoard() {
         const fetchArticle = async () => {
             try {
                 const data = await ArticleDetail(id); // API 호출
+                const commentData = await getCommentsByArticle(id);
                 setArticle(data);
+                setComments(commentData); // 댓글 목록 저장
                 console.log("Article Data:", data);
             } catch (error) {
                 console.error("게시글 정보를 가져오는 중 오류 발생:", error);
@@ -144,6 +149,34 @@ export default function ViewBoard() {
             alert("중요 게시글 상태 변경에 실패했습니다.");
         }
     };  
+
+    const handleAddComment = async () => {
+        if (!newComment.trim()) {
+            alert("댓글 내용을 입력해주세요.");
+            return;
+        }
+    
+        try {
+            // 댓글 추가 API 호출
+            await addComment({
+                articleId: id,       // 게시글 ID
+                userId: userId,      // 사용자 ID
+                content: newComment, // 댓글 내용
+            });
+    
+            // 댓글 목록 갱신
+            const updatedComments = await getCommentsByArticle(id);
+            setComments(updatedComments); // 댓글 목록 업데이트
+            setNewComment(""); // 입력 필드 초기화
+
+            if (commentInputRef.current) {
+                commentInputRef.current.innerText = "";
+            }
+        } catch (error) {
+            console.error("댓글 등록 실패:", error);
+            alert("댓글 등록에 실패했습니다.");
+        }
+    };
     return(
         <div className="boardContentDiv" id="boardContentDiv">
             <div className="g_search">
@@ -558,28 +591,52 @@ export default function ViewBoard() {
                                 }) || "알 수 없음"}
                             </em>
                             </span>
-                            <span className="read">
-                                <button type="button">
-                                읽음 1
-                                </button>
-                            </span>
+                           
                             <span className="edit">편집 허용 : OFF (작성자, 게시판 마스터만 편집 가능)</span>
                         </div>
                         <div className="btn _no_print">
-                            <div className="btn_wrap">
-                                <button type="button" className="_btn_share">
-                                    보내기
-                                    <em className="ico"></em>
-                                </button>
-                            </div>
+                            
                             <button id="translateLayerBtn" type="button" className="bt_translate" onClick={toggleTranslateVisibility}>
                                 {isTranslateVisible ? "번역" : "번역 해제"}
                             </button>
-                            <button type="button" className="print">
-                                인쇄
-                            </button>
                         </div>
                     </div>
+
+                    {article.files && article.files.length > 0 && (
+                    <div className="lw_file_attach_view">
+                        <div className="file_infor">
+                                <span className="file_tit">
+                                    <button type="button" className="btn_fold_attach">
+                                        <i className="blind">첨부 파일</i>
+                                    </button>
+                                    <span>첨부 파일 <em>1</em>개</span>
+                                    <span className="file_size">(4.6KB)</span>
+                                </span>
+                        </div>
+                        <div className="file_wrap">
+                                <ul className="file_list">
+                                {article.files.map((file) => (
+                                    <li key={file.boardFileId}> 
+                                        <span className="file_name">
+                                            <button type="button"  title={file.fileOriginalName} className="file_name_txt">{file.fileOriginalName}</button>
+                                        </span>
+                                        <span className="file_size">
+                                            {(
+                                                file.fileSize / 1024
+                                            ).toFixed(2)}{" "}
+                                            KB
+                                        </span>
+                                        <div className="file_btn_area _no_print">
+                                            <button type="button" className="btn_down_pc">
+                                                <i className="blind">PC 저장</i>
+                                            </button>
+                                        </div>
+                                    </li>
+                                    ))}
+                                </ul>
+                        </div>
+                    </div>
+                    )}
                     <div id="id_contents" className="cont">
                         <div
                             style={{ fontSize: "14px" }}
@@ -600,12 +657,6 @@ export default function ViewBoard() {
                     <div id="id_comments" className="comments">
                         <div className="infor">
                             <div className="reaction_box">
-                                <div className="reaction_item">
-                                    <button id="_reactionRecentListButton" type="button" className="btn_reaction_item">
-                                        <span className="text">리액션</span>
-                                    </button>
-
-                                </div>
                                 <div className="reaction_item has_reply">
                                     <button type="button" className="btn_reply_item">
                                         <span className="blind">댓글</span>
@@ -615,12 +666,6 @@ export default function ViewBoard() {
                                 </div>
                             </div>
                             <div className="option">
-                                <span className="notification _no_print" >
-                                    <em className="title">댓글 알림</em> 
-                                    <button type="button" role="switch" className="button_switch" aria-checked="true">
-                                        <span className="blind">댓글 알림</span>
-                                    </button>
-                                </span>
                                 <ul className="sort">
                                     <li className="selected">
                                         <button type="button">
@@ -636,35 +681,53 @@ export default function ViewBoard() {
                             </div>
                         </div>
                         <div className="list_area">
-                            <ul className="list_box" style={{display: "none"}}>
-                                <li>
-                                   <div className="cmt_box">
-                                    <div className="user">
-                                        <strong className="name">이름</strong>
-                                        <span className="date">2024. 12. 1. 14:32</span>
-                                        <div className="cmt_task _no_print">
-                                            <button type="button" className="btn_more">
-                                                <span className="blind">메뉴 더보기</span>
-                                            </button> 
+                        <ul className="list_box">
+                                {comments.map((comment) => (
+                                    <li key={comment.commentId}>
+                                        <div className="cmt_box">
+                                            <div className="user">
+                                                <strong className="name">{comment.userId || "익명"}</strong>
+                                                <span className="date">
+                                                    {new Date(comment.createdAt).toLocaleString("ko-KR", {
+                                                        year: "numeric",
+                                                        month: "2-digit",
+                                                        day: "2-digit",
+                                                        hour: "2-digit",
+                                                        minute: "2-digit",
+                                                    })}
+                                                </span>
+                                                <div className="cmt_task _no_print">
+                                                    <button type="button" className="btn_more">
+                                                        <span className="blind">메뉴 더보기</span>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                            <p className="cmt_area">
+                                                <span className="translateArea">{comment.content}</span>
+                                            </p>
+                                            <div className="task_area">
+                                                <button type="button" className="btn_reply _no_print">답글</button>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <p className="cmt_area">
-                                        <span className="translateArea">ddd</span>
-                                    </p>
-                                    <div className="task_area"><button type="button" className="btn_reply _no_print">
-                                        답글
-                                      </button>
-                                    </div>
-
-                                   </div> 
-                                </li>
-
+                                    </li>
+                                ))}
                             </ul>
                             <div className="register_box _no_print">
                                 <div className="inp_box">
                                     <div id="commentScrollTarget_1" className="textbox">
-                                        <div id="commentInput_17" contentEditable="true" className="comment_input notranslate"></div>
-                                        <span className="comment_label">댓글을 입력하세요. (@로 멤버를 멘션할 수 있어요!)</span>
+                                    <div
+                                        id="commentInput_17"
+                                        contentEditable="true"
+                                        className="comment_input notranslate"
+                                        ref={commentInputRef}
+                                        onInput={(e) => setNewComment(e.target.innerText)}
+                                        suppressContentEditableWarning={true}
+                                    ></div>
+                                      {newComment.trim() === "" && (
+                                            <span className="comment_label">
+                                                댓글을 입력하세요. (@로 멤버를 멘션할 수 있어요!)
+                                            </span>
+                                        )}
                                     </div>
                                 </div>
                                 <div className="btn_box">
@@ -674,14 +737,15 @@ export default function ViewBoard() {
                                             <input id="commentImageFile" type="file" title="" name="uploadImage" accept="*" multiple="multiple" style={{display: "none"}}/>
         
                                         </span>
-                                        <button className="btn_attach_sticker">
-                                            <i className="blind"></i>
-                                        </button>
                                     </div>
                                     <div className="register_btns">
-                                        <button type="button" className="point">
-                                         입력
-                                        </button>
+                                    <button
+                                        type="button"
+                                        className="point"
+                                        onClick={handleAddComment} // 댓글 추가 함수 호출
+                                    >
+                                        입력
+                                    </button>
                                     </div>
                                 </div>
                             </div>
