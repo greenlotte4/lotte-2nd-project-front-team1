@@ -14,12 +14,7 @@ export default defineConfig({
   build: {
     outDir: "dist",
     rollupOptions: {
-      external: [
-        "react",
-        "react-dom",
-        "react-redux",
-        "use-sync-external-store",
-      ],
+      external: [],
     },
   },
 });
