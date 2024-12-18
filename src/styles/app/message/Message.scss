@@ -101,6 +101,10 @@
   .text_box {
     width: 90%;
   }
+
+  .text_box > p > img {
+    max-width: 250px;
+  }
   .chatContent > p {
     margin: 0;
     width: 60%;
