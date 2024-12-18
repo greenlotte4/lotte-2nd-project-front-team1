@@ -6,6 +6,7 @@ import {
   MESSAGE_GET_ROOMS,
   MESSAGE_NEW_CHANNEL,
   MESSAGE_NEW_DM,
+  MESSAGE_POST_IMAGE,
 } from "../URI";
 export const makeNewChannel = async (data) => {
   try {
@@ -73,5 +74,20 @@ export const getLastChat = async (data) => {
     return response.data;
   } catch (err) {
     console.log(err);
+  }
+};
+
+export const postMessageImg = async (formData) => {
+  try {
+    const response = await axios.post(`${MESSAGE_POST_IMAGE}`, formData, {
+      headers: {
+        "Content-Type": "multipart/form-data", // 파일 업로드를 위한 헤더 설정
+      },
+    });
+
+    return response; // 서버의 응답 반환
+  } catch (err) {
+    console.log("파일 업로드 실패:", err); // 오류 처리
+    throw err; // 오류를 호출한 곳으로 던져서 처리할 수 있도록 함
   }
 };

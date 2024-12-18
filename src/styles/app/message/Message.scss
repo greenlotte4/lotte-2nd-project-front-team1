@@ -5,6 +5,26 @@
   flex-direction: column;
   width: 100%;
 
+  strong {
+    font-weight: bold;
+  }
+
+  em {
+    font-style: italic;
+  }
+
+  a {
+    color: -webkit-link;
+  }
+
+  code {
+    font-family: monospace;
+    background-color: rgb(233, 233, 233);
+    border-radius: 5px;
+    padding: 3px;
+    font-size: 11px;
+  }
+
   .messageInfo {
     display: flex;
     justify-content: space-between;

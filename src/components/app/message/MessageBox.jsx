@@ -9,11 +9,11 @@ import {
   ToggleButton,
   ToggleButtonGroup,
 } from "@mui/material";
-
+import LinkIcon from "@mui/icons-material/Link";
+import CodeIcon from "@mui/icons-material/Code";
+import UploadIcon from "@mui/icons-material/Upload";
 import FormatBoldIcon from "@mui/icons-material/FormatBold";
 import FormatItalicIcon from "@mui/icons-material/FormatItalic";
-import FormatUnderlinedIcon from "@mui/icons-material/FormatUnderlined";
-import FormatColorFillIcon from "@mui/icons-material/FormatColorFill";
 import FormatAlignLeftIcon from "@mui/icons-material/FormatAlignLeft";
 import FormatAlignCenterIcon from "@mui/icons-material/FormatAlignCenter";
 import FormatAlignRightIcon from "@mui/icons-material/FormatAlignRight";
@@ -22,12 +22,13 @@ import EmojiEmotionsOutlinedIcon from "@mui/icons-material/EmojiEmotionsOutlined
 import {
   getChatList,
   getThisRoom,
+  postMessageImg,
   setChatText,
 } from "../../../api/message/messageAPI";
 import { useSelector } from "react-redux";
-// import { profileUrl } from "../../../api/user/userAPI";
 import { connectStomp, publish, subscribe } from "../../../WebSocket/STOMP";
 import { SERVER_HOST } from "../../../api/URI";
+import MarkdownIt from "markdown-it";
 
 export default function MessageBox({ roomId }) {
   const [newMessage, setNewMessage] = useState("");
@@ -37,13 +38,15 @@ export default function MessageBox({ roomId }) {
 
   // const [imageUrl, setImageUrl] = useState(null);
 
-  const [inputStatus, setinputStatus] = useState(() => ["bold", "italic"]);
-
   const [chatList, setChatList] = useState([]);
 
   const [chatRoom, setChatRoom] = useState();
 
   const user = useSelector((state) => state.userSlice);
+
+  const mdParser = new MarkdownIt();
+
+  const textareaRef = useRef(null);
 
   // 메시지 전송 핸들러
   const handleSendMessage = () => {
@@ -66,6 +69,35 @@ export default function MessageBox({ roomId }) {
       publish("/pub/chat/send", chatText);
 
       setNewMessage("");
+      if (textareaRef.current) {
+        textareaRef.current.style.height = "auto"; // 초기 높이로 리셋
+      }
+    }
+  };
+
+  // 메시지 전송 핸들러
+  const handleSendImgMessage = (imageUrl) => {
+    let messageContent = `![image](https://hubflow.store${imageUrl})`;
+    const now = new Date();
+
+    // 한국 시간으로 변환 (UTC +9)
+    const koreaTime = new Date(
+      now.getTime() + 9 * 60 * 60 * 1000 // UTC 시간에 +9시간
+    );
+
+    const chatText = {
+      senderId: user.userid,
+      context: messageContent,
+      chatId: roomId,
+      sendTime: koreaTime,
+    };
+    setChatText(chatText);
+
+    publish("/pub/chat/send", chatText);
+
+    setNewMessage("");
+    if (textareaRef.current) {
+      textareaRef.current.style.height = "auto"; // 초기 높이로 리셋
     }
   };
 
@@ -82,12 +114,6 @@ export default function MessageBox({ roomId }) {
     handleClose();
   };
 
-  const handleClick = (event, index) => {
-    setAnchorEl(event.currentTarget);
-    setSelectedIndex(index);
-    event.preventDefault();
-  };
-
   const handleClose = () => {
     setAnchorEl(null);
     setSelectedIndex(null);
@@ -100,8 +126,24 @@ export default function MessageBox({ roomId }) {
     }
   };
 
+  // 텍스트 입력 핸들러
   const inputHandle = (event) => {
-    setNewMessage(event.target.value);
+    const value = event.target.value;
+    setNewMessage(value);
+
+    // 자동 크기 조정
+    if (textareaRef.current) {
+      textareaRef.current.style.height = "auto"; // 높이 초기화
+      textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`; // 내용에 맞게 높이 설정
+    }
+  };
+
+  // 키다운 이벤트 핸들러
+  const handleKeyDown = (event) => {
+    if (event.key === "Enter" && !event.shiftKey) {
+      event.preventDefault(); // 기본 Enter 동작 막기
+      handleSendMessage();
+    }
   };
 
   // 이모지 설정
@@ -109,8 +151,41 @@ export default function MessageBox({ roomId }) {
     setEmojiStatus(!EmojiStatus);
   };
 
-  const handleFormat = (event, newFormats) => {
-    setinputStatus(newFormats);
+  const handleFormat = (formatType) => {
+    const textarea = document.querySelector(".chattingInput");
+    if (!textarea) return;
+
+    const start = textarea.selectionStart;
+    const end = textarea.selectionEnd;
+
+    // 기존 텍스트에서 분리
+    const beforeText = newMessage.slice(0, start);
+    const selectedText = newMessage.slice(start, end);
+    const afterText = newMessage.slice(end);
+
+    let formattedText = selectedText;
+
+    // 포맷 적용
+    if (formatType === "bold") {
+      formattedText = `**${selectedText}**`;
+    } else if (formatType === "italic") {
+      formattedText = `*${selectedText}*`;
+    } else if (formatType === "link") {
+      formattedText = `[${selectedText}](${selectedText})`;
+    } else if (formatType === "code") {
+      formattedText = `\`${selectedText}\``;
+    }
+
+    // 새 메시지 업데이트
+    const updatedMessage = `${beforeText}${formattedText}${afterText}`;
+    setNewMessage(updatedMessage);
+
+    // 커서 위치 업데이트
+    setTimeout(() => {
+      textarea.focus();
+      textarea.selectionStart = start + 2; // 포맷 문법 앞
+      textarea.selectionEnd = end + 2; // 포맷 문법 뒤
+    }, 0);
   };
 
   const subscriptionRef = useRef(null); // 구독을 저장할 Ref
@@ -170,12 +245,6 @@ export default function MessageBox({ roomId }) {
     }
   };
 
-  // const getImageUrl = async () => {
-  //   const url = await profileUrl(); // 이미지 URL을 비동기적으로 가져옴
-  //   console.log("받은 이미지 URL: ", url);
-  //   setImageUrl(url); // 받아온 URL을 상태에 저장
-  // };
-
   //  소켓 스페이스
 
   const groupMessagesByDate = (messages) => {
@@ -194,6 +263,27 @@ export default function MessageBox({ roomId }) {
   };
 
   const groupedMessages = groupMessagesByDate(chatList);
+
+  const handleImageUpload = async (event) => {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    try {
+      // 서버로 이미지 업로드
+      const formData = new FormData();
+      formData.append("file", file);
+
+      const response = await postMessageImg(formData);
+      const imageUrl = response.data; // 서버에서 반환된 URL
+
+      console.log("imageUrl:", imageUrl);
+
+      // 메시지 전송
+      handleSendImgMessage(imageUrl); // 이미지 URL과 함께 전송
+    } catch (error) {
+      console.error("이미지 업로드 오류:", error.response || error);
+    }
+  };
 
   return (
     <div className="messageDiv">
@@ -302,9 +392,14 @@ export default function MessageBox({ roomId }) {
                         minute: "2-digit",
                       })}
                     </div>
-                    <div className="text_box">
-                      <p>{chat.context}</p>
-                    </div>
+                    <div
+                      className="text_box"
+                      dangerouslySetInnerHTML={{
+                        __html: mdParser.render(
+                          chat.context.replace(/\n/g, "  \n")
+                        ),
+                      }}
+                    ></div>
                   </div>
                 </div>
               ))}
@@ -328,80 +423,52 @@ export default function MessageBox({ roomId }) {
         <div className="input_container">
           <div className="input_box">
             <div className="input_tools">
-              <ToggleButtonGroup
-                aria-label="text formatting"
-                value={inputStatus}
-                onChange={handleFormat}
-              >
-                <ToggleButton
-                  value="bold"
-                  aria-label="bold"
-                  style={{ border: "none" }}
-                >
+              <input
+                type="file"
+                id="imageUpload"
+                accept="image/*"
+                style={{ display: "none" }}
+                onChange={handleImageUpload}
+              />
+              <label htmlFor="imageUpload"></label>
+              <ToggleButtonGroup aria-label="text formatting">
+                <IconButton value="bold" onClick={() => handleFormat("bold")}>
                   <FormatBoldIcon />
-                </ToggleButton>
-                <ToggleButton
+                </IconButton>
+                <IconButton
                   value="italic"
-                  aria-label="italic"
-                  style={{ border: "none" }}
+                  onClick={() => handleFormat("italic")}
                 >
                   <FormatItalicIcon />
-                </ToggleButton>
-                <ToggleButton
-                  value="underlined"
-                  aria-label="underlined"
-                  style={{ border: "none" }}
-                >
-                  <FormatUnderlinedIcon />
-                </ToggleButton>
-                <ToggleButton
-                  value="color"
-                  aria-label="color"
-                  style={{ border: "none" }}
-                  disabled
-                >
-                  <FormatColorFillIcon />
-                </ToggleButton>
-              </ToggleButtonGroup>
-              <ToggleButtonGroup exclusive aria-label="text alignment">
-                <ToggleButton
-                  value="left"
-                  aria-label="left aligned"
-                  style={{ border: "none" }}
-                >
-                  <FormatAlignLeftIcon />
-                </ToggleButton>
-                <ToggleButton
-                  value="center"
-                  aria-label="centered"
-                  style={{ border: "none" }}
-                >
-                  <FormatAlignCenterIcon />
-                </ToggleButton>
-                <ToggleButton
-                  value="right"
-                  aria-label="right aligned"
-                  style={{ border: "none" }}
-                >
-                  <FormatAlignRightIcon />
-                </ToggleButton>
-                <ToggleButton
-                  value="justify"
-                  aria-label="justified"
-                  disabled
-                  style={{ border: "none" }}
-                >
-                  <FormatAlignJustifyIcon />
-                </ToggleButton>
+                </IconButton>
+                <IconButton value="link" onClick={() => handleFormat("link")}>
+                  <LinkIcon />
+                </IconButton>
+                <IconButton value="code" onClick={() => handleFormat("code")}>
+                  <CodeIcon />
+                </IconButton>
+                <label htmlFor="imageUpload">
+                  <IconButton component="span" color="primary">
+                    <UploadIcon /> {/* 업로드 아이콘 */}
+                  </IconButton>
+                </label>
               </ToggleButtonGroup>
             </div>
-            <input
-              type="text"
-              placeholder="메시지를 입력해주세요."
+            <textarea
+              ref={textareaRef}
+              placeholder="메시지를 입력하세요..."
               value={newMessage}
               onChange={inputHandle}
-              onKeyDown={keyDown}
-              className="chattingInput"
+              onKeyDown={handleKeyDown}
+              className="messageInput chattingInput"
+              rows={1} // 기본 줄 수
+              style={{
+                overflow: "hidden",
+                resize: "none", // 크기 조정 비활성화
+                width: "100%",
+                fontSize: "16px",
+                lineHeight: "1.5",
+              }}
             />
             <div className="subInput_tools">
               <IconButton aria-label="delete" color="black" onClick={emojiOpen}>
