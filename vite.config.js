@@ -7,4 +7,16 @@ export default defineConfig({
   define: {
     global: "window", // global을 window로 대체
   },
+
+  build: {
+    rollupOptions: {
+      external: ["react-redux", "use-sync-external-store"], // 외부 모듈 처리
+    },
+  },
+  resolve: {
+    alias: {
+      // 필요한 경우 별칭 추가
+      "use-sync-external-store": "use-sync-external-store/shim",
+    },
+  },
 });
