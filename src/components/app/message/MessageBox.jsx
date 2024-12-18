@@ -20,45 +20,38 @@ import FormatAlignJustifyIcon from "@mui/icons-material/FormatAlignJustify";
 import EmojiEmotionsOutlinedIcon from "@mui/icons-material/EmojiEmotionsOutlined";
 import { getChatList, setChatText } from "../../../api/message/messageAPI";
 import { useSelector } from "react-redux";
-import { profileUrl } from "../../../api/user/userAPI";
-import { io } from "socket.io-client";
+// import { profileUrl } from "../../../api/user/userAPI";
+import { connectStomp, publish, subscribe } from "../../../WebSocket/STOMP";
+import { SERVER_HOST } from "../../../api/URI";
 
-export default function MessageBox(roomId) {
-  const [messages, setMessages] = useState([]);
+export default function MessageBox({ roomId }) {
   const [newMessage, setNewMessage] = useState("");
   const [anchorEl, setAnchorEl] = useState(null);
   const [selectedIndex, setSelectedIndex] = useState(null); // 선택한 메시지 인덱스
   const [EmojiStatus, setEmojiStatus] = useState(false);
 
-  const [imageUrl, setImageUrl] = useState(null);
+  // const [imageUrl, setImageUrl] = useState(null);
 
   const [inputStatus, setinputStatus] = useState(() => ["bold", "italic"]);
 
-  const user = useSelector((state) => state.userSlice);
-  const socket = io("http://localhost:8081"); // 서버 주소로 변경 (로컬일 경우)
+  const [chatList, setChatList] = useState([]);
 
+  const user = useSelector((state) => state.userSlice);
+
+  // 메시지 전송 핸들러
   const handleSendMessage = () => {
     if (newMessage.trim()) {
       const now = new Date();
-      setChatList([
-        ...chatList,
-        {
-          context: newMessage,
-          senderId: {
-            userid: user.userid,
-            username: user.username + " (나)",
-            profile: imageUrl,
-          },
-          sendTime: now,
-        },
-      ]);
 
       const chatText = {
         senderId: user.userid,
         context: newMessage,
-        chatId: roomId.roomId,
+        chatId: roomId,
+        sendTime: now,
       };
       setChatText(chatText);
+
+      publish("/pub/chat/send", chatText);
 
       setNewMessage("");
     }
@@ -71,8 +64,8 @@ export default function MessageBox(roomId) {
   // 메시지 삭제 함수
   const deleteMessageHandle = () => {
     if (selectedIndex !== null) {
-      const updatedMessages = messages.filter((_, i) => i !== selectedIndex);
-      setMessages(updatedMessages);
+      const updatedChatList = chatList.filter((_, i) => i !== selectedIndex);
+      setChatList(updatedChatList);
     }
     handleClose();
   };
@@ -108,13 +101,21 @@ export default function MessageBox(roomId) {
     setinputStatus(newFormats);
   };
 
-  const [chatList, setChatList] = useState(null);
-
   //useEffect
   useEffect(() => {
-    getImageUrl();
+    // getImageUrl();
     if (roomId) {
-      fetchChatRoomList(roomId.roomId);
+      fetchChatRoomList(roomId);
+
+      connectStomp(SERVER_HOST+"/socket", () => {
+        console.log("연결 성공");
+
+        // 구독 설정
+        subscribe(`/sub/room/${roomId}`, (message) => {
+          console.log("요청받음!");
+          setChatList((prev) => [...prev, message]);
+        });
+      });
     }
   }, [roomId]);
 
@@ -128,17 +129,14 @@ export default function MessageBox(roomId) {
     }
   };
 
-  const getImageUrl = async () => {
-    const url = await profileUrl(); // 이미지 URL을 비동기적으로 가져옴
-    console.log("받은 이미지 URL: ", url);
-    setImageUrl(url); // 받아온 URL을 상태에 저장
-  };
-
+  // const getImageUrl = async () => {
+  //   const url = await profileUrl(); // 이미지 URL을 비동기적으로 가져옴
+  //   console.log("받은 이미지 URL: ", url);
+  //   setImageUrl(url); // 받아온 URL을 상태에 저장
+  // };
 
   //  소켓 스페이스
-  useEffect(()=> {
 
-  })
   return (
     <div className="messageDiv">
       <div className="messageInfo">
@@ -193,28 +191,6 @@ export default function MessageBox(roomId) {
             </div>
           )}
         </div>
-        {/* {messages.map((message, index) => (
-          <div key={index} className="chatBlockByDay">
-            {message.date && <div className="message_date">{message.date}</div>}
-            <div
-              className="message_box"
-              onContextMenu={(event) => handleClick(event, index)}
-            >
-              <Avatar
-                alt="사용자 아이콘"
-                src="/images/user_Icon.png"
-                className="chatProfile"
-              />
-              <div className="chatContent">
-                <div className="message_sender">사용자 (나)</div>
-                <div className="message_time">{message.time}</div>
-                <div className="text_box">
-                  <p>{message.text}</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        ))} */}
       </div>
       <Menu
         id="basic-menu"
