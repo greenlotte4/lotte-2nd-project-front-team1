@@ -252,9 +252,7 @@ const MessageAside = ({ isVisible, onSelectChat }) => {
                           onContextMenu={(event) =>
                             handleClick(event, value.userId)
                           }
-                          onClick={() => {
-                            onSelectChat(value.chat.chatId);
-                          }} // 수정된 부분
+                          onClick={() => onSelectChat(value.chat.chatId)} // 선택된 방 ID 전달
                         >
                           <ListItemIcon>
                             <Badge color="warning" variant="dot">

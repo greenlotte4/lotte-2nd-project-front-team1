@@ -2,6 +2,7 @@ import axios from "axios";
 import {
   MESSAGE_GET_CHAT,
   MESSAGE_GET_LASTCHAT,
+  MESSAGE_GET_ROOM,
   MESSAGE_GET_ROOMS,
   MESSAGE_NEW_CHANNEL,
   MESSAGE_NEW_DM,
@@ -30,6 +31,15 @@ export const getMyChatRoom = async (data) => {
   try {
     const response = await axios.get(`${MESSAGE_GET_ROOMS}?userId=${data}`);
 
+    return response.data;
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export const getThisRoom = async (data) => {
+  try {
+    const response = await axios.get(`${MESSAGE_GET_ROOM}?chatId=${data}`);
     return response.data;
   } catch (err) {
     console.log(err);
