@@ -1,214 +1,266 @@
-.messageDiv {
-  padding: 20px;
+.messageWrapper {
   flex: 1 0 auto;
   display: flex;
-  flex-direction: column;
-  width: 100%;
 
-  strong {
-    font-weight: bold;
-  }
-
-  em {
-    font-style: italic;
-  }
-
-  a {
-    color: -webkit-link;
-  }
-
-  code {
-    font-family: monospace;
-    background-color: rgb(233, 233, 233);
-    border-radius: 5px;
-    padding: 3px;
-    font-size: 11px;
-  }
-
-  .messageInfo {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
-  }
-
-  .messageInfo h2 {
-    font-size: 18px;
-    margin: 0;
-    font-weight: bold;
-  }
-
-  .messageInfo h2 {
-    font-size: 14px;
-    color: #888;
-  }
-  .chatRoomName {
-    display: flex;
-  }
-  .chatRoomNameText {
-    margin: auto 10px;
-    font-size: 20px;
-  }
-
-  .chatBox {
-    flex: 1;
-    overflow: scroll;
-    display: block;
-  }
-  .chatBlockByDay {
-    margin-bottom: 20px;
-  }
-
-  .message_date {
-    font-size: 14px;
-    color: #888;
-    margin-bottom: 10px;
-  }
-
-  .message_message_box {
-    background: #e6f7ff;
-    border-radius: 8px;
-    padding: 10px;
-    font-size: 14px;
-    color: #333;
-    margin-bottom: 10px;
-  }
-
-  .message_message_box.secondary {
-    background: #f1f1f1;
-  }
-
-  .message_box {
-    margin-top: 10px;
-    border-radius: 10px;
-    box-shadow: 0 3px 8px #0000001a;
-    padding: 10px;
-    display: flex;
-  }
-
-  .chatAvatar {
-    margin-right: 10px;
-  }
-
-  .chatContent {
-    margin: 0;
-    display: inline-block;
-    /* 기존 스타일 유지 */
-    position: relative;
-    /* 텍스트와 버튼을 같은 라인에 배치 */
-    width: 700px;
-  }
-  .text_box {
-    width: 90%;
-  }
-
-  .text_box > p > img {
-    max-width: 250px;
-  }
-  .chatContent > p {
-    margin: 0;
-    width: 60%;
-  }
-
-  .message_sender {
-    display: inline-block;
-    margin-right: 5px;
-  }
-
-  .message_time {
-    font-size: 14px;
-    color: #888;
-    margin-bottom: 5px;
-    display: inline-block;
-  }
-
-  .message_input-bar {
-    display: flex;
-    margin-top: 20px;
-  }
-
-  .input_container {
-    width: 100%;
-    position: relative;
-    display: flex;
-  }
-  .input_tools {
-    width: 100%;
-    background-color: #f1f8e9;
-    border-top-left-radius: 10px;
-    border-top-right-radius: 10px;
-  }
-
-  .input_box {
+  .messageDiv {
+    padding: 20px;
     flex: 1 0 auto;
-    border: 1px solid #ddd;
-    background-color: white;
-    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+
+    strong {
+      font-weight: bold;
+    }
+
+    em {
+      font-style: italic;
+    }
+
+    a {
+      color: -webkit-link;
+    }
+
+    code {
+      font-family: monospace;
+      background-color: rgb(233, 233, 233);
+      border-radius: 5px;
+      padding: 3px;
+      font-size: 11px;
+    }
+
+    .messageInfo {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .messageInfo h2 {
+      font-size: 18px;
+      margin: 0;
+      font-weight: bold;
+    }
+
+    .messageInfo h2 {
+      font-size: 14px;
+      color: #888;
+    }
+    .chatRoomName {
+      display: flex;
+    }
+    .chatRoomNameText {
+      margin: auto 10px;
+      font-size: 20px;
+    }
+
+    .chatBox {
+      flex: 1;
+      overflow: scroll;
+      display: block;
+    }
+    .chatBlockByDay {
+      margin-bottom: 20px;
+    }
+
+    .message_date {
+      font-size: 14px;
+      color: #888;
+      margin-bottom: 10px;
+    }
+
+    .message_message_box {
+      background: #e6f7ff;
+      border-radius: 8px;
+      padding: 10px;
+      font-size: 14px;
+      color: #333;
+      margin-bottom: 10px;
+    }
+
+    .message_message_box.secondary {
+      background: #f1f1f1;
+    }
+
+    .message_box {
+      margin-top: 10px;
+      border-radius: 10px;
+      box-shadow: 0 3px 8px #0000001a;
+      padding: 10px;
+      display: flex;
+      margin-right: 5px;
+    }
+
+    .chatAvatar {
+      margin-right: 10px;
+    }
+
+    .chatContent {
+      margin: 0;
+      display: inline-block;
+      /* 기존 스타일 유지 */
+      position: relative;
+      /* 텍스트와 버튼을 같은 라인에 배치 */
+      max-width: 300px;
+    }
+    .text_box {
+      width: 90%;
+    }
+
+    .text_box > p > img {
+      max-width: 250px;
+    }
+    .chatContent > p {
+      margin: 0;
+      width: 60%;
+    }
+
+    .message_sender {
+      display: inline-block;
+      margin-right: 5px;
+    }
+
+    .message_time {
+      font-size: 14px;
+      color: #888;
+      margin-bottom: 5px;
+      display: inline-block;
+    }
+
+    .message_input-bar {
+      display: flex;
+      margin-top: 20px;
+    }
+
+    .input_container {
+      width: 100%;
+      position: relative;
+      display: flex;
+    }
+    .input_tools {
+      width: 100%;
+      background-color: #f1f8e9;
+      border-top-left-radius: 10px;
+      border-top-right-radius: 10px;
+    }
+
+    .input_box {
+      flex: 1 0 auto;
+      border: 1px solid #ddd;
+      background-color: white;
+      border-radius: 10px;
+    }
+
+    .chattingInput {
+      flex: 1;
+      padding: 10px;
+      border: none;
+      background-color: inherit;
+      width: 100%;
+      font-size: 14px;
+    }
+
+    .sendButton {
+      padding: 10px 20px;
+      margin-left: 10px;
+      border: none;
+      background: #007bff;
+      color: white;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 14px;
+    }
+
+    .sendButton:hover {
+      background: #0056b3;
+    }
+
+    .menuBtn {
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 16px;
+      position: absolute; /* 버튼을 텍스트의 오른쪽 끝에 고정 */
+      right: 10px; /* 텍스트 영역 오른쪽 여백 */
+      top: 50%; /* 세로 중앙 정렬 */
+      transform: translateY(-50%); /* 정확히 세로 중앙 */
+    }
+    .contextMenu {
+      position: absolute;
+      background: white;
+      border: 1px solid #ccc;
+      padding: 10px;
+      box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+      border-radius: 5px;
+      z-index: 1000;
+    }
+
+    .contextMenu div {
+      padding: 5px 10px;
+      cursor: pointer;
+    }
+
+    .contextMenu div:hover {
+      background-color: #f0f0f0;
+    }
+    .contextMenu {
+      position: absolute;
+      top: var(--menu-top, 0px);
+      left: var(--menu-left, 0px);
+      background-color: #fff;
+      border: 1px solid #ddd;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+      display: none;
+    }
+
+    .contextMenu.visible {
+      display: block;
+    }
   }
 
-  .chattingInput {
-    flex: 1;
+  .R_Aside {
+    width: 270px;
+    background-color: #f1f8e9;
     padding: 10px;
-    border: none;
-    background-color: inherit;
-    width: 100%;
-    font-size: 14px;
-  }
+    .ChannelUserTitle {
+      font-size: 30px;
+      margin: 30px 0;
+    }
+    .ChannelUsers {
+      display: flex;
+      align-items: center;
+      margin: 10px 0;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1019607843);
+      border-radius: 10px;
+      padding: 10px;
 
-  .sendButton {
-    padding: 10px 20px;
-    margin-left: 10px;
-    border: none;
-    background: #007bff;
-    color: white;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 14px;
-  }
+      .ChannelUsersName {
+        font-size: 20px;
+        margin: 0 10px;
+      }
+    }
 
-  .sendButton:hover {
-    background: #0056b3;
-  }
+    .chatUserProfileName {
+      font-size: 30px;
+      margin: 10px 0;
+    }
+    .chatUserStatusMessage {
+      margin: 10px 0;
+      font-size: 20px;
 
-  .menuBtn {
-    background: none;
-    border: none;
-    cursor: pointer;
-    font-size: 16px;
-    position: absolute; /* 버튼을 텍스트의 오른쪽 끝에 고정 */
-    right: 10px; /* 텍스트 영역 오른쪽 여백 */
-    top: 50%; /* 세로 중앙 정렬 */
-    transform: translateY(-50%); /* 정확히 세로 중앙 */
-  }
-  .contextMenu {
-    position: absolute;
-    background: white;
-    border: 1px solid #ccc;
-    padding: 10px;
-    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-    border-radius: 5px;
-    z-index: 1000;
-  }
-
-  .contextMenu div {
-    padding: 5px 10px;
-    cursor: pointer;
-  }
-
-  .contextMenu div:hover {
-    background-color: #f0f0f0;
-  }
-  .contextMenu {
-    position: absolute;
-    top: var(--menu-top, 0px);
-    left: var(--menu-left, 0px);
-    background-color: #fff;
-    border: 1px solid #ddd;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-    display: none;
-  }
-
-  .contextMenu.visible {
-    display: block;
+      p {
+        font-size: 15px;
+        color: #888;
+      }
+    }
+    .chatUserContact {
+      font-size: 15px;
+      p {
+        font-size: 15px;
+      }
+    }
+    .hpAndEmail {
+      align-items: center;
+      display: flex;
+    }
   }
 }
