@@ -9,16 +9,22 @@
 */
 import { createSlice } from "@reduxjs/toolkit";
 import Cookies from "js-cookie";
-
+import { loginStatus, postUserLogout } from "../api/user/userAPI";
+const statusChange = async (state) => {
+  await loginStatus(state); // 서버에 상태 변경 요청
+};
 const loadStateFromCookie = () => {
   const auth = Cookies.get("auth");
   if (!auth) return initState; // 쿠키가 없으면 초기 상태 반환
   const parsedAuth = JSON.parse(auth);
-  const { username, role, accessToken, userid, email, profile } = parsedAuth || {};
+  const { username, role, accessToken, userid, email, profile } =
+    parsedAuth || {};
   console.log(username, email, profile);
   return { username, role, accessToken, userid, email, profile };
 };
-
+const logoutid = async (userid) => {
+  await postUserLogout(userid); // 서버에 상태 변경 요청
+};
 const initState = {
   username: null,
   role: null,
@@ -43,15 +49,19 @@ const userSlice = createSlice({
       state.userid = data.userid;
       state.email = data.email;
       state.profile = data.profile;
+
       // 쿠키 저장(영구저장을 위해 쿠키 사용)
-      Cookies.set("auth", JSON.stringify(data), { path: "/", sameSite: "strict" });
-      
+      Cookies.set("auth", JSON.stringify(data), {
+        path: "/",
+        sameSite: "strict",
+      });
+      statusChange("online");
     },
     logout: (state) => {
       console.log("로그아웃...");
-
+      logoutid(state.userid);
       // 상태 초기화
-
+      statusChange("logout");
       state.username = null;
       state.role = null;
       state.accessToken = null;
@@ -62,7 +72,6 @@ const userSlice = createSlice({
       // 쿠키 삭제
       Cookies.remove("auth", { path: "/" });
       localStorage.removeItem("user", { path: "/" });
-
     },
   },
 });
