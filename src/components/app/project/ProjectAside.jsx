@@ -5,7 +5,9 @@ import Modal from "../../modal/Modal";
 import AddProjectForm from "./asideProjectModal/AddProjectModal";
 import { useSelector } from "react-redux";
 import EditProjectModal from "./asideProjectModal/EditProjectModal";
-
+import {
+  Button,
+} from "@mui/material";
 
 export default function ProjectSidebar({ isVisible }) {
   const userId = useSelector((state) => state.userSlice.userid);
@@ -123,24 +125,18 @@ export default function ProjectSidebar({ isVisible }) {
                     >
                       {selectedProjectId === project.projectId ? `> ${project.name}` : project.name}
                     </span>
-                    <button
-                      style={{ marginLeft: "8px", cursor: "pointer" }}
-                      onClick={() => selectProject(project.projectId, "timeline")}
-                    >
-                      타임라인 보기
-                    </button>
-                    <button
-                      style={{ marginLeft: "8px", cursor: "pointer" }}
+                    <Button
+                      style={{ backgroundColor: "white", marginLeft: "8px", cursor: "pointer", border: "1px solid black" }}
                       onClick={() => handleEditClick(project)}
                     >
                       수정
-                    </button>
-                    <button
-                      style={{ marginLeft: "8px", cursor: "pointer" }}
+                    </Button>
+                    <Button
+                      style={{ backgroundColor: "white", marginLeft: "8px", cursor: "pointer", border: "1px solid black" }}
                       onClick={() => handleDeleteClick(project.projectId)}
                     >
                       삭제
-                    </button>
+                    </Button>
                   </li>
                 ))
               ) : (
