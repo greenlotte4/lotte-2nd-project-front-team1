@@ -3,6 +3,7 @@ import SockJS from "sockjs-client";
 
 let stompClient = null;
 
+// const url = "http://localhost:8080/socket"
 export const connectStomp = (url, onConnected, onMessageReceived) => {
   const socket = new SockJS(url);
   stompClient = Stomp.over(socket);

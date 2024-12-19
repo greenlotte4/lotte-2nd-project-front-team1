@@ -3,21 +3,19 @@ import EmojiPicker from "emoji-picker-react";
 import {
   Avatar,
   AvatarGroup,
+  Divider,
   IconButton,
   Menu,
   MenuItem,
-  ToggleButton,
   ToggleButtonGroup,
 } from "@mui/material";
 import LinkIcon from "@mui/icons-material/Link";
 import CodeIcon from "@mui/icons-material/Code";
 import UploadIcon from "@mui/icons-material/Upload";
+import EmailOutlinedIcon from "@mui/icons-material/EmailOutlined";
+import LocalPhoneIcon from "@mui/icons-material/LocalPhone";
 import FormatBoldIcon from "@mui/icons-material/FormatBold";
 import FormatItalicIcon from "@mui/icons-material/FormatItalic";
-import FormatAlignLeftIcon from "@mui/icons-material/FormatAlignLeft";
-import FormatAlignCenterIcon from "@mui/icons-material/FormatAlignCenter";
-import FormatAlignRightIcon from "@mui/icons-material/FormatAlignRight";
-import FormatAlignJustifyIcon from "@mui/icons-material/FormatAlignJustify";
 import EmojiEmotionsOutlinedIcon from "@mui/icons-material/EmojiEmotionsOutlined";
 import {
   getChatList,
@@ -286,8 +284,226 @@ export default function MessageBox({ roomId }) {
   };
 
   return (
-    <div className="messageDiv">
-      <div className="messageInfo">
+    <div className="messageWrapper">
+      <div className="messageDiv">
+        <div className="messageInfo">
+          {chatRoom && chatRoom.length > 0 ? (
+            chatRoom
+              .filter(
+                (value, index, self) =>
+                  self.findIndex((v) => v.chat.chatId === value.chat.chatId) ===
+                  index
+              ) // 고유한 chatId만 남김
+              .map((value, index) => {
+                if (value.chat.dtype === "CHANNEL") {
+                  return (
+                    <h2 className="chatRoomName" key={index}>
+                      <AvatarGroup>
+                        {chatRoom
+                          .filter(
+                            (room) => room.chat.chatId === value.chat.chatId
+                          ) // 동일한 chatId의 유저만 반복
+                          .map((room, i) => (
+                            <Avatar
+                              key={i}
+                              sx={{
+                                bgcolor: room.user.profile
+                                  ? undefined
+                                  : user.color,
+                              }}
+                              src={room.user.profile || undefined} // 프로필 이미지
+                              alt={room.user.username}
+                            >
+                              {!room.user.profile &&
+                                room.user.username.charAt(0)}
+                            </Avatar>
+                          ))}
+                      </AvatarGroup>
+                      <div className="chatRoomNameText">
+                        {value.chat.roomName}
+                      </div>
+                    </h2>
+                  );
+                } else if (value.chat.dtype === "DM") {
+                  // 다른 유저를 찾아 렌더링
+                  const otherUser = chatRoom.find(
+                    (room) =>
+                      room.chat.chatId === value.chat.chatId &&
+                      room.user.userId !== user.userid
+                  )?.user;
+
+                  return (
+                    otherUser && (
+                      <h2 className="chatRoomName" key={index}>
+                        <Avatar
+                          sx={{
+                            bgcolor: otherUser.profile ? undefined : user.color,
+                          }}
+                          src={otherUser.profile || undefined} // 프로필 이미지
+                          alt={otherUser.username}
+                        >
+                          {!otherUser.profile && otherUser.username.charAt(0)}
+                        </Avatar>
+                        <div className="chatRoomNameText">
+                          {otherUser.username}
+                        </div>
+                      </h2>
+                    )
+                  );
+                }
+                return null; // 다른 경우를 명시적으로 처리
+              })
+          ) : (
+            <div>채팅방이 없습니다.</div>
+          )}
+        </div>
+
+        <div className="chatBox">
+          {Object.keys(groupedMessages).map((date) => (
+            <div key={date} className="chatBlockByDay">
+              <div className="message_date">{date}</div>
+              <div className="message-container">
+                {groupedMessages[date].map((chat, index) => (
+                  <div
+                    key={chat.id}
+                    className={`message_box ${
+                      chat.senderId.userId === user.userid
+                        ? "myMessage"
+                        : "otherMessage"
+                    }`}
+                  >
+                    <Avatar
+                      src={
+                        chat.senderId.profile ||
+                        "/static/images/default-avatar.jpg"
+                      }
+                      alt={chat.senderId.username}
+                      className="chatAvatar"
+                    />
+                    <div className="chatContent">
+                      <div className="message_sender">
+                        {chat.senderId.userId === user.userid
+                          ? `${user.username} (나)`
+                          : chat.senderId.username}
+                      </div>
+                      <div className="message_time">
+                        {new Date(chat.sendTime).toLocaleTimeString("ko-KR", {
+                          hour: "2-digit",
+                          minute: "2-digit",
+                        })}
+                      </div>
+                      <div
+                        className="text_box"
+                        dangerouslySetInnerHTML={{
+                          __html: mdParser.render(
+                            chat.context.replace(/\n/g, "  \n")
+                          ),
+                        }}
+                      ></div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+        <Menu
+          id="basic-menu"
+          anchorEl={anchorEl}
+          open={Boolean(anchorEl)}
+          onClose={handleClose}
+          MenuListProps={{
+            "aria-labelledby": "basic-button",
+          }}
+        >
+          <MenuItem onClick={deleteMessageHandle}>삭제</MenuItem>
+        </Menu>
+
+        <div className="message_input-bar">
+          <div className="input_container">
+            <div className="input_box">
+              <div className="input_tools">
+                <input
+                  type="file"
+                  id="imageUpload"
+                  accept="image/*"
+                  style={{ display: "none" }}
+                  onChange={handleImageUpload}
+                />
+                <label htmlFor="imageUpload"></label>
+                <ToggleButtonGroup aria-label="text formatting">
+                  <IconButton value="bold" onClick={() => handleFormat("bold")}>
+                    <FormatBoldIcon />
+                  </IconButton>
+                  <IconButton
+                    value="italic"
+                    onClick={() => handleFormat("italic")}
+                  >
+                    <FormatItalicIcon />
+                  </IconButton>
+                  <IconButton value="link" onClick={() => handleFormat("link")}>
+                    <LinkIcon />
+                  </IconButton>
+                  <IconButton value="code" onClick={() => handleFormat("code")}>
+                    <CodeIcon />
+                  </IconButton>
+                  <label htmlFor="imageUpload">
+                    <IconButton component="span" color="primary">
+                      <UploadIcon /> {/* 업로드 아이콘 */}
+                    </IconButton>
+                  </label>
+                </ToggleButtonGroup>
+              </div>
+              <textarea
+                ref={textareaRef}
+                placeholder="메시지를 입력하세요..."
+                value={newMessage}
+                onChange={inputHandle}
+                onKeyDown={handleKeyDown}
+                className="messageInput chattingInput"
+                rows={1} // 기본 줄 수
+                style={{
+                  overflow: "hidden",
+                  resize: "none", // 크기 조정 비활성화
+                  width: "100%",
+                  fontSize: "16px",
+                  lineHeight: "1.5",
+                }}
+              />
+              <div className="subInput_tools">
+                <IconButton
+                  aria-label="delete"
+                  color="black"
+                  onClick={emojiOpen}
+                >
+                  <EmojiEmotionsOutlinedIcon />
+                </IconButton>
+              </div>
+            </div>
+
+            <button
+              onClick={handleSendMessage}
+              className="sendButton"
+              disabled={!roomId}
+            >
+              전송
+            </button>
+            <EmojiPicker
+              rows={4}
+              perRow={8}
+              emojiSize={32}
+              style={{
+                position: "absolute",
+                bottom: "120px",
+                left: "0px",
+              }}
+              open={EmojiStatus}
+              onEmojiClick={emojiSelect}
+            />
+          </div>
+        </div>
+      </div>
+      <div className="R_Aside">
         {chatRoom && chatRoom.length > 0 ? (
           chatRoom
             .filter(
@@ -298,15 +514,13 @@ export default function MessageBox({ roomId }) {
             .map((value, index) => {
               if (value.chat.dtype === "CHANNEL") {
                 return (
-                  <h2 className="chatRoomName" key={index}>
-                    <AvatarGroup>
-                      {chatRoom
-                        .filter(
-                          (room) => room.chat.chatId === value.chat.chatId
-                        ) // 동일한 chatId의 유저만 반복
-                        .map((room, i) => (
+                  <div className="ChannelUsersWrapper" key={index}>
+                    <h2 className="ChannelUserTitle">{value.chat.roomName}</h2>
+                    {chatRoom
+                      .filter((room) => room.chat.chatId === value.chat.chatId) // 동일한 chatId의 유저만 반복
+                      .map((room, i) => (
+                        <div key={i} className="ChannelUsers">
                           <Avatar
-                            key={i}
                             sx={{
                               bgcolor: room.user.profile
                                 ? undefined
@@ -314,15 +528,16 @@ export default function MessageBox({ roomId }) {
                             }}
                             src={room.user.profile || undefined} // 프로필 이미지
                             alt={room.user.username}
+                            className="ChannelUsersAvatar"
                           >
                             {!room.user.profile && room.user.username.charAt(0)}
                           </Avatar>
-                        ))}
-                    </AvatarGroup>
-                    <div className="chatRoomNameText">
-                      {value.chat.roomName}
-                    </div>
-                  </h2>
+                          <div className="ChannelUsersName">
+                            {room.user.username}
+                          </div>
+                        </div>
+                      ))}
+                  </div>
                 );
               } else if (value.chat.dtype === "DM") {
                 // 다른 유저를 찾아 렌더링
@@ -334,18 +549,41 @@ export default function MessageBox({ roomId }) {
 
                 return (
                   otherUser && (
-                    <h2 className="chatRoomName" key={index}>
+                    <h2 className="chatUserProfileAvatar" key={index}>
                       <Avatar
                         sx={{
                           bgcolor: otherUser.profile ? undefined : user.color,
+                          width: "200px",
+                          height: "200px",
+                          margin: "30px auto",
+                          fontSize: "100px",
                         }}
                         src={otherUser.profile || undefined} // 프로필 이미지
                         alt={otherUser.username}
                       >
                         {!otherUser.profile && otherUser.username.charAt(0)}
                       </Avatar>
-                      <div className="chatRoomNameText">
+                      <div className="chatUserProfileName">
                         {otherUser.username}
+                      </div>
+                      <Divider sx={{ marginBottom: 1 }} />
+                      <div className="chatUserStatusMessage">
+                        <p>상태메세지</p>
+                        {otherUser.statusMessage}
+                      </div>
+                      <Divider sx={{ marginBottom: 1 }} />
+                      <div className="chatUserContact">
+                        <span className="hpAndEmail">
+                          <LocalPhoneIcon />
+                          전화번호
+                        </span>
+                        <p>{otherUser.hp}</p>
+                        <br />
+                        <span className="hpAndEmail">
+                          <EmailOutlinedIcon />
+                          이메일
+                        </span>
+                        <p>{otherUser.email}</p>
                       </div>
                     </h2>
                   )
@@ -356,147 +594,6 @@ export default function MessageBox({ roomId }) {
         ) : (
           <div>채팅방이 없습니다.</div>
         )}
-      </div>
-
-      <div className="chatBox">
-        {Object.keys(groupedMessages).map((date) => (
-          <div key={date} className="chatBlockByDay">
-            <div className="message_date">{date}</div>
-            <div className="message-container">
-              {groupedMessages[date].map((chat, index) => (
-                <div
-                  key={chat.id}
-                  className={`message_box ${
-                    chat.senderId.userId === user.userid
-                      ? "myMessage"
-                      : "otherMessage"
-                  }`}
-                >
-                  <Avatar
-                    src={
-                      chat.senderId.profile ||
-                      "/static/images/default-avatar.jpg"
-                    }
-                    alt={chat.senderId.username}
-                    className="chatAvatar"
-                  />
-                  <div className="chatContent">
-                    <div className="message_sender">
-                      {chat.senderId.userId === user.userid
-                        ? `${user.username} (나)`
-                        : chat.senderId.username}
-                    </div>
-                    <div className="message_time">
-                      {new Date(chat.sendTime).toLocaleTimeString("ko-KR", {
-                        hour: "2-digit",
-                        minute: "2-digit",
-                      })}
-                    </div>
-                    <div
-                      className="text_box"
-                      dangerouslySetInnerHTML={{
-                        __html: mdParser.render(
-                          chat.context.replace(/\n/g, "  \n")
-                        ),
-                      }}
-                    ></div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        ))}
-      </div>
-      <Menu
-        id="basic-menu"
-        anchorEl={anchorEl}
-        open={Boolean(anchorEl)}
-        onClose={handleClose}
-        MenuListProps={{
-          "aria-labelledby": "basic-button",
-        }}
-      >
-        <MenuItem onClick={deleteMessageHandle}>삭제</MenuItem>
-      </Menu>
-
-      <div className="message_input-bar">
-        <div className="input_container">
-          <div className="input_box">
-            <div className="input_tools">
-              <input
-                type="file"
-                id="imageUpload"
-                accept="image/*"
-                style={{ display: "none" }}
-                onChange={handleImageUpload}
-              />
-              <label htmlFor="imageUpload"></label>
-              <ToggleButtonGroup aria-label="text formatting">
-                <IconButton value="bold" onClick={() => handleFormat("bold")}>
-                  <FormatBoldIcon />
-                </IconButton>
-                <IconButton
-                  value="italic"
-                  onClick={() => handleFormat("italic")}
-                >
-                  <FormatItalicIcon />
-                </IconButton>
-                <IconButton value="link" onClick={() => handleFormat("link")}>
-                  <LinkIcon />
-                </IconButton>
-                <IconButton value="code" onClick={() => handleFormat("code")}>
-                  <CodeIcon />
-                </IconButton>
-                <label htmlFor="imageUpload">
-                  <IconButton component="span" color="primary">
-                    <UploadIcon /> {/* 업로드 아이콘 */}
-                  </IconButton>
-                </label>
-              </ToggleButtonGroup>
-            </div>
-            <textarea
-              ref={textareaRef}
-              placeholder="메시지를 입력하세요..."
-              value={newMessage}
-              onChange={inputHandle}
-              onKeyDown={handleKeyDown}
-              className="messageInput chattingInput"
-              rows={1} // 기본 줄 수
-              style={{
-                overflow: "hidden",
-                resize: "none", // 크기 조정 비활성화
-                width: "100%",
-                fontSize: "16px",
-                lineHeight: "1.5",
-              }}
-            />
-            <div className="subInput_tools">
-              <IconButton aria-label="delete" color="black" onClick={emojiOpen}>
-                <EmojiEmotionsOutlinedIcon />
-              </IconButton>
-            </div>
-          </div>
-
-          <button
-            onClick={handleSendMessage}
-            className="sendButton"
-            disabled={!roomId}
-          >
-            전송
-          </button>
-          <EmojiPicker
-            rows={4}
-            perRow={8}
-            emojiSize={32}
-            style={{
-              position: "absolute",
-              bottom: "120px",
-              left: "0px",
-            }}
-            open={EmojiStatus}
-            onEmojiClick={emojiSelect}
-          />
-        </div>
       </div>
     </div>
   );
