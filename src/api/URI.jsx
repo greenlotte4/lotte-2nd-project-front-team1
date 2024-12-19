@@ -45,6 +45,22 @@ export const BOARD_ARTICLE_USER = (userId) =>
 export const BOARD_IMPORTANT_ARTICLE = (articleId) =>
   `${SERVER_HOST}/important-articles/${articleId}`;
 
+//댓글 추가
+export const BOARD_COMMENT_ADD = `${SERVER_HOST}/comment/add`;
+
+//댓글 보기
+export const BOARD_COMMENT_VIEW = (commentId) =>
+  `${SERVER_HOST}/comment/${commentId}`;
+
+//답글 추가
+export const BOARD_REPLY_ADD = (commentId) =>
+  `${SERVER_HOST}/comment/${commentId}/reply`;
+
+// 답글 보기
+export const BOARD_REPLY_VIEW = (commentId) =>
+  `${SERVER_HOST}/comment/${commentId}/reply`;
+
+
 export const BOARD_TRASH_PERMANENT = `${SERVER_HOST}/article/trash/permanent`;
 export const BOARD_TYPE = `${SERVER_HOST}/board/type`;
 export const BOARD_ALL = `${SERVER_HOST}/board/all`;
@@ -80,8 +96,10 @@ export const ADMIN_UPDATE_USERS = `${SERVER_HOST}/admin/updateuserlist`; //이�
 export const MESSAGE_NEW_CHANNEL = `${SERVER_HOST}/message/newChannel`;
 export const MESSAGE_NEW_DM = `${SERVER_HOST}/message/newDM`;
 export const MESSAGE_GET_ROOMS = `${SERVER_HOST}/message/rooms`;
+export const MESSAGE_GET_ROOM = `${SERVER_HOST}/message/room`;
 export const MESSAGE_GET_CHAT = `${SERVER_HOST}/message/chat`;
 export const MESSAGE_GET_LASTCHAT = `${SERVER_HOST}/message/lastchat`;
+export const MESSAGE_POST_IMAGE = `${SERVER_HOST}/message/upload`;
 
 //calendar
 export const CALENDAR_CREATE = `${SERVER_HOST}/calendar/makecalendar`;
@@ -117,9 +135,20 @@ export const DELETE_PROJECT_ITEM = (no) =>
 // export const UPDATE_TASK = (no) => `${SERVER_HOST}/project/task/update/${no}`;
 // export const DELETE_TASK = (no) => `${SERVER_HOST}/project/task/delete/${no}`;
 
+
 export const CREATE_TASK = `${SERVER_HOST}/project/task/create`;
 export const UPDATE_TASK = (no) => `${SERVER_HOST}/project/task/update/${no}`;
 export const DELETE_TASK = (no) => `${SERVER_HOST}/project/task/delete/${no}`;
 
 // file
 export const File = `${SERVER_HOST}/api/drive-files`;
+export const CREATE_TASK = `${SERVER_HOST}/project/task/create`
+export const UPDATE_TASK = (no) => `${SERVER_HOST}/project/task/update/${no}`
+export const DELETE_TASK = (no) => `${SERVER_HOST}/project/task/delete/${no}`
+
+//membership
+export const MEMBERSHIP_UPDATE = `${SERVER_HOST}/api/user/mypage/update-history`;
+export const MEMBERSHIP_CREATE = `${SERVER_HOST}/api/user/mypage/create-history`;
+export const savePlanHistory = `${SERVER_HOST}/api/user/mypage/plan-history`;
+
+

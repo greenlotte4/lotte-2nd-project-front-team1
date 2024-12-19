@@ -4,6 +4,8 @@
     내용 : 메인 요금안내 스타일생성
 */
 
+/* 추가 - 박준우 (12/12)
+
 /* 메인 영역 스타일 */
 .Subs-content {
   max-width: 1200px;
@@ -269,3 +271,20 @@
     }
   }
 }
+
+.months-selection {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 20px 0;
+}
+
+.months-selection h3 {
+  margin-right: 10px;
+}
+
+.months-selection select {
+  padding: 5px 10px;
+  font-size: 16px;
+}
+

@@ -9,7 +9,25 @@ const EditPostBoard = () => {
     const [boards, setBoards] = useState([]);
     const { id } = useParams(); // URL에서 게시글 ID 가져오기
     const [selectedBoard, setSelectedBoard] = useState(''); 
+    const [showFileWrap, setShowFileWrap] = useState(true);
+    const [uploadedFiles, setUploadedFiles] = useState([]); 
     const navigate = useNavigate();
+
+    const totalFileSize = uploadedFiles.reduce((sum, file) => sum + file.size, 0);
+
+    const handleFileChange = (event) => {
+        const files = Array.from(event.target.files); // 선택된 파일 가져오기
+        setUploadedFiles((prev) => [...prev, ...files]); // 파일 목록 추가
+        setShowFileWrap(true);
+    };
+
+    const handleFileUploadClick = () => {
+        document.getElementById('fileUploadInput').click(); // 숨겨진 파일 입력 클릭
+    };
+
+    const handleToggleFileWrap = () => {
+        setShowFileWrap((prev) => !prev); // 상태를 토글하여 열기/닫기 구현
+    };
 
     const [article, setArticle] = useState({
         title: '',
@@ -32,6 +50,10 @@ const EditPostBoard = () => {
         handleCloseBoardSelect(); // 모달 닫기
     };
 
+    const handleRemoveFile = (index) => {
+        setUploadedFiles((prev) => prev.filter((_, i) => i !== index)); // 파일 목록에서 삭제
+    };
+
     useEffect(() => {
         console.log("NoticeBoard: useEffect 실행"); // useEffect 호출 확인
         const fetchBoards = async () => {
@@ -50,8 +72,17 @@ const EditPostBoard = () => {
     useEffect(() => {
         const fetchArticle = async () => {
             try {
-                const data = await ArticleDetail(id); // API로 게시글 데이터 가져오기
-                setArticle(data); // 상태에 게시글 데이터 저장
+                const data = await ArticleDetail(id); // API 호출
+                console.log("Fetched files:", data.files);
+    
+                // 기존 파일 데이터를 새 구조로 변환
+                const convertedFiles = (data.files || []).map(file => ({
+                    name: file.fileOriginalName, // 기존 파일명 필드 사용
+                    size: file.fileSize          // 기존 파일 크기 필드 사용
+                }));
+    
+                setArticle(data); // 게시글 상태 저장
+                setUploadedFiles(convertedFiles); // 통일된 구조로 저장
             } catch (error) {
                 console.error('게시글 정보를 가져오는 중 오류 발생:', error);
             }
@@ -326,21 +357,93 @@ const EditPostBoard = () => {
                      
                       <li className="opt_file">
                           <h3 className="tx">파일첨부</h3>
-                          <button type="button" className="btn_fold_attach close">
-                              <i className="blind">첨부 파일 목록 열기</i>
+                          <button type="button"  className={`btn_fold_attach ${showFileWrap ? 'open' : 'close'}`} onClick={handleToggleFileWrap}>
+                                <i className="blind">
+                                    {showFileWrap ? '첨부 파일 목록 닫기' : '첨부 파일 목록 열기'}
+                                </i>
                           </button>
                           <div className="lw_file_attach_write">
                               <div className="file_infor">
-                                  <button type="button" className="btn_attach">
+                                  <button type="button" className="btn_attach" onClick={handleFileUploadClick}>
                                       내 PC
                                   </button>
-                                  <button type="button" className="btn_attach">
-                                      드라이브
-                                  </button>
-                                  <p className="total_volume">첨부파일 0개 (0KB)</p>
+                                  <p className="total_volume">
+                                    첨부파일 {uploadedFiles.length}개 (
+                                    {totalFileSize >= 1024 * 1024
+                                        ? `${(totalFileSize / (1024 * 1024)).toFixed(2)} MB` // MB로 변환
+                                        : `${(totalFileSize / 1024).toFixed(2)} KB`}
+                                    )
+                                </p>
                               </div>
+                              <input
+                                id="fileUploadInput"
+                                type="file"
+                                multiple
+                                style={{ display: 'none' }}
+                                onChange={handleFileChange}
+                            />
+                            {showFileWrap && (
+                            <div className='file_wrap'>
+                                <table className='file_head'>
+                                    <colgroup>
+                                        <col className='col_file_del'></col>
+                                        <col className='col_file_name'></col>
+                                        <col className='col_file_size'></col>
+                                        <col className='col_scroll_gap'></col>
+                                    </colgroup>
+                                    <thead>
+                                        <tr>
+                                            <th className='file_del'></th>
+                                            <th className='file_name'>
+                                                <p className='file_cell'>파일명</p>
+                                            </th>
+                                            <th className="file_size">
+                                                <p className="file_cell">용량</p>
+                                            </th>
+                                            <th className='scroll_gap'>
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                </table>
+                                <div className='file_scroll_box osx_scrl'>
+                                    <table className='file_cont'>
+                                        <colgroup>
+                                            <col className='col_file_del'></col>
+                                            <col className='col_file_name'></col>
+                                            <col className='col_file_size'></col>
+                                        </colgroup>
+                                        <tbody>
+                                        {uploadedFiles.map((file, index) => (
+                                            <tr key={index}>
+                                                <td>
+                                                    <button type="button" className='btn_file_dels' onClick={() => handleRemoveFile(index)}>
+                                                        <i className="blind">첨부 파일 삭제</i>
+                                                    </button>
+                                                </td>
+                                                <td>{file.name}</td>
+                                                <td>
+                                                {file.size >= 1024 * 1024
+                                                    ? `${(file.size / (1024 * 1024)).toFixed(2)} MB`
+                                                    : `${(file.size / 1024).toFixed(2)} KB`}
 
-                          </div>
+                                                </td>
+                                            </tr>
+                                        ))}
+                                        {uploadedFiles.length === 0 && (
+                                            <tr>
+                                                <td colSpan={3} className="empty_list" id='forfile'>
+                                                    파일이 없습니다.
+                                                </td>
+                                            </tr>
+                                        )}
+                                    </tbody>
+                                    </table>
+
+                                </div>
+                                
+                              </div>
+                                )}
+                            </div>
                       </li>
                   </ul>
                   <div className="workseditor-editor" style={{overflow: "auto", height: "auto"}}>
