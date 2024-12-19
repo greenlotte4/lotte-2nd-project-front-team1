@@ -120,6 +120,8 @@ export const CREATE_PROJECT = `${SERVER_HOST}/project/create`;
 
 export const UPDATE_PROJECT = `${SERVER_HOST}/project/update`;
 export const DELETE_PROJECT = `${SERVER_HOST}/project/delete`;
+export const GETUSER_PROJECT = `${SERVER_HOST}/project`
+
 
 // project/Item
 export const CREATE_PROJECT_ITEM = `${SERVER_HOST}/project/ProjectItem/create`;
