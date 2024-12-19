@@ -2,6 +2,9 @@ import React, { useState, useEffect } from "react";
 import MainPage from "./ProjectMainPage";
 import TimelinePage from "./ProjectTimelinePage";
 import { useParams, useNavigate } from "react-router-dom";
+import {
+  Button,
+} from "@mui/material";
 
 export default function Project() {
   const { projectId, tab } = useParams(); 
@@ -31,18 +34,18 @@ export default function Project() {
   return (
     <div>
       <div className="project-header">
-        <button
+        <Button
           className={`action-btn ${activePage === "main" ? "active" : ""}`}
           onClick={() => handlePageChange("main")}
         >
           기본 화면
-        </button>
-        <button
+        </Button>
+        <Button
           className={`action-btn ${activePage === "timeline" ? "active" : ""}`}
           onClick={() => handlePageChange("timeline")}
         >
           타임라인
-        </button>
+        </Button>
       </div>
       <div className="project-content">{renderPage()}</div>
     </div>
