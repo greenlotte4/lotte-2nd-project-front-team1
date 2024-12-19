@@ -1,4 +1,29 @@
+import { useEffect, useState } from "react";
+import { getMustReadArticles } from "../../../api/board/boardAPI";
+
 export default function MustReadBoard(){
+    const [mustReadArticles, setMustReadArticles] = useState([]); // 필독 게시글 상태
+    const [loading, setLoading] = useState(true); // 로딩 상태 관리
+
+    useEffect(() => {
+        const fetchMustReadArticles = async () => {
+          try {
+            setLoading(true); // 로딩 상태 활성화
+            const articles = await getMustReadArticles(); // API 호출
+            setMustReadArticles(articles); // 상태 업데이트
+          } catch (error) {
+            console.error("필독 게시글 데이터 로드 오류:", error.message);
+          } finally {
+            setLoading(false); // 로딩 상태 비활성화
+          }
+        };
+    
+        fetchMustReadArticles();
+      }, []); // 컴포넌트 마운트 시 한 번 실행
+    
+      if (loading) {
+        return <div>로딩 중...</div>; // 로딩 중 메시지
+      }
     return(
         <div className="boardContentDiv" id="boardContentDiv">
             <div className="g_search">
@@ -222,31 +247,38 @@ export default function MustReadBoard(){
                     
                 </div>
                 <div className="board_list">
-                    <ul className="list notice_type default">
-                        <li className="read has_photo" style={{cursor: "pointer"}}>
-                            <p className="alert">
-                                <em className="ic_noti">필독</em> 
-                                <span>2024. 11. 27. - 2024. 12. 27.</span>
-                            </p>
-                            <div className="sbj_box">
-                                <p className="sbj">
-                                    <a href="/main/article/4070000000153153646">업무 효율을 200%로 만드는 게시판 활용법</a>
-                                </p>
-                            </div>
-                            <p className="infor">
-                                <button type="button" className="user">Board</button> 
-                             
-                            </p> 
-                            <div className="board_name_box">
-                                <span className="board_name_text">공지사항</span>
-                                <em className="icon_board"><span className="blind">일반_게시판</span>
-                                </em>
-                            </div> 
-                            <p className="date">
-                                 2024. 11. 27.
-                            </p>
-                        </li>
-                    </ul> 
+                <ul className="list notice_type default">
+            {mustReadArticles.length > 0 ? (
+              mustReadArticles.map((article) => (
+                <li key={article.id} className="read has_photo" style={{ cursor: "pointer" }}>
+                 
+                  <div className="sbj_box">
+                    <p className="sbj">
+                      <a href={`/article/view/${article.id}`}>{article.title}</a>
+                    </p>
+                  </div>
+                  <p className="infor">
+                    <button type="button" className="user">{article.author}</button>
+                  </p>
+                  <div className="board_name_box">
+                    <span className="board_name_text">{article.boardName}</span>
+                    <em className="icon_board">
+                      <span className="blind">일반_게시판</span>
+                    </em>
+                  </div>
+                  <p className="date">
+                    {new Date(article.createdAt).toLocaleDateString("ko-KR", {
+                        year: "numeric",
+                        month: "2-digit",
+                        day: "2-digit",
+                    })}
+                    </p>
+                </li>
+              ))
+            ) : (
+              <li>필독으로 설정된 게시글이 없습니다.</li>
+            )}
+          </ul>
                     <p className="bt_more">
                         <button type="button" className="btn" style={{display: "none"}}>
                             글쓰기

@@ -29,8 +29,8 @@ export const USER_EMAIL = `${SERVER_HOST}/api`;
 export const BOARD_ARTICLE_WRITE_URI = `${SERVER_HOST}/article/write`;
 export const BOARD_ARTICLE_VIEW = `${SERVER_HOST}/article/view`;
 export const BOARD_ARTICLE_DETAIL = `${SERVER_HOST}/article/view/detail`;
-export const BOARD_ARTICLE_BOARD = (boardId) =>
-  `${SERVER_HOST}/article/boards/${boardId}/articles`;
+export const BOARD_ARTICLE_BOARD = (boardId, page, size) =>
+  `${SERVER_HOST}/article/boards/${boardId}/articles?page=${page}&size=${size}`;
 export const BOARD_ARTICLE_EDIT = `${SERVER_HOST}/article/edit/:id`;
 export const BOARD_MOVE_BASKET = `${SERVER_HOST}/article/delete`;
 export const BOARD_TRASH_VIEW = `${SERVER_HOST}/article/trash`;
@@ -38,12 +38,27 @@ export const BOARD_TRASH_VIEW = `${SERVER_HOST}/article/trash`;
 export const BOARD_ARTICLE_MOVE = `${SERVER_HOST}/article/articles/move`;
 
 //내 게시물 출력
-export const BOARD_ARTICLE_USER = (userId) =>
-  `${SERVER_HOST}/article/user/${userId}`;
-
+export const BOARD_ARTICLE_USER = (userId, page, size) =>
+  `${SERVER_HOST}/article/user/${userId}?page=${page}&size=${size}`;
 //중요글 체크
 export const BOARD_IMPORTANT_ARTICLE = (articleId) =>
   `${SERVER_HOST}/important-articles/${articleId}`;
+
+//중요글 출력
+export const BOARD_ARTICLE_IMPORTANT_VIEW = (userId, page, size) =>
+  `${SERVER_HOST}/important-articles/${userId}?page=${page}&size=${size}`;
+
+//필독글 출력
+export const BOARD_MUST_READ = `${SERVER_HOST}/article/must-read`;
+
+//메인 필독글 출력
+export const BOARD_MUST_READ_main = `${SERVER_HOST}/article/must-read/latest`;
+
+//최신글
+export const BOARD_RECENT_ARTICLE = `${SERVER_HOST}/article/recent`;
+
+//최신글 10개
+export const BOARD_RECENT_ARTICLE_TEN = `${SERVER_HOST}/article/recent/ten`;
 
 //댓글 추가
 export const BOARD_COMMENT_ADD = `${SERVER_HOST}/comment/add`;

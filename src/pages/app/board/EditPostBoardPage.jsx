@@ -13,7 +13,7 @@ export default function EditPostBoardPage() {
       <AppLayout onToggleSidebar={toggleSidebar}>
         <BoardAside isVisible={isSidebarVisible} />
         <main
-          className={`main-content ${isSidebarVisible ? "" : "hidden-sidebar"}`}
+          className={`main-content ${isSidebarVisible ? "" : "hidden-sidebar"}scrollable`}
         >
           <EditPostBoard />
         </main>

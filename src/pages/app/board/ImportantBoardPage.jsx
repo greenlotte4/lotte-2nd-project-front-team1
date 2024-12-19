@@ -13,7 +13,7 @@ export default function ImportantBoardPage() {
       <AppLayout onToggleSidebar={toggleSidebar}>
         <BoardAside isVisible={isSidebarVisible} />
         <main
-          className={`main-content ${isSidebarVisible ? "" : "hidden-sidebar"}`}
+          className={`main-content ${isSidebarVisible ? "" : "hidden-sidebar"} scrollable`}
         >
           <ImportantBoard />
         </main>
