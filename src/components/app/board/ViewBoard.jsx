@@ -168,10 +168,11 @@ export default function ViewBoard() {
         try {
             // 댓글 추가 API 호출
             await addComment({
-                articleId: id,       // 게시글 ID
+                boardArticleId: id,       // 게시글 ID
                 userId: userId,      // 사용자 ID
                 content: newComment, // 댓글 내용
             });
+            console.log("Request Data 댓글:", { boardArticleId: id, userId, content: newComment });
     
             // 댓글 목록 갱신
             const updatedComments = await getCommentsByArticle(id);
@@ -184,6 +185,7 @@ export default function ViewBoard() {
         } catch (error) {
             console.error("댓글 등록 실패:", error);
             alert("댓글 등록에 실패했습니다.");
+            console.log("Request Data:", { boardArticleId: id, userId, content: newComment });
         }
     };
 

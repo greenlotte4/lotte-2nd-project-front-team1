@@ -20,6 +20,11 @@ import {
   BOARD_COMMENT_VIEW,
   BOARD_REPLY_ADD,
   BOARD_REPLY_VIEW,
+  BOARD_ARTICLE_IMPORTANT_VIEW,
+  BOARD_MUST_READ,
+  BOARD_MUST_READ_main,
+  BOARD_RECENT_ARTICLE,
+  BOARD_RECENT_ARTICLE_TEN,
 } from "../URI";
 
 
@@ -209,10 +214,10 @@ export const getAllBoards = async () => {
 };
 
 
-export const getArticlesByBoard = async (boardId) => {
+export const getArticlesByBoard = async (boardId, page = 0, size = 20) => {
   try {
-      const url = BOARD_ARTICLE_BOARD(boardId); // URI 생성
-      console.log(`Fetching articles for board ID ${boardId}: ${url}`);
+      const url = BOARD_ARTICLE_BOARD(boardId, page, size); // URI 생성
+      console.log(`Fetching articles for board ID ${boardId} at page ${page}, size ${size}: ${url}`);
       
       const response = await axios.get(url); // GET 요청
       console.log("Response:", response.data);
@@ -250,10 +255,10 @@ export const moveArticlesToBoard = async (articleIds, boardId) => {
   }
 };
 
-export const getArticlesByUser = async (userId) => {
+export const getArticlesByUser = async (userId, page = 0, size = 10) => {
   try {
-    const url = BOARD_ARTICLE_USER(userId); // 사용자 ID 기반 URI 생성
-    console.log(`Fetching articles for user ID ${userId}: ${url}`);
+    const url = BOARD_ARTICLE_USER(userId, page, size); // 사용자 ID, 페이지 번호, 크기를 기반으로 URI 생성
+    console.log(`Fetching articles for user ID ${userId} at page ${page} with size ${size}: ${url}`);
 
     const response = await axios.get(url); // GET 요청으로 데이터 가져오기
     console.log("유저별 글:", response.data); // 응답 데이터 확인
@@ -261,6 +266,17 @@ export const getArticlesByUser = async (userId) => {
   } catch (err) {
     console.error(`Error fetching articles for user ID ${userId}:`, err);
     throw new Error("사용자가 작성한 게시글을 가져오는 데 실패했습니다.");
+  }
+};
+
+export const getImportantArticles = async (userId, page = 0, size = 10) => {
+  try {
+    const response = await axios.get(BOARD_ARTICLE_IMPORTANT_VIEW(userId, page, size));
+    console.log("중요글 API 응답 데이터:", response.data); // 디버깅용
+    return response.data; // 백엔드에서 반환된 데이터
+  } catch (error) {
+    console.error("중요글 API 호출 오류:", error.message);
+    throw error; // 오류 전달
   }
 };
 
@@ -286,19 +302,18 @@ export const toggleImportantArticle = async (articleId, userId) => {
 };
 
 // 댓글 추가 함수
-export const addComment = async ({ articleId, userId, content }) => {
+export const addComment = async (articleId, userId, content) => {
   try {
-      const response = await axios.post(BOARD_COMMENT_ADD, {
-          articleId: articleId,  // 게시글 ID
-          userId: userId,        // 사용자 ID
-          content: content,      // 댓글 내용
-      });
-
-      console.log("댓글 등록 성공:", response.data);
-      return response.data; // 서버 응답 반환
+    const response = await axios.post(BOARD_COMMENT_ADD, {
+      boardArticleId: articleId, // 게시글 ID
+      userId: userId, // 작성자 ID
+      content: content, // 댓글 내용
+    });
+    console.log("여기" +articleId, userId, content); 
+    return response.data;
   } catch (error) {
-      console.error("댓글 등록 실패:", error);
-      throw new Error("댓글 등록에 실패했습니다.");
+    console.error("Error adding comment:", error.message);
+    throw error;
   }
 };
 
@@ -340,5 +355,51 @@ export const getRepliesByComment = async (commentId) => {
   } catch (error) {
     console.error("답글 조회 실패:", error);
     throw new Error("답글을 가져오는 데 실패했습니다.");
+  }
+};
+
+export const getMustReadArticles = async () => {
+  try {
+    const response = await axios.get(BOARD_MUST_READ);
+    console.log("필독 게시글 데이터:", response.data); // 디버깅 로그
+    return response.data; // 서버에서 반환된 데이터
+  } catch (error) {
+    console.error("필독 게시글 API 호출 오류:", error.message);
+    throw error; // 오류를 호출한 쪽으로 전달
+  }
+};
+
+export const getMainMustReadArticles = async () => {
+  try {
+    const response = await axios.get(BOARD_MUST_READ_main);
+    console.log("필독 게시글 데이터:", response.data); // 디버깅 로그
+    return response.data; // 서버에서 반환된 데이터
+  } catch (error) {
+    console.error("필독 게시글 API 호출 오류:", error.message);
+    throw error; // 오류를 호출한 쪽으로 전달
+  }
+};
+
+// 최근 게시글 가져오기
+export const getRecentArticles = async () => {
+  try {
+    // 서버에서 최근 게시글 데이터를 가져오는 GET 요청
+    const response = await axios.get(BOARD_RECENT_ARTICLE);
+
+    console.log("Fetched Recent Articles:", response.data); // 응답 데이터 확인
+    return response.data; // 서버에서 가져온 데이터 반환
+  } catch (err) {
+    console.error("Error while fetching recent articles:", err); // 에러 출력
+    throw new Error("최근 게시글 목록을 가져오는 데 실패했습니다.");
+  }
+};
+
+export const getTenRecentArticles = async () => {
+  try {
+    const response = await axios.get(BOARD_RECENT_ARTICLE_TEN); // `/recent` 호출
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching recent articles:", error.message);
+    throw error;
   }
 };

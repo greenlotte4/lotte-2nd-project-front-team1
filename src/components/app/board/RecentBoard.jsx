@@ -1,4 +1,22 @@
-export default function RecentBoard(){
+import React, { useEffect, useState } from "react";
+import {  getRecentArticles } from "../../../api/board/boardAPI";
+
+const RecentBoard = () => {
+    const [articles, setArticles] = useState([]);
+  
+    useEffect(() => {
+      // 최근 게시글 데이터를 가져오는 API 호출
+      const fetchRecentArticles = async () => {
+        try {
+          const data = await getRecentArticles(); // 데이터 가져오기
+          setArticles(data); // 상태 업데이트
+        } catch (error) {
+          console.error("Error fetching recent articles:", error.message);
+        }
+      };
+  
+      fetchRecentArticles();
+    }, []);
     return(
     <div className="boardContentDiv" id="boardContentDiv">
         <div className="g_search">
@@ -230,29 +248,31 @@ export default function RecentBoard(){
             </div>
             <div className="board_list" >
                 <ul className="list edit_types newest_type mypost_typle default">
-                    <li className="read" style={{cursor: "pointer"}}>
+                {articles.map((article) => (
+                    <li key={article.id} className="read" style={{cursor: "pointer"}}>
                         
-                        <div className="sbj_box">
-                            <p className="sbj">
-                                <a href="">ㅇㅇ</a>
-                            </p></div>
+                            <div className="sbj_box">
+                                <p className="sbj">
+                                <a href={`/article/view/${article.id}`}>{article.title}</a>
+                                </p>
+                            </div>
                             <p className="infor">
-                                <button type="button" className="user">1조</button>
+                                <button type="button" className="user">  {article.userName}</button>
                                
                                 <em title="댓글갯수" className="comments">
-                                    <a style={{cursor: "pointer"}}>2</a>
+                                <a style={{ cursor: "pointer" }}>{article.commentCount || 0}</a>
                                 </em>
                             </p>
                             <div className="board_name_box">
-                                <span className="board_name_text">공지사항</span>
+                                <span className="board_name_text">{article.boardName}</span>
                                 <em className="icon_board">
                                     <span className="blind">일반_게시판</span>
                                 </em>
                             </div> 
-                            <p className="date">
-                             2024. 11. 27. 12:28
-                            </p>
-                        </li>
+                            <p className="date">  {new Date(article.createdAt).toLocaleDateString("en-CA")}</p>
+                            
+                    </li>
+                      ))}
                 </ul> 
                 <p className="bt_more">
                     <button type="button" className="btn" style={{display: "none"}}>
@@ -268,3 +288,5 @@ export default function RecentBoard(){
 
     );
 }
+
+export default RecentBoard;

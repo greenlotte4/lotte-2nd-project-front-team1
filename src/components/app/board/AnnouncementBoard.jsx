@@ -6,6 +6,7 @@ import { useSelector } from "react-redux";
 
 export default function AnnouncementBoard(){
     const { boardId } = useParams();
+    const [isOptionBoxVisible, setIsOptionBoxVisible] = useState(false);
 
     const [articles, setArticles] = useState([]); // 게시글 상태
     const [boardName, setBoardName] = useState(""); // 추가된 상태
@@ -17,10 +18,28 @@ export default function AnnouncementBoard(){
     const [selectedBoard, setSelectedBoard] = useState("");
     const [boards, setBoards] = useState([]);
     const moveBoxRef = useRef(null);
+    const [pageSize, setPageSize] = useState(10);
+
+    const [currentPage, setCurrentPage] = useState(0); // 현재 페이지 (0부터 시작)
+    const [totalPages, setTotalPages] = useState(0); // 전체 페이지 수
 
     const userId = useSelector((state) => state.userSlice.userid);
     
     const navigate = useNavigate();
+
+    const handlePageChange = (pageNumber) => {
+        setCurrentPage(pageNumber); // 페이지 변경
+    };
+
+    const toggleOptionBox = () => {
+        setIsOptionBoxVisible((prev) => !prev);
+    };
+
+    const handlePageSizeChange = (size) => {
+        setPageSize(size); // 선택된 페이지 크기 설정
+        setCurrentPage(0); // 첫 페이지로 초기화
+        setIsOptionBoxVisible(false); // 옵션 박스 닫기
+    };
 
      // 체크박스 선택/해제 핸들러
      const handleCheckboxChange = (articleId) => {
@@ -77,18 +96,20 @@ export default function AnnouncementBoard(){
     useEffect(() => {
         const fetchArticles = async () => {
             try {
-                const data = await getArticlesByBoard(boardId);
-                setArticles(data.articles); // 게시글 설정
-                setBoardName(data.boardName); // 게시판 이름 설정
+                const response = await getArticlesByBoard(boardId, currentPage, pageSize); // 수정된 API 호출
+                setArticles(response.articles); // 현재 페이지의 게시글 설정
+                setTotalPages(response.totalPages); // 전체 페이지 수 설정
+                setBoardName(response.boardName); // 게시판 이름 설정
             } catch (err) {
                 setError(err.message);
             } finally {
                 setLoading(false);
             }
         };
+    
 
         fetchArticles();
-    }, [boardId]);
+    },  [boardId, currentPage, pageSize]);
 
     useEffect(() => {
         const fetchFavoriteBoards = async () => {
@@ -529,36 +550,21 @@ useEffect(() => {
     
                             </div>
                             <div className="select_box">
-                                <button type="button" className="selected">
-                                    <strong>20개씩 보기</strong>
+                                <button type="button" className="selected" onClick={toggleOptionBox}>
+                                    <strong>{pageSize}개씩 보기</strong> {/* pageSize 상태에 따라 표시 */}
                                 </button>
-                                <div className="option_box" style={{display: "none"}}>
+                                <div
+                                    className="option_box"
+                                    style={{ display: isOptionBoxVisible ? "block" : "none" }} // 상태에 따라 표시 여부 제어
+                                >
                                     <ul>
-                                        <li>
-                                            <button type="button">
-                                                10개씩 보기
-                                            </button>
-                                        </li>
-                                        <li>
-                                            <button type="button">
-                                                20개씩 보기
-                                            </button>
-                                        </li>
-                                        <li>
-                                            <button type="button">
-                                                30개씩 보기
-                                            </button>
-                                        </li>
-                                        <li>
-                                            <button type="button">
-                                                40개씩 보기
-                                            </button>
-                                        </li>
-                                        <li>
-                                            <button type="button">
-                                                50개씩 보기
-                                            </button>
-                                        </li>
+                                        {[10, 20, 30, 40, 50].map((size) => (
+                                            <li key={size}>
+                                                <button type="button" onClick={() => handlePageSizeChange(size)}>
+                                                    {size}개씩 보기
+                                                </button>
+                                            </li>
+                                        ))}
                                     </ul>
                                 </div>
     
@@ -660,8 +666,84 @@ useEffect(() => {
                                     글쓰기
                                 </button>
                             </li>
+                            
                         )}
+                        
                     </ul>
+                    <div className="lw_pagination">
+    {/* 첫 페이지 버튼 */}
+    <a
+        role="button"
+        tabIndex="0"
+        className={`page_first ${currentPage === 0 ? "disabled" : ""}`}
+        style={{ cursor: currentPage === 0 ? "not-allowed" : "pointer" }}
+        onClick={(e) => {
+            if (currentPage === 0) e.preventDefault(); // 첫 페이지일 때 클릭 방지
+            else handlePageChange(0);
+        }}
+    >
+        <span className="page_tooltip">첫 페이지</span>
+    </a>
+
+    {/* 이전 페이지 버튼 */}
+    <a
+        role="button"
+        tabIndex="0"
+        className={`page_prev ${currentPage === 0 ? "disabled" : ""}`}
+        style={{ cursor: currentPage === 0 ? "not-allowed" : "pointer" }}
+        onClick={(e) => {
+            if (currentPage === 0) e.preventDefault(); // 첫 페이지일 때 클릭 방지
+            else handlePageChange(currentPage - 1);
+        }}
+    >
+        <span className="page_tooltip">이전 페이지</span>
+    </a>
+
+    {/* 페이지 번호 */}
+    <span className="page_number">
+        {Array.from({ length: totalPages }, (_, index) => (
+            <a
+                key={index}
+                role="button"
+                tabIndex="0"
+                className={`num ${currentPage === index ? "selected" : ""}`}
+                style={{ cursor: "pointer" }}
+                onClick={() => handlePageChange(index)}
+            >
+                {index + 1}
+                <span className="blind">{index + 1}번째 목록</span>
+            </a>
+        ))}
+    </span>
+
+    {/* 다음 페이지 버튼 */}
+    <a
+        role="button"
+        tabIndex="0"
+        className={`page_next ${currentPage === totalPages - 1 ? "disabled" : ""}`}
+        style={{ cursor: currentPage === totalPages - 1 ? "not-allowed" : "pointer" }}
+        onClick={(e) => {
+            if (currentPage === totalPages - 1) e.preventDefault(); // 마지막 페이지일 때 클릭 방지
+            else handlePageChange(currentPage + 1);
+        }}
+    >
+        <span className="page_tooltip">다음 페이지</span>
+    </a>
+
+    {/* 마지막 페이지 버튼 */}
+    <a
+        role="button"
+        tabIndex="0"
+        className={`page_last ${currentPage === totalPages - 1 ? "disabled" : ""}`}
+        style={{ cursor: currentPage === totalPages - 1 ? "not-allowed" : "pointer" }}
+        onClick={(e) => {
+            if (currentPage === totalPages - 1) e.preventDefault(); // 마지막 페이지일 때 클릭 방지
+            else handlePageChange(totalPages - 1);
+        }}
+    >
+        <span className="page_tooltip">마지막 페이지</span>
+    </a>
+</div>
                 </div>
 
             </div>       
