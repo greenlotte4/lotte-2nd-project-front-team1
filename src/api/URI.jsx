@@ -17,6 +17,7 @@ export const SERVER_HOST = import.meta.env.VITE_SERVER_HOST;
 // user
 export const USER_URI = `${SERVER_HOST}/user/register`;
 export const USER_LOGIN_URI = `${SERVER_HOST}/user/login`;
+export const USER_LOGOUT_URI = `${SERVER_HOST}/user/logout`;
 export const USER_FIND = `${SERVER_HOST}/user/`;
 export const USER_CHECK = `${SERVER_HOST}/user/`;
 export const USER_CHANGE = `${SERVER_HOST}/user`;
@@ -100,8 +101,8 @@ export const CREATE_PROJECT = `${SERVER_HOST}/project/create`;
 // export const UPDATE_PROJECT = `${SERVER_HOST}/project/update`;
 // export const DELETE_PROJECT = (no) => `${SERVER_HOST}/project/${no}`;
 
-export const UPDATE_PROJECT = `${SERVER_HOST}/project/update`
-export const DELETE_PROJECT = `${SERVER_HOST}/project/delete`
+export const UPDATE_PROJECT = `${SERVER_HOST}/project/update`;
+export const DELETE_PROJECT = `${SERVER_HOST}/project/delete`;
 
 // project/Item
 export const CREATE_PROJECT_ITEM = `${SERVER_HOST}/project/ProjectItem/create`;
@@ -116,10 +117,9 @@ export const DELETE_PROJECT_ITEM = (no) =>
 // export const UPDATE_TASK = (no) => `${SERVER_HOST}/project/task/update/${no}`;
 // export const DELETE_TASK = (no) => `${SERVER_HOST}/project/task/delete/${no}`;
 
-export const CREATE_TASK = `${SERVER_HOST}/project/task/create`
-export const UPDATE_TASK = (no) => `${SERVER_HOST}/project/task/update/${no}`
-export const DELETE_TASK = (no) => `${SERVER_HOST}/project/task/delete/${no}`
-
+export const CREATE_TASK = `${SERVER_HOST}/project/task/create`;
+export const UPDATE_TASK = (no) => `${SERVER_HOST}/project/task/update/${no}`;
+export const DELETE_TASK = (no) => `${SERVER_HOST}/project/task/delete/${no}`;
 
 // file
-export const File = `${SERVER_HOST}/api/drive-files`
+export const File = `${SERVER_HOST}/api/drive-files`;
