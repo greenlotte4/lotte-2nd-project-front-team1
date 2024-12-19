@@ -150,13 +150,17 @@ export const deleteBoardArticle = async (id, userId) => {
   }
 };
 
-export const getTrashArticles = async (userId) => {
+export const getTrashArticles = async (userId, page = 0, size = 10) => {
   try {
-    // 서버에서 휴지통 게시글 데이터 가져오기 (사용자 ID 전달)
+    // 서버에서 휴지통 게시글 데이터 가져오기 (사용자 ID와 페이징 전달)
     const response = await axios.get(BOARD_TRASH_VIEW, {
-      params: { userId }, // 사용자 ID를 요청 파라미터로 전달
+      params: {
+        userId, // 사용자 ID
+        page,   // 현재 페이지 번호
+        size,   // 한 페이지에 표시할 게시글 수
+      },
     });
-    console.log("Fetched Trash Articles:", response.data); // 응답 데이터 확인
+    console.log("Fetched Trash Articles with Pagination:", response.data); // 응답 데이터 확인
     return response.data; // 서버에서 반환된 데이터 반환
   } catch (err) {
     console.error("Error while fetching trash articles:", err); // 에러 출력
@@ -358,9 +362,12 @@ export const getRepliesByComment = async (commentId) => {
   }
 };
 
-export const getMustReadArticles = async () => {
+export const getMustReadArticles = async (page = 0, size = 10) => {
   try {
-    const response = await axios.get(BOARD_MUST_READ);
+    // 페이지와 크기를 파라미터로 전달
+    const response = await axios.get(BOARD_MUST_READ, {
+      params: { page, size },
+    });
     console.log("필독 게시글 데이터:", response.data); // 디버깅 로그
     return response.data; // 서버에서 반환된 데이터
   } catch (error) {
@@ -381,10 +388,12 @@ export const getMainMustReadArticles = async () => {
 };
 
 // 최근 게시글 가져오기
-export const getRecentArticles = async () => {
+export const getRecentArticles = async (page = 0, size = 10) => {
   try {
-    // 서버에서 최근 게시글 데이터를 가져오는 GET 요청
-    const response = await axios.get(BOARD_RECENT_ARTICLE);
+    // 서버에서 페이지 번호와 크기에 따라 데이터를 가져오는 GET 요청
+    const response = await axios.get(BOARD_RECENT_ARTICLE, {
+      params: { page, size }, // 쿼리 파라미터로 page와 size 전달
+    });
 
     console.log("Fetched Recent Articles:", response.data); // 응답 데이터 확인
     return response.data; // 서버에서 가져온 데이터 반환

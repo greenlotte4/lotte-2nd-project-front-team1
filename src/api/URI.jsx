@@ -32,6 +32,7 @@ export const BOARD_ARTICLE_BOARD = (boardId, page, size) =>
   `${SERVER_HOST}/article/boards/${boardId}/articles?page=${page}&size=${size}`;
 export const BOARD_ARTICLE_EDIT = `${SERVER_HOST}/article/edit/:id`;
 export const BOARD_MOVE_BASKET = `${SERVER_HOST}/article/delete`;
+
 export const BOARD_TRASH_VIEW = `${SERVER_HOST}/article/trash`;
 //글 이동
 export const BOARD_ARTICLE_MOVE = `${SERVER_HOST}/article/articles/move`;

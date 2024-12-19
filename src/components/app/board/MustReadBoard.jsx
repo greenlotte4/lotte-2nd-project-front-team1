@@ -4,22 +4,42 @@ import { getMustReadArticles } from "../../../api/board/boardAPI";
 export default function MustReadBoard(){
     const [mustReadArticles, setMustReadArticles] = useState([]); // 필독 게시글 상태
     const [loading, setLoading] = useState(true); // 로딩 상태 관리
+    const [isOptionBoxVisible, setIsOptionBoxVisible] = useState(false);
+    const [pageSize, setPageSize] = useState(10);
+    const [currentPage, setCurrentPage] = useState(0);
 
-    useEffect(() => {
-        const fetchMustReadArticles = async () => {
-          try {
-            setLoading(true); // 로딩 상태 활성화
-            const articles = await getMustReadArticles(); // API 호출
-            setMustReadArticles(articles); // 상태 업데이트
-          } catch (error) {
-            console.error("필독 게시글 데이터 로드 오류:", error.message);
-          } finally {
-            setLoading(false); // 로딩 상태 비활성화
-          }
-        };
+    const handlePageChange = (pageNumber) => {
+        setCurrentPage(pageNumber); // 페이지 변경
+    };
+
+    const [totalPages, setTotalPages] = useState(0); 
+    const handlePageSizeChange = (size) => {
+        setPageSize(size); // 선택된 페이지 크기 설정
+        setCurrentPage(0); // 첫 페이지로 초기화
+        setIsOptionBoxVisible(false); // 옵션 박스 닫기
+    };
+
+    const toggleOptionBox = () => {
+        setIsOptionBoxVisible((prev) => !prev);
+    };
+
+    const fetchMustReadArticles = async () => {
+        try {
+          setLoading(true); // 로딩 상태 활성화
+          const data = await getMustReadArticles(currentPage, pageSize); // API 호출 (page, size 전달)
+          setMustReadArticles(data.content); // 게시글 데이터
+          setTotalPages(data.totalPages); // 총 페이지 수 업데이트
+        } catch (error) {
+          console.error("필독 게시글 데이터 로드 오류:", error.message);
+        } finally {
+          setLoading(false); // 로딩 상태 비활성화
+        }
+      };
     
+      // currentPage 또는 pageSize가 변경될 때 데이터 다시 로드
+      useEffect(() => {
         fetchMustReadArticles();
-      }, []); // 컴포넌트 마운트 시 한 번 실행
+      }, [currentPage, pageSize]);
     
       if (loading) {
         return <div>로딩 중...</div>; // 로딩 중 메시지
@@ -236,10 +256,25 @@ export default function MustReadBoard(){
                     </div>
                     <div className="task_area">
                         <div className="h_util">
-                            <div className="select_box">
-                                <button type="button" className="selected">
-                                    <strong>20개씩 보기</strong>
+                        <div className="select_box">
+                                <button type="button" className="selected" onClick={toggleOptionBox}>
+                                    <strong>{pageSize}개씩 보기</strong> {/* pageSize 상태에 따라 표시 */}
                                 </button>
+                                <div
+                                    className="option_box"
+                                    style={{ display: isOptionBoxVisible ? "block" : "none" }} // 상태에 따라 표시 여부 제어
+                                >
+                                    <ul>
+                                        {[10, 20, 30, 40, 50].map((size) => (
+                                            <li key={size}>
+                                                <button type="button" onClick={() => handlePageSizeChange(size)}>
+                                                    {size}개씩 보기
+                                                </button>
+                                            </li>
+                                        ))}
+                                    </ul>
+                                </div>
+    
                             </div>
                             
                         </div>
@@ -285,6 +320,80 @@ export default function MustReadBoard(){
                         </button>
                     </p>
                 </div>
+                <div className="lw_pagination">
+    {/* 첫 페이지 버튼 */}
+    <a
+        role="button"
+        tabIndex="0"
+        className={`page_first ${currentPage === 0 ? "disabled" : ""}`}
+        style={{ cursor: currentPage === 0 ? "not-allowed" : "pointer" }}
+        onClick={(e) => {
+            if (currentPage === 0) e.preventDefault(); // 첫 페이지일 때 클릭 방지
+            else handlePageChange(0);
+        }}
+    >
+        <span className="page_tooltip">첫 페이지</span>
+    </a>
+
+    {/* 이전 페이지 버튼 */}
+    <a
+        role="button"
+        tabIndex="0"
+        className={`page_prev ${currentPage === 0 ? "disabled" : ""}`}
+        style={{ cursor: currentPage === 0 ? "not-allowed" : "pointer" }}
+        onClick={(e) => {
+            if (currentPage === 0) e.preventDefault(); // 첫 페이지일 때 클릭 방지
+            else handlePageChange(currentPage - 1);
+        }}
+    >
+        <span className="page_tooltip">이전 페이지</span>
+    </a>
+
+    {/* 페이지 번호 */}
+    <span className="page_number">
+        {Array.from({ length: totalPages }, (_, index) => (
+            <a
+                key={index}
+                role="button"
+                tabIndex="0"
+                className={`num ${currentPage === index ? "selected" : ""}`}
+                style={{ cursor: "pointer" }}
+                onClick={() => handlePageChange(index)}
+            >
+                {index + 1}
+                <span className="blind">{index + 1}번째 목록</span>
+            </a>
+        ))}
+    </span>
+
+    {/* 다음 페이지 버튼 */}
+    <a
+        role="button"
+        tabIndex="0"
+        className={`page_next ${currentPage === totalPages - 1 ? "disabled" : ""}`}
+        style={{ cursor: currentPage === totalPages - 1 ? "not-allowed" : "pointer" }}
+        onClick={(e) => {
+            if (currentPage === totalPages - 1) e.preventDefault(); // 마지막 페이지일 때 클릭 방지
+            else handlePageChange(currentPage + 1);
+        }}
+    >
+        <span className="page_tooltip">다음 페이지</span>
+    </a>
+
+    {/* 마지막 페이지 버튼 */}
+    <a
+        role="button"
+        tabIndex="0"
+        className={`page_last ${currentPage === totalPages - 1 ? "disabled" : ""}`}
+        style={{ cursor: currentPage === totalPages - 1 ? "not-allowed" : "pointer" }}
+        onClick={(e) => {
+            if (currentPage === totalPages - 1) e.preventDefault(); // 마지막 페이지일 때 클릭 방지
+            else handlePageChange(totalPages - 1);
+        }}
+    >
+        <span className="page_tooltip">마지막 페이지</span>
+    </a>
+</div>
             </div>
             </div>
     );
