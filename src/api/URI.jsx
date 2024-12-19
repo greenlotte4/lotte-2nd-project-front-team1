@@ -131,14 +131,7 @@ export const DELETE_PROJECT_ITEM = (no) =>
 
 // project/Task
 
-// export const CREATE_TASK = `${SERVER_HOST}/project/task/create`;
-// export const UPDATE_TASK = (no) => `${SERVER_HOST}/project/task/update/${no}`;
-// export const DELETE_TASK = (no) => `${SERVER_HOST}/project/task/delete/${no}`;
 
-
-export const CREATE_TASK = `${SERVER_HOST}/project/task/create`;
-export const UPDATE_TASK = (no) => `${SERVER_HOST}/project/task/update/${no}`;
-export const DELETE_TASK = (no) => `${SERVER_HOST}/project/task/delete/${no}`;
 
 // file
 export const File = `${SERVER_HOST}/api/drive-files`;
