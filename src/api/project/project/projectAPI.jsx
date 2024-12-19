@@ -5,6 +5,7 @@ import {
   PROJECT_LIST,
   SELECT_PROJECT,
   UPDATE_PROJECT,
+  GETUSER_PROJECT,
 } from "../../URI";
 
 export const postCreateProject = async (project, userId) => {
@@ -93,5 +94,15 @@ export const deleteProject = async (projectId) => {
   } catch (err) {
     console.error("삭제 실패:", err);
     throw new Error("프로젝트 삭제에 실패했습니다.");
+  }
+};
+
+export const fetchProjectParticipants = async (projectId) => {
+  try {
+    const response = await axios.get(`${GETUSER_PROJECT}/${projectId}/participants`);
+    return response.data; 
+  } catch (error) {
+    console.error("프로젝트 참여자 목록 가져오기 실패:", error);
+    throw error;
   }
 };

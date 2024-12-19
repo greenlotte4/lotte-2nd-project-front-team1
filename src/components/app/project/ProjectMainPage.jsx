@@ -10,6 +10,14 @@ import {
   TextField,
   Fab,
   IconButton,
+  List,
+  ListItem,
+  ListItemText,
+  ListItemAvatar,
+  Avatar,
+  Divider,
+  Checkbox,
+  FormControlLabel,
 } from "@mui/material";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import { ChromePicker } from "react-color";
@@ -17,9 +25,11 @@ import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import AddIcon from "@mui/icons-material/Add";
 import { useParams } from "react-router-dom";
-import { postSelectProject } from "../../../api/project/project/projectAPI";
+import { postSelectProject, fetchProjectParticipants } from "../../../api/project/project/projectAPI";
 import { postCreateProjectItem, postUpdateProjectItem, postDeleteProjectItem } from "../../../api/project/projectItem/projectItemAPI";
 import { postCreateProjectTask, postUpdateProjectTask, postDeleteProjectTask } from "../../../api/project/task/projectTaskAPI";
+import RadioButtonChecked from "@mui/icons-material/RadioButtonChecked";
+import RadioButtonUnchecked from "@mui/icons-material/RadioButtonUnchecked";
 
 export default function ProjectMainPage() {
   const { projectId } = useParams();
@@ -30,6 +40,7 @@ export default function ProjectMainPage() {
     addTask: false,
     editTask: false,
     addColumn: false,
+    participants: false,
   });
   const [currentGroupId, setCurrentGroupId] = useState(null);
   const [currentTask, setCurrentTask] = useState(null);
@@ -41,6 +52,8 @@ export default function ProjectMainPage() {
   const [taskStartDate, setTaskStartDate] = useState("");
   const [taskEndDate, setTaskEndDate] = useState("");
   const [newColumn, setNewColumn] = useState({ title: "", color: "#ffffff" });
+  const [participants, setParticipants] = useState([]); 
+  const [selectedParticipant, setSelectedParticipant] = useState(""); // 한 명만 선택
   const [selectedColumn, setSelectedColumn] = useState(null);
   const clearTaskForm = () => {
     setNewTaskName("");
@@ -101,6 +114,32 @@ export default function ProjectMainPage() {
     }
   };
   
+  useEffect(() => {
+    const loadParticipants = async () => {
+      if (!projectId) return;
+
+      try {
+        const response = await fetchProjectParticipants(projectId)
+        setParticipants(response); // 참여자 목록 설정
+      } catch (error) {
+        console.error("참여자 목록 로드 실패:", error);
+      }
+    };
+
+    loadParticipants();
+  }, [projectId]);
+
+  // 라디오 버튼 선택 핸들러
+  const handleRadioChange = (userId) => {
+    setSelectedParticipant(userId); // 선택된 작업자 설정
+  };
+
+  // 선택된 작업자 확인
+  const confirmSelectedParticipant = () => {
+    console.log("Selected Participant:", selectedParticipant); // 선택된 작업자 출력
+    closeModal("participants");
+  };
+
   const generateRandomColor = () => `#${Math.floor(Math.random() * 16777215).toString(16)}`;
   const openModal = (type) => setModals((prev) => ({ ...prev, [type]: true }));
   const closeModal = (type) => setModals((prev) => ({ ...prev, [type]: false }));
@@ -246,7 +285,7 @@ export default function ProjectMainPage() {
 
     const updatedTask = {
         name: currentTask.name.trim(),
-        assignee: taskAssignee.trim() || "Unassigned",
+        assignee: selectedParticipant,
         startDate: taskStartDate || null,
         endDate: taskEndDate || null,
     };
@@ -500,13 +539,9 @@ export default function ProjectMainPage() {
             fullWidth
             margin="normal"
           />
-           <TextField
-            label="Assignee"
-            value={newTaskAssignee}
-            onChange={(e) => setNewTaskAssignee(e.target.value)}
-            fullWidth
-            margin="normal"
-          />
+           <Button variant="contained" color="primary" onClick={() => openModal("participants")}>
+            작업자 선택
+          </Button>
           <TextField
             label="Start Date"
             type="date"
@@ -546,13 +581,9 @@ export default function ProjectMainPage() {
             fullWidth
             margin="normal"
           />
-          <TextField
-            label="Assignee"
-            value={taskAssignee}
-            onChange={(e) => setTaskAssignee(e.target.value)}
-            fullWidth
-            margin="normal"
-          />
+           <Button variant="contained" color="primary" onClick={() => openModal("participants")}>
+            작업자 선택
+          </Button>
           <TextField
             label="Start Date"
             type="date"
@@ -620,6 +651,63 @@ export default function ProjectMainPage() {
           </Box>
         </Box>
       </Modal>
+         {/* 참여자 목록 모달 */}
+         <Modal open={modals.participants} onClose={() => closeModal("participants")}>
+          <Box sx={{ width: 400, margin: "auto", padding: 4, bgcolor: "background.paper" }}>
+            <Typography variant="h6">작업자 선택</Typography>
+            <List>
+              {participants && participants.length > 0 ? (
+                participants.map((participant, index) => (
+                  <React.Fragment key={participant.userId}>
+                    <ListItem
+                      secondaryAction={
+                        <FormControlLabel
+                          control={
+                            <Checkbox
+                              checked={selectedParticipant === participant.userId}
+                              onChange={() => handleRadioChange(participant.userId)}
+                              checkedIcon={<RadioButtonChecked />} // 라디오 버튼으로 표시
+                              icon={<RadioButtonUnchecked />} // 선택되지 않은 상태 아이콘
+                            />
+                          }
+                          label=""
+                        />
+                      }
+                    >
+                      <ListItemAvatar>
+                        <Avatar sx={{ bgcolor: generateRandomColor() }}>
+                          {participant.username.charAt(0).toUpperCase()}
+                        </Avatar>
+                      </ListItemAvatar>
+                      <ListItemText
+                        primary={participant.username}
+                        secondary={`ID: ${participant.userId}`}
+                      />
+                    </ListItem>
+                    {index < participants.length - 1 && <Divider />}
+                  </React.Fragment>
+                ))
+              ) : (
+                <Typography variant="body2" color="textSecondary">
+                  No participants found.
+                </Typography>
+              )}
+            </List>
+            <Box sx={{ textAlign: "center", marginTop: 2 }}>
+              <Button variant="contained" color="primary" onClick={confirmSelectedParticipant}>
+                저장
+              </Button>
+              <Button
+                variant="outlined"
+                color="secondary"
+                onClick={() => closeModal("participants")}
+                sx={{ marginLeft: 2 }}
+              >
+                취소
+              </Button>
+            </Box>
+          </Box>
+        </Modal>
     </DragDropContext>
   );
 }
