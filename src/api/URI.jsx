@@ -25,7 +25,14 @@ export const USER_LIST = `${SERVER_HOST}/user/list`; // 강중원 12.05 추가
 export const USER_LIST_BYUSERID = `${SERVER_HOST}/teamspace/listbyid`; //이도영 12.13 추가
 export const USER_EMAIL = `${SERVER_HOST}/api`;
 
+
+// board
+export const BOARD_CREATE_URI = `${SERVER_HOST}/board/create`;
+export const BOARD_UPDATE_URI = (boardId) => `${SERVER_HOST}/board/update/${boardId}`;
+export const BOARD_DELETE_URI = (boardId) => `${SERVER_HOST}/board/delete/${boardId}`;
+
 // article
+export const BOARD_FREEBOARD_VIEW = `${SERVER_HOST}/article/freerecent`;
 export const BOARD_ARTICLE_WRITE_URI = `${SERVER_HOST}/article/write`;
 export const BOARD_ARTICLE_VIEW = `${SERVER_HOST}/article/view`;
 export const BOARD_ARTICLE_DETAIL = `${SERVER_HOST}/article/view/detail`;
