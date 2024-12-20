@@ -15,6 +15,8 @@ import {
 import { getUserListAll } from "../../../../api/user/userAPI";
 import { postUpdateProject } from "../../../../api/project/project/projectAPI";
 
+import "./custom.scss";
+
 
 export default function EditProjectModal({ isOpen, onClose, project, onSave, userList: initialUserList }) {
   const [projectName, setProjectName] = useState(project.name || "");
@@ -47,6 +49,7 @@ export default function EditProjectModal({ isOpen, onClose, project, onSave, use
     );
   };
 
+  const generateRandomColor = () => `#${Math.floor(Math.random() * 16777215).toString(16)}`;
   const isUserSelected = (userId) =>
     selectedUsers.some((user) => user.userId === userId);
 
@@ -156,7 +159,7 @@ export default function EditProjectModal({ isOpen, onClose, project, onSave, use
             <Typography variant="h6" component="h2" mb={2}>
               사용자 선택
             </Typography>
-            <List dense>
+            <List dense className="custom-list">
               {userList.map((user) => (
                 <ListItem key={user.userId} disablePadding>
                   <Checkbox
@@ -165,7 +168,9 @@ export default function EditProjectModal({ isOpen, onClose, project, onSave, use
                     onChange={() => toggleUserSelection(user)}
                   />
                   <ListItemAvatar>
-                    <Avatar>{user.username.charAt(0)}</Avatar>
+                    <Avatar sx={{ bgcolor: generateRandomColor() }}>
+                      {user.username.charAt(0)}
+                    </Avatar>
                   </ListItemAvatar>
                   <ListItemText primary={user.username} />
                 </ListItem>
