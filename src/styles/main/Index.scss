@@ -77,13 +77,12 @@
 
   div.text1 {
     margin-top: 30px;
-    margin-left: 370px;
     position: relative;
     /* 자식 요소의 절대 위치를 설정하기 위한 기준 */
   }
 
   input[type="text"] {
-    width: 40%;
+    width: 300px;
     border-radius: 20px;
     border: none;
     padding: 10px 20px;
@@ -101,7 +100,7 @@
   img.search1 {
     position: absolute;
     /* input 내부에 배치하기 위해 절대 위치 설정 */
-    left: calc(55% - 130px);
+    left: 270px;
     /* input의 왼쪽 내부 위치 조정 */
     top: 50%;
     transform: translateY(-50%);

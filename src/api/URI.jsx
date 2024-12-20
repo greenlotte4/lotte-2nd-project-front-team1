@@ -91,6 +91,7 @@ export const MESSAGE_GET_ROOM = `${SERVER_HOST}/message/room`;
 export const MESSAGE_GET_CHAT = `${SERVER_HOST}/message/chat`;
 export const MESSAGE_GET_LASTCHAT = `${SERVER_HOST}/message/lastchat`;
 export const MESSAGE_POST_IMAGE = `${SERVER_HOST}/message/upload`;
+export const MESSAGE_CHECK_DM = `${SERVER_HOST}/message/check/dm`;
 
 //calendar
 export const CALENDAR_CREATE = `${SERVER_HOST}/calendar/makecalendar`;

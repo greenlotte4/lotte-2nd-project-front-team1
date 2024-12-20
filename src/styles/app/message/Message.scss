@@ -10,14 +10,17 @@
 
     strong {
       font-weight: bold;
+      font-size: 20px;
     }
 
     em {
       font-style: italic;
+      font-size: 20px;
     }
 
     a {
       color: -webkit-link;
+      font-size: 20px;
     }
 
     code {
@@ -25,7 +28,7 @@
       background-color: rgb(233, 233, 233);
       border-radius: 5px;
       padding: 3px;
-      font-size: 11px;
+      font-size: 15px;
     }
 
     .messageInfo {
@@ -100,10 +103,15 @@
       /* 기존 스타일 유지 */
       position: relative;
       /* 텍스트와 버튼을 같은 라인에 배치 */
-      max-width: 300px;
+      max-width: 900px;
+      min-width: 300px;
     }
     .text_box {
-      width: 90%;
+      width: 100%;
+
+      p {
+        font-size: 20px;
+      }
     }
 
     .text_box > p > img {
