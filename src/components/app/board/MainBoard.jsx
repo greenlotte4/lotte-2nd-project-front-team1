@@ -239,23 +239,49 @@ export default function MainBoard(){
                   </p>
                   <div className="board_list">
                   <ul className="list preview">
-            {mustReadArticles.map((article) => (
-              <li key={article.id} className="read has_photo" style={{ cursor: "pointer" }}>
-               
-                <p className="bd_name">{article.boardName}</p>
-                <div className="sbj_box">
-                  <p className="sbj">
-                    <a href={`/article/view/${article.id}`}>{article.title}</a>
-                  </p>
-                </div>
-                <p className="bd_name" dangerouslySetInnerHTML={{ __html: article.content }} />
-                <p className="infor">
-                  <button type="button" className="user">{article.userName}</button>
-                  
+    {/* 가장 최근 필독글 */}
+    {mustReadArticles.length > 0 && (
+        <li
+            key={mustReadArticles[0].id}
+            className="read has_photo"
+            style={{ cursor: "pointer" }}
+        >
+            <p className="bd_name">{mustReadArticles[0].boardName}</p>
+            <div className="sbj_box">
+                <p className="sbj">
+                    <a href={`/article/view/${mustReadArticles[0].id}`}>
+                        {mustReadArticles[0].title}
+                    </a>
                 </p>
-              </li>
-            ))}
-          </ul>
+            </div>
+            <p
+                className="bd_name"
+                dangerouslySetInnerHTML={{ __html: mustReadArticles[0].content }}
+            />
+            <p className="infor">
+                <button type="button" className="user">{mustReadArticles[0].userName}</button>
+            </p>
+        </li>
+    )}
+
+    {/* 나머지 필독글 */}
+    <ul className="list default">
+        {mustReadArticles.slice(1).map((article) => (
+            <li key={article.id} className="read">
+                <div className="sbj_box">
+                    <p className="sbj">
+                        <a href={`/article/view/${article.id}`}>{article.title}</a>
+                    </p>
+                </div>
+                <p className="infor">
+                    <span className="bd_name">{article.boardName}</span>
+                    <button type="button" className="user">{article.userName}</button>
+                    <span className="date">{new Date(article.createdAt).toLocaleDateString("en-CA")}</span>
+                </p>
+            </li>
+        ))}
+    </ul>
+</ul>
                   </div>
               </div>
               <div className="home_box">

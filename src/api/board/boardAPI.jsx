@@ -25,6 +25,7 @@ import {
   BOARD_MUST_READ_main,
   BOARD_RECENT_ARTICLE,
   BOARD_RECENT_ARTICLE_TEN,
+  BOARD_TITLE_SEARCH,
 } from "../URI";
 
 
@@ -411,6 +412,23 @@ export const getTenRecentArticles = async () => {
     return response.data;
   } catch (error) {
     console.error("Error fetching recent articles:", error.message);
+    throw error;
+  }
+};
+
+export const searchArticlesByTitle = async (boardId, keyword) => {
+  try {
+    const response = await fetch(`${BOARD_TITLE_SEARCH(boardId)}?keyword=${encodeURIComponent(keyword)}`, {
+      method: 'GET',
+    });
+
+    if (!response.ok) {
+      throw new Error(`검색 요청 실패: ${response.status}`);
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.error("검색 중 오류 발생:", error);
     throw error;
   }
 };
