@@ -25,8 +25,8 @@ import MyPageInquiryPage from "../pages/app/myPage/MyPageInquiryPage";
 import AdminCSPage from "../pages/admin/AdminCSPage";
 import AdminUserPage from "../pages/admin/AdminUserPage";
 import SettingPage from "../pages/app/setting/SettingPage";
-import MainBoardPage from "../pages/app/board/MainBoardPage"; 
-import NoticeBoardPage from "../pages/app/board/NoticeBoardPage"; 
+import MainBoardPage from "../pages/app/board/MainBoardPage";
+import NoticeBoardPage from "../pages/app/board/NoticeBoardPage";
 import EditPostBoardPage from "../pages/app/board/EditPostBoardPage";
 import BasketBoardPage from "../pages/app/board/BasketBoardPage";
 import RecentBoardPage from "../pages/app/board/RecentBoardPage";
@@ -35,6 +35,7 @@ import ImportantBoardPage from "../pages/app/board/ImportantBoardPage";
 import MyPostBoardPage from "../pages/app/board/MyPostBoardPage";
 import AnnouncementBoardPage from "../pages/app/board/AnnouncementBoardPage";
 import ViewBoardPage from "../pages/app/board/ViewBoardPage";
+import MyFile from "../components/app/file/inFiles/MyFile";
 
 //라우팅 정의
 const router = createBrowserRouter([
@@ -64,21 +65,23 @@ const router = createBrowserRouter([
   { path: "/app/message", element: <MessagePage /> },
   { path: "/app/project", element: <ProjectPage /> },
   { path: "/app/project/:projectId", element: <ProjectPage /> },
-  { path: "/app/project/:projectId/:tab", element: <ProjectPage /> }, 
+  { path: "/app/project/:projectId/:tab", element: <ProjectPage /> },
   { path: "/app/calendar", element: <CalendarPage /> },
   { path: "/app/file", element: <FilePage /> },
+  { path: "/app/file/:folderId", element: <FilePage /> },
   { path: "/app/page", element: <PagePage /> },
   { path: "/app/setting", element: <SettingPage /> },
-  { path: "/app/mainboard", element: <MainBoardPage/>},
-  { path: "/app/noticeboard", element: <NoticeBoardPage/>},
-  { path: "/app/basketboard", element: <BasketBoardPage/>},
-  { path: "/app/recentboard", element: <RecentBoardPage/>},
-  { path: "/app/mustreadboard", element: <MustReadBoardPage/>},
-  { path: "/app/importantboard", element: <ImportantBoardPage/>},
-  { path: "/app/mypostboard", element: <MyPostBoardPage/>},
-  { path: "/app/board/:boardId", element: <AnnouncementBoardPage/>},
-  { path: "/article/view/:id", element: <ViewBoardPage/> }, 
+  { path: "/app/mainboard", element: <MainBoardPage /> },
+  { path: "/app/noticeboard", element: <NoticeBoardPage /> },
+  { path: "/app/basketboard", element: <BasketBoardPage /> },
+  { path: "/app/recentboard", element: <RecentBoardPage /> },
+  { path: "/app/mustreadboard", element: <MustReadBoardPage /> },
+  { path: "/app/importantboard", element: <ImportantBoardPage /> },
+  { path: "/app/mypostboard", element: <MyPostBoardPage /> },
+  { path: "/app/board/:boardId", element: <AnnouncementBoardPage /> },
+  { path: "/article/view/:id", element: <ViewBoardPage /> },
   { path: "/article/edit/:id", element: <EditPostBoardPage /> },
+
 
   //Admin
   { path: "/admin/user", element: <AdminUserPage /> },
