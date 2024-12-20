@@ -125,6 +125,7 @@ export default function ProjectMainPage() {
 
       try {
         const response = await fetchProjectParticipants(projectId)
+        console.log("참여자 데이터: ", response); // 확인용 콘솔
         setParticipants(response); // 참여자 목록 설정
       } catch (error) {
         console.error("참여자 목록 로드 실패:", error);
@@ -133,6 +134,10 @@ export default function ProjectMainPage() {
 
     loadParticipants();
   }, [projectId]);
+
+  useEffect(() => {
+    console.log("참여자 상태값:", participants);
+  }, [participants]);
 
   // 라디오 버튼 선택 핸들러
   const handleRadioChange = (userId) => {
@@ -353,50 +358,59 @@ export default function ProjectMainPage() {
 
   const handleEditTask = async () => {
     if (!currentTask || !currentTask.id) {
-        console.error("currentTask 또는 currentTask.id가 유효하지 않습니다:", currentTask);
-        return;
+      console.error("currentTask 또는 currentTask.id가 유효하지 않습니다:", currentTask);
+      return;
     }
-
+  
     const taskId = currentTask.id.split("-")[1]; // Task ID 추출
     if (!taskId) {
-        console.error("유효한 Task ID를 추출하지 못했습니다:", currentTask.id);
-        return;
+      console.error("유효한 Task ID를 추출하지 못했습니다:", currentTask.id);
+      return;
     }
-
+  
+    console.log("Sending Data:", {
+      name: currentTask.name.trim(),
+      assignee: selectedParticipant,
+      startDate: taskStartDate || null,
+      endDate: taskEndDate || null,
+      taskId, // 확인용 출력
+    });
+  
     const updatedTask = {
-        name: currentTask.name.trim(),
-        assignee: selectedParticipant,
-        startDate: taskStartDate || null,
-        endDate: taskEndDate || null,
+      name: currentTask.name.trim(),
+      assignee: selectedParticipant,
+      startDate: taskStartDate || null,
+      endDate: taskEndDate || null,
     };
-
+  
     try {
-        const response = await postUpdateProjectTask(taskId, updatedTask);
-        console.log("Task 수정 성공:", response);
-
-        setTasks((prevTasks) =>
-            prevTasks.map((task) =>
-                task.id === currentTask.id
-                    ? {
-                          ...task,
-                          name: updatedTask.name,
-                          assignee: updatedTask.assignee,
-                          startDate: updatedTask.startDate,
-                          endDate: updatedTask.endDate,
-                      }
-                    : task
-            )
-        );
-
-        closeModal("editTask");
-        setCurrentTask(null);
-        setTaskAssignee("");
-        setTaskStartDate("");
-        setTaskEndDate("");
+      const response = await postUpdateProjectTask(taskId, updatedTask);
+      console.log("Task 수정 성공:", response);
+  
+      setTasks((prevTasks) =>
+        prevTasks.map((task) =>
+          task.id === currentTask.id
+            ? {
+                ...task,
+                name: updatedTask.name,
+                assignee: updatedTask.assignee,
+                startDate: updatedTask.startDate,
+                endDate: updatedTask.endDate,
+              }
+            : task
+        )
+      );
+  
+      closeModal("editTask");
+      setCurrentTask(null);
+      setTaskAssignee("");
+      setTaskStartDate("");
+      setTaskEndDate("");
     } catch (error) {
-        console.error("Task 수정 실패:", error.message);
+      console.error("Task 수정 실패:", error.message);
     }
-};
+  };
+  
 
   
   

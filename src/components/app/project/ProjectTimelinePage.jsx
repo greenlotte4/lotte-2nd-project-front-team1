@@ -10,7 +10,7 @@ import {
   TextField,
   Autocomplete,
 } from "@mui/material";
-import { postSelectProject } from "../../../api/project/project/projectAPI"; // API 호출 함수
+import { postSelectProject, fetchProjectParticipants } from "../../../api/project/project/projectAPI"; // API 호출 함수
 import { useParams } from "react-router-dom";
 import { connectStomp, subscribe, publish } from "../../../WebSocket/STOMP"; 
 import { SERVER_HOST } from "../../../api/URI";
@@ -20,9 +20,9 @@ const ProjectTimelinePage = () => {
   const [tasks, setTasks] = useState([]);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [selectedTask, setSelectedTask] = useState(null);
-  const [allUsers, setAllUsers] = useState([]);
+  const [allUsers, setAllUsers] = useState([]); // 참여자 목록
   const subscriptionRef = useRef(null);
-  
+
   // WebSocket 연결 핸들러
   const onConnected = () => {
     console.log("WebSocket 연결 성공");
@@ -50,14 +50,17 @@ const ProjectTimelinePage = () => {
       });
     }
   };
- 
+
+  // WebSocket 및 프로젝트 데이터 초기화
   useEffect(() => {
     const initializeWebSocket = () => {
       connectStomp(SERVER_HOST + "/socket", onConnected);
     };
 
     if (projectId) {
-      fetchProjectData(projectId).then(initializeWebSocket);
+      fetchProjectData(projectId);
+      fetchProjectParticipantsData(projectId);
+      initializeWebSocket();
     }
 
     return () => {
@@ -81,7 +84,7 @@ const ProjectTimelinePage = () => {
           start: new Date(task.startDate),
           end: new Date(task.endDate),
           progress: task.priority || 0,
-          assignees: task.assignee ? [task.assignee] : [],
+          assignees: task.assignee, 
           type: "task",
         }))
       );
@@ -91,8 +94,19 @@ const ProjectTimelinePage = () => {
       console.error("Failed to fetch project data:", error.message);
     }
   };
-  
 
+  // 프로젝트 참여자 데이터 로드
+  const fetchProjectParticipantsData = async (projectId) => {
+    try {
+      const participants = await fetchProjectParticipants(projectId);
+      console.log("Participants Data:", participants); // 구조 확인용 로그
+      setAllUsers(participants); // 참여자 설정
+    } catch (error) {
+      console.error("Failed to fetch project participants:", error.message);
+    }
+  };
+
+  // 대화 상자 열기 및 닫기
   const openDialog = (task) => {
     setSelectedTask({ ...task });
     setDialogOpen(true);
@@ -103,6 +117,7 @@ const ProjectTimelinePage = () => {
     setSelectedTask(null);
   };
 
+  // 작업 업데이트
   const handleTaskUpdate = () => {
     if (!selectedTask) return;
     const updatedTask = {
@@ -120,49 +135,19 @@ const ProjectTimelinePage = () => {
         task.id === selectedTask.id ? { ...selectedTask } : task
       )
     );
-  
+
     closeDialog();
   };
-  subscribe("/sub/tasks/update", (updatedTask) => {
-    console.log("Received Task Update:", updatedTask);
-    setTasks((prevTasks) =>
-      prevTasks.map((task) =>
-        task.id === updatedTask.taskId
-          ? { ...updatedTask, progress: updatedTask.priority || 0 } // priority를 progress로 매핑
-          : task
-      )
-    );
-  });
-  
 
+  // 작업 삭제
   const handleTaskDelete = () => {
     if (!selectedTask) return;
-    const deletePayload = {
-      taskId: selectedTask.id, 
-    };
+    const deletePayload = { taskId: selectedTask.id };
     console.log("Publishing Task Delete:", deletePayload);
     publish("/pub/tasks/delete", deletePayload);
     setTasks((prevTasks) => prevTasks.filter((task) => task.id !== selectedTask.id));
     closeDialog();
   };
-    subscribe("/sub/tasks/delete", (deletedTask) => {
-    console.log("Received Task Delete:", deletedTask);
-    setTasks((prevTasks) => prevTasks.filter((task) => task.id !== deletedTask.taskId));
-  });
-
-  // const handleUpdateChange = (task) => {
-  //   const updatedTask = {
-  //     taskId: task.id,
-  //     name: task.name,
-  //     startDate: task.start.toISOString().split("T")[0],
-  //     endDate: task.end.toISOString().split("T")[0],
-  //     priority: task.progress, 
-  //     assignee: task.assignees.length > 0 ? task.assignees[0] : null,
-  //   };
-  
-  //   console.log("Publishing Task Update:", updatedTask); 
-  //   publish("/pub/tasks/update", updatedTask);
-  // };
 
   return (
     <div style={{ padding: "20px" }}>
@@ -171,7 +156,6 @@ const ProjectTimelinePage = () => {
         tasks={tasks}
         viewMode={ViewMode.Month}
         onDoubleClick={(task) => openDialog(task)}
-        // onDateChange={handleUpdateChange}
         onProgressChange={(task) => {
           const updatedTask = {
             ...task,
@@ -179,9 +163,7 @@ const ProjectTimelinePage = () => {
           };
 
           setTasks((prevTasks) =>
-            prevTasks.map((t) =>
-              t.id === updatedTask.id ? updatedTask : t
-            )
+            prevTasks.map((t) => (t.id === updatedTask.id ? updatedTask : t))
           );
 
           publish("/pub/tasks/update", {
@@ -245,12 +227,14 @@ const ProjectTimelinePage = () => {
               }
             />
             <Autocomplete
-              multiple
               options={allUsers}
-              getOptionLabel={(option) => option}
+              getOptionLabel={(option) => option.username}
               value={selectedTask.assignees}
               onChange={(event, newValue) =>
-                setSelectedTask({ ...selectedTask, assignees: newValue })
+                setSelectedTask({
+                  ...selectedTask,
+                  assignee: newValue ? newValue.id : null, // 사용자 ID 저장
+                })
               }
               renderInput={(params) => (
                 <TextField
