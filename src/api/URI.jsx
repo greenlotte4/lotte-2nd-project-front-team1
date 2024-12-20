@@ -45,8 +45,9 @@ export const BOARD_IMPORTANT_ARTICLE = (articleId) =>
   `${SERVER_HOST}/important-articles/${articleId}`;
 
 //중요글 출력
-export const BOARD_ARTICLE_IMPORTANT_VIEW = (userId, page, size) =>
-  `${SERVER_HOST}/important-articles/${userId}?page=${page}&size=${size}`;
+export const BOARD_ARTICLE_IMPORTANT_VIEW = (userId) =>
+  `${SERVER_HOST}/important-articles/${userId}`;
+
 
 //필독글 출력
 export const BOARD_MUST_READ = `${SERVER_HOST}/article/must-read`;
