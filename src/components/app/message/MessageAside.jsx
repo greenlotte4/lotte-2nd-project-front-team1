@@ -33,6 +33,7 @@ import {
   checkNewDM,
   getLastChat,
   getMyChatRoom,
+  leaveChatRoom,
   makeNewChannel,
   makeNewDM,
 } from "../../../api/message/messageAPI";
@@ -55,8 +56,26 @@ const MessageAside = ({ isVisible, onSelectChat }) => {
   };
 
   //채팅 나가기 함수
-  const deleteMessageHandle = () => {
-    
+  const deleteMessageHandle = async () => {
+    if (selectedIndex !== null) {
+      try {
+        // 선택된 채팅방의 ID를 백엔드로 전송
+        const response = await leaveChatRoom(selectedIndex);
+        if (response.status === 200) {
+          alert("채팅방에서 나왔습니다.");
+          // 채팅방 목록 새로고침
+          const data = await getMyChatRoom(user.userid);
+          setChatRoomList(data);
+          setGroupedChatRooms(groupByChatId(data));
+        } else {
+          console.error("채팅방 나가기 실패:", response);
+          alert("채팅방 나가기에 실패했습니다.");
+        }
+      } catch (error) {
+        console.error("채팅방 나가기 중 오류 발생:", error);
+        alert("오류가 발생했습니다. 다시 시도해주세요.");
+      }
+    }
     handleClose();
   };
 
@@ -170,18 +189,18 @@ const MessageAside = ({ isVisible, onSelectChat }) => {
               <Collapse in={channelOpen} timeout="auto" unmountOnExit>
                 <List component="div" disablePadding>
                   {Object.keys(groupedChatRooms).length > 0 ? (
-                    Object.keys(groupedChatRooms).map((chatId) => {
+                    Object.keys(groupedChatRooms).map((chatId, index) => {
                       const room = groupedChatRooms[chatId];
                       if (room.dtype === "DM") {
                         return null;
                       }
                       return (
-                        <React.Fragment key={chatId}>
+                        <React.Fragment key={index}>
                           <ListItemButton
                             sx={{ pl: 4 }}
                             className="curruntChatRoom"
                             onContextMenu={(event) =>
-                              handleClick(event, room.users[0]?.userId)
+                              handleClick(event, room.chatId)
                             }
                             onClick={() => {
                               onSelectChat(Number(chatId));
@@ -252,7 +271,7 @@ const MessageAside = ({ isVisible, onSelectChat }) => {
                           sx={{ pl: 4 }}
                           className="curruntChatRoom"
                           onContextMenu={(event) =>
-                            handleClick(event, value.userId)
+                            handleClick(event, value.chatRoomId)
                           }
                           onClick={() => onSelectChat(value.chat.chatId)} // 선택된 방 ID 전달
                         >
@@ -528,6 +547,7 @@ function NewDMDIV() {
       console.log(savedDM);
       if (savedDM) {
         alert("DM이 추가되었습니다.👍");
+        window.location.reload();
       } else {
         alert("DM 추가 실패...😭");
       }
