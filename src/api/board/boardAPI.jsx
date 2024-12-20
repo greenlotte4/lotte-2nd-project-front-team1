@@ -150,17 +150,13 @@ export const deleteBoardArticle = async (id, userId) => {
   }
 };
 
-export const getTrashArticles = async (userId, page = 0, size = 10) => {
+export const getTrashArticles = async (userId) => {
   try {
-    // 서버에서 휴지통 게시글 데이터 가져오기 (사용자 ID와 페이징 전달)
+    // 서버에서 휴지통 게시글 데이터 가져오기 (사용자 ID 전달)
     const response = await axios.get(BOARD_TRASH_VIEW, {
-      params: {
-        userId, // 사용자 ID
-        page,   // 현재 페이지 번호
-        size,   // 한 페이지에 표시할 게시글 수
-      },
+      params: { userId }, // 사용자 ID를 요청 파라미터로 전달
     });
-    console.log("Fetched Trash Articles with Pagination:", response.data); // 응답 데이터 확인
+    console.log("Fetched Trash Articles:", response.data); // 응답 데이터 확인
     return response.data; // 서버에서 반환된 데이터 반환
   } catch (err) {
     console.error("Error while fetching trash articles:", err); // 에러 출력
@@ -261,11 +257,12 @@ export const moveArticlesToBoard = async (articleIds, boardId) => {
 
 export const getArticlesByUser = async (userId, page = 0, size = 10) => {
   try {
-    const response = await axios.get(BOARD_ARTICLE_USER,{
-      params: {page, size},
-    });
-    console.log("게시글 데이터:", response.data); // 디버깅 로그
-    return response.data;
+    const url = BOARD_ARTICLE_USER(userId, page, size); // 사용자 ID, 페이지 번호, 크기를 기반으로 URI 생성
+    console.log(`Fetching articles for user ID ${userId} at page ${page} with size ${size}: ${url}`);
+
+    const response = await axios.get(url); // GET 요청으로 데이터 가져오기
+    console.log("유저별 글:", response.data); // 응답 데이터 확인
+    return response.data; // 성공 시 데이터 반환
   } catch (err) {
     console.error(`Error fetching articles for user ID ${userId}:`, err);
     throw new Error("사용자가 작성한 게시글을 가져오는 데 실패했습니다.");
