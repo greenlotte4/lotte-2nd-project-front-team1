@@ -44,6 +44,7 @@ export default function ProfileDropdown({
 
   // userStatus 값 확인
   useEffect(() => {
+    setStatus(userStatus);
     console.log("Current userStatus:", userStatus);
   }, [userStatus]);
 
