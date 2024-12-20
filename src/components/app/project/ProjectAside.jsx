@@ -121,7 +121,19 @@ export default function ProjectSidebar({ isVisible }) {
                 createdProjects.map((project) => (
                   <li key={project.projectId} style={{ display: "flex", alignItems: "center" }}>
                     <span
-                      style={{ flex: 1, cursor: "pointer" }}
+                      style={{
+                        display: "flex",
+                        flex: 1, cursor: "pointer" ,
+                        alignItems: "center",
+                        backgroundColor:
+                          project.projectId === selectedProjectId
+                            ? "#f2beff" // 선택된 프로젝트의 배경색
+                            : "transparent",
+                        fontWeight:
+                          project.projectId === selectedProjectId ? "bold" : "normal", // 선택된 프로젝트의 텍스트 굵기
+                        cursor: "pointer",
+                        padding: "5px",
+                        borderRadius: "5px", }}
                       onClick={() => selectProject(project.projectId)}
                     >
                       {project.name}
@@ -152,7 +164,19 @@ export default function ProjectSidebar({ isVisible }) {
                 participatedProjects.map((project) => (
                   <li key={project.projectId} style={{ display: "flex", alignItems: "center" }}>
                     <span
-                      style={{ flex: 1, cursor: "pointer" }}
+                      style={{
+                        display: "flex",
+                        flex: 1, cursor: "pointer" ,
+                        alignItems: "center",
+                        backgroundColor:
+                          project.projectId === selectedProjectId
+                            ? "#f2beff" // 선택된 프로젝트의 배경색
+                            : "transparent",
+                        fontWeight:
+                          project.projectId === selectedProjectId ? "bold" : "normal", // 선택된 프로젝트의 텍스트 굵기
+                        cursor: "pointer",
+                        padding: "5px",
+                        borderRadius: "5px", }}
                       onClick={() => selectProject(project.projectId)}
                     >
                       {project.name}
