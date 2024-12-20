@@ -189,8 +189,8 @@ export default function AppHeader({ onToggleSidebar, noneAside, thisPage }) {
               className="userStatus"
               style={{
                 position: "absolute", // 부모를 기준으로 위치
-                bottom: "8px", // 프로필 이미지 아래쪽
-                right: "80px", // 프로필 이미지 오른쪽
+                bottom: "5px", // 프로필 이미지 아래쪽
+                right: "70px", // 프로필 이미지 오른쪽
                 width: "8px", // 크기
                 height: "8px", // 크기
                 backgroundColor: `${statusColor}`, // 상태 색상
