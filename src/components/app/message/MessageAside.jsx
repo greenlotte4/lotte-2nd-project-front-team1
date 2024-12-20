@@ -30,6 +30,7 @@ import {
 import React, { useEffect, useState } from "react";
 import { getUserListAll } from "../../../api/user/userAPI";
 import {
+  checkNewDM,
   getLastChat,
   getMyChatRoom,
   makeNewChannel,
@@ -55,6 +56,7 @@ const MessageAside = ({ isVisible, onSelectChat }) => {
 
   //채팅 나가기 함수
   const deleteMessageHandle = () => {
+    
     handleClose();
   };
 
@@ -508,6 +510,13 @@ function NewDMDIV() {
   const [DM, setDM] = useState({ ...initState });
 
   const submitDM = async (targetUserId) => {
+    const countAllow = await checkNewDM(targetUserId, user.userid);
+
+    if (!countAllow) {
+      alert("상대방 또는 사용자의 최대 DM수를 초과하였습니다.");
+      return null;
+    }
+
     // user.userid를 manager에 할당
     const updatedDM = {
       ...DM,

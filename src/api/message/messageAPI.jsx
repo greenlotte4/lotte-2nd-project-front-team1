@@ -1,5 +1,6 @@
 import axios from "axios";
 import {
+  MESSAGE_CHECK_DM,
   MESSAGE_GET_CHAT,
   MESSAGE_GET_LASTCHAT,
   MESSAGE_GET_ROOM,
@@ -25,6 +26,22 @@ export const makeNewDM = async (data) => {
     return response.data;
   } catch (err) {
     console.log(err);
+  }
+};
+
+export const checkNewDM = async (targetUserId, userId) => {
+  try {
+    const response = await axios.get(`${MESSAGE_CHECK_DM}`, {
+      params: {
+        targetUserId,
+        userId,
+      },
+    });
+
+    return response.data;
+  } catch (err) {
+    console.error("Error in checkNewDM:", err);
+    throw err; // 필요한 경우 에러를 상위로 던지기
   }
 };
 
