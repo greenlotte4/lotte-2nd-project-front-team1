@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
-import { getMainMustReadArticles, getTenRecentArticles } from "../../../api/board/boardAPI";
+import { getMainMustReadArticles, getRecentFreeBoardArticles, getTenRecentArticles } from "../../../api/board/boardAPI";
 
 export default function MainBoard(){
 
     const [mustReadArticles, setMustReadArticles] = useState([]); // 필독글 상태
     const [articles, setArticles] = useState([]);
+    const [freeBoardArticles, setFreeBoardArticles] = useState([]);
 
     useEffect(() => {
       const fetchMustReadArticles = async () => {
@@ -30,6 +31,19 @@ export default function MainBoard(){
         };
     
         fetchRecentArticles();
+      }, []);
+
+      useEffect(() => {
+        const fetchFreeBoardArticles = async () => {
+          try {
+            const articles = await getRecentFreeBoardArticles();
+            setFreeBoardArticles(articles); // 상태 업데이트
+          } catch (error) {
+            console.error("Error fetching freeboard articles:", error.message);
+          }
+        };
+    
+        fetchFreeBoardArticles();
       }, []);
     return(
         <div className="boardContentDiv" id="boardContentDiv">
@@ -319,57 +333,24 @@ export default function MainBoard(){
                       <em></em>
                   </p>
                   <div className="board_list">
-                     <ul className="list default recent">
-                      
-                      <li className="read has_photo" style={{cursor: "pointer"}}>
-                          <div className="sbj_box">
-                              <p className="sbj">
-                                  <a href="">ㅊㅋㅌ</a> 
-                              </p>
-                          </div>
-                          <p className="infor">
-                              <span className="bd_name">공지사항</span> 
-                              <button type="button" className="user">작성자</button> 
-                              <span className="date">2024. 11. 27.</span>
-                          </p>
-                      </li>
-                      <li className="read has_photo" style={{cursor: "pointer"}}>
-                          <div className="sbj_box">
-                              <p className="sbj">
-                                  <a href="">ㅊㅋㅌ</a> 
-                              </p>
-                          </div>
-                          <p className="infor">
-                              <span className="bd_name">공지사항</span> 
-                              <button type="button" className="user">작성자</button> 
-                              <span className="date">2024. 11. 27.</span>
-                          </p>
-                      </li>
-                      <li className="read has_photo" style={{cursor: "pointer"}}>
-                          <div className="sbj_box">
-                              <p className="sbj">
-                                  <a href="">ㅊㅋㅌ</a> 
-                              </p>
-                          </div>
-                          <p className="infor">
-                              <span className="bd_name">공지사항</span> 
-                              <button type="button" className="user">작성자</button> 
-                              <span className="date">2024. 11. 27.</span>
-                          </p>
-                      </li>
-                      <li className="read has_photo" style={{cursor: "pointer"}}>
-                          <div className="sbj_box">
-                              <p className="sbj">
-                                  <a href="">ㅊㅋㅌ</a> 
-                              </p>
-                          </div>
-                          <p className="infor">
-                              <span className="bd_name">공지사항</span> 
-                              <button type="button" className="user">작성자</button> 
-                              <span className="date">2024. 11. 27.</span>
-                          </p>
-                      </li>
-                     </ul>
+                  <ul className="list default recent">
+                        {freeBoardArticles.map((article) => (
+                        <li key={article.id} className="read">
+                            <div className="sbj_box">
+                            <p className="sbj">
+                                <a href={`/article/view/${article.id}`}>{article.title}</a>
+                            </p>
+                            </div>
+                            <p className="infor">
+                            <span className="bd_name">{article.boardName}</span>
+                            <button type="button" className="user">{article.userName}</button>
+                            <span className="date">
+                                {new Date(article.createdAt).toLocaleDateString("en-CA")}
+                            </span>
+                            </p>
+                        </li>
+                        ))}
+                    </ul>
                   </div>
               </div>
               <span className="space"></span>

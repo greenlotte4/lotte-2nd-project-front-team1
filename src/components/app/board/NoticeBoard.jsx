@@ -556,16 +556,16 @@ const NoticeBoard = () => {
                                 </li>
                                 {boards.map((board) => (
                                     
-                                    <li key={board.board_id} className="depth"   onClick={() => handleBoardSelect(board.board_name)} >
+                                    <li key={board.board_id} className="depth"   onClick={() => handleBoardSelect(board.boardName)} >
                                         <input
                                             type="radio"
                                             name="select_bd"
-                                            value={board.board_name}
-                                            checked={article.board === board.board_name} // 체크 상태를 확인
+                                            value={board.boardName}
+                                            checked={article.board === board.boardName} // 체크 상태를 확인
                                             onChange={(e) => handleBoardSelect(e.target.value)}
                                         />
                                         <label>
-                                            <strong>{board.board_name}</strong>
+                                            <strong>{board.boardName}</strong>
                                         </label>
                                     </li>
                                 ))}
