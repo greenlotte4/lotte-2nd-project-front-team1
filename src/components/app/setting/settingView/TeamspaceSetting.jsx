@@ -65,11 +65,19 @@ export default function TeamspaceSetting() {
       setSerialNumber("");
     } catch (error) {
       if (error.response) {
-        const { status } = error.response;
+        const { status, data } = error.response;
+
         if (status === 404) {
-          alert("잘못된 초대 코드 입니다 다시 입력해주세요");
+          alert("잘못된 초대 코드입니다. 다시 입력해주세요.");
         } else if (status === 409) {
-          alert("이미 팀에 참가했습니다");
+          if (
+            data.error ===
+            "최대 협업 인원 수를 초과했습니다. 추가 멤버를 초대할 수 없습니다."
+          ) {
+            alert(data.error); // 최대 인원 초과 메시지 출력
+          } else {
+            alert("이미 팀에 참가했습니다.");
+          }
         } else {
           alert("알 수 없는 오류가 발생했습니다. 다시 시도해주세요.");
         }
@@ -101,7 +109,25 @@ export default function TeamspaceSetting() {
       alert("팀 생성을 성공했습니다!");
       setRoomName("");
     } catch (error) {
-      console.error("팀 생성 중 오류 발생:", error);
+      // 에러 처리
+      if (error.response) {
+        const { status, data } = error.response;
+
+        if (status === 400) {
+          alert(data.message || "요청이 잘못되었습니다. 다시 시도해주세요.");
+        } else if (status === 409) {
+          alert(
+            data.message || "사용자의 최대 생성 프로젝트 수를 초과했습니다."
+          );
+        } else {
+          alert(
+            "팀 생성 중 알 수 없는 오류가 발생했습니다. 다시 시도해주세요."
+          );
+        }
+      } else {
+        console.error("네트워크 오류 또는 서버와의 연결 문제:", error);
+        alert("서버와의 연결에 문제가 발생했습니다. 나중에 다시 시도해주세요.");
+      }
     }
   };
 
