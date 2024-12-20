@@ -94,17 +94,17 @@ export default function Calendar({
   const user = useSelector((state) => state.userSlice);
 
   // FullCalendar에 맞게 이벤트 데이터 매핑 및 allDay 사용
-  const calendarEvents = events.map((event) => ({
+  const calendarEvents = (events || []).map((event) => ({
     id: event.calendarEventId,
     title: event.name,
     start: event.startDate,
     end: event.allDay
       ? addDays(new Date(event.endDate), 1).toISOString().split("T")[0]
-      : event.endDate, // All-Day 이벤트의 end 날짜에 하루 추가
-    allDay: event.allDay, // allDay 필드 추가
-    calendarId: event.calendarId, // 캘린더 ID 포함
-    calendarname: event.calendarname, // CalendarPage에서 전달하는 필드에 맞게 수정
-    content: event.content || "", // content 필드 추가
+      : event.endDate,
+    allDay: event.allDay,
+    calendarId: event.calendarId,
+    calendarname: event.calendarname,
+    content: event.content || "",
   }));
 
   const [formData, setFormData] = useState({
@@ -583,7 +583,7 @@ export default function Calendar({
           <h2>{selectedDate} 일정</h2>
           <h3>해당 날짜의 다른 일정</h3>
           <ul className="event-list">
-            {selectedDateEvents.length > 0 ? (
+            {selectedDateEvents?.length > 0 ? (
               selectedDateEvents.map((dayEvent) => {
                 // 조건에 따라 표시할 시간 문자열 설정
                 const displayTime = dayEvent.allDay
