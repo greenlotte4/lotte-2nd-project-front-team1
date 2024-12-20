@@ -39,8 +39,8 @@ export const BOARD_TRASH_VIEW = `${SERVER_HOST}/article/trash`;
 export const BOARD_ARTICLE_MOVE = `${SERVER_HOST}/article/articles/move`;
 
 //내 게시물 출력
-export const BOARD_ARTICLE_USER = (userId) =>
-  `${SERVER_HOST}/article/user/${userId}`;
+export const BOARD_ARTICLE_USER = (userId, page, size) =>
+  `${SERVER_HOST}/article/user/${userId}?page=${page}&size=${size}`;
 //중요글 체크
 export const BOARD_IMPORTANT_ARTICLE = (articleId) =>
   `${SERVER_HOST}/important-articles/${articleId}`;
