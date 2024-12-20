@@ -3,11 +3,11 @@ import {
   MESSAGE_CHECK_DM,
   MESSAGE_GET_CHAT,
   MESSAGE_GET_LASTCHAT,
-  MESSAGE_GET_ROOM,
   MESSAGE_GET_ROOMS,
   MESSAGE_NEW_CHANNEL,
   MESSAGE_NEW_DM,
   MESSAGE_POST_IMAGE,
+  MESSAGE_ROOM,
 } from "../URI";
 export const makeNewChannel = async (data) => {
   try {
@@ -24,6 +24,18 @@ export const makeNewDM = async (data) => {
     const response = await axios.post(`${MESSAGE_NEW_DM}`, data);
 
     return response.data;
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export const leaveChatRoom = async (chatRoomId) => {
+  try {
+    const response = await axios.delete(
+      `${MESSAGE_ROOM}?chatRoomId=${chatRoomId}`
+    );
+
+    return response;
   } catch (err) {
     console.log(err);
   }
@@ -57,7 +69,7 @@ export const getMyChatRoom = async (data) => {
 
 export const getThisRoom = async (data) => {
   try {
-    const response = await axios.get(`${MESSAGE_GET_ROOM}?chatId=${data}`);
+    const response = await axios.get(`${MESSAGE_ROOM}?chatId=${data}`);
     return response.data;
   } catch (err) {
     console.log(err);
