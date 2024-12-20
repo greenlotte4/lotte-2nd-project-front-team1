@@ -550,9 +550,9 @@ useEffect(() => {
     
                             </div>
                             <div className="select_box">
-                                <button type="button" className="selected" onClick={toggleOptionBox}>
-                                    <strong>{pageSize}개씩 보기</strong> {/* pageSize 상태에 따라 표시 */}
-                                </button>
+                            <button type="button" className="selected" onClick={toggleOptionBox}>
+                                <strong>{pageSize}개씩 보기</strong> {/* pageSize 상태에 따라 표시 */}
+                            </button>
                                 <div
                                     className="option_box"
                                     style={{ display: isOptionBoxVisible ? "block" : "none" }} // 상태에 따라 표시 여부 제어

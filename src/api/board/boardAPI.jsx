@@ -150,13 +150,17 @@ export const deleteBoardArticle = async (id, userId) => {
   }
 };
 
-export const getTrashArticles = async (userId) => {
+export const getTrashArticles = async (userId, page = 0, size = 10) => {
   try {
-    // 서버에서 휴지통 게시글 데이터 가져오기 (사용자 ID 전달)
+    // 서버에서 휴지통 게시글 데이터 가져오기 (사용자 ID와 페이징 전달)
     const response = await axios.get(BOARD_TRASH_VIEW, {
-      params: { userId }, // 사용자 ID를 요청 파라미터로 전달
+      params: {
+        userId, // 사용자 ID
+        page,   // 현재 페이지 번호
+        size,   // 한 페이지에 표시할 게시글 수
+      },
     });
-    console.log("Fetched Trash Articles:", response.data); // 응답 데이터 확인
+    console.log("Fetched Trash Articles with Pagination:", response.data); // 응답 데이터 확인
     return response.data; // 서버에서 반환된 데이터 반환
   } catch (err) {
     console.error("Error while fetching trash articles:", err); // 에러 출력
@@ -223,8 +227,10 @@ export const getArticlesByBoard = async (boardId, page = 0, size = 20) => {
       console.log("Response:", response.data);
       return response.data; // 서버 응답 데이터 반환
   } catch (err) {
-      console.error(`Error fetching articles for board ID ${boardId}:`, err);
+    console.error(`Error fetching articles for board ID ${boardId}:`, err);
+    console.log(err.response?.data); // 추가된 부분
       throw new Error("게시판 게시글을 가져오는 데 실패했습니다.");
+      
   }
 };
 
