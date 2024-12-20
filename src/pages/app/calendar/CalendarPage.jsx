@@ -12,9 +12,11 @@ import "../../../styles/app/AppAside.scss";
 import CalendarAside from "../../../components/app/calendar/CalendarAside";
 import Calendar from "../../../components/app/calendar/Calendar";
 import { useSidebar } from "../../../hooks/app/UseSidebar";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import { fetchCalendarList } from "../../../api/calendar/CalendarAPI";
+import { connectStomp, subscribe } from "../../../WebSocket/STOMP";
+import { SERVER_HOST } from "../../../api/URI";
 
 export default function CalendarPage() {
   const { isSidebarVisible, toggleSidebar } = useSidebar(); // 사이드바 상태 및 토글 함수 사용
@@ -31,7 +33,6 @@ export default function CalendarPage() {
       try {
         const data = await fetchCalendarList(user.userid);
         setCalendars(data);
-        console.log("data : ", data);
       } catch (error) {
         console.error("캘린더 목록 가져오기 실패:", error);
       }
@@ -39,9 +40,10 @@ export default function CalendarPage() {
 
     fetchData();
   }, [user.userid]);
+
+  // 이벤트 데이터 정리
   useEffect(() => {
     if (calendars.length > 0) {
-      // 모든 캘린더의 이벤트를 합침
       const allEvents = calendars.flatMap((calendar) =>
         calendar.events.map((event) => ({
           ...event,
@@ -51,23 +53,79 @@ export default function CalendarPage() {
       setEvents(allEvents); // 모든 이벤트를 저장
     }
   }, [calendars]);
-
+  const subscriptionRef = useRef(null);
   useEffect(() => {
-    if (checkedCalendars.length === 0 || !events.length) {
-      setFilteredEvents([]);
-    } else {
-      const filtered = events.filter((event) =>
-        checkedCalendars.includes(event.calendarId)
-      );
+    if (!checkedCalendars || checkedCalendars.length === 0) return;
+    const subscriptions = [];
 
-      setFilteredEvents(filtered);
-    }
-  }, [checkedCalendars, events]);
+    connectStomp(
+      SERVER_HOST + "/socket",
+      () => {
+        checkedCalendars.forEach((calendarId) => {
+          const subscription = subscribe(
+            `/sub/calendar/${calendarId}`,
+            (message) => {
+              console.log("실시간 메시지 수신:", message);
+
+              const newEvents = message;
+
+              // newEvents가 배열일 수도 있고, 단일 객체일 수도 있으므로 상황에 맞게 처리
+              // 서버에서 이벤트 리스트 전체를 보내는 경우:
+              setEvents((prevEvents) => {
+                // prevEvents에 중복된 이벤트가 있는지 확인하고, 중복 처리 로직 필요할 수 있음
+                // 일단 단순히 덮어쓰거나 concat하는 예:
+                const updatedCalendarId =
+                  newEvents.length > 0 ? newEvents[0].calendarId : null;
+                const filteredEvents = prevEvents.filter(
+                  (event) => event.calendarId !== updatedCalendarId
+                );
+                return [
+                  ...filteredEvents,
+                  ...newEvents.map((event) => ({
+                    ...event,
+                    calendarId: Number(event.calendarId),
+                  })),
+                ];
+              });
+            }
+          );
+
+          subscriptions.push(subscription);
+        });
+
+        subscriptionRef.current = subscriptions;
+      },
+      (error) => {
+        console.error("WebSocket 연결 실패:", error);
+      }
+    );
+
+    return () => {
+      if (subscriptionRef.current) {
+        subscriptionRef.current.forEach((sub) => sub.unsubscribe());
+        subscriptionRef.current = null;
+      }
+    };
+  }, [events, checkedCalendars, calendars]); // checkedCalendars에 따라 재구독
+
+  // events 또는 checkedCalendars 변경 시 filteredEvents 업데이트
+  useEffect(() => {
+    const filtered = events.filter((event) =>
+      checkedCalendars.includes(event.calendarId)
+    );
+    setFilteredEvents(filtered);
+    console.log("allEvents :", filtered);
+  }, [events, checkedCalendars]);
+
+  // 캘린더 데이터 다시 로드
   const refetchData = async () => {
-    const data = await fetchCalendarList(user.userid);
-    setCalendars(data);
+    try {
+      const data = await fetchCalendarList(user.userid);
+      setCalendars(data);
+    } catch (error) {
+      console.error("캘린더 데이터 다시 로드 실패:", error);
+    }
   };
-
   return (
     <AppLayout onToggleSidebar={toggleSidebar} thisPage="calendar">
       {/* 캘린더 리스트를 Aside와 Calendar 컴포넌트로 전달 */}

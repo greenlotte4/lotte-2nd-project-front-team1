@@ -33,7 +33,6 @@ export default function UserListButton({ isOpen, onClose }) {
       setError(null);
       try {
         const data = await getUserListbyuserid(user.userid);
-        console.log("Response data:", data);
 
         if (Array.isArray(data)) {
           setTeamSpaces(data);
