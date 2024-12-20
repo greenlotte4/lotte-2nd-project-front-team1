@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   Box,
   Grid,
@@ -30,6 +30,9 @@ import { postCreateProjectItem, postUpdateProjectItem, postDeleteProjectItem } f
 import { postCreateProjectTask, postUpdateProjectTask, postDeleteProjectTask } from "../../../api/project/task/projectTaskAPI";
 import RadioButtonChecked from "@mui/icons-material/RadioButtonChecked";
 import RadioButtonUnchecked from "@mui/icons-material/RadioButtonUnchecked";
+import { connectStomp, subscribe, publish } from "../../../WebSocket/STOMP"; 
+import { SERVER_HOST } from "../../../api/URI";
+
 
 export default function ProjectMainPage() {
   const { projectId } = useParams();
@@ -55,6 +58,7 @@ export default function ProjectMainPage() {
   const [participants, setParticipants] = useState([]); 
   const [selectedParticipant, setSelectedParticipant] = useState(""); // 한 명만 선택
   const [selectedColumn, setSelectedColumn] = useState(null);
+  const subscriptionRef = useRef(null);
   const clearTaskForm = () => {
     setNewTaskName("");
     setNewTaskAssignee("");
@@ -83,6 +87,7 @@ export default function ProjectMainPage() {
       setNewColumn({ title: "", color: "#ffffff" });
     }
   }, [selectedColumn]);
+  
 
   const fetchProjectData = async (id) => {
     try {
@@ -139,6 +144,81 @@ export default function ProjectMainPage() {
     console.log("Selected Participant:", selectedParticipant); // 선택된 작업자 출력
     closeModal("participants");
   };
+
+  // 소켓통신
+  useEffect(() => {
+    const onConnected = () => {
+      console.log("WebSocket 연결 성공");
+  
+      // Task 업데이트 이벤트 구독
+      subscribe("/sub/tasks/update", (updatedTask) => {
+        console.log("Received Task Update:", updatedTask);
+  
+        // WebSocket에서 받은 데이터를 상태에 반영
+        setTasks((prevTasks) =>
+          prevTasks.map((task) =>
+            task.id === `task-${updatedTask.taskId}`
+              ? {
+                  ...task,
+                  group: `column-${updatedTask.groupId}`,
+                  name: updatedTask.name,
+                  startDate: updatedTask.startDate,
+                  endDate: updatedTask.endDate,
+                  assignee: updatedTask.assignee || "Unassigned",
+                }
+              : task
+          )
+        );
+      });
+    };
+  
+    const initializeWebSocket = () => {
+      connectStomp(SERVER_HOST + "/socket", onConnected);
+    };
+  
+    if (projectId) {
+      fetchProjectData(projectId).then(initializeWebSocket);
+    }
+  
+    return () => {
+      // WebSocket 연결 해제
+      if (subscriptionRef.current) {
+        subscriptionRef.current.unsubscribe();
+        subscriptionRef.current = null;
+      }
+    };
+  }, [projectId]);
+
+
+  useEffect(() => {
+    const onConnected = () => {
+      console.log("WebSocket 연결 성공");
+  
+      // 그룹 업데이트 이벤트 구독
+      subscribe("/sub/group/update", (updatedGroup) => {
+        console.log("Received Group Update:", updatedGroup);
+  
+        setColumns((prevColumns) =>
+          prevColumns.map((column) =>
+            column.id === `column-${updatedGroup.projectItemId}`
+              ? { ...column, position: updatedGroup.position }
+              : column
+          )
+        );
+      });
+    };
+  
+    connectStomp(SERVER_HOST + "/socket", onConnected);
+  
+    return () => {
+      if (subscriptionRef.current) {
+        subscriptionRef.current.unsubscribe();
+        subscriptionRef.current = null;
+      }
+    };
+  }, []);
+  
+
 
   const generateRandomColor = () => `#${Math.floor(Math.random() * 16777215).toString(16)}`;
   const openModal = (type) => setModals((prev) => ({ ...prev, [type]: true }));
@@ -335,19 +415,35 @@ export default function ProjectMainPage() {
   };
   
 
-
-
+  //드래그 앤 드롭
   const onDragEnd = (result) => {
     const { source, destination, type } = result;
   
     if (!destination) return;
   
     if (type === "COLUMN") {
+      // COLUMN 드래그 앤 드롭 처리
       const reorderedColumns = Array.from(columns);
       const [movedColumn] = reorderedColumns.splice(source.index, 1);
       reorderedColumns.splice(destination.index, 0, movedColumn);
-      setColumns(reorderedColumns);
+  
+      // 업데이트된 컬럼들의 position 설정
+      const updatedColumns = reorderedColumns.map((column, index) => ({
+        ...column,
+        position: index, // 새로운 순서에 따라 position 업데이트
+      }));
+  
+      setColumns(updatedColumns);
+  
+      // 이동한 그룹 정보를 WebSocket으로 전송
+      const movedGroupId = movedColumn.id.split("-")[1]; // 그룹 ID 추출
+      const newPosition = destination.index;
+  
+      console.log("Group 이동 이벤트 전송: ", { groupId: movedGroupId, position: newPosition });
+  
+      publish("/pub/group/move", { projectItemId: movedGroupId, position: newPosition });
     } else if (type === "TASK") {
+      // TASK 드래그 앤 드롭 처리
       const sourceColumnId = source.droppableId;
       const destinationColumnId = destination.droppableId;
   
@@ -356,10 +452,23 @@ export default function ProjectMainPage() {
         const [movedTask] = updatedTasks.splice(source.index, 1);
         movedTask.group = destinationColumnId;
         updatedTasks.splice(destination.index, 0, movedTask);
+  
         setTasks(updatedTasks);
+  
+        const taskId = movedTask.id?.split("-")[1]; // Null 체크
+        const groupId = destinationColumnId?.split("-")[1]; // Null 체크
+  
+        if (!taskId || !groupId) {
+          console.error("Invalid taskId or groupId:", { taskId, groupId });
+          return;
+        }
+  
+        console.log("Task 이동 이벤트 전송: ", { taskId, groupId });
+        publish("/pub/tasks/move", { taskId, groupId });
       }
     }
   };
+  
 
   return (
     <DragDropContext onDragEnd={onDragEnd}>

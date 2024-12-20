@@ -2,6 +2,9 @@ import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { getBoards, addFavoriteBoard, getFavoriteBoards} from "../../../api/board/boardAPI"; 
 import { useSelector } from "react-redux";
+import { Modal, Box, TextField, Button, Typography, IconButton, List, ListItem, ListItemText, Divider } from "@mui/material";
+import EditIcon from "@mui/icons-material/Edit";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 /*
     날짜 : 2024/11/29
@@ -18,7 +21,9 @@ const BoardAside = ({ isVisible }) => {
   const [boards, setBoards] = useState([]);
   const [favoriteBoards, setFavoriteBoards] = useState(new Map());
   const navigate = useNavigate();
-
+  const [isModalOpen, setIsModalOpen] = useState(false); // 모달 상태 추가
+  const [newBoardName, setNewBoardName] = useState(""); // 새로운 게시판 이름 상태 추가
+  const [editBoard, setEditBoard] = useState(null); // 수정할 게시판 상태
   const [searchQuery, setSearchQuery] = useState("");
 
   const userId = useSelector((state) => state.userSlice.userid);
@@ -26,8 +31,45 @@ const BoardAside = ({ isVisible }) => {
     navigate(`/app/board/${boardId}`); // 동적으로 생성된 경로로 이동
 };
 
-  
+  // 모달 열기/닫기 핸들러
+  const handleOpenModal = () => setIsModalOpen(true);
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+    setNewBoardName("");
+    setEditBoard(null); // 수정 상태 초기화
+  };
 
+  // 새로운 게시판 생성 핸들러
+   // 게시판 생성 및 수정 핸들러
+   const handleSaveBoard = () => {
+    if (!newBoardName.trim()) {
+      alert("게시판 이름을 입력해주세요.");
+      return;
+    }
+
+    if (editBoard) {
+      // TODO: 수정 API 호출
+      console.log("게시판 수정:", editBoard.boardId, "->", newBoardName);
+    } else {
+      // TODO: 생성 API 호출
+      console.log("새로운 게시판 생성:", newBoardName);
+    }
+
+    setNewBoardName("");
+    setEditBoard(null);
+    handleCloseModal();
+  };
+
+  const handleEditBoard = (board) => {
+    setEditBoard(board);
+    setNewBoardName(board.boardName);
+    setIsModalOpen(true);
+  };
+
+  const handleDeleteBoard = (boardId) => {
+    // TODO: 삭제 API 호출
+    console.log("게시판 삭제:", boardId);
+  };
 
   // 애니메이션 제어
   useEffect(() => {
@@ -275,7 +317,11 @@ const BoardAside = ({ isVisible }) => {
               <button type="button" title="전체 게시판" className="btn_fold">
                 <span className="text">전체 게시판</span>
               </button>
-              <button type="button" className="btn_manage">
+              <button
+                type="button"
+                className="btn_manage"
+                onClick={handleOpenModal}
+              >
                 관리
               </button>
             </div>
@@ -355,6 +401,88 @@ const BoardAside = ({ isVisible }) => {
             메인으로 가기
           </Link>
         </div>
+        <Modal
+            open={isModalOpen}
+            onClose={handleCloseModal}
+            aria-labelledby="modal-title"
+            aria-describedby="modal-description"
+          >
+            <Box
+              sx={{
+                position: "absolute",
+                top: "50%",
+                left: "50%",
+                transform: "translate(-50%, -50%)",
+                width: 500,
+                bgcolor: "background.paper",
+                boxShadow: 24,
+                p: 4,
+                borderRadius: 2,
+              }}
+            >
+              <Typography id="modal-title" variant="h6" component="h2" mb={2}>
+                게시판 관리
+              </Typography>
+
+              {/* 게시판 리스트 */}
+              <List>
+                {boards.map((board) => (
+                  <ListItem
+                    key={board.boardId}
+                    sx={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      alignItems: "center",
+                    }}
+                  >
+                    <ListItemText primary={board.boardName} />
+                    <Box>
+                      <IconButton
+                        onClick={() => handleEditBoard(board)}
+                        color="primary"
+                      >
+                        <EditIcon />
+                      </IconButton>
+                      <IconButton
+                        onClick={() => handleDeleteBoard(board.boardId)}
+                        color="secondary"
+                      >
+                        <DeleteIcon />
+                      </IconButton>
+                    </Box>
+                  </ListItem>
+                ))}
+                <Divider />
+              </List>
+
+              {/* 신규 생성 버튼 및 입력 필드 */}
+              <Box
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                  mt: 2,
+                }}
+              >
+                <TextField
+                  label="게시판 이름"
+                  value={newBoardName}
+                  onChange={(e) => setNewBoardName(e.target.value)}
+                  fullWidth
+                  variant="outlined"
+                  size="small"
+                  sx={{ marginRight: 2 }}
+                />
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={handleSaveBoard}
+                >
+                  {editBoard ? "수정" : "생성"}
+                </Button>
+              </Box>
+            </Box>
+          </Modal>
       </aside>
     </div>
     )
