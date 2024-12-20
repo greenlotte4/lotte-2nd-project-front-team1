@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import JSZip from "jszip"; // JSZip import
-import { createFolder, savedFile } from "../../../../api/file/fileAPI";
+import { createFolder, getChildFolders, savedFile, selectDriveData } from "../../../../api/file/fileAPI";
+import { useNavigate } from "react-router-dom";
 
 export default function MyFile({ isShared }) {
-  const [driveData, setDriveData] = useState([]); // 파일 데이터
   const [currentUsage, setCurrentUsage] = useState(0); // 현재 사용량
   const maxUsage = 1024; // 최대 용량
   const [isDragging, setIsDragging] = useState(false); // 드래그 상태
@@ -12,54 +12,96 @@ export default function MyFile({ isShared }) {
   const [showWarning, setShowWarning] = useState(false); // 경고 표시 여부
   const [warningEnabled, setWarningEnabled] = useState(true); // 경고 켜기/끄기 여부
   const [files, setFiles] = useState([]);
-  const [currentPath, setCurrentPath] = useState([]);
-  // 폴더 클릭 시 경로를 업데이트하는 함수
-  const handleFolderClick = (folder) => {
-    // 현재 경로에 폴더 ID를 추가하여 해당 폴더로 이동
-    setCurrentPath((prev) => [...prev, folder.id]);
-  };
-  // 상위 폴더로 이동하는 함수
-  const handleBackClick = () => {
-    // 현재 경로에서 마지막 폴더 ID를 제거하여 상위 폴더로 이동
-    setCurrentPath((prev) => prev.slice(0, prev.length - 1));
-  };
+  const [driveData, setDriveData] = useState([]); // 초기 드라이브 데이터
+  const [currentPath, setCurrentPath] = useState([null]); // 현재 경로
 
-  // 현재 경로에 해당하는 폴더들을 찾아서 반환
-  const getFilesForCurrentPath = (path) => {
-    let currentFiles = files;
 
-    // 경로를 따라가며 해당하는 폴더와 파일을 찾음
-    path.forEach((folderId) => {
-      const folder = currentFiles.find((file) => file.id === folderId && file.type === "folder");
-      if (folder && folder.children) {
-        currentFiles = folder.children;
+
+
+
+
+
+  useEffect(() => {
+    getDriveData();
+  }, []);  // 빈 배열([])로 설정하여 컴포넌트가 처음 마운트될 때만 실행
+
+
+  const getDriveData = async () => {
+    const driveId = 1;
+    console.log("driveId + ", driveId);
+    try {
+      const response = await selectDriveData(driveId);
+      if (response && response.status === 200) {
+        setDriveData(response.data);  // 받아온 데이터를 상태에 저장
+
+        const totalSize = response.data.reduce(
+          (sum, file) => sum + parseFloat(file.size),
+          0
+        );
+        setCurrentUsage(totalSize);  // 총 사용량 계산
+        console.log("가져온 데이터", response.data);
+      } else {
+        console.log("데이터 가져오기 실패:", response?.status);
       }
-    });
-
-    return currentFiles;
+    } catch (error) {
+      console.error("드라이브 데이터 가져오는 중 오류 발생:", error);
+    }
   };
-  // 로컬 스토리지에서 드라이브 데이터 불러오기
-  useEffect(() => {
-    const savedDriveData = JSON.parse(localStorage.getItem("driveData"));
-    console.log("로컬 스토리지에서 불러온 데이터:", savedDriveData); // 로컬 스토리지 확인
 
-    if (savedDriveData) {
-      setDriveData(savedDriveData);
-      const totalSize = savedDriveData.reduce(
-        (sum, file) => sum + parseFloat(file.size),
-        0
-      );
-      setCurrentUsage(totalSize);
+  // 폴더 클릭 시 자식 폴더 데이터를 불러오는 함수
+  const handleFolderClick = async (folderId) => {
+    const childFolders = await getChildFolders(folderId);  // 자식 폴더 불러오기
+    // 자식 폴더가 배열이 아니거나 비어있는 경우
+    if (!Array.isArray(childFolders)) {
+      console.error('자식 폴더가 배열이 아닙니다:', childFolders);
+      return;
     }
-  }, []);
+    console.log("자식 폴더들:", childFolders);
+    setDriveData(childFolders); // 자식 폴더 데이터 상태에 저장
+    setCurrentPath((prevPath) => [...prevPath, folderId]); // 경로 상태 업데이트
+    console.log("경로 상태 :", currentPath);
+  };
 
-  // 드라이브 데이터 변경 시 로컬 스토리지에 저장
-  useEffect(() => {
-    if (driveData.length > 0) {
-      localStorage.setItem("driveData", JSON.stringify(driveData));
+  // 뒤로 가기 클릭 시 동작
+  const handleBackClick = () => {
+    if (currentPath.length <= 1) {
+      console.log("최상위 폴더이므로 뒤로 갈 수 없습니다.");
+      return;
     }
-  }, [driveData]);
 
+    const previousFolderId = currentPath[currentPath.length - 2]; // 이전 폴더 ID
+    console.log("이전 폴더 ID:", previousFolderId);
+
+    // 이전 폴더가 null인 경우 최상위 폴더를 불러오기 위한 특별한 처리
+    if (previousFolderId === null) {
+      console.log("최상위 폴더로 돌아갑니다.");
+      getDriveData();  // 최상위 폴더의 자식 폴더 불러오기
+      setCurrentPath([null]);  // 경로를 최상위로 초기화
+    } else {
+      // 이전 폴더의 자식들을 불러오는 함수
+      const fetchParentChildFolders = async () => {
+        const childFolders = await getChildFolders(previousFolderId);
+        if (!Array.isArray(childFolders)) {
+          console.error('자식 폴더가 배열이 아닙니다:', childFolders);
+          return [];
+        }
+        setDriveData(childFolders); // 자식 폴더 데이터 상태에 저장
+        console.log("자식 폴더들 (뒤로가기 후):", childFolders);
+      };
+
+      fetchParentChildFolders(); // 이전 폴더의 자식들을 불러옴
+
+      // 경로 상태 업데이트
+      setCurrentPath((prevPath) => prevPath.slice(0, -1)); // 경로에서 마지막 폴더 제거
+    };
+  }
+
+
+  // 추가: useEffect로 currentPath 상태가 변경된 후 반영
+  useEffect(() => {
+    console.log("currentPath 상태가 변경되었습니다:", currentPath);
+    // 필요한 동작 (예: URL 변경, 데이터 갱신 등)을 여기서 처리할 수 있습니다.
+  }, [currentPath]);  // currentPath가 변경될 때마다 실행
 
 
   // 드래그 앤 드롭 핸들러
@@ -80,39 +122,47 @@ export default function MyFile({ isShared }) {
     uploadFiles(files);
   };
 
-
-
-
-
   // 파일 업로드 처리
   const uploadFiles = async (files) => {
-
-
     const totalSize = files.reduce(
       (sum, file) => sum + file.size / (1024 * 1024),
       0
     );
 
+    // 업로드 용량 초과 검사
     if (currentUsage + totalSize > maxUsage) {
       alert("업로드 용량 초과입니다!");
       return;
     }
 
-    const uploadedFiles = files.map((file) => ({
-      id: Date.now() + Math.random(),
-      name: file.name,
-      size: `${(file.size / (1024 * 1024)).toFixed(2)}MB`,
-      modified: new Date().toISOString().split("T")[0],
-      created: new Date().toISOString().split("T")[0],
-      file: file, // 파일 객체를 추가
-    }));
+    // 현재 폴더 ID를 currentPath에서 추출
+    const folderId = currentPath[currentPath.length - 1] || null;  // 예시로 마지막 폴더 ID를 사용
+    const driveId = 1;  // 예시로 드라이브 ID가 1이라고 가정
 
-    setDriveData((prevData) => [...prevData, ...uploadedFiles]);
+    // FormData 생성
+    const formData = new FormData();
+
+    // 파일과 관련된 정보들 추가
+    files.forEach((file) => {
+      formData.append('files', file);  // 파일 객체 추가
+      formData.append('fileNames', file.name);  // 파일 이름 추가
+      formData.append('fileSizes', file.size);  // 파일 크기 추가
+    });
+
+    // 폴더 ID와 드라이브 ID 추가
+    formData.append('folderId', folderId);
+    formData.append('driveId', driveId);
+
+    // 현재 폴더의 데이터도 상태에 추가 (업로드된 파일을 UI에 반영)
+    setDriveData((prevData) => [...prevData, ...files]);
     setCurrentUsage((prevUsage) => prevUsage + totalSize);
-    console.log("업로드파일", files);
 
+    console.log("업로드파일", files);
+    console.log("업로드form", formData);
+
+    // 서버로 업로드 요청 보내기
     try {
-      const response = await savedFile(files);  // formData로 업로드
+      const response = await savedFile(formData);  // formData를 서버에 전송
       console.log("파일 업로드 성공:", response);
     } catch (error) {
       console.error("파일 업로드 실패:", error);
@@ -222,22 +272,26 @@ export default function MyFile({ isShared }) {
   const handleCreateFolder = async (folderName) => {
     if (!folderName) {
       alert("폴더 이름을 입력해주세요.");
-
       return;
     }
+    const rootFolderId = currentPath.length > 0 ? currentPath[currentPath.length - 1] : null;
+
+    console.log("rootFolderId 확인:", rootFolderId); // rootFolderId 값 디버깅
+
     const user =
       JSON.parse(localStorage.getItem("user")) ||
       JSON.parse(sessionStorage.getItem("user"));
 
     const userId = user.userid;
     const driveId = 1;
+
     // 폴더 생성 요청에 필요한 데이터 준비
 
-    console.log("보낼거1", userId, folderName, driveId); // 확인용 로그
+    console.log("보낼거1", userId, folderName, driveId, rootFolderId); // 확인용 로그
 
     // 서버에 폴더 생성 요청
     try {
-      const response = await createFolder(folderName, driveId); // 서버 API 호출 (폴더 데이터 전달)
+      const response = await createFolder(folderName, driveId, rootFolderId); // 서버 API 호출 (폴더 데이터 전달)
 
       // 서버 응답 확인
       if (response.status === 200) {
@@ -434,8 +488,7 @@ export default function MyFile({ isShared }) {
             {filteredFiles.length > 0 ? (
               filteredFiles.map((file) => (
                 <tr key={file.id}
-
-                >
+                  onClick={() => file.type === "folder" && handleFolderClick(file.folderId)}>
                   <td>
                     <input
                       type="checkbox"
@@ -452,17 +505,18 @@ export default function MyFile({ isShared }) {
                     {file.name}
                   </td>
                   <td>{file.size}</td>
-                  <td>{file.modified}</td>
-                  <td>{file.created}</td>
+                  <td>{file.modified}{file.updatedAt}</td>
+                  <td>{file.created}{file.createdAt}</td>
                 </tr>
               ))
             ) : (
               <tr>
                 <td colSpan="5" className="no-results">
-                  검색 결과가 없습니다.
+                  폴더가 비어 있습니다.
                 </td>
               </tr>
             )}
+            <button onClick={handleBackClick}>뒤로 가기</button>
           </tbody>
         </table>
       </div>
