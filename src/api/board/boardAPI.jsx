@@ -26,6 +26,10 @@ import {
   BOARD_RECENT_ARTICLE,
   BOARD_RECENT_ARTICLE_TEN,
   BOARD_TITLE_SEARCH,
+  BOARD_CREATE_URI,
+  BOARD_UPDATE_URI,
+  BOARD_DELETE_URI,
+  BOARD_FREEBOARD_VIEW,
 } from "../URI";
 
 
@@ -430,5 +434,75 @@ export const searchArticlesByTitle = async (boardId, keyword) => {
   } catch (error) {
     console.error("검색 중 오류 발생:", error);
     throw error;
+  }
+};
+
+export const createBoard = async (boardDTO, userId) => {
+  try {
+    // API 요청을 보낼 데이터를 확인
+    console.log("Creating Board:", { boardDTO, userId });
+
+    // POST 요청으로 새 게시판 생성
+    const response = await axios.post(BOARD_CREATE_URI, boardDTO, {
+      params: { userId }, // 쿼리 파라미터로 userId 전달
+      headers: {
+        "Content-Type": "application/json", // JSON 데이터 전달
+      },
+    });
+
+    console.log("Board Created Successfully:", response.data); // 응답 확인
+    return response.data; // 성공 시 서버에서 반환된 데이터 반환
+  } catch (error) {
+    console.error("Error while creating board:", error.response?.data || error.message);
+    throw new Error("게시판 생성에 실패했습니다.");
+  }
+};
+
+export const updateBoard = async (boardId, boardDTO, userId) => {
+  try {
+    console.log("Updating Board:", { boardId, boardDTO, userId });
+
+    // PUT 요청으로 게시판 수정
+    const response = await axios.put(BOARD_UPDATE_URI(boardId), boardDTO, {
+      params: { userId }, // 사용자 ID를 쿼리 파라미터로 전달
+      headers: {
+        "Content-Type": "application/json", // JSON 데이터 전달
+      },
+    });
+
+    console.log("Board Updated Successfully:", response.data); // 응답 데이터 로그
+    return response.data; // 서버에서 반환된 데이터 반환
+  } catch (error) {
+    console.error("Error while updating board:", error.response?.data || error.message); // 에러 로그
+    throw new Error("게시판 수정에 실패했습니다.");
+  }
+};
+
+export const deleteBoard = async (boardId, userId) => {
+  try {
+    console.log("Deleting Board:", { boardId, userId }); // 요청 데이터 로그
+
+    // DELETE 요청으로 게시판 삭제
+    const response = await axios.delete(BOARD_DELETE_URI(boardId), {
+      params: { userId }, // 사용자 ID를 쿼리 파라미터로 전달
+    });
+
+    console.log("Board Deleted Successfully:", response.data); // 성공 메시지
+    return response.data; // 서버에서 반환된 데이터 반환
+  } catch (error) {
+    console.error("Error while deleting board:", error.response?.data || error.message); // 에러 로그
+    throw new Error("게시판 삭제에 실패했습니다.");
+  }
+};
+
+export const getRecentFreeBoardArticles = async () => {
+  try {
+    // 서버에서 자유게시판 최신 글 5개를 가져오는 GET 요청
+    const response = await axios.get(BOARD_FREEBOARD_VIEW); // BOARD_FREEBOARD_VIEW는 `/article/freerecent`를 가리킴
+    console.log("Freeboard API Response:", response.data); // API 응답 데이터 확인
+    return response.data; // 서버에서 반환된 데이터 반환
+  } catch (error) {
+    console.error("Error fetching freeboard articles:", error.message); // 에러 로그
+    throw new Error("자유게시판 글을 가져오는 데 실패했습니다.");
   }
 };

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { getBoards, addFavoriteBoard, getFavoriteBoards} from "../../../api/board/boardAPI"; 
+import { getBoards, addFavoriteBoard, getFavoriteBoards, createBoard, updateBoard, deleteBoard} from "../../../api/board/boardAPI"; 
 import { useSelector } from "react-redux";
 import { Modal, Box, TextField, Button, Typography, IconButton, List, ListItem, ListItemText, Divider } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
@@ -41,36 +41,73 @@ const BoardAside = ({ isVisible }) => {
 
   // 새로운 게시판 생성 핸들러
    // 게시판 생성 및 수정 핸들러
-   const handleSaveBoard = () => {
+   const handleSaveBoard = async () => {
     if (!newBoardName.trim()) {
       alert("게시판 이름을 입력해주세요.");
       return;
     }
+  
+    try {
+      if (editBoard) {
+        // 수정 API 호출
+        const boardId = editBoard.boardId; // 수정할 게시판 ID
+        const boardDTO = {
+          boardName: newBoardName,
+          maxCollaborators: editBoard.maxCollaborators || 10,
+        };
+  
+        console.log("게시판 수정 요청:", boardId, boardDTO);
+        const updatedBoard = await updateBoard(boardId, boardDTO, userId);
 
-    if (editBoard) {
-      // TODO: 수정 API 호출
-      console.log("게시판 수정:", editBoard.boardId, "->", newBoardName);
-    } else {
-      // TODO: 생성 API 호출
-      console.log("새로운 게시판 생성:", newBoardName);
+        setBoards((prevBoards) =>
+          prevBoards.map((board) =>
+            board.boardId === boardId ? { ...board, ...updatedBoard } : board
+          )
+        );
+        console.log("수정된 게시판:", updatedBoard);
+      } else {
+        // 새 게시판 생성
+        const boardDTO = {
+          boardName: newBoardName,
+          maxCollaborators: 10, // 기본값 설정
+        };
+  
+        console.log("새 게시판 생성 요청:", boardDTO);
+        const createdBoard = await createBoard(boardDTO, userId);
+        console.log("생성된 게시판:", createdBoard);
+      }
+  
+      alert("저장 성공!");
+    } catch (error) {
+      console.error("저장 중 오류 발생:", error.message);
+      alert("저장에 실패했습니다. 다시 시도해주세요.");
+    } finally {
+      setNewBoardName(""); // 입력 필드 초기화
+      setEditBoard(null);  // 편집 모드 해제
+      handleCloseModal();  // 모달 닫기
     }
-
-    setNewBoardName("");
-    setEditBoard(null);
-    handleCloseModal();
   };
-
   const handleEditBoard = (board) => {
     setEditBoard(board);
     setNewBoardName(board.boardName);
     setIsModalOpen(true);
   };
 
-  const handleDeleteBoard = (boardId) => {
-    // TODO: 삭제 API 호출
-    console.log("게시판 삭제:", boardId);
+  const handleDeleteBoard = async (boardId) => {
+    try {
+      console.log("Deleting Board with ID:", boardId);
+  
+      // DELETE API 호출
+      await deleteBoard(boardId, userId); // userId는 Redux 또는 Context에서 가져오기
+      alert("게시판이 삭제되었습니다.");
+  
+      // 삭제 후 목록 업데이트
+      setBoards((prevBoards) => prevBoards.filter((board) => board.boardId !== boardId));
+    } catch (error) {
+      console.error("Error while deleting board:", error.message);
+      alert("게시판 삭제에 실패했습니다. 다시 시도해주세요.");
+    }
   };
-
   // 애니메이션 제어
   useEffect(() => {
     if (isVisible) {
