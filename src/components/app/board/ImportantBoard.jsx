@@ -107,9 +107,9 @@ export default function ImportantBoard() {
                                             {article.userName}
                                         </button>
                                         
-                                        <em title="댓글갯수" className="comments">
-                                            <a style={{ cursor: "pointer" }}>2</a>
-                                        </em>
+                                            <em title="댓글갯수" className="comments">
+                                                <a style={{ cursor: "pointer" }}>0</a>
+                                            </em>
                                     </p>
                                     <div className="board_name_box">
                                         <span className="board_name_text">{article.boardName}</span>

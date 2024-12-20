@@ -1,12 +1,13 @@
 import { Link, useNavigate, useParams } from "react-router-dom";
 
-import { addFavoriteBoard, getAllBoards, getArticlesByBoard, getBoardArticles, getFavoriteBoards, moveArticlesToBoard, moveBoardToBasket } from "../../../api/board/boardAPI";
+import { addFavoriteBoard, getAllBoards, getArticlesByBoard, getBoardArticles, getFavoriteBoards, moveArticlesToBoard, moveBoardToBasket, searchArticlesByTitle, } from "../../../api/board/boardAPI";
 import React, { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 
 export default function AnnouncementBoard(){
     const { boardId } = useParams();
     const [isOptionBoxVisible, setIsOptionBoxVisible] = useState(false);
+    const [isDetailVisible, setIsDetailVisible] = useState(false);
 
     const [articles, setArticles] = useState([]); // 게시글 상태
     const [boardName, setBoardName] = useState(""); // 추가된 상태
@@ -23,9 +24,18 @@ export default function AnnouncementBoard(){
     const [currentPage, setCurrentPage] = useState(0); // 현재 페이지 (0부터 시작)
     const [totalPages, setTotalPages] = useState(0); // 전체 페이지 수
 
+    const [title, setTitle] = useState("");
+    const [content, setContent] = useState("");
+    const [authorName, setAuthorName] = useState("");
+    const [status, setStatus] = useState("");
+
     const userId = useSelector((state) => state.userSlice.userid);
     
     const navigate = useNavigate();
+
+    const toggleDetail = () => {
+        setIsDetailVisible((prev) => !prev); // 상태 토글
+    };
 
     const handlePageChange = (pageNumber) => {
         setCurrentPage(pageNumber); // 페이지 변경
@@ -59,6 +69,8 @@ export default function AnnouncementBoard(){
         }
     };
 
+    
+
     const handleDelete = async () => {
         console.log("Redux userId:", userId);
     
@@ -72,6 +84,26 @@ export default function AnnouncementBoard(){
         }
     
         try {
+            // 작성자가 아닌 글이 선택되었는지 확인
+            const unauthorizedArticles = selectedArticles.filter((id) => {
+                const article = articles.find((a) => a.id === id);
+                if (!article) {
+                    console.error(`Article with ID ${id} not found.`);
+                    return true; // 게시글이 없는 경우 삭제 불가 처리
+                }
+                console.log(`Checking author for article ID ${id}:`, {
+                    articleUserId: article.userId,
+                    currentUserId: userId,
+                });
+                return article.userId !== userId; // 작성자가 아닌 경우
+            });
+    
+            if (unauthorizedArticles.length > 0) {
+                alert("작성자만 삭제할 수 있습니다.");
+                console.warn("Unauthorized articles:", unauthorizedArticles);
+                return;
+            }
+    
             // 선택된 게시글 삭제
             await Promise.all(
                 selectedArticles.map((id) => {
@@ -86,6 +118,8 @@ export default function AnnouncementBoard(){
             );
             setSelectedArticles([]); // 선택 초기화
             alert("선택한 게시글이 삭제되었습니다.");
+    
+            window.location.reload();
         } catch (err) {
             console.error("게시글 삭제 중 오류:", err);
             alert(`게시글 삭제에 실패했습니다. ${err.message}`);
@@ -245,6 +279,23 @@ useEffect(() => {
     
         fetchBoards();
       }, []);
+
+      const handleSearch = async () => {
+        if (!title.trim()) {
+            alert("검색어를 입력하세요.");
+            return;
+        }
+    
+        try {
+            const data = await searchArticlesByTitle(boardId, title);
+            setArticles(data.articles || []); // 검색 결과를 상태로 설정, 기본값은 빈 배열
+            setTotalPages(data.totalPages || 0); // 페이지 정보 업데이트, 기본값은 0
+        } catch (err) {
+            console.error("검색 실패:", err);
+            setArticles([]); // 검색 실패 시 상태를 빈 배열로 설정
+            setError("검색 중 오류가 발생했습니다.");
+        }
+    };
     
 
     if (loading) return <p>Loading...</p>;
@@ -260,11 +311,11 @@ useEffect(() => {
                         <label htmlFor="basicKeyword" className="blind">
                             <i>검색어</i>
                         </label>
-                        <input id="basicKeyword" type="text" autoComplete="off" placeholder="게시글 검색"/>
-                        <button type="button" className="btn_search">
-                            <span className="blind">검색</span>
+                        <input id="basicKeyword" type="text" autoComplete="off" placeholder="게시글 검색"  value={title}  onChange={(e) => setTitle(e.target.value)}/>
+                        <button type="button" className="btn_search" onClick={handleSearch}>
+                            <span className="blind" >검색</span>
                         </button>
-                        <button type="button" className="board_detail">
+                        <button type="button" className="board_detail" onClick={toggleDetail}>
                             상세
                         </button>
                     </div>
@@ -294,160 +345,37 @@ useEffect(() => {
                         </div>
                     </div>
                 </div>
-                <div className="srch_detail">
+                <div className="srch_detail" style={{ display: isDetailVisible ? "block" : "none" }}>
                     <h3 className="blind"></h3>
                     <div className="fm_keyword">
-                        <div className="box_col1">
-                            <strong className="tit">게시판</strong>
-                            <div className="select_box board">
-                                <button type="button" className="selected">
-                                    <strong>전체 게시판</strong>
-                                </button>
-                                <div className="option_box" style={{zindex: 200}}>
-                                    <ul>
-                                        <li className="">
-                                            <button type="button">
-                                             전체 게시판
-                                            </button>
-                                        </li> 
-                                        <li className="line"></li>
-                                        <li>
-                                            <span>그린컴퓨터아카데미</span>
-                                        </li> 
-                                        <li className="depth">
-                                            <button type="button">
-                                             공지사항
-                                            </button>
-                                        </li> 
-                                        <li className="depth">
-                                            <button type="button">
-                                            업무 매뉴얼
-                                            </button>
-                                        </li>
-                                        <li className="depth">
-                                            <button type="button">
-                                            자유게시판
-                                            </button>
-                                        </li>
-                                        <li className="line"></li> 
-                                        <li className="">
-                                            <button type="button">
-                                            휴지통
-                                            </button>
-                                        </li> 
-                                    </ul>
+                    <div className="box_col1">
+                            <strong className="tit">작성자</strong>
+                            <div className="has_ly">
+                                <label htmlFor="srch_writer" className="blind">
+                                    입력
+                                </label>
+                                <input id="srch_writer" type="text" autoComplete="off" />
+                                <div className="ly_slct_member" style={{ display: "none" }}>
+                                    <ul></ul>
                                 </div>
                             </div>
                         </div>
                         <div className="box_col2">
                             <strong className="tit">내용</strong>
-                            <div className="select_box show">
-                                <button type="button" className="selected">
-                                    <strong>전체</strong>
-                                </button>
-                                <div className="option_box" style={{display: "none"}}>
-                                    <ul>
-                                        <li>
-                                            <button type="button" className="sel"> 전체 </button>
-                                        </li>
-                                        <li>
-                                            <button type="button" className> 제목+본문 </button>
-                                        </li>
-                                        <li>
-                                            <button type="button" className> 제목 </button>
-                                        </li>
-                                        <li>
-                                            <button type="button" className> 본문 </button>
-                                        </li>
-                                        <li>
-                                            <button type="button" className> 첨부 파일 </button>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <label htmlFor="detailKeyword" className="blind">입력</label>
-                            <input id="detailKeyword" type="text" autoComplete="off" className="cont"/>  
+                            
+                            <label htmlFor="detailKeyword" className="blind">
+                                입력
+                            </label>
+                            <input id="detailKeyword" type="text" autoComplete="off" className="cont" />
                         </div>
-                        <span className="break"></span>
-                        <div className="box_col1">
-                            <strong className="tit">작성자</strong>
-                             <div className="has_ly">
-                                <label htmlFor="srch_writer" className="blind">입력</label> 
-                                <input id="srch_writer" type="text" autoComplete="off"/> 
-                                <div className="ly_slct_member" style={{display: "none"}}>
-                                    <ul>
-                                  
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="box_col2 _searchPeriod">
-                            <strong className="tit">기간</strong>
-                            <div className="select_box">        
-                                <button type="button" className="selected">
-                                    <strong>직접입력</strong>
-                                </button>
-                                <div className="option_box" style={{display: "none"}}>
-                                    <ul>
-                                        <li>
-                                            <button type="button" className="">
-                                            전체
-                                            </button>
-                                        </li>
-                                        <li>
-                                            <button type="button" className="">
-                                            1주
-                                            </button>
-                                        </li>
-                                        <li>
-                                            <button type="button" className="">
-                                            1개월
-                                            </button>
-                                        </li>
-                                        <li>
-                                            <button type="button" className="">
-                                            3개월
-                                            </button>
-                                        </li>
-                                        <li>
-                                            <button type="button" className="">
-                                            6개월
-                                            </button>
-                                        </li>
-                                        <li>
-                                            <button type="button" className="">
-                                            1년
-                                            </button>
-                                        </li>
-                                        <li>
-                                            <button type="button" className="sel">
-                                            직접입력
-                                            </button>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                                <label htmlFor="srch_date_start" className="blind">시작 날짜</label>
-                                <input id="srch_date_start" type="text" autoComplete="off" className="date-picker-input"/>
-                                <span className="dash">-</span>
-                                <label htmlFor="srch_date_finish" className="blind">종료 날짜</label>
-                                <input id="srch_date_finish" type="text" autoComplete="off" className="date-picker-input">
-                                </input>
-                        </div>
-                    </div>
-                    <div className="fm">
-                        <p>
-                            <input id="chk_attfile" type="checkbox"/>
-                            <label htmlFor="chk_attfile">첨부 파일 있음</label>
-                        </p>
-                        <p>
-                            <input id="chk_comment" type="checkbox"/>
-                            <label htmlFor="chk_comment">댓글 포함</label>
-                        </p>
                         <button type="button" className="submit_detail">
                             검색
                         </button>
+                        <span className="break"></span>
+                        
+                        
                     </div>
+                  
                 </div>
             </div>
             <div className="articleList">
@@ -543,12 +471,7 @@ useEffect(() => {
                                     </ul>
                                 </div>
                             </div>
-                            <div className="select_box">
-                                <button type="button" className="selected">
-                                    <strong>전체</strong>
-                                </button>
-    
-                            </div>
+                           
                             <div className="select_box">
                             <button type="button" className="selected" onClick={toggleOptionBox}>
                                 <strong>{pageSize}개씩 보기</strong> {/* pageSize 상태에 따라 표시 */}
@@ -576,98 +499,78 @@ useEffect(() => {
                 </div>
                 <div className="board_list">
                     <ul className="list edit_type default">
-                        {articles.length > 0 ? (
-                            articles
-                                .filter((article) => article.status !== "trash")
-                                .map((article, index) => {
-                                    const isLastArticle = index === articles.length - 1; // 마지막 요소인지 확인
-                                    return (
-                                        <React.Fragment key={article.id}>
-                                            <li
-                                                className="read has_photo"
-                                                style={{ cursor: "pointer" }}
-                                                onClick={() => navigate(`/article/view/${article.id}`)} // li 클릭 시 이동
-                                            >
-                                                <p className="chk">
-                                                    <input
-                                                        id={`check_${article.id}`}
-                                                        type="checkbox"
-                                                        name="chk_bd"
-                                                        checked={selectedArticles.includes(article.id)}
-                                                        onClick={(e) => e.stopPropagation()} // 클릭 이벤트 전파 차단
-                                                        onChange={() => handleCheckboxChange(article.id)} // 상태 변경
-                                                    />
-                                                    <label
-                                                        htmlFor={`check_${article.id}`}
-                                                        onClick={(e) => e.stopPropagation()} // label 클릭 시 부모 이벤트 방지
-                                                    >
-                                                        해당 게시글 선택
-                                                    </label>
-                                                </p>
-                                                <div className="sbj_box">
-                                                    <p className="sbj">
-                                                    {article.notification &&(
-                                                        <em className="ic_announcement">공지</em>
-                                                    )}    
-                                                    
-                                                    {article.mustRead && ( // 필독이 true일 때만 표시
-                                                        <em className="ic_noti">필독</em>
-                                                    )}
-                                                        <Link
-                                                            to={`/article/view/${article.id}`}
-                                                            onClick={(e) => e.stopPropagation()}
-                                                        >
-                                                            {article.title}
-                                                        </Link>
-                                                    </p>
-                                                </div>
-                                                <p className="infor">
-                                                    <button type="button" className="user">
-                                                        {article.userName || "Unknown User"}
-                                                    </button>
-                                                </p>
-                                                <p className="date">
-                                                    {new Date(article.createdAt).toLocaleDateString("en-CA")}
-                                                </p>
-                                            </li>
-
-                                            {/* 마지막 게시글 이후에 추가 */}
-                                            {isLastArticle && (
-                                                <p className="bt_more">
-                                                    <button
-                                                        type="button"
-                                                        className="btn"
-                                                        onClick={() =>
-                                                            navigate("/app/noticeboard", {
-                                                                state: { boardId, boardName },
-                                                            })
-                                                        }
-                                                    >
-                                                        글쓰기
-                                                    </button>
-                                                </p>
-                                            )}
-                                        </React.Fragment>
-                                    );
-                                })
-                        ) : (
-                            <li className="empty">
-                                <div className="desc">
-                                    <p><strong>등록된 게시글이 없습니다.</strong></p>
-                                    <p>게시판에 공유할 글을 남겨보세요.</p>
-                                </div>
-                                <button
-                                    type="button"
-                                    className="btn"
-                                    onClick={() =>
-                                        navigate("/app/noticeboard", { state: { boardId, boardName } })
-                                    }
-                                >
-                                    글쓰기
-                                </button>
-                            </li>
+                    {articles && articles.length > 0 ? (
+    articles
+        .filter((article) => article.status !== "trash")
+        .map((article, index) => (
+            <React.Fragment key={article.id}>
+                <li
+                    className="read has_photo"
+                    style={{ cursor: "pointer" }}
+                    onClick={() => navigate(`/article/view/${article.id}`)} // li 클릭 시 이동
+                >
+                    <p className="chk">
+                        <input
+                            id={`check_${article.id}`}
+                            type="checkbox"
+                            name="chk_bd"
+                            checked={selectedArticles.includes(article.id)}
+                            onClick={(e) => e.stopPropagation()} // 클릭 이벤트 전파 차단
+                            onChange={() => handleCheckboxChange(article.id)} // 상태 변경
+                        />
+                        <label
+                            htmlFor={`check_${article.id}`}
+                            onClick={(e) => e.stopPropagation()} // label 클릭 시 부모 이벤트 방지
+                        >
+                            해당 게시글 선택
+                        </label>
+                    </p>
+                    <div className="sbj_box">
+                        <p className="sbj">
+                            {article.notification && (
+                                <em className="ic_announcement">공지</em>
+                            )}
+                            {article.mustRead && (
+                                <em className="ic_noti">필독</em>
+                            )}
+                            <Link
+                                to={`/article/view/${article.id}`}
+                                onClick={(e) => e.stopPropagation()}
+                            >
+                                {article.title}
+                            </Link>
+                        </p>
+                    </div>
+                    <p className="infor">
+                        <button type="button" className="user">
+                            {article.userName || "Unknown User"}
+                        </button>
+                    </p>
+                    <p className="date">
+                        {new Date(article.createdAt).toLocaleDateString("en-CA")}
+                    </p>
+                </li>
+            </React.Fragment>
+        ))
+) : (
+    <li className="empty">
+        <div className="desc">
+            <p><strong>등록된 게시글이 없습니다.</strong></p>
+            <p>게시판에 공유할 글을 남겨보세요.</p>
+        </div>
+        <button
+            type="button"
+            className="btn"
+            onClick={() =>
+                navigate("/app/noticeboard", { state: { boardId, boardName } })
+            }
+        >
+            글쓰기
+        </button>
+    </li>
+)}
                             
-                        )}
+                        
                         
                     </ul>
                     <div className="lw_pagination">

@@ -711,7 +711,7 @@ export default function ViewBoard() {
                                 <div className="reaction_item has_reply">
                                     <button type="button" className="btn_reply_item">
                                         <span className="blind">댓글</span>
-                                        <span className="text">1</span>
+                                        <span className="text">0</span>
                                         <span className="blind">count</span>
                                     </button>
                                 </div>
@@ -817,7 +817,7 @@ export default function ViewBoard() {
                                     ></div>
                                       {newComment.trim() === "" && (
                                             <span className="comment_label">
-                                                댓글을 입력하세요. (@로 멤버를 멘션할 수 있어요!)
+                                                댓글을 입력하세요.
                                             </span>
                                         )}
                                     </div>

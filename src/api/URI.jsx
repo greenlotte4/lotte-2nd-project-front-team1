@@ -38,6 +38,10 @@ export const BOARD_TRASH_VIEW = `${SERVER_HOST}/article/trash`;
 //글 이동
 export const BOARD_ARTICLE_MOVE = `${SERVER_HOST}/article/articles/move`;
 
+//글 검색
+export const BOARD_TITLE_SEARCH = (boardId) => 
+  `${SERVER_HOST}/article/board/${boardId}/search`;
+
 //내 게시물 출력
 export const BOARD_ARTICLE_USER = (userId, page, size) =>
   `${SERVER_HOST}/article/user/${userId}?page=${page}&size=${size}`;
