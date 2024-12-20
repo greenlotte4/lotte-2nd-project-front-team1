@@ -11,6 +11,7 @@ const NoticeBoard = () => {
     const [boards, setBoards] = useState([]);
     const [selectedBoard, setSelectedBoard] = useState(''); 
     const userId = useSelector((state) => state.userSlice.userid);
+    const userRole = useSelector((state) => state.userSlice.role);
 
     const [showFileWrap, setShowFileWrap] = useState(false);
     const [uploadedFiles, setUploadedFiles] = useState([]); 
@@ -382,32 +383,37 @@ const NoticeBoard = () => {
                           <span className="cate" >그린컴퓨터아카데미</span>
                           <strong>{selectedBoard || '게시판을 선택하세요'}</strong>
                       </span>
-                      <div className='notice must_read'>
-                        <div className='notice_inner'>
-                            <div className='check_wrap'>
-                                <input id="option_notice" type="checkbox" className="check_notice"  checked={mustRead} onChange={handleCheckboxChange}/>
-                                <label htmlFor="option_notice">필독으로 등록</label>
+
+                      {userRole === 'ADMIN' && (
+                    <>
+                        <div className='notice must_read'>
+                            <div className='notice_inner'>
+                                <div className='check_wrap'>
+                                    <input
+                                        id="option_notice"
+                                        type="checkbox"
+                                        className="check_notice"
+                                        checked={mustRead}
+                                        onChange={handleCheckboxChange}
+                                    />
+                                    <label htmlFor="option_notice">필독으로 등록</label>
+                                </div>
                             </div>
                         </div>
-                        <div className='tooltip_cover'> 
-                            <button type="button" className="btn_tooltip">
-                                도움말
-                            </button>
+                        <div className='notice'>
+                            <div className='check_wrap'>
+                                <input
+                                    id="option_notice_3"
+                                    type="checkbox"
+                                    className="check_notice"
+                                    checked={Notification}
+                                    onChange={handleCheckboxChange2}
+                                />
+                                <label htmlFor="option_notice_3">공지로 등록</label>
+                            </div>
                         </div>
-
-                      </div>
-                    <div className='notice'>
-                        <div className='check_wrap'>
-                            <input id="option_notice_3" type="checkbox" className="check_notice" checked={Notification} onChange={handleCheckboxChange2}/>
-                            <label htmlFor="option_notice_3">공지로 등록</label>
-                        </div>
-                        <div className='tooltip_cover'>
-                            <button type="button" className="btn_tooltip">
-                                도움말
-                            </button>
-                        </div>
-
-                    </div>
+                    </>
+                )}
 
                       </li>
                      

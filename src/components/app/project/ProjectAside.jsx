@@ -5,7 +5,9 @@ import Modal from "../../modal/Modal";
 import AddProjectForm from "./asideProjectModal/AddProjectModal";
 import { useSelector } from "react-redux";
 import EditProjectModal from "./asideProjectModal/EditProjectModal";
-
+import {
+  Button,
+} from "@mui/material";
 
 export default function ProjectSidebar({ isVisible }) {
   const userId = useSelector((state) => state.userSlice.userid);
@@ -15,13 +17,15 @@ export default function ProjectSidebar({ isVisible }) {
   const [projects, setProjects] = useState([]);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [selectedProject, setSelectedProject] = useState(null);
+  const [createdProjects, setCreatedProjects] = useState([]); // 빈 배열로 초기화
+  const [participatedProjects, setParticipatedProjects] = useState([]); // 빈 배열로 초기화
   const [selectedProjectId, setSelectedProjectId] = useState(null);
   const [userList, setUserList] = useState([]);
 
   const openAddModal = () => setIsAddModalOpen(true);
   const closeAddModal = () => setIsAddModalOpen(false);
 
- useEffect(() => {
+  useEffect(() => {
     const fetchUserList = async () => {
       try {
         const data = await getUserListAll();
@@ -36,22 +40,21 @@ export default function ProjectSidebar({ isVisible }) {
   useEffect(() => {
     const fetchProjects = async () => {
       try {
-        const data = await postSelectsProject(userId);
+        const data = await postSelectsProject(userId); // API 호출
         console.log("프로젝트 데이터:", data);
         if (data) {
-          setProjects(data); 
-        } else {
-          setProjects([]); 
+          setCreatedProjects(data.createdProjects || []); // 생성한 프로젝트 상태 업데이트
+          setParticipatedProjects(data.participatedProjects || []); // 참여한 프로젝트 상태 업데이트
         }
       } catch (error) {
         console.error("프로젝트 데이터를 가져오는 중 오류 발생:", error);
-        setProjects([]); 
+        setCreatedProjects([]); // 에러 발생 시 기본값 설정
+        setParticipatedProjects([]); // 에러 발생 시 기본값 설정
       }
     };
-  
+
     if (userId) fetchProjects();
   }, [userId]);
-  
 
   useEffect(() => {
     if (isVisible) {
@@ -112,39 +115,52 @@ export default function ProjectSidebar({ isVisible }) {
           <button className="addButton" onClick={openAddModal}>
               + 프로젝트 추가
             </button>
-            <h3 style={{ fontSize: "24px" }}>프로젝트 List</h3>
-            <ul>
-              {projects.length > 0 ? (
-                projects.map((project) => (
+             <h3 style={{ fontSize: "24px" }}>생성한 프로젝트 List</h3>
+             <ul>
+              {createdProjects.length > 0 ? (
+                createdProjects.map((project) => (
                   <li key={project.projectId} style={{ display: "flex", alignItems: "center" }}>
                     <span
                       style={{ flex: 1, cursor: "pointer" }}
                       onClick={() => selectProject(project.projectId)}
                     >
-                      {selectedProjectId === project.projectId ? `> ${project.name}` : project.name}
+                      {project.name}
                     </span>
-                    <button
-                      style={{ marginLeft: "8px", cursor: "pointer" }}
-                      onClick={() => selectProject(project.projectId, "timeline")}
-                    >
-                      타임라인 보기
-                    </button>
-                    <button
-                      style={{ marginLeft: "8px", cursor: "pointer" }}
+                    <Button
+                      style={{ backgroundColor: "white", marginLeft: "8px", cursor: "pointer", border: "1px solid black" }}
                       onClick={() => handleEditClick(project)}
                     >
                       수정
-                    </button>
-                    <button
-                      style={{ marginLeft: "8px", cursor: "pointer" }}
+                    </Button>
+                    <Button
+                      style={{ backgroundColor: "white", marginLeft: "8px", cursor: "pointer", border: "1px solid black" }}
                       onClick={() => handleDeleteClick(project.projectId)}
                     >
                       삭제
-                    </button>
+                    </Button>
                   </li>
                 ))
               ) : (
-                <li>참여 중인 프로젝트가 없습니다.</li>
+                <li>생성한 프로젝트가 없습니다.</li>
+              )}
+            </ul>
+
+          {/* 참여 중인 프로젝트 리스트 */}
+          <h3 style={{ fontSize: "24px" }}>참여한 프로젝트 List</h3>
+            <ul>
+              {participatedProjects.length > 0 ? (
+                participatedProjects.map((project) => (
+                  <li key={project.projectId} style={{ display: "flex", alignItems: "center" }}>
+                    <span
+                      style={{ flex: 1, cursor: "pointer" }}
+                      onClick={() => selectProject(project.projectId)}
+                    >
+                      {project.name}
+                    </span>
+                  </li>
+                ))
+              ) : (
+                <li>참여한 프로젝트가 없습니다.</li>
               )}
             </ul>
           </nav>

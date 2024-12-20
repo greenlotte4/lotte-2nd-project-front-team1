@@ -14,23 +14,39 @@ export default function BasketBoard(){
     const [selectedBoard, setSelectedBoard] = useState("");
     const [boards, setBoards] = useState([]);
     const moveBoxRef = useRef(null);
+    const [pageSize, setPageSize] = useState(10);
+    const [currentPage, setCurrentPage] = useState(0)
+    const [totalPages, setTotalPages] = useState(0);
+    
+    const [isOptionBoxVisible, setIsOptionBoxVisible] = useState(false);
+
+    const handlePageChange = (pageNumber) => {
+        setCurrentPage(pageNumber); // 페이지 변경
+    };
+
+    const handlePageSizeChange = (size) => {
+        setPageSize(size); // 선택된 페이지 크기 설정
+        setCurrentPage(0); // 첫 페이지로 초기화
+        setIsOptionBoxVisible(false); // 옵션 박스 닫기
+    };
     
 
-    useEffect(() => {
-        const fetchTrashArticles = async () => {
-          try {
-            const data = await getTrashArticles(userId); // 사용자 ID로 필터링된 데이터 가져오기
-            setTrashArticles(data);
-          } catch (err) {
-            console.error("휴지통 데이터 가져오기 실패:", err);
-            setError(err.message);
-          } finally {
-            setLoading(false);
-          }
-        };
-    
-        fetchTrashArticles();
-      }, [userId]);
+    const fetchTrashArticles = async (page, size) => {
+        try {
+          setLoading(true);
+          const data = await getTrashArticles(userId, page, size); // API 호출
+          setTrashArticles(data.content); // 현재 페이지 데이터
+          setTotalPages(data.totalPages); // 전체 페이지 수
+        } catch (err) {
+          console.error("휴지통 데이터 가져오기 실패:", err);
+          setError(err.message);
+        } finally {
+          setLoading(false);
+        }
+      };
+      useEffect(() => {
+        fetchTrashArticles(currentPage, pageSize); // 페이지 및 크기 기반 데이터 가져오기
+      }, [userId, currentPage, pageSize]);
 
     useEffect(() => {
         const fetchBoards = async () => {
@@ -52,6 +68,9 @@ export default function BasketBoard(){
                 : [...prevSelected, id]
         );
     };
+    const toggleOptionBox = () => {
+        setIsOptionBoxVisible((prev) => !prev);
+    };
 
     // 전체 선택/해제
     const handleSelectAll = () => {
@@ -67,6 +86,16 @@ export default function BasketBoard(){
         if (!window.confirm("선택한 게시글을 영구 삭제하시겠습니까?")) return;
     
         try {
+             // 작성자가 아닌 글이 선택되었는지 확인
+            const unauthorizedArticles = selectedArticles.filter((id) => {
+                const article = trashArticles.find((a) => a.id === id);
+                return article && article.authorId !== userId; // 작성자가 아닌 경우
+            });
+
+            if (unauthorizedArticles.length > 0) {
+                alert("작성자만 삭제할 수 있습니다.");
+                return;
+            }
             await deleteTrashArticles(selectedArticles); // API 호출
             setTrashArticles((prevArticles) =>
                 prevArticles.filter((article) => !selectedArticles.includes(article.id))
@@ -419,11 +448,26 @@ export default function BasketBoard(){
                     </div>
 
                     <div className="h_util">
-                        <div className="select_box">
-                            <button type="button" className="selected">
-                                <strong>20개씩 보기</strong>
-                            </button>
-                        </div>
+                    <div className="select_box">
+                                <button type="button" className="selected" onClick={toggleOptionBox}>
+                                    <strong>{pageSize}개씩 보기</strong> {/* pageSize 상태에 따라 표시 */}
+                                </button>
+                                <div
+                                    className="option_box"
+                                    style={{ display: isOptionBoxVisible ? "block" : "none" }} // 상태에 따라 표시 여부 제어
+                                >
+                                    <ul>
+                                        {[10, 20, 30, 40, 50].map((size) => (
+                                            <li key={size}>
+                                                <button type="button" onClick={() => handlePageSizeChange(size)}>
+                                                    {size}개씩 보기
+                                                </button>
+                                            </li>
+                                        ))}
+                                    </ul>
+                                </div>
+    
+                            </div>
                         
                     </div>
                 </div>
@@ -521,6 +565,80 @@ export default function BasketBoard(){
                 </table>
 
             </div>
+            <div className="lw_pagination">
+    {/* 첫 페이지 버튼 */}
+    <a
+        role="button"
+        tabIndex="0"
+        className={`page_first ${currentPage === 0 ? "disabled" : ""}`}
+        style={{ cursor: currentPage === 0 ? "not-allowed" : "pointer" }}
+        onClick={(e) => {
+            if (currentPage === 0) e.preventDefault(); // 첫 페이지일 때 클릭 방지
+            else handlePageChange(0);
+        }}
+    >
+        <span className="page_tooltip">첫 페이지</span>
+    </a>
+
+    {/* 이전 페이지 버튼 */}
+    <a
+        role="button"
+        tabIndex="0"
+        className={`page_prev ${currentPage === 0 ? "disabled" : ""}`}
+        style={{ cursor: currentPage === 0 ? "not-allowed" : "pointer" }}
+        onClick={(e) => {
+            if (currentPage === 0) e.preventDefault(); // 첫 페이지일 때 클릭 방지
+            else handlePageChange(currentPage - 1);
+        }}
+    >
+        <span className="page_tooltip">이전 페이지</span>
+    </a>
+
+    {/* 페이지 번호 */}
+    <span className="page_number">
+        {Array.from({ length: totalPages }, (_, index) => (
+            <a
+                key={index}
+                role="button"
+                tabIndex="0"
+                className={`num ${currentPage === index ? "selected" : ""}`}
+                style={{ cursor: "pointer" }}
+                onClick={() => handlePageChange(index)}
+            >
+                {index + 1}
+                <span className="blind">{index + 1}번째 목록</span>
+            </a>
+        ))}
+    </span>
+
+    {/* 다음 페이지 버튼 */}
+    <a
+        role="button"
+        tabIndex="0"
+        className={`page_next ${currentPage === totalPages - 1 ? "disabled" : ""}`}
+        style={{ cursor: currentPage === totalPages - 1 ? "not-allowed" : "pointer" }}
+        onClick={(e) => {
+            if (currentPage === totalPages - 1) e.preventDefault(); // 마지막 페이지일 때 클릭 방지
+            else handlePageChange(currentPage + 1);
+        }}
+    >
+        <span className="page_tooltip">다음 페이지</span>
+    </a>
+
+    {/* 마지막 페이지 버튼 */}
+    <a
+        role="button"
+        tabIndex="0"
+        className={`page_last ${currentPage === totalPages - 1 ? "disabled" : ""}`}
+        style={{ cursor: currentPage === totalPages - 1 ? "not-allowed" : "pointer" }}
+        onClick={(e) => {
+            if (currentPage === totalPages - 1) e.preventDefault(); // 마지막 페이지일 때 클릭 방지
+            else handlePageChange(totalPages - 1);
+        }}
+    >
+        <span className="page_tooltip">마지막 페이지</span>
+    </a>
+</div>
 
            </div>
         </div>

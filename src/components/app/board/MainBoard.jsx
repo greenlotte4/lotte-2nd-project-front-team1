@@ -1,4 +1,36 @@
+import { useEffect, useState } from "react";
+import { getMainMustReadArticles, getTenRecentArticles } from "../../../api/board/boardAPI";
+
 export default function MainBoard(){
+
+    const [mustReadArticles, setMustReadArticles] = useState([]); // 필독글 상태
+    const [articles, setArticles] = useState([]);
+
+    useEffect(() => {
+      const fetchMustReadArticles = async () => {
+        try {
+          const articles = await getMainMustReadArticles(); // API 호출
+          setMustReadArticles(articles); // 상태 업데이트
+        } catch (error) {
+          console.error("Error fetching must-read articles:", error.message);
+        }
+      };
+  
+      fetchMustReadArticles();
+    }, []);
+
+    useEffect(() => {
+        const fetchRecentArticles = async () => {
+          try {
+            const data = await getTenRecentArticles(); // 최신 글 10개 API 호출
+            setArticles(data); // 상태 업데이트
+          } catch (error) {
+            console.error("Error fetching recent articles:", error.message);
+          }
+        };
+    
+        fetchRecentArticles();
+      }, []);
     return(
         <div className="boardContentDiv" id="boardContentDiv">
           <div className="g_search">
@@ -206,30 +238,50 @@ export default function MainBoard(){
                       <em></em>
                   </p>
                   <div className="board_list">
-                      <ul className="list preview">
-                          <li className="read has_photo" style={{cursor: "pointer"}}>
-                              <p className="photo" style={{cursor: "pointer"}}>
-                                  <img src="https://static.worksmobile.net/static/pwe/wm/home/img_basic_post_thum_680x384_210817.png" width="100px" height="100px"/>
-                              </p>
-                              <p className="bd_name">
-                                  공지사항
-                              </p> 
-                              <div className="sbj_box">
-                                  <p className="sbj">
-                                      <a href="/main/article/4070000000153153646">업무 효율을 200%로 만드는 게시판 활용법</a>
-                                  </p>
-                              </div>
-                              <p className="cont">
-                                  게시판으로 업무 효율을 높여보세요. 업무 시 발생하는 문제를 게시판에서 빠르고 정확하게 해결할 수 있고, 개인의 업무 노하우를 모아 회사의 경쟁력을 높일 수 있습니다. 01최신 사규를 전파하고 싶을 때, 사내 정보 게시판 흩어져있는 사내 정보를 게시판에 모아보세요. 담당자는 사내 문의에 대응하는 시간을 줄일 수 있고, 항상 최신 정보를 전달할 수 있습니다. 02시행 착오를 줄이고 싶을 때, 업무 매뉴얼 게시판 업무 프로세스를 게시판에 남겨보세요. 사진, 파일, 동영상 등 자료를 첨부할 수 있어 정확하고 자세하게 작성할 수 있습니다. 03담당자를 모를 때, 업무 문의 게시판 다른 팀의 도움이 필요할 때 문의 사항을 남겨보세요. 담당자를 찾는 수고가 줄어들고, 업무 히스토리를 확인하기도 쉽습니다. 04팀 내부의 정보를 쌓고 싶을 때, 업무 일지 게시판 팀에서 활용 중인 정보, 보고 자료를 공유해보세요. 팀 내 업무 자료를 한 곳에서 확인할 수 있어 정보를 빠르게 탐색할 수 있습니다. 게시판을 시작해보세요! 우리 회사/단체에 맞는 게시판을 만들거나, 다양한 활용사례를 확인해보세요. 게시판 만들기 (관리자 전용) 활용사례 보기
-                              </p> 
-                              <p className="infor">
-                                  <button type="button" className="user">Board</button> <span className="date">2024. 11. 27.</span> 
-                                  <span className="read_chk">읽음
-                                      <strong>1</strong>
-                                  </span>
-                              </p>
-                          </li>
-                      </ul>
+                  <ul className="list preview">
+    {/* 가장 최근 필독글 */}
+    {mustReadArticles.length > 0 && (
+        <li
+            key={mustReadArticles[0].id}
+            className="read has_photo"
+            style={{ cursor: "pointer" }}
+        >
+            <p className="bd_name">{mustReadArticles[0].boardName}</p>
+            <div className="sbj_box">
+                <p className="sbj">
+                    <a href={`/article/view/${mustReadArticles[0].id}`}>
+                        {mustReadArticles[0].title}
+                    </a>
+                </p>
+            </div>
+            <p
+                className="bd_name"
+                dangerouslySetInnerHTML={{ __html: mustReadArticles[0].content }}
+            />
+            <p className="infor">
+                <button type="button" className="user">{mustReadArticles[0].userName}</button>
+            </p>
+        </li>
+    )}
+
+    {/* 나머지 필독글 */}
+    <ul className="list default">
+        {mustReadArticles.slice(1).map((article) => (
+            <li key={article.id} className="read">
+                <div className="sbj_box">
+                    <p className="sbj">
+                        <a href={`/article/view/${article.id}`}>{article.title}</a>
+                    </p>
+                </div>
+                <p className="infor">
+                    <span className="bd_name">{article.boardName}</span>
+                    <button type="button" className="user">{article.userName}</button>
+                    <span className="date">{new Date(article.createdAt).toLocaleDateString("en-CA")}</span>
+                </p>
+            </li>
+        ))}
+    </ul>
+</ul>
                   </div>
               </div>
               <div className="home_box">
@@ -240,56 +292,24 @@ export default function MainBoard(){
                   </p>
                   <div className="board_list">
                      <ul className="list default recent">
+                     {articles.map((article) => (
                       
-                      <li className="read has_photo" style={{cursor: "pointer"}}>
+                      <li key={article.id} className="read has_photo" style={{cursor: "pointer"}}>
                           <div className="sbj_box">
                               <p className="sbj">
-                                  <a href="">ㅊㅋㅌ</a> 
+                              <a href={`/article/view/${article.id}`}>{article.title}</a>
                               </p>
                           </div>
                           <p className="infor">
-                              <span className="bd_name">공지사항</span> 
-                              <button type="button" className="user">작성자</button> 
-                              <span className="date">2024. 11. 27.</span>
+                              <span className="bd_name">{article.boardName}</span> 
+                              <button type="button" className="user"> {article.userName}</button> 
+                              <span className="date">{new Date(article.createdAt).toLocaleDateString("en-CA")}</span>
                           </p>
                       </li>
-                      <li className="read has_photo" style={{cursor: "pointer"}}>
-                          <div className="sbj_box">
-                              <p className="sbj">
-                                  <a href="">ㅊㅋㅌ</a> 
-                              </p>
-                          </div>
-                          <p className="infor">
-                              <span className="bd_name">공지사항</span> 
-                              <button type="button" className="user">작성자</button> 
-                              <span className="date">2024. 11. 27.</span>
-                          </p>
-                      </li>
-                      <li className="read has_photo" style={{cursor: "pointer"}}>
-                          <div className="sbj_box">
-                              <p className="sbj">
-                                  <a href="">ㅊㅋㅌ</a> 
-                              </p>
-                          </div>
-                          <p className="infor">
-                              <span className="bd_name">공지사항</span> 
-                              <button type="button" className="user">작성자</button> 
-                              <span className="date">2024. 11. 27.</span>
-                          </p>
-                      </li>
-                      <li className="read has_photo" style={{cursor: "pointer"}}>
-                          <div className="sbj_box">
-                              <p className="sbj">
-                                  <a href="">ㅊㅋㅌ</a> 
-                              </p>
-                          </div>
-                          <p className="infor">
-                              <span className="bd_name">공지사항</span> 
-                              <button type="button" className="user">작성자</button> 
-                              <span className="date">2024. 11. 27.</span>
-                          </p>
-                      </li>
+                     
+                    ))}
                       </ul>
+                      
                   </div>
               </div>
               <div className="home_box">

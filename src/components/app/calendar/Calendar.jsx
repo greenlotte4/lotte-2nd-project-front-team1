@@ -13,6 +13,7 @@ import {
   editevent,
 } from "../../../api/calendar/CalendarAPI";
 import { addDays } from "@fullcalendar/core/internal";
+import { publish } from "../../../WebSocket/STOMP";
 
 // Helper 함수: 날짜 포맷팅 (YYYY-MM-DD)
 const formatDate = (date) => {
@@ -91,7 +92,6 @@ export default function Calendar({
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedDate, setSelectedDate] = useState(null);
   const user = useSelector((state) => state.userSlice);
-  console.log("events :", events);
 
   // FullCalendar에 맞게 이벤트 데이터 매핑 및 allDay 사용
   const calendarEvents = (events || []).map((event) => ({
@@ -152,7 +152,6 @@ export default function Calendar({
     const event = info.event;
 
     // 이벤트 데이터 로깅
-    console.log("Clicked Event:", event);
 
     // 이벤트의 start과 end가 정의되어 있는지 확인
     if (!event.start) {
@@ -161,8 +160,6 @@ export default function Calendar({
     }
 
     const eventData = processEvent(event);
-
-    console.log("Event Data:", eventData);
 
     setSelectedDate(
       eventData.allDay
@@ -238,8 +235,6 @@ export default function Calendar({
     const eventId = event.id;
 
     const eventData = processEvent(event);
-    console.log("Event Drop - ID:", eventId);
-    console.log("New Event Data:", eventData);
 
     // 날짜 및 시간 유효성 검증
     const startDateTime = new Date(
@@ -269,6 +264,7 @@ export default function Calendar({
     // 백엔드 API 호출하여 이벤트 업데이트
     try {
       const response = await editevent([updatedEvent]); // editevent는 배열을 받는 것으로 가정
+      publish("/pub/addevent/send", [updatedEvent]);
       console.log("이벤트 업데이트 성공:", response);
       alert("이벤트가 성공적으로 업데이트되었습니다.");
 
@@ -351,11 +347,15 @@ export default function Calendar({
         // **수정 시 editevent 함수 호출**
         const response = await editevent(eventlist);
         console.log("일정 수정 성공:", response);
+        console.log("eventlist1234", eventlist);
+        publish("/pub/addevent/send", eventlist);
         alert("일정이 성공적으로 수정되었습니다.");
       } else {
         // **추가 시 addevent 함수 호출**
         const response = await addevent(eventlist);
         console.log("일정 추가 성공:", response);
+        console.log("eventlist1234", eventlist);
+        publish("/pub/addevent/send", eventlist);
         alert("일정이 성공적으로 추가되었습니다.");
       }
 
@@ -387,11 +387,6 @@ export default function Calendar({
       key === "startTime" && value === "00:00" && formData.endTime === "23:59";
     updatedForm.allDay = isAllDayCondition;
 
-    // 디버깅 로그 추가
-    console.log(
-      `Time Change - ${key}: ${value}, All Day: ${isAllDayCondition}`
-    );
-
     setFormData(updatedForm);
   };
 
@@ -422,7 +417,20 @@ export default function Calendar({
     if (!confirmDelete) return;
 
     try {
+      const calendarId = selectedEvent.extendedProps?.calendarId;
       await deleteevent(selectedEvent.id);
+      const eventlist = [
+        {
+          calendarId: calendarId,
+          calendarEventId: selectedEvent.id,
+          name: selectedEvent.title,
+          startDate: selectedEvent.start.toISOString().slice(0, 16),
+          endDate: selectedEvent.end.toISOString().slice(0, 16),
+          // 필요한 필드 추가
+        },
+      ];
+
+      publish("/pub/addevent/send", eventlist);
       alert("일정이 성공적으로 삭제되었습니다.");
 
       // 일정 삭제 후 모달 닫기 및 상태 초기화
@@ -657,7 +665,6 @@ export default function Calendar({
                   startTime: isChecked ? "00:00" : formData.startTime,
                   endTime: isChecked ? "23:59" : formData.endTime,
                 });
-                console.log(`Checkbox Change - All Day: ${isChecked}`);
               }}
             />
             하루종일

@@ -18,6 +18,7 @@ import {
   USER_LIST,
   USER_LIST_BYUSERID,
   USER_LOGIN_URI,
+  USER_LOGOUT_URI,
   USER_URI,
 } from "../URI";
 
@@ -44,7 +45,18 @@ export const postUserLogin = async (data) => {
     }
   }
 };
-
+export const postUserLogout = async (userId) => {
+  try {
+    const response = await axios.post(`${USER_LOGOUT_URI}`, userId);
+    return response.data;
+  } catch (err) {
+    if (err.response && err.response.status === 403) {
+      alert(err.response.data);
+    } else {
+      console.log(err);
+    }
+  }
+};
 export const checkUserId = async (userId) => {
   try {
     const response = await axios.get(`${USER_CHECK}checkUserId/${userId}`);
@@ -147,7 +159,6 @@ export const getUserListbyuserid = async (userId) => {
 export const changePassword = async (userId, newPassword) => {
   // 비번변경
   try {
-
     const response = await axios.post(`${USER_FIND}newPass`, {
       newPassword: newPassword,
       userId: userId,

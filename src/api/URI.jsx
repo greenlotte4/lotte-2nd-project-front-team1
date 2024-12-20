@@ -17,6 +17,7 @@ export const SERVER_HOST = import.meta.env.VITE_SERVER_HOST;
 // user
 export const USER_URI = `${SERVER_HOST}/user/register`;
 export const USER_LOGIN_URI = `${SERVER_HOST}/user/login`;
+export const USER_LOGOUT_URI = `${SERVER_HOST}/user/logout`;
 export const USER_FIND = `${SERVER_HOST}/user/`;
 export const USER_CHECK = `${SERVER_HOST}/user/`;
 export const USER_CHANGE = `${SERVER_HOST}/user`;
@@ -28,29 +29,57 @@ export const USER_EMAIL = `${SERVER_HOST}/api`;
 export const BOARD_ARTICLE_WRITE_URI = `${SERVER_HOST}/article/write`;
 export const BOARD_ARTICLE_VIEW = `${SERVER_HOST}/article/view`;
 export const BOARD_ARTICLE_DETAIL = `${SERVER_HOST}/article/view/detail`;
-export const BOARD_ARTICLE_BOARD = (boardId) =>
-  `${SERVER_HOST}/article/boards/${boardId}/articles`;
+export const BOARD_ARTICLE_BOARD = (boardId, page, size) =>
+  `${SERVER_HOST}/article/boards/${boardId}/articles?page=${page}&size=${size}`;
 export const BOARD_ARTICLE_EDIT = `${SERVER_HOST}/article/edit/:id`;
 export const BOARD_MOVE_BASKET = `${SERVER_HOST}/article/delete`;
+
 export const BOARD_TRASH_VIEW = `${SERVER_HOST}/article/trash`;
 //글 이동
 export const BOARD_ARTICLE_MOVE = `${SERVER_HOST}/article/articles/move`;
 
-//내 게시물 출력
-export const BOARD_ARTICLE_USER = (userId) =>
-  `${SERVER_HOST}/article/user/${userId}`;
+//글 검색
+export const BOARD_TITLE_SEARCH = (boardId) => 
+  `${SERVER_HOST}/article/board/${boardId}/search`;
 
+//내 게시물 출력
+export const BOARD_ARTICLE_USER = (userId, page, size) =>
+  `${SERVER_HOST}/article/user/${userId}?page=${page}&size=${size}`;
 //중요글 체크
 export const BOARD_IMPORTANT_ARTICLE = (articleId) =>
   `${SERVER_HOST}/important-articles/${articleId}`;
+
+//중요글 출력
+export const BOARD_ARTICLE_IMPORTANT_VIEW = (userId) =>
+  `${SERVER_HOST}/important-articles/${userId}`;
+
+
+//필독글 출력
+export const BOARD_MUST_READ = `${SERVER_HOST}/article/must-read`;
+
+//메인 필독글 출력
+export const BOARD_MUST_READ_main = `${SERVER_HOST}/article/must-read/latest`;
+
+//최신글
+export const BOARD_RECENT_ARTICLE = `${SERVER_HOST}/article/recent`;
+
+//최신글 10개
+export const BOARD_RECENT_ARTICLE_TEN = `${SERVER_HOST}/article/recent/ten`;
 
 //댓글 추가
 export const BOARD_COMMENT_ADD = `${SERVER_HOST}/comment/add`;
 
 //댓글 보기
-export const BOARD_COMMENT_VIEW = (articleId) =>
-  `${SERVER_HOST}/comment/${articleId}`;
+export const BOARD_COMMENT_VIEW = (commentId) =>
+  `${SERVER_HOST}/comment/${commentId}`;
 
+//답글 추가
+export const BOARD_REPLY_ADD = (commentId) =>
+  `${SERVER_HOST}/comment/${commentId}/reply`;
+
+// 답글 보기
+export const BOARD_REPLY_VIEW = (commentId) =>
+  `${SERVER_HOST}/comment/${commentId}/reply`;
 
 export const BOARD_TRASH_PERMANENT = `${SERVER_HOST}/article/trash/permanent`;
 export const BOARD_TYPE = `${SERVER_HOST}/board/type`;
@@ -111,8 +140,10 @@ export const CREATE_PROJECT = `${SERVER_HOST}/project/create`;
 // export const UPDATE_PROJECT = `${SERVER_HOST}/project/update`;
 // export const DELETE_PROJECT = (no) => `${SERVER_HOST}/project/${no}`;
 
-export const UPDATE_PROJECT = `${SERVER_HOST}/project/update`
-export const DELETE_PROJECT = `${SERVER_HOST}/project/delete`
+export const UPDATE_PROJECT = `${SERVER_HOST}/project/update`;
+export const DELETE_PROJECT = `${SERVER_HOST}/project/delete`;
+export const GETUSER_PROJECT = `${SERVER_HOST}/project`
+
 
 // project/Item
 export const CREATE_PROJECT_ITEM = `${SERVER_HOST}/project/ProjectItem/create`;
@@ -123,19 +154,14 @@ export const DELETE_PROJECT_ITEM = (no) =>
 
 // project/Task
 
-// export const CREATE_TASK = `${SERVER_HOST}/project/task/create`;
-// export const UPDATE_TASK = (no) => `${SERVER_HOST}/project/task/update/${no}`;
-// export const DELETE_TASK = (no) => `${SERVER_HOST}/project/task/delete/${no}`;
-
+// file
+export const File = `${SERVER_HOST}/api/drive-files`;
 export const CREATE_TASK = `${SERVER_HOST}/project/task/create`
 export const UPDATE_TASK = (no) => `${SERVER_HOST}/project/task/update/${no}`
 export const DELETE_TASK = (no) => `${SERVER_HOST}/project/task/delete/${no}`
+
 
 //membership
 export const MEMBERSHIP_UPDATE = `${SERVER_HOST}/api/user/mypage/update-history`;
 export const MEMBERSHIP_CREATE = `${SERVER_HOST}/api/user/mypage/create-history`;
 export const savePlanHistory = `${SERVER_HOST}/api/user/mypage/plan-history`;
-
-// file
-export const File = `${SERVER_HOST}/api/drive-files`
-

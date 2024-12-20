@@ -35,6 +35,10 @@
     transition: left 0.3s ease;
     /* 사이드바 상태에 따른 부드러운 이동 효과 */
   }
+
+  .scrollable {
+    overflow-y: scroll;
+  }
   /* 사이드바가 숨겨졌을 때 적용할 클래스 */
   .main-content.hidden-sidebar {
     left: 10px;

@@ -9,7 +9,7 @@ const EditPostBoard = () => {
     const [boards, setBoards] = useState([]);
     const { id } = useParams(); // URL에서 게시글 ID 가져오기
     const [selectedBoard, setSelectedBoard] = useState(''); 
-    const [showFileWrap, setShowFileWrap] = useState(false);
+    const [showFileWrap, setShowFileWrap] = useState(true);
     const [uploadedFiles, setUploadedFiles] = useState([]); 
     const navigate = useNavigate();
 

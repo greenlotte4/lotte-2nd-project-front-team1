@@ -25,7 +25,12 @@ export default function UserListButton({ isOpen, onClose }) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const user = useSelector((state) => state.userSlice);
-
+  const statusColorMap = {
+    online: "green",
+    dnd: "red",
+    away: "yellow",
+    logout: "gray",
+  };
   useEffect(() => {
     // 팀 스페이스와 사용자 목록 불러오기
     const fetchUserList = async () => {
@@ -33,8 +38,7 @@ export default function UserListButton({ isOpen, onClose }) {
       setError(null);
       try {
         const data = await getUserListbyuserid(user.userid);
-        console.log("Response data:", data);
-
+        console.log("data : ", data);
         if (Array.isArray(data)) {
           setTeamSpaces(data);
           // 초기 상태로 모든 팀을 닫아둡니다.
@@ -148,7 +152,25 @@ export default function UserListButton({ isOpen, onClose }) {
                               {user.username.charAt(0)}
                             </Avatar>
                           </ListItemAvatar>
-                          <ListItemText primary={user.username} />
+                          <ListItemText
+                            primary={
+                              <>
+                                {user.username}
+                                <span
+                                  style={{
+                                    display: "inline-block",
+                                    marginLeft: "10px",
+                                    width: "10px",
+                                    height: "10px",
+                                    backgroundColor:
+                                      statusColorMap[user.userStatus] ||
+                                      "transparent",
+                                    borderRadius: "50%",
+                                  }}
+                                />
+                              </>
+                            }
+                          />
                         </ListItem>
                       ))}
                     </List>

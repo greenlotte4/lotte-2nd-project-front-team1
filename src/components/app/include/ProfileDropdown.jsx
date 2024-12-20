@@ -26,7 +26,7 @@ export default function ProfileDropdown({
   onStatusChange,
 }) {
   const [imageUrl, setImageUrl] = useState(null);
-  const [status, setStatus] = useState(userStatus);  // 상태 관리 변수 추가
+  const [status, setStatus] = useState(userStatus); // 상태 관리 변수 추가
 
   const dispatch = useDispatch();
   const user = useSelector((state) => state.userSlice);
@@ -34,8 +34,8 @@ export default function ProfileDropdown({
   // 상태값 변경 함수
   const statusChange = async (e) => {
     const newStatus = e.target.value;
+    setStatus(newStatus);
     onStatusChange(newStatus); // 상위 컴포넌트에 상태 변경 전달
-
     const response = await loginStatus(newStatus); // 서버에 상태 변경 요청
     if (response.status === 200) {
       console.log("상태 변경 완료");
@@ -44,6 +44,7 @@ export default function ProfileDropdown({
 
   // userStatus 값 확인
   useEffect(() => {
+    setStatus(userStatus);
     console.log("Current userStatus:", userStatus);
   }, [userStatus]);
 
@@ -67,7 +68,7 @@ export default function ProfileDropdown({
       online: "green",
       dnd: "red",
       away: "yellow",
-      logout: "red", // 로그아웃 상태는 빨간색
+      logout: "transparent", // 로그아웃 상태는 투명
     }[userStatus] || "transparent"; // 기본값은 투명
 
   return (
