@@ -21,7 +21,7 @@ export const savedFile = async (formData) => {
             }
         });
 
-        return response; // 서버의 응답 반환
+        return response.data; // 서버의 응답 반환
     } catch (err) {
         console.log("파일 업로드 실패:", err); // 오류 처리
         throw err; // 오류를 호출한 곳으로 던져서 처리할 수 있도록 함
