@@ -200,8 +200,11 @@ const BoardAside = ({ isVisible }) => {
   );
 
   const filteredBoards = boards.filter(
-    (board) => board.boardName?.toLowerCase().includes(searchQuery)
+    (board) => board.boardName?.toLowerCase().includes(searchQuery) // 안전한 호출
   );
+  console.log("Boards Data:", boards);
+
+  console.log("Filtered Boards:", filteredBoards);
   return (
     isAnimating &&(
     <div id="sidebar-container">
