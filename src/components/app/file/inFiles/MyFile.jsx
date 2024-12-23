@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import JSZip from "jszip"; // JSZip import
+import JSZip, { folder } from "jszip"; // JSZip import
 import { createFolder, getChildFolders, savedFile, selectDriveData } from "../../../../api/file/fileAPI";
 import { useNavigate } from "react-router-dom";
 
@@ -15,12 +15,6 @@ export default function MyFile({ isShared }) {
   const [driveData, setDriveData] = useState([]); // 초기 드라이브 데이터
   const [currentPath, setCurrentPath] = useState([null]); // 현재 경로
 
-
-
-
-
-
-
   useEffect(() => {
     getDriveData();
   }, []);  // 빈 배열([])로 설정하여 컴포넌트가 처음 마운트될 때만 실행
@@ -34,10 +28,20 @@ export default function MyFile({ isShared }) {
       if (response && response.status === 200) {
         setDriveData(response.data);  // 받아온 데이터를 상태에 저장
 
-        const totalSize = response.data.reduce(
-          (sum, file) => sum + parseFloat(file.size),
-          0
-        );
+        console.log("들어온파일", response.data.driveFiles); // 배열 여부 확인
+        console.log("들어온데이터", response.data); // 배열 여부 확인
+        // `driveFiles`가 배열인지 확인하고, 배열이 아니라면 배열로 감싸기
+        const driveData = Array.isArray(response.data.driveFiles)
+
+          ? response.data.driveFiles
+          : [response.data.driveFiles];
+        console.log("데이터배열", Array.isArray(driveData)); // 배열 여부 확인
+        console.log("드라이브데이터", driveData); // 데이터 내용 확인
+        const filteredData = driveData.filter(file => file && file.size > 0);
+
+        const totalSize = filteredData.reduce((sum, file) => sum + parseFloat(file.size || 0), 0);
+
+
         setCurrentUsage(totalSize);  // 총 사용량 계산
         console.log("가져온 데이터", response.data);
       } else {
@@ -150,7 +154,12 @@ export default function MyFile({ isShared }) {
     });
 
     // 폴더 ID와 드라이브 ID 추가
-    formData.append('folderId', folderId);
+    if (folderId !== null) {
+      formData.append('folderId', folderId);
+    } else {
+      formData.append('folderId', 0);
+
+    }
     formData.append('driveId', driveId);
 
     // 현재 폴더의 데이터도 상태에 추가 (업로드된 파일을 UI에 반영)
@@ -286,7 +295,6 @@ export default function MyFile({ isShared }) {
     const driveId = 1;
 
     // 폴더 생성 요청에 필요한 데이터 준비
-
     console.log("보낼거1", userId, folderName, driveId, rootFolderId); // 확인용 로그
 
     // 서버에 폴더 생성 요청
