@@ -144,7 +144,7 @@ export default function BasketBoard(){
     
         try {
             // 선택한 게시판 ID 가져오기
-            const board = boards.find((board) => board.board_name === selectedBoard);
+            const board = boards.find((board) => board.boardName === selectedBoard);
     
             if (!board) {
                 alert("유효한 게시판을 선택하세요.");
