@@ -97,11 +97,10 @@ const BoardAside = ({ isVisible }) => {
     try {
       console.log("Deleting Board with ID:", boardId);
   
-      // DELETE API 호출
-      await deleteBoard(boardId, userId); // userId는 Redux 또는 Context에서 가져오기
+      await deleteBoard(boardId, userId); // DELETE API 호출
       alert("게시판이 삭제되었습니다.");
   
-      // 삭제 후 목록 업데이트
+      // 상태 업데이트
       setBoards((prevBoards) => prevBoards.filter((board) => board.boardId !== boardId));
     } catch (error) {
       console.error("Error while deleting board:", error.message);
@@ -136,19 +135,18 @@ const BoardAside = ({ isVisible }) => {
   useEffect(() => {
     const fetchFavoriteBoards = async () => {
       if (!userId) return;
-  
+    
       try {
         const favoriteData = await getFavoriteBoards(userId);
-        console.log("API Response:", favoriteData);
-  
-        // `favorite` 값을 `1` 또는 `0`으로 변환하여 `Map`에 저장
         const favoriteMap = new Map();
-        favoriteData.forEach((board) => {
-          favoriteMap.set(board.boardId, board.favorite ? 1 : 0);
+    
+        (favoriteData || []).forEach((board) => {
+          if (board && board.boardId) {
+            favoriteMap.set(board.boardId, board.favorite ? 1 : 0);
+          }
         });
-  
+    
         setFavoriteBoards(favoriteMap);
-        console.log("즐겨찾기 맵:", Array.from(favoriteMap.entries())); // 확인 로그
       } catch (err) {
         console.error("Failed to fetch favorite boards:", err);
       }
@@ -198,11 +196,11 @@ const BoardAside = ({ isVisible }) => {
   const filteredFavoriteBoards = boards.filter(
     (board) =>
       favoriteBoards.get(board.boardId) === 1 && // 즐겨찾기에 포함된 게시판만
-      board.boardName.toLowerCase().includes(searchQuery) // 검색어와 일치
+      board.boardName?.toLowerCase().includes(searchQuery) // 검색어와 일치
   );
 
-  const filteredBoards = boards.filter((board) =>
-    board.boardName.toLowerCase().includes(searchQuery)
+  const filteredBoards = boards.filter(
+    (board) => board.boardName?.toLowerCase().includes(searchQuery)
   );
   return (
     isAnimating &&(
