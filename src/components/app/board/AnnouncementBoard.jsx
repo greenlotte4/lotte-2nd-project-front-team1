@@ -437,7 +437,7 @@ useEffect(() => {
                                         className={`depth ${selectedBoard === board.board_id ? "selected" : ""}`}
                                         onClick={() => handleBoardSelect(board.board_id)}
                                         >
-                                        <button type="button">{board.board_name}</button>
+                                        <button type="button">{board.boardName}</button>
                                         </li>
                                     ))}
                                 </ul>
