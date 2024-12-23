@@ -30,9 +30,9 @@ export default function MyFile({ isShared }) {
 
         console.log("들어온파일", response.data.driveFiles); // 배열 여부 확인
         console.log("들어온데이터", response.data); // 배열 여부 확인
+
         // `driveFiles`가 배열인지 확인하고, 배열이 아니라면 배열로 감싸기
         const driveData = Array.isArray(response.data.driveFiles)
-
           ? response.data.driveFiles
           : [response.data.driveFiles];
         console.log("데이터배열", Array.isArray(driveData)); // 배열 여부 확인
@@ -55,6 +55,7 @@ export default function MyFile({ isShared }) {
   // 폴더 클릭 시 자식 폴더 데이터를 불러오는 함수
   const handleFolderClick = async (folderId) => {
     const childFolders = await getChildFolders(folderId);  // 자식 폴더 불러오기
+
     // 자식 폴더가 배열이 아니거나 비어있는 경우
     if (!Array.isArray(childFolders)) {
       console.error('자식 폴더가 배열이 아닙니다:', childFolders);
@@ -73,7 +74,8 @@ export default function MyFile({ isShared }) {
       return;
     }
 
-    const previousFolderId = currentPath[currentPath.length - 2]; // 이전 폴더 ID
+    // 이전 폴더 ID
+    const previousFolderId = currentPath[currentPath.length - 2];
     console.log("이전 폴더 ID:", previousFolderId);
 
     // 이전 폴더가 null인 경우 최상위 폴더를 불러오기 위한 특별한 처리
@@ -81,6 +83,7 @@ export default function MyFile({ isShared }) {
       console.log("최상위 폴더로 돌아갑니다.");
       getDriveData();  // 최상위 폴더의 자식 폴더 불러오기
       setCurrentPath([null]);  // 경로를 최상위로 초기화
+      
     } else {
       // 이전 폴더의 자식들을 불러오는 함수
       const fetchParentChildFolders = async () => {
