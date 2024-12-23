@@ -418,10 +418,10 @@ export default function BasketBoard(){
                                     {boards.map((board) => (
                                     <li
                                     key={board.board_id}
-                                    className={`depth ${selectedBoard === board.board_name ? "selected" : ""}`}
-                                    onClick={() => handleBoardSelect(board.board_name)}
+                                    className={`depth ${selectedBoard === board.boardName ? "selected" : ""}`}
+                                    onClick={() => handleBoardSelect(board.boardName)}
                                     >
-                                    <button type="button">{board.board_name}</button>
+                                    <button type="button">{board.boardName}</button>
                                     <li>
                                         <span></span>
                                     </li>
