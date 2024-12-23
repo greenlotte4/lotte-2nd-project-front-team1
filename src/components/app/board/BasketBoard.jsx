@@ -86,16 +86,7 @@ export default function BasketBoard(){
         if (!window.confirm("선택한 게시글을 영구 삭제하시겠습니까?")) return;
     
         try {
-             // 작성자가 아닌 글이 선택되었는지 확인
-            const unauthorizedArticles = selectedArticles.filter((id) => {
-                const article = trashArticles.find((a) => a.id === id);
-                return article && article.authorId !== userId; // 작성자가 아닌 경우
-            });
-
-            if (unauthorizedArticles.length > 0) {
-                alert("작성자만 삭제할 수 있습니다.");
-                return;
-            }
+            // ID 비교 제거 후 바로 삭제 작업
             await deleteTrashArticles(selectedArticles); // API 호출
             setTrashArticles((prevArticles) =>
                 prevArticles.filter((article) => !selectedArticles.includes(article.id))

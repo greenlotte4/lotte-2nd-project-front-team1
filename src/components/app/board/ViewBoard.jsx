@@ -148,16 +148,18 @@ export default function ViewBoard() {
 
     const handleToggleImportant = async () => {
         try {
-            await toggleImportantArticle(id, userId); // 중요 게시글 토글 API 호출
+            const updatedArticle = await toggleImportantArticle(id, userId); // 중요 게시글 토글 API 호출
+            console.log("중요글 업데이트 결과:", updatedArticle);
+    
             setArticle((prev) => ({
                 ...prev,
-                isImportant: !prev.isImportant,
-            })); // isImportant 값 토글
+                isImportant: updatedArticle.isImportant, // 서버 응답 데이터로 업데이트
+            }));
         } catch (error) {
             console.error("중요 게시글 상태 변경 중 오류 발생:", error);
             alert("중요 게시글 상태 변경에 실패했습니다.");
         }
-    };  
+    };
 
     const handleAddComment = async () => {
         if (!newComment.trim()) {
