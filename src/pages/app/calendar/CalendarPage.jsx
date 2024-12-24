@@ -32,12 +32,14 @@ export default function CalendarPage() {
     const fetchData = async () => {
       try {
         const data = await fetchCalendarList(user.userid);
-        setCalendars(data || []);
+        console.log("Fetched Calendars:", data); // 캘린더 데이터 확인
+        setCalendars(data || []); // 기본값 설정
       } catch (error) {
-        console.error("캘린더 목록 가져오기 실패:", error);
+        console.error("캘린더 데이터 가져오기 실패:", error);
+        setCalendars([]); // 에러 시 기본값 설정
       }
     };
-
+  
     fetchData();
   }, [user.userid]);
 
@@ -45,9 +47,9 @@ export default function CalendarPage() {
   useEffect(() => {
     if (calendars.length > 0) {
       const allEvents = calendars.flatMap((calendar) =>
-        calendar.events.map((event) => ({
+        (calendar.events || []).map((event) => ({
           ...event,
-          calendarId: calendar.calendarId, // 각 이벤트에 캘린더 ID 추가
+          calendarId: calendar.calendarId,
         }))
       );
       setEvents(allEvents); // 모든 이벤트를 저장
@@ -110,8 +112,8 @@ export default function CalendarPage() {
 
   // events 또는 checkedCalendars 변경 시 filteredEvents 업데이트
   useEffect(() => {
-    const filtered = events.filter((event) =>
-      checkedCalendars.includes(event.calendarId)
+    const filtered = (events || []).filter((event) =>
+      (checkedCalendars || []).includes(event.calendarId)
     );
     setFilteredEvents(filtered);
     console.log("allEvents :", filtered);
