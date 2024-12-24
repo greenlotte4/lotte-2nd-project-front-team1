@@ -32,7 +32,7 @@ export default function CalendarPage() {
     const fetchData = async () => {
       try {
         const data = await fetchCalendarList(user.userid);
-        setCalendars(data);
+        setCalendars(data || []);
       } catch (error) {
         console.error("캘린더 목록 가져오기 실패:", error);
       }
